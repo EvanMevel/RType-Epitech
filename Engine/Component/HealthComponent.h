@@ -6,7 +6,10 @@
 #define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_HEALTHCOMPONENT_H
 
 
-class HealthComponent {
+#include <cstddef>
+#include "IComponent.h"
+
+class HealthComponent : public IComponent{
     size_t health;
 };
 

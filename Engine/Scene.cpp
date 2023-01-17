@@ -3,3 +3,8 @@
 //
 
 #include "Scene.h"
+#include "Engine.h"
+
+void Scene::update(Engine engine) {
+
+}

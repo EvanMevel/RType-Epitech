@@ -6,7 +6,10 @@
 #define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_HITBOXCOMPONENT_H
 
 
-class HitboxComponent {
+#include <cstddef>
+#include "IComponent.h"
+
+class HitboxComponent : public IComponent{
     size_t length_x;
     size_t length_y;
 };

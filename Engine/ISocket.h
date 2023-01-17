@@ -7,7 +7,7 @@
 
 
 class ISocket{
-    void* write(void*);
+    void write(void*);
     void* read();
 };
 

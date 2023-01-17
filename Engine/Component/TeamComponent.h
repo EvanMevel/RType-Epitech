@@ -6,8 +6,11 @@
 #define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_TEAMCOMPONENT_H
 
 
-class TeamComponent {
-    Team team;
+#include <cstddef>
+#include "IComponent.h"
+
+class TeamComponent : public IComponent{
+    size_t team;
 };
 
 

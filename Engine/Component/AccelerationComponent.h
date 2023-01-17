@@ -6,7 +6,10 @@
 #define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ACCELERATIONCOMPONENT_H
 
 
-class AccelerationComponent {
+#include <cstddef>
+#include "IComponent.h"
+
+class AccelerationComponent : public IComponent{
     size_t x;
     size_t y;
 };

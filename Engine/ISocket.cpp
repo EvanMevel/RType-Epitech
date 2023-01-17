@@ -3,3 +3,11 @@
 //
 
 #include "ISocket.h"
+
+void *ISocket::read() {
+    return nullptr;
+}
+
+void ISocket::write(void *) {
+
+}
