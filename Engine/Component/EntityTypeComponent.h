@@ -6,8 +6,11 @@
 #define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ENTITYTYPECOMPONENT_H
 
 
-class EntityTypeComponent {
-    EntityType type;
+#include <cstddef>
+#include "IComponent.h"
+
+class EntityTypeComponent : public IComponent {
+    size_t type;
 };
 
 

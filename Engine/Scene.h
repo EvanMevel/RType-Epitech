@@ -6,11 +6,18 @@
 #define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_SCENE_H
 
 
-class Scene {
-    std::vector<Entity>;
-    std::vector<ISystem>;
+#include <vector>
+#include "Entity.h"
+#include "ISystem.h"
 
-    void update(Engine);
+class Engine;
+
+class Scene {
+    private:
+        std::vector<Entity> entities;
+        std::vector<ISystem> systems;
+    public:
+        void update(Engine);
 
 };
 

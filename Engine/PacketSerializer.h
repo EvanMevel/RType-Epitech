@@ -6,8 +6,10 @@
 #define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_PACKETSERIALIZER_H
 
 
+template<class Packet>
+
 class PacketSerializer {
-    void* serialize(Packet);
+    virtual void* serialize(Packet) = 0;
 };
 
 
