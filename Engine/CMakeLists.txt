@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.24)
 project(Engine)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 include_directories(.)
 include_directories(Component)
@@ -39,4 +39,4 @@ add_library(eng
         PacketSerializer.cpp
         PacketSerializer.h
         Scene.cpp
-        Scene.h)
+        Scene.h Graphic/Vector2f.cpp Graphic/Vector2f.h Graphic/Vector2i.cpp Graphic/IGraphicLib.cpp Graphic/IGraphicLib.h Graphic/Events/IEvent.h Graphic/IWindow.h Graphic/ITexture.h Graphic/ColorCodes.h)

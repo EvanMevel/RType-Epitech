@@ -6,9 +6,10 @@
 #define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ICONSUMER_H
 
 class Engine;
-template<typename Type>
 
+template<typename Type>
 class IConsumer {
+public:
     virtual void consume(Engine,Type) = 0;
 };
 

@@ -9,8 +9,10 @@
 #include "Scene.h"
 
 class Engine {
+private:
     std::vector<Scene> scenes;
     Scene scene;
+
 };
 
 

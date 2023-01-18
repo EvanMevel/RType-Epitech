@@ -12,6 +12,7 @@
 #include <cstddef>
 
 class Entity {
+public:
      std::unordered_map<std::type_index, std::any> components;
      size_t id;
 };

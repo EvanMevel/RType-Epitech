@@ -14,8 +14,9 @@ class Engine;
 
 class Scene {
     private:
-        std::vector<Entity> entities;
-        std::vector<ISystem> systems;
+        //TODO faut regler ça, ça compile pas parceque il peut pas init des Entity ou des ISystem vu que ça a pas de constructor
+        //std::vector<Entity> entities;
+        //std::vector<ISystem> systems;
     public:
         void update(Engine);
 

@@ -8,6 +8,7 @@
 class Engine;
 
 class ISystem {
+public:
     virtual void update(Engine) = 0;
 };
 
