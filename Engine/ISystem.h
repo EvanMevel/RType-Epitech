@@ -9,7 +9,10 @@ class Engine;
 
 class ISystem {
 public:
-    virtual void update(Engine) = 0;
+    ISystem();
+    ~ISystem();
+
+    virtual void update(Engine&);
 };
 
 

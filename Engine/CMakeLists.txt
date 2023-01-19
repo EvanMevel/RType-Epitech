@@ -39,4 +39,4 @@ add_library(eng
         PacketSerializer.cpp
         PacketSerializer.h
         Scene.cpp
-        Scene.h Graphic/Vector2f.cpp Graphic/Vector2f.h Graphic/Vector2i.cpp Graphic/IGraphicLib.cpp Graphic/IGraphicLib.h Graphic/Events/IEvent.h Graphic/IWindow.h Graphic/ITexture.h Graphic/ColorCodes.h)
+        Scene.h Graphic/Vector2f.cpp Graphic/Vector2f.h Graphic/Vector2i.cpp Graphic/IGraphicLib.cpp Graphic/IGraphicLib.h Graphic/Events/IEvent.h Graphic/IWindow.h Graphic/ITexture.h Graphic/ColorCodes.h EntityType.h ISystem.cpp)

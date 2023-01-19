@@ -11,8 +11,14 @@
 class Engine {
 private:
     std::vector<Scene> scenes;
-    Scene scene;
-
+    Scene& scene;
+    size_t nextId = 0;
+public:
+    explicit Engine(Scene &scene);
+    void registerScene(Scene&);
+    void setScene(Scene&);
+    Scene &getScene() const;
+    Entity createEntity();
 };
 
 
