@@ -6,25 +6,25 @@
 #include "raylib.h"
 
 bool RaylibWindow::shouldClose() {
-    return WindowShouldClose();
+    return ray::WindowShouldClose();
 }
 
 void RaylibWindow::beginDrawing() {
-    BeginDrawing();
+    ray::BeginDrawing();
 }
 
 void RaylibWindow::endDrawing() {
-    EndDrawing();
+    ray::EndDrawing();
 }
 
 void RaylibWindow::setTargetFPS(int i) {
-    SetTargetFPS(i);
+    ray::SetTargetFPS(i);
 }
 
 void RaylibWindow::setBackground(ColorCodes code) {
     ClearBackground(colors[code]);
 }
 
-void RaylibWindow::setColors(const std::unordered_map<ColorCodes, Color> &colors) {
+void RaylibWindow::setColors(const std::unordered_map<ColorCodes, ray::Color> &colors) {
     RaylibWindow::colors = colors;
 }

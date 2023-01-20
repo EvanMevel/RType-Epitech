@@ -7,11 +7,13 @@
 
 #include <unordered_map>
 #include "Engine/Graphic/IWindow.h"
+namespace ray {
 #include "raylib.h"
+}
 
 class RaylibWindow : public IWindow {
 private:
-    std::unordered_map<ColorCodes, Color> colors;
+    std::unordered_map<ColorCodes, ray::Color> colors;
 public:
     bool shouldClose() override;
 
@@ -23,7 +25,7 @@ public:
 
     void setBackground(ColorCodes code) override;
 
-    void setColors(const std::unordered_map<ColorCodes, Color> &colors);
+    void setColors(const std::unordered_map<ColorCodes, ray::Color> &colors);
 };
 
 

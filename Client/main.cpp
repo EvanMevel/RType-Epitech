@@ -4,14 +4,13 @@
 
 #include <iostream>
 #include "Engine/Engine.h"
-#include "Engine/Graphic/IGraphicLib.h"
 #include "RaylibGraphicLib.h"
 #include "FixTextureComponent.h"
 #include "DrawFixTextureSystem.h"
 #include "Engine/Component/PositionComponent.h"
+#include "Engine/Network/CrossPlatformSocket.h"
 
-int main()
-{
+void graphic() {
     Engine e;
     Scene *sc = e.createScene();
     e.setScene(sc);
@@ -38,4 +37,28 @@ int main()
         e.updateScene();
         window.endDrawing();
     }
+}
+
+int main()
+{
+    CrossPlatformSocket socket;
+    if (!socket.create()) {
+        std::cout << "Failed to create socket" << std::endl;
+        return 1;
+    }
+    const char* message = "Hello, Server!";
+    int message_len = strlen(message);
+    char buffer[4096];
+    std::string address;
+    unsigned short port;
+
+    // Send the message to the server
+    int resp = socket.sendTo(message, message_len, "127.0.0.1", 4242);
+    std::cout << "resp: " << resp << std::endl;
+
+    if (resp != message_len) {
+        std::cout << "Failed to send message" << std::endl;
+        return 1;
+    }
+    return 0;
 }

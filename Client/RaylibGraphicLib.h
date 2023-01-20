@@ -8,11 +8,10 @@
 #include "Engine/Graphic/IGraphicLib.h"
 #include "RaylibWindow.h"
 #include "Engine/Graphic/ColorCodes.h"
-#include "raylib.h"
 
 class RaylibGraphicLib : public IGraphicLib {
 private:
-    std::unordered_map<ColorCodes, Color> colors;
+    std::unordered_map<ColorCodes, ray::Color> colors;
     RaylibWindow window;
 
 public:

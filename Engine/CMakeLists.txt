@@ -31,12 +31,12 @@ add_library(eng
         IConsumer.h
         IPacket.cpp
         IPacket.h
-        ISocket.cpp
-        ISocket.h
+        Network/ISocket.cpp
+        Network/ISocket.h
         ISystem.h
         PacketDeserializer.cpp
         PacketDeserializer.h
         PacketSerializer.cpp
         PacketSerializer.h
         Scene.cpp
-        Scene.h Graphic/Vector2f.cpp Graphic/Vector2f.h Graphic/Vector2i.cpp Graphic/IGraphicLib.cpp Graphic/IGraphicLib.h Graphic/Events/IEvent.h Graphic/IWindow.h Graphic/ITexture.h Graphic/ColorCodes.h EntityType.h ISystem.cpp EntityManager.cpp EntityManager.h)
+        Scene.h Graphic/Vector2f.cpp Graphic/Vector2f.h Graphic/Vector2i.cpp Graphic/IGraphicLib.cpp Graphic/IGraphicLib.h Graphic/Events/IEvent.h Graphic/IWindow.h Graphic/ITexture.h Graphic/ColorCodes.h EntityType.h ISystem.cpp EntityManager.cpp EntityManager.h Network/CrossPlatformSocket.cpp Network/CrossPlatformSocket.h Network/NetworkServer.cpp Network/NetworkServer.h Network/NetworkClient.cpp Network/NetworkClient.h Network/NetworkListener.cpp Network/NetworkListener.h)

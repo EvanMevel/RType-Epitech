@@ -6,7 +6,9 @@
 #define R_TYPE_SERVER_RAYLIBTEXTURE_H
 
 #include "Engine/Graphic/ITexture.h"
+namespace ray {
 #include "raylib.h"
+}
 
 class RaylibTexture : public ITexture {
 public:

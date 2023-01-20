@@ -3,11 +3,10 @@
 //
 
 #include "RaylibGraphicLib.h"
-#include "raylib.h"
 #include "RaylibTexture.h"
 
 IWindow &RaylibGraphicLib::createWindow(int width, int height, std::string title) {
-    InitWindow(width, height, title.c_str());
+    ray::InitWindow(width, height, title.c_str());
     this->window.setColors(colors);
     return this->window;
 }
@@ -17,11 +16,11 @@ IWindow &RaylibGraphicLib::getWindow() {
 }
 
 void RaylibGraphicLib::drawText(std::string string, int x, int y, int size, ColorCodes color) {
-    DrawText(string.c_str(), x, y, size, GREEN);
+    DrawText(string.c_str(), x, y, size, colors[color]);
 }
 
 void RaylibGraphicLib::closeWindow() {
-    CloseWindow();
+    ray::CloseWindow();
 }
 
 ITexture RaylibGraphicLib::createTexture(const std::string &texturePath) {
@@ -29,7 +28,7 @@ ITexture RaylibGraphicLib::createTexture(const std::string &texturePath) {
 }
 
 void RaylibGraphicLib::drawTexture(ITexture texture, int x, int y, ColorCodes code) {
-    auto texture2D = any_cast<Texture2D>(texture.handle);
+    auto texture2D = any_cast<ray::Texture2D>(texture.handle);
     DrawTexture(texture2D, x, y, colors[code]);
 }
 
@@ -38,10 +37,10 @@ std::vector<std::any> RaylibGraphicLib::retrieveEvents() {
 }
 
 RaylibGraphicLib::RaylibGraphicLib() {
-    colors[ColorCodes::COLOR_WHITE] = WHITE;
-    colors[ColorCodes::COLOR_BLACK] = BLACK;
-    colors[ColorCodes::COLOR_RED] = RED;
-    colors[ColorCodes::COLOR_GREEN] = GREEN;
-    colors[ColorCodes::COLOR_BLUE] = BLUE;
-    colors[ColorCodes::COLOR_YELLOW] = YELLOW;
+    colors[ColorCodes::COLOR_WHITE] = ray::WHITE;
+    colors[ColorCodes::COLOR_BLACK] = ray::BLACK;
+    colors[ColorCodes::COLOR_RED] = ray::RED;
+    colors[ColorCodes::COLOR_GREEN] = ray::GREEN;
+    colors[ColorCodes::COLOR_BLUE] = ray::BLUE;
+    colors[ColorCodes::COLOR_YELLOW] = ray::YELLOW;
 }
