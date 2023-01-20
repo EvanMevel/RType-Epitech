@@ -24,7 +24,7 @@ void RaylibGraphicLib::closeWindow() {
     CloseWindow();
 }
 
-ITexture RaylibGraphicLib::createTexture(std::string texturePath) {
+ITexture RaylibGraphicLib::createTexture(const std::string &texturePath) {
     return RaylibTexture(texturePath);
 }
 
@@ -35,4 +35,13 @@ void RaylibGraphicLib::drawTexture(ITexture texture, int x, int y, ColorCodes co
 
 std::vector<std::any> RaylibGraphicLib::retrieveEvents() {
     return std::vector<std::any>();
+}
+
+RaylibGraphicLib::RaylibGraphicLib() {
+    colors[ColorCodes::COLOR_WHITE] = WHITE;
+    colors[ColorCodes::COLOR_BLACK] = BLACK;
+    colors[ColorCodes::COLOR_RED] = RED;
+    colors[ColorCodes::COLOR_GREEN] = GREEN;
+    colors[ColorCodes::COLOR_BLUE] = BLUE;
+    colors[ColorCodes::COLOR_YELLOW] = YELLOW;
 }

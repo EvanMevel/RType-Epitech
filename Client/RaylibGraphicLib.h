@@ -16,6 +16,8 @@ private:
     RaylibWindow window;
 
 public:
+    RaylibGraphicLib();
+
     IWindow &createWindow(int width, int height, std::string title) override;
 
     void drawText(std::string string, int x, int y, int size, ColorCodes color) override;
@@ -24,7 +26,7 @@ public:
 
     void closeWindow() override;
 
-    ITexture createTexture(std::string texturePath) override;
+    ITexture createTexture(const std::string &texturePath) override;
 
     void drawTexture(ITexture texture, int x, int y, ColorCodes codes) override;
 

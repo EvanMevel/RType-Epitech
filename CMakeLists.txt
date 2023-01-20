@@ -14,7 +14,7 @@ include_directories(.)
 
 add_subdirectory(Engine)
 
-add_executable(r-type-client Client/main.cpp Client/RaylibGraphicLib.cpp Client/RaylibGraphicLib.h Client/RaylibWindow.cpp Client/RaylibWindow.h Client/RaylibTexture.cpp Client/RaylibTexture.h)
+add_executable(r-type-client Client/main.cpp Client/RaylibGraphicLib.cpp Client/RaylibGraphicLib.h Client/RaylibWindow.cpp Client/RaylibWindow.h Client/RaylibTexture.cpp Client/RaylibTexture.h Client/FixTextureComponent.cpp Client/FixTextureComponent.h Client/DrawFixTextureSystem.cpp Client/DrawFixTextureSystem.h)
 
 add_executable(r-type-server Server/main.cpp)
 

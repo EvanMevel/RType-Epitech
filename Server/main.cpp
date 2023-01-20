@@ -9,7 +9,7 @@
 class TestSystem : public ISystem {
     void update(Engine &engine) override {
         std::cout << "begin test system" << std::endl;
-        for (auto &entity: engine.getScene().getEntities()) {
+        for (auto &entity: engine.getScene()->getEntities()) {
             std::cout << "entity: " << entity.getId() << std::endl;
             auto *type = entity.getComponent<EntityTypeComponent>();
             if (entity.hasComponent<EntityTypeComponent>()) {
@@ -21,11 +21,12 @@ class TestSystem : public ISystem {
 
 int main()
 {
-    Scene sc;
-    Engine e(sc);
-    Entity &ent = sc.createPlayer(e);
-    Entity &ent2 = sc.createEntity(e);
-    sc.addSystem(new TestSystem());
-    sc.update(e);
+    Engine e;
+    Scene *sc = e.createScene();
+    e.setScene(sc);
+    Entity &ent = sc->createPlayer();
+    Entity &ent2 = sc->createEntity();
+    sc->addSystem(new TestSystem());
+    sc->update(e);
     return 10;
 }

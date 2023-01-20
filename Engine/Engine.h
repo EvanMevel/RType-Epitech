@@ -7,18 +7,30 @@
 
 
 #include "Scene.h"
+#include "Graphic/IGraphicLib.h"
 
 class Engine {
 private:
-    std::vector<Scene> scenes;
-    Scene& scene;
-    size_t nextId = 0;
+    std::vector<Scene*> scenes;
+    Scene* _scene;
+    EntityManager entityManager;
+    IGraphicLib* _graphicLib;
 public:
-    explicit Engine(Scene &scene);
-    void registerScene(Scene&);
-    void setScene(Scene&);
-    Scene &getScene() const;
-    Entity createEntity();
+    explicit Engine();
+
+    virtual ~Engine();
+
+    Scene *createScene();
+    void setScene(Scene*);
+    Scene *getScene() const;
+
+    void setGraphicLib(IGraphicLib *graphicLib);
+
+    IGraphicLib *getGraphicLib() const;
+
+    void updateScene();
+
+    void updateGraphicLib();
 };
 
 

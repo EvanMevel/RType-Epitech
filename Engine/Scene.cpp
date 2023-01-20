@@ -30,13 +30,17 @@ std::vector<Entity> &Scene::getEntities() {
     return this->entities;
 }
 
-Entity &Scene::createEntity(Engine &engine) {
-    this->entities.push_back(engine.createEntity());
+Entity &Scene::createEntity() {
+    this->entities.push_back(entityManager.createEntity());
     return this->entities.back();
 }
 
-Entity &Scene::createPlayer(Engine &engine) {
-    Entity &ent = createEntity(engine);
+Entity &Scene::createPlayer() {
+    Entity &ent = createEntity();
     ent.addComponent<EntityTypeComponent>()->setType(EntityType::PLAYER);
     return ent;
+}
+
+Scene::Scene(EntityManager &entityManager) : entityManager(entityManager) {
+
 }

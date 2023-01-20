@@ -10,7 +10,7 @@
 
 class RaylibTexture : public ITexture {
 public:
-    RaylibTexture(std::string path);
+    RaylibTexture(const std::string &path);
 };
 
 

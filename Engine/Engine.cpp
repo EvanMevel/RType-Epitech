@@ -4,22 +4,45 @@
 
 #include "Engine.h"
 
-void Engine::registerScene(Scene &sc) {
-    this->scenes.push_back(sc);
+Engine::Engine() : _scene(nullptr), _graphicLib(nullptr) {
+
 }
 
-void Engine::setScene(Scene &sc) {
-    this->scene = sc;
+Engine::~Engine() {
+    for (const auto &scene: scenes) {
+        delete scene;
+    }
+    delete _graphicLib;
 }
 
-Scene &Engine::getScene() const {
-    return this->scene;
+Scene *Engine::createScene() {
+    auto *scene = new Scene(entityManager);
+    scenes.push_back(scene);
+    return scene;
 }
 
-Engine::Engine(Scene &scene) : scene(scene) {
-    registerScene(scene);
+void Engine::setScene(Scene *sc) {
+    this->_scene = sc;
 }
 
-Entity Engine::createEntity() {
-    return Entity(nextId++);
+Scene *Engine::getScene() const {
+    return this->_scene;
+}
+
+void Engine::setGraphicLib(IGraphicLib *graphicLib) {
+    _graphicLib = graphicLib;
+}
+
+IGraphicLib *Engine::getGraphicLib() const {
+    return _graphicLib;
+}
+
+void Engine::updateScene() {
+    if (_scene != nullptr)
+        _scene->update(*this);
+}
+
+void Engine::updateGraphicLib() {
+    if (_graphicLib != nullptr)
+        _graphicLib->update(*this);
 }
