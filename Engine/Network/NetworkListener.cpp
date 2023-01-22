@@ -24,3 +24,9 @@ void NetworkListener::listen() {
         }
     }
 }
+
+NetworkListener::~NetworkListener() {
+    if (listeningThread.joinable()) {
+        listeningThread.join();
+    }
+}

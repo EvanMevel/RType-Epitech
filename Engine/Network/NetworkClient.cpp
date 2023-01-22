@@ -12,17 +12,6 @@ void NetworkClient::send(const char *message, int length) {
     socket.sendTo(message, length, address, port);
 }
 
-void NetworkClient::setListener(bool (*listener)(NetworkClient &, char *, int)) {
-    NetworkClient::listener = listener;
-}
-
-bool NetworkClient::messageReceived(std::string address, int port, char *message, int length) {
-    if (listener != nullptr) {
-        listener(*this, message, length);
-    }
-    return true;
-}
-
 CrossPlatformSocket &NetworkClient::getSocket() {
     return socket;
 }

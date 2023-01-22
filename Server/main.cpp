@@ -5,7 +5,9 @@
 #include <iostream>
 #include "Engine/Engine.h"
 #include "Engine/Component/EntityTypeComponent.h"
-#include "Engine/Network/NetworkServer.h"
+#include "Engine/Network/PacketNetworkServer.h"
+#include "Engine/Network/Packets/TestPacket.h"
+#include "Engine/Network/Packets/PacketConsumer.h"
 
 class TestSystem : public ISystem {
     void update(Engine &engine) override {
@@ -30,23 +32,29 @@ void engine() {
     sc->update(e);
 }
 
-class MyServer : public NetworkServer {
+class tts : public PacketConsumer<TestPacket> {
+private:
+    PacketNetworkClient &client;
 public:
-    MyServer(const std::string &address, unsigned short port) : NetworkServer(address, port) {}
+    explicit tts(PacketNetworkClient &client) : client(client) {}
+    void consume(TestPacket &packet) override {
+        std::cout << "packet received: " << packet.getValue() << std::endl;
+        client.sendPacket(packet);
+    }
+};
 
-    bool clientConnected(NetworkClient &client) override {
-        std::cout << "received" << std::endl;
-        client.send("Hello, Client!", 14);
-        client.setListener([](NetworkClient &client, char *message, int length) {
-            std::cout << "lambda received: " << length << " " << message << std::endl;
-            return true;
-        });
+class MyServer : public PacketNetworkServer {
+public:
+    MyServer(const std::string &address, unsigned short port) : PacketNetworkServer(address, port) {}
+
+    bool clientConnected(PacketNetworkClient &client) override {
+        std::cout << "client connected" << std::endl;
+        client.getConsumers().addConsumer<tts>(client);
         return true;
     }
 };
 
-int main()
-{
+void stv() {
     MyServer server("127.0.0.1", 4242);
     std::cout << "running" << std::endl;
     server.startListening();
@@ -54,5 +62,12 @@ int main()
     while (true) {
         Sleep(1000);
     }
+}
+
+int main()
+{
+    stv();
+
+
     return 10;
 }

@@ -9,6 +9,8 @@
 #include "DrawFixTextureSystem.h"
 #include "Engine/Component/PositionComponent.h"
 #include "Engine/Network/CrossPlatformSocket.h"
+#include "Engine/Network/NetworkRemoteServer.h"
+#include "Engine/Network/Packets/TestPacket.h"
 
 void graphic() {
     Engine e;
@@ -39,26 +41,28 @@ void graphic() {
     }
 }
 
+class tts : public PacketConsumer<TestPacket> {
+public:
+    void consume(TestPacket &packet) override {
+        std::cout << "packet received: " << packet.getValue() << std::endl;
+    }
+};
+
 int main()
 {
-    CrossPlatformSocket socket;
-    if (!socket.create()) {
-        std::cout << "Failed to create socket" << std::endl;
-        return 1;
-    }
-    const char* message = "Hello, Server!";
-    int message_len = strlen(message);
-    char buffer[4096];
-    std::string address;
-    unsigned short port;
+    NetworkRemoteServer server("127.0.0.1", 4242);
 
-    // Send the message to the server
-    int resp = socket.sendTo(message, message_len, "127.0.0.1", 4242);
-    std::cout << "resp: " << resp << std::endl;
+    server.getConsumers().addConsumer<tts>();
 
-    if (resp != message_len) {
-        std::cout << "Failed to send message" << std::endl;
-        return 1;
+    TestPacket packet;
+    packet.setValue(42);
+    server.sendPacket(packet);
+
+    server.startListening();
+
+    while (true) {
+        Sleep(1000);
     }
+
     return 0;
 }

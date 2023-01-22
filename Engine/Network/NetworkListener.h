@@ -14,6 +14,8 @@ private:
     std::thread listeningThread;
 
 public:
+    virtual ~NetworkListener();
+
     void startListening();
     void listen();
     virtual bool messageReceived(std::string address, int port, char *message, int length) = 0;

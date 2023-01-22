@@ -3,10 +3,10 @@
 //
 
 #include <stdexcept>
-#include <iostream>
-#include "NetworkServer.h"
+#include "PacketNetworkServer.h"
 
-NetworkServer::NetworkServer(const std::string &address, unsigned short port) {
+template<class Client>
+NetworkServer<Client>::NetworkServer(const std::string &address, unsigned short port) {
     if (!socket.create()) {
         throw std::runtime_error("Cannot create socket");
     }
@@ -15,16 +15,22 @@ NetworkServer::NetworkServer(const std::string &address, unsigned short port) {
     }
 }
 
-NetworkServer::~NetworkServer() {
-    listeningThread.join();
-}
 
-bool NetworkServer::messageReceived(std::string address, int port, char *message, int length) {
+template<class Client>
+bool NetworkServer<Client>::messageReceived(std::string address, int port, char *message, int length) {
+    PacketNetworkClient client(socket, address, port);
     _clients.emplace_back(socket, address, port);
     _clients.back().startListening();
-    return clientConnected(_clients.back());
+    clientConnected(_clients.back());
+    return _clients.back().messageReceived(address, port, message, length);
 }
 
-CrossPlatformSocket &NetworkServer::getSocket() {
+template<class Client>
+CrossPlatformSocket &NetworkServer<Client>::getSocket() {
     return socket;
+}
+
+template<class Client>
+NetworkServer<Client>::~NetworkServer() {
+
 }

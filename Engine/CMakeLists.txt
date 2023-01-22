@@ -29,14 +29,8 @@ add_library(eng
         Entity.cpp
         Entity.h
         IConsumer.h
-        IPacket.cpp
-        IPacket.h
-        Network/ISocket.cpp
-        Network/ISocket.h
+        Network/Packets/IPacket.cpp
+        Network/Packets/IPacket.h
         ISystem.h
-        PacketDeserializer.cpp
-        PacketDeserializer.h
-        PacketSerializer.cpp
-        PacketSerializer.h
         Scene.cpp
-        Scene.h Graphic/Vector2f.cpp Graphic/Vector2f.h Graphic/Vector2i.cpp Graphic/IGraphicLib.cpp Graphic/IGraphicLib.h Graphic/Events/IEvent.h Graphic/IWindow.h Graphic/ITexture.h Graphic/ColorCodes.h EntityType.h ISystem.cpp EntityManager.cpp EntityManager.h Network/CrossPlatformSocket.cpp Network/CrossPlatformSocket.h Network/NetworkServer.cpp Network/NetworkServer.h Network/NetworkClient.cpp Network/NetworkClient.h Network/NetworkListener.cpp Network/NetworkListener.h)
+        Scene.h Graphic/Vector2f.cpp Graphic/Vector2f.h Graphic/Vector2i.cpp Graphic/IGraphicLib.cpp Graphic/IGraphicLib.h Graphic/Events/IEvent.h Graphic/IWindow.h Graphic/ITexture.h Graphic/ColorCodes.h EntityType.h ISystem.cpp EntityManager.cpp EntityManager.h Network/CrossPlatformSocket.cpp Network/CrossPlatformSocket.h Network/NetworkServer.cpp Network/NetworkServer.h Network/NetworkClient.cpp Network/NetworkClient.h Network/NetworkListener.cpp Network/NetworkListener.h Network/Packets/PacketSerializer.cpp Network/Packets/PacketSerializer.h Network/Packets/ByteArray.cpp Network/Packets/ByteArray.h Network/Packets/TestPacket.cpp Network/Packets/TestPacket.h Network/Packets/PacketConsumer.h Network/Packets/PacketConsumers.h Network/Packets/IPacketConsumer.h Network/PacketNetworkServer.cpp Network/PacketNetworkServer.h Network/NetworkRemoteServer.cpp Network/NetworkRemoteServer.h Network/PacketReceiver.cpp Network/PacketReceiver.h Network/PacketSender.h)

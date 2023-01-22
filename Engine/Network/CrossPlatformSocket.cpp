@@ -84,7 +84,7 @@ bool CrossPlatformSocket::sendTo(const char* message, int len, const std::string
     return true;
 }
 
-bool CrossPlatformSocket::recvFrom(char* buffer, int len, std::string& address, unsigned short& port)
+int CrossPlatformSocket::recvFrom(char* buffer, int len, std::string& address, unsigned short& port)
 {
     struct sockaddr_in addr;
     int addrLen = sizeof(addr);
@@ -93,6 +93,7 @@ bool CrossPlatformSocket::recvFrom(char* buffer, int len, std::string& address, 
     int recv_len = recvfrom(m_socket, buffer, len, 0, (struct sockaddr*)&addr, &addrLen);
 
     if (recv_len < 0) {
+        fprintf(stderr, "recv: %s (%d)\n", strerror(errno), errno);
         return recv_len;
     }
 #ifdef _WIN32
