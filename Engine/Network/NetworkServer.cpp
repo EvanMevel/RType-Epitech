@@ -18,7 +18,6 @@ NetworkServer<Client>::NetworkServer(const std::string &address, unsigned short 
 
 template<class Client>
 bool NetworkServer<Client>::messageReceived(std::string address, int port, char *message, int length) {
-    PacketNetworkClient client(socket, address, port);
     _clients.emplace_back(socket, address, port);
     _clients.back().startListening();
     clientConnected(_clients.back());

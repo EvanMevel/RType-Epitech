@@ -9,12 +9,12 @@
 #include "CrossPlatformSocket.h"
 #include "NetworkListener.h"
 #include "PacketReceiver.h"
+#include "PacketSender.h"
 #include "Packets/PacketConsumers.h"
 
-class NetworkRemoteServer : public NetworkListener, public PacketReceiver {
+class NetworkRemoteServer : public NetworkListener, public PacketReceiver, public PacketSender {
 private:
     CrossPlatformSocket socket;
-    PacketConsumers packetConsumers;
     std::string _address;
     unsigned short _port;
 public:
@@ -27,8 +27,6 @@ public:
     bool messageReceived(std::string address, int port, char *message, int length) override;
 
     CrossPlatformSocket &getSocket() override;
-
-    PacketConsumers &getConsumers();
 };
 
 

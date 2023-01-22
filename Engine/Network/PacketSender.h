@@ -22,10 +22,13 @@ public:
         packetConsumers.consume(arr);
         return false;
     }
-    /*template<class Consumer, typename... Args>
+    PacketConsumers &getConsumers() {
+        return packetConsumers;
+    }
+    template<class Consumer, typename... Args>
     void addConsumer(Args&&... args) {
         packetConsumers.addConsumer<Consumer>(std::forward<Args>(args)...);
-    }*/
+    }
 };
 
 

@@ -4,19 +4,8 @@
 
 #include "PacketNetworkServer.h"
 
-PacketConsumers &PacketNetworkClient::getConsumers() {
-    return packetConsumers;
-}
-
 bool PacketNetworkClient::messageReceived(std::string address, int port, char *message, int length) {
-    unsigned char magic = *message;
-    if (magic != this->_magic) {
-        return false;
-    }
-    ByteArray arr;
-    arr.write(message + 1, length - 1);
-    packetConsumers.consume(arr);
-    return false;
+    return consumeMessage(message, length);
 }
 
 PacketNetworkClient::PacketNetworkClient(const CrossPlatformSocket &socket, const std::string &address,

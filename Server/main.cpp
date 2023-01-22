@@ -49,7 +49,7 @@ public:
 
     bool clientConnected(PacketNetworkClient &client) override {
         std::cout << "client connected" << std::endl;
-        client.getConsumers().addConsumer<tts>(client);
+        client.addConsumer<tts>(client);
         return true;
     }
 };

@@ -15,20 +15,9 @@ void NetworkRemoteServer::send(const char *message, int length) {
 }
 
 bool NetworkRemoteServer::messageReceived(std::string address, int port, char *message, int length) {
-    unsigned char magic = *message;
-    if (magic != this->_magic) {
-        return false;
-    }
-    ByteArray arr;
-    arr.write(message + 1, length - 1);
-    packetConsumers.consume(arr);
-    return false;
+    return consumeMessage(message, length);
 }
 
 CrossPlatformSocket &NetworkRemoteServer::getSocket() {
     return socket;
-}
-
-PacketConsumers &NetworkRemoteServer::getConsumers() {
-    return packetConsumers;
 }

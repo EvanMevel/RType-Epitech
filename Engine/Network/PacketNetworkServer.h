@@ -9,23 +9,19 @@
 #include "Engine/Network/Packets/PacketConsumers.h"
 #include "Engine/Network/Packets/PacketSerializer.h"
 #include "PacketReceiver.h"
+#include "PacketSender.h"
 
-class PacketNetworkClient : public NetworkClient, public PacketReceiver {
+class PacketNetworkClient : public NetworkClient, public PacketReceiver, public PacketSender {
 private:
-    const unsigned char _magic = 242;
     PacketConsumers packetConsumers;
-    PacketSerializer packetSerializer;
 public:
     PacketNetworkClient(const CrossPlatformSocket &socket, const std::string &address, unsigned short port);
 
-    PacketNetworkClient(const PacketNetworkClient &other) : NetworkClient(other), packetConsumers(other.packetConsumers),
-                                                            packetSerializer(other.packetSerializer) {}
+    PacketNetworkClient(const PacketNetworkClient &other) : NetworkClient(other), packetConsumers(other.packetConsumers) {}
 
     ~PacketNetworkClient() override;
 
     bool messageReceived(std::string address, int port, char *message, int length) override;
-
-    PacketConsumers &getConsumers();
 
     void send(const char *message, int length) override;
 };
