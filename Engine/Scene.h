@@ -5,21 +5,36 @@
 #ifndef B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_SCENE_H
 #define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_SCENE_H
 
-
-#include <vector>
+#include "SystemHolder.h"
 #include "Entity.h"
-#include "ISystem.h"
+#include "EntityManager.h"
 
 class Engine;
 
-class Scene {
-    private:
-        std::vector<Entity> entities;
-        std::vector<ISystem> systems;
-    public:
-        void update(Engine);
+/**
+ * @brief Scene class is the base class for all scenes
+ * @details it is a system and entity holder
+ */
+class Scene : public SystemHolder {
+protected:
+    std::vector<Entity> entities;
+    EntityManager &entityManager;
+public:
+    Scene(EntityManager &entityManager);
+    Scene(const Scene &other) : SystemHolder(other), entityManager(other.entityManager) {
+        for (const auto &ent: other.entities) {
+            entities.push_back(ent);
+        }
+    }
 
+    ~Scene();
+    void addEntity(Entity&);
+
+    std::vector<Entity> &getEntities();
+    Entity& createEntity();
+    Entity& createPlayer();
+
+    Entity &getEntityById(int id);
 };
-
 
 #endif //B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_SCENE_H

@@ -8,9 +8,17 @@
 
 #include <cstddef>
 #include "IComponent.h"
+#include "../EntityType.h"
 
 class EntityTypeComponent : public IComponent {
-    size_t type;
+private:
+    EntityType type;
+public:
+    explicit EntityTypeComponent() = default;
+
+    EntityType getType() const;
+
+    void setType(EntityType type);
 };
 
 

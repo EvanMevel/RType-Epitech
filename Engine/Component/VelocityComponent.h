@@ -10,8 +10,8 @@
 #include "IComponent.h"
 
 class VelocityComponent : public IComponent{
-    size_t x;
-    size_t y;
+    int x;
+    int y;
 };
 
 

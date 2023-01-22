@@ -3,3 +3,11 @@
 //
 
 #include "EntityTypeComponent.h"
+
+EntityType EntityTypeComponent::getType() const {
+    return type;
+}
+
+void EntityTypeComponent::setType(EntityType type) {
+    EntityTypeComponent::type = type;
+}
