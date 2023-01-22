@@ -18,6 +18,9 @@
 #include <arpa/inet.h>
 #endif
 
+/**
+ * @brief Cross platform UDP socket for Linux and Windows
+ */
 class CrossPlatformSocket
 {
 public:

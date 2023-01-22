@@ -7,11 +7,20 @@
 
 class Engine;
 
+/**
+ * @brief ISystem is the base class for all systems of the ECS
+ * @details override the update method to define the behavior of the system
+ */
 class ISystem {
 public:
     ISystem();
     ~ISystem();
 
+    /**
+     * @brief update is what will be called by the engine to use the system
+     * @details override this method to define the behavior of the system
+     * @param engine the engine that is calling the system
+     */
     virtual void update(Engine&);
 };
 

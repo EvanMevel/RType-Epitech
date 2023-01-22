@@ -10,6 +10,9 @@
 #include <any>
 #include "ByteArray.h"
 
+/**
+ * @brief Serialize a packet to a ByteArray, writing its id and then its content
+ */
 class PacketSerializer {
 public:
     PacketSerializer() = default;

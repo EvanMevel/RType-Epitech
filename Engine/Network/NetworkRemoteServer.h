@@ -11,6 +11,11 @@
 #include "PacketSender.h"
 #include "Packets/PacketConsumers.h"
 
+/**
+ * @brief NetworkRemoteServer is a class that represents a remote server.
+ * @details It is used to send and receive packets to and from a remote server.
+ * @details It is also used to listen to incoming packets from the remote server.
+ */
 template<class Data>
 class NetworkRemoteServer : public NetworkListener, public PacketReceiver, public PacketSender<Data> {
 private:

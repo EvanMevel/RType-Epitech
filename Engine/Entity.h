@@ -12,7 +12,10 @@
 #include <cstddef>
 #include "Component/IComponent.h"
 
-// We have to implement addComponent, getComponent and hasComponent in the header file because they are templates functions
+/**
+ * @brief Entity is the base class for all entities of the ECS
+ * @details an entity is a container for components
+ */
 class Entity {
 private:
     std::unordered_map<std::type_index, std::shared_ptr<IComponent>> components;

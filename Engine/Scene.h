@@ -11,6 +11,10 @@
 
 class Engine;
 
+/**
+ * @brief Scene class is the base class for all scenes
+ * @details it is a system and entity holder
+ */
 class Scene : public SystemHolder {
 protected:
     std::vector<Entity> entities;

@@ -9,6 +9,9 @@
 #include <cstddef>
 #include "Entity.h"
 
+/**
+ * @brief The EntityManager class is used to keep track of entity ids
+ */
 class EntityManager {
 private:
     std::size_t nextId;

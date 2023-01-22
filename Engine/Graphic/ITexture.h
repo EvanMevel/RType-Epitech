@@ -7,6 +7,9 @@
 
 #include <any>
 
+/**
+ * @brief Interface representing a texture
+ */
 class ITexture {
 public:
     std::any handle;

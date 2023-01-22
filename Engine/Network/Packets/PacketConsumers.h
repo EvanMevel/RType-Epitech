@@ -11,7 +11,10 @@
 #include <memory>
 #include "PacketConsumer.h"
 
-
+/**
+ * @brief A class that hold packet consumers
+ * @tparam ConsumeArgs The arguments that will be passed to the consumers
+ */
 template<class... ConsumeArgs>
 class PacketConsumers {
 private:

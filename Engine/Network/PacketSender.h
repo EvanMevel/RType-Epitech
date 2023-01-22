@@ -7,6 +7,10 @@
 
 #include "Engine/Network/Packets/PacketConsumers.h"
 
+/**
+ * @brief Describe a packet sender that can send packets to a specific socket
+ * @tparam ConsumerType
+ */
 template<class ...ConsumerType>
 class PacketSender {
 protected:

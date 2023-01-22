@@ -21,7 +21,6 @@ add_library(eng
         Component/TeamComponent.h
         Component/VelocityComponent.cpp
         Component/VelocityComponent.h
-        Component/IComponent.cpp
         Component/IComponent.h
 
         Engine.cpp

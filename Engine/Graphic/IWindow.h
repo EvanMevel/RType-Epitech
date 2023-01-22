@@ -9,6 +9,9 @@
 #include "ITexture.h"
 #include "ColorCodes.h"
 
+/**
+ * @brief Interface representing a window on the screen
+ */
 class IWindow {
 public:
     virtual bool shouldClose() = 0;

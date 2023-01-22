@@ -8,6 +8,10 @@
 
 #include "ByteArray.h"
 
+/**
+ * Interface for packet Consumer
+ * @tparam Args Types of the arguments
+ */
 template<class... Args>
 class IPacketConsumer {
 public:

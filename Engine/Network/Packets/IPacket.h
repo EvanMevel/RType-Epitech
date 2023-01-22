@@ -8,6 +8,11 @@
 
 #include "ByteArray.h"
 
+/**
+ * @brief Interface for packets
+ * @details This interface is used to define a packet that can be sent through the network
+ * @see ByteArray
+ */
 class IPacket {
 public:
     virtual void write(ByteArray &buffer) const = 0;

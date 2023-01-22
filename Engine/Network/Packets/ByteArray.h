@@ -7,6 +7,9 @@
 
 #include <sstream>
 
+/**
+ * @brief ByteArray is a buffer of bytes that can be used to serialize and deserialize data
+ */
 class ByteArray {
 private:
     std::stringbuf _buffer;

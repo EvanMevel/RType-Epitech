@@ -16,6 +16,11 @@
 
 class Engine;
 
+/**
+ * @brief Interface representing a graphic library
+ * @details This interface is used to abstract the graphic library used by the engine.
+ * @details It is used by the engine to draw on the screen and to retrieve events from the user.
+ */
 class IGraphicLib : public SystemHolder {
 private:
     std::unordered_map<std::type_index, std::any> eventConsumers;

@@ -7,6 +7,9 @@
 
 #include "IPacket.h"
 
+/**
+ * @brief EntityTestPacket is a packet used to test the Entity class
+ */
 class EntityTestPacket : public IPacket {
 public:
     int entityId;

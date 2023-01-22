@@ -12,6 +12,9 @@
 #include "PacketSender.h"
 #include "NetworkListener.h"
 
+/**
+ * @brief NetClient describes a client connected to the server
+ */
 class NetClient : public PacketReceiver {
 protected:
     std::shared_ptr<CrossPlatformSocket> socket;
@@ -36,6 +39,10 @@ class PacketClientConsumer : public PacketConsumer<Packet, std::shared_ptr<NetCl
 
 };
 
+/**
+ * @brief NetServer describes a server that can receive data from clients
+ * @tparam Data The type of data that will be passed to the packet consumers
+ */
 template<class Data>
 class NetServer : public NetworkListener , public PacketSender<std::shared_ptr<NetClient>, Data> {
 private:

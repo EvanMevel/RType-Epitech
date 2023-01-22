@@ -10,6 +10,9 @@
 #include "Scene.h"
 #include "Graphic/IGraphicLib.h"
 
+/**
+ * @brief base of the Engine that contains the current scene and the graphic library if it is set
+ */
 class Engine {
 private:
     std::shared_ptr<Scene> current;

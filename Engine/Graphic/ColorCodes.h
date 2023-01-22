@@ -5,6 +5,9 @@
 #ifndef R_TYPE_SERVER_COLORCODES_H
 #define R_TYPE_SERVER_COLORCODES_H
 
+/**
+ * @brief Color codes for the graphic library
+ */
 enum class ColorCodes {
     COLOR_RED,
     COLOR_GREEN,

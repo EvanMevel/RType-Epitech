@@ -8,6 +8,9 @@
 
 #include "IPacket.h"
 
+/**
+ * @brief Test packet
+ */
 class TestPacket : public IPacket {
 private:
     int _value = 0;

@@ -9,6 +9,10 @@
 #include <vector>
 #include "ISystem.h"
 
+/**
+ * @brief Holds systems
+ * Systems can be added using the addSystem method
+ */
 class SystemHolder {
 protected:
     std::vector<std::shared_ptr<ISystem>> systems;
@@ -20,11 +24,21 @@ public:
         }
     }
 
+    /**
+     * @brief Add a system to the holder
+     * @tparam System
+     * @tparam Args
+     * @param args
+     */
     template <class System, class ...Args>
     void addSystem(Args&&... args) {
         this->systems.push_back(std::make_shared<System>(args...));
     }
 
+    /**
+     * @brief Call the update method of all systems
+     * @param engine
+     */
     void update(Engine &engine) {
         for (const auto &sys: systems) {
             sys->update(engine);
