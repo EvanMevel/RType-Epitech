@@ -52,7 +52,7 @@ int main()
 {
     NetworkRemoteServer server("127.0.0.1", 4242);
 
-    server.getConsumers().addConsumer<tts>();
+    server.addConsumer<tts>();
 
     TestPacket packet;
     packet.setValue(42);
