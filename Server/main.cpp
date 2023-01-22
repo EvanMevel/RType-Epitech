@@ -4,10 +4,9 @@
 
 #include <iostream>
 #include "Engine/Engine.h"
+#include "Engine/Network/NetServer.h"
 #include "Engine/Component/EntityTypeComponent.h"
-#include "Engine/Network/PacketNetworkServer.h"
 #include "Engine/Network/Packets/TestPacket.h"
-#include "Engine/Network/Packets/PacketConsumer.h"
 
 class TestSystem : public ISystem {
     void update(Engine &engine) override {
@@ -32,41 +31,44 @@ void engine() {
     sc->update(e);
 }
 
-class tts : public PacketConsumer<TestPacket> {
+class TT : public PacketClientConsumer<TestPacket, int> {
 private:
-    PacketNetworkClient &client;
+    int e;
 public:
-    explicit tts(PacketNetworkClient &client) : client(client) {}
-    void consume(TestPacket &packet) override {
-        std::cout << "packet received: " << packet.getValue() << std::endl;
-        client.sendPacket(packet);
+    explicit TT(int e) : e(e) {}
+
+    void consume(TestPacket &packet, std::shared_ptr<NetClient> client, int i) override {
+        std::cout << "packet received: " << packet.getValue() << " data is " << i << " and e is " << e << std::endl;
+        client->sendPacket(packet);
     }
 };
 
-class MyServer : public PacketNetworkServer {
+class MyServer : public NetServer<int> {
 public:
-    MyServer(const std::string &address, unsigned short port) : PacketNetworkServer(address, port) {}
+    MyServer(const std::string &address, unsigned short port) : NetServer(address, port) {}
 
-    bool clientConnected(PacketNetworkClient &client) override {
-        std::cout << "client connected" << std::endl;
-        client.addConsumer<tts>(client);
-        return true;
+    int createData(std::shared_ptr<NetClient> &client) override {
+        return client->getPort();
+    }
+
+    void clientConnected(std::shared_ptr<NetClient> &client, int &data) override {
+        std::cout << "Client connected " << client->getAddress() << ":" << client->getPort() << std::endl;
     }
 };
 
-void stv() {
-    MyServer server("127.0.0.1", 4242);
+void testSrv() {
+    MyServer srv("127.0.0.1", 4242);
     std::cout << "running" << std::endl;
-    server.startListening();
 
-    while (true) {
-        Sleep(1000);
-    }
+    srv.addConsumer<TT>(15);
+
+    srv.startListening();
+    Sleep(1000);
 }
 
 int main()
 {
-    stv();
+    testSrv();
 
 
     return 10;

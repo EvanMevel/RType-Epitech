@@ -9,18 +9,18 @@
 #include "ByteArray.h"
 #include "IPacketConsumer.h"
 
-template<class Packet>
-class PacketConsumer : public IPacketConsumer{
+template<class Packet, class... Args>
+class PacketConsumer : public IPacketConsumer<Args...> {
 public:
-    void consumePacket(ByteArray &buffer) override {
+    void consumePacket(ByteArray &buffer, Args ...args) override {
         Packet packet;
         packet.read(buffer);
-        this->consume(packet);
+        this->consume(packet, args...);
     }
     int getId() override {
         return Packet::ID;
     }
-    virtual void consume(Packet &packet) = 0;
+    virtual void consume(Packet &packet, Args ...args) = 0;
 };
 
 

@@ -11,9 +11,11 @@
 #include <memory>
 #include "PacketConsumer.h"
 
+
+template<class... ConsumeArgs>
 class PacketConsumers {
 private:
-    std::unordered_map<int, std::shared_ptr<IPacketConsumer>> _consumers;
+    std::unordered_map<int, std::shared_ptr<IPacketConsumer<ConsumeArgs...>>> _consumers;
 public:
     PacketConsumers() = default;
     ~PacketConsumers() = default;
@@ -24,12 +26,12 @@ public:
         _consumers.emplace(consumer->getId(), consumer);
     }
 
-    void consume(ByteArray &buffer) {
+    void consume(ByteArray &buffer, ConsumeArgs... args) {
         int id;
         buffer.read(id);
         auto consumer = _consumers.find(id);
         if (consumer != _consumers.end()) {
-            consumer->second->consumePacket(buffer);
+            consumer->second->consumePacket(buffer, args...);
         }
     }
 };

@@ -8,9 +8,10 @@
 
 #include "ByteArray.h"
 
+template<class... Args>
 class IPacketConsumer {
 public:
-    virtual void consumePacket(ByteArray &buffer) = 0;
+    virtual void consumePacket(ByteArray &buffer, Args ...args) = 0;
     virtual int getId() = 0;
 };
 

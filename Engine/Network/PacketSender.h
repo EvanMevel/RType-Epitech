@@ -7,27 +7,28 @@
 
 #include "Engine/Network/Packets/PacketConsumers.h"
 
+template<class ...ConsumerType>
 class PacketSender {
 protected:
     const unsigned char _magic = 242;
-    PacketConsumers packetConsumers;
+    PacketConsumers<ConsumerType...> packetConsumers;
 public:
-    bool consumeMessage(char *message, int length) {
+    bool consumeMessage(char *message, int length, ConsumerType... args) {
         unsigned char magic = *message;
         if (magic != this->_magic) {
             return false;
         }
         ByteArray arr;
         arr.write(message + 1, length - 1);
-        packetConsumers.consume(arr);
+        packetConsumers.consume(arr, args...);
         return false;
     }
-    PacketConsumers &getConsumers() {
+    PacketConsumers<ConsumerType...> &getConsumers() {
         return packetConsumers;
     }
     template<class Consumer, typename... Args>
     void addConsumer(Args&&... args) {
-        packetConsumers.addConsumer<Consumer>(std::forward<Args>(args)...);
+        packetConsumers.template addConsumer<Consumer>(std::forward<Args>(args)...);
     }
 };
 

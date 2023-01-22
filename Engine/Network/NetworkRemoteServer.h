@@ -12,7 +12,7 @@
 #include "PacketSender.h"
 #include "Packets/PacketConsumers.h"
 
-class NetworkRemoteServer : public NetworkListener, public PacketReceiver, public PacketSender {
+class NetworkRemoteServer : public NetworkListener, public PacketReceiver, public PacketSender<> {
 private:
     CrossPlatformSocket socket;
     std::string _address;
