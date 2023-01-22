@@ -8,29 +8,8 @@
 #include "Engine/Component/EntityTypeComponent.h"
 #include "Engine/Network/Packets/TestPacket.h"
 #include "Engine/Network/Packets/EntityTestPacket.h"
+#include "Engine/Component/PositionComponent.h"
 
-class TestSystem : public ISystem {
-    void update(Engine &engine) override {
-        std::cout << "begin test system" << std::endl;
-        for (auto &entity: engine.getScene()->getEntities()) {
-            std::cout << "entity: " << entity.getId() << std::endl;
-            auto type = entity.getComponent<EntityTypeComponent>();
-            if (entity.hasComponent<EntityTypeComponent>()) {
-                std::cout << "type: " << type->getType() << std::endl;
-            }
-        }
-    }
-};
-
-void engine() {
-    Engine e;
-    auto sc = e.createScene<Scene>();
-    e.setScene(sc);
-    Entity &ent = sc->createPlayer();
-    Entity &ent2 = sc->createEntity();
-    sc->addSystem<TestSystem>();
-    sc->update(e);
-}
 
 class TT : public PacketClientConsumer<TestPacket, int> {
 private:
@@ -57,19 +36,58 @@ public:
     }
 };
 
+class TpEntitySystem : public ISystem {
+public:
+    MyServer &srv;
+    int count = 0;
+
+    explicit TpEntitySystem(MyServer &srv) : srv(srv) {}
+
+    void update(Engine &engine) override {
+        count = (count + 1) % 4;
+        if (count != 0) {
+            return;
+        }
+        for (auto &entity: engine.getScene()->getEntities()) {
+            auto pos = entity.getComponent<PositionComponent>();
+            if (pos != nullptr) {
+                int random_number = std::rand() % 480;
+                int random_number2 = std::rand() % 480;
+
+                pos->setX(random_number);
+                pos->setY(random_number2);
+
+                EntityTestPacket packet(entity.getId(), random_number, random_number2);
+                srv.broadcast(packet);
+            }
+        }
+    }
+};
+
 void testSrv() {
     MyServer srv("127.0.0.1", 4242);
     std::cout << "running" << std::endl;
+
+    Engine e;
+    auto sc = e.createScene<Scene>();
+    e.setScene(sc);
+    sc->addSystem<TpEntitySystem>(srv);
+
+    Entity &ent = sc->createEntity();
+    ent.addComponent<PositionComponent>();
 
     srv.addConsumer<TT>(15);
 
     srv.startListening();
     while (true) {
-        Sleep(300);
-        int random_number = std::rand() % 480;
-        int random_number2 = std::rand() % 480;
-        EntityTestPacket packet(0, random_number, random_number2);
-        srv.broadcast(packet);
+        auto start = std::chrono::system_clock::now();
+
+        e.updateScene();
+
+        auto end = std::chrono::system_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+        Sleep((1000 / 20) - elapsed.count());
     }
 }
 
