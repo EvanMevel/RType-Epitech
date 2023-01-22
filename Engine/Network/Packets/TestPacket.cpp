@@ -19,3 +19,5 @@ void TestPacket::setValue(int value) {
 int TestPacket::getValue() const {
     return _value;
 }
+
+TestPacket::TestPacket(int value) : _value(value) {}

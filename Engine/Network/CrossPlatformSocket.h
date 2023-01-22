@@ -28,6 +28,9 @@ public:
     bool bind(const std::string& address, unsigned short port);
     bool sendTo(const char* message, int len, const std::string& address, unsigned short port);
     int recvFrom(char* message, int len, std::string& address, unsigned short& port);
+
+    std::string lastAddress;
+    unsigned short lastPort;
 private:
     int m_socket;
 #ifdef _WIN32

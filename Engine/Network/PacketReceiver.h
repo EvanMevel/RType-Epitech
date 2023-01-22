@@ -11,7 +11,7 @@ class PacketReceiver {
 private:
     const PacketSerializer packetSerializer;
 protected:
-    const unsigned char _magic = 242;
+    const unsigned char _magic = 232;
 public:
     PacketReceiver() = default;
     virtual ~PacketReceiver() = default;

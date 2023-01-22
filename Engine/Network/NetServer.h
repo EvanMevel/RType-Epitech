@@ -39,6 +39,8 @@ class PacketClientConsumer : public PacketConsumer<Packet, std::shared_ptr<NetCl
 template<class Data>
 class NetServer : public NetworkListener , public PacketSender<std::shared_ptr<NetClient>, Data> {
 private:
+    const std::string &_address;
+    unsigned short _port;
     std::shared_ptr<CrossPlatformSocket> socket;
     std::unordered_map<std::string, std::pair<std::shared_ptr<NetClient>, Data>> clients;
 public:
@@ -53,6 +55,15 @@ public:
     virtual void clientConnected(std::shared_ptr<NetClient> &client, Data& data) = 0;
 
     void clientMessage(std::shared_ptr<NetClient> &client, Data& data, char *message, int length);
+
+    void errorReceived(std::string address, int port, int err) override;
+
+    template<class Packet>
+    void broadcast(const Packet &packet) {
+        for (auto &client : clients) {
+            client.second.first->sendPacket(packet);
+        }
+    }
 };
 
 template class NetServer<int>;

@@ -30,5 +30,11 @@ public:
     }
 };
 
+ByteArray& operator<<(ByteArray &buffer, const std::string &value);
+
+ByteArray& operator<<(ByteArray &buffer, const int &value);
+
+ByteArray& operator>>(ByteArray &buffer, int &value);
+
 
 #endif //R_TYPE_SERVER_BYTEARRAY_H

@@ -19,6 +19,7 @@ public:
     void startListening();
     void listen();
     virtual bool messageReceived(std::string address, int port, char *message, int length) = 0;
+    virtual void errorReceived(std::string address, int port, int err) = 0;
     virtual CrossPlatformSocket &getSocket() = 0;
 
 };

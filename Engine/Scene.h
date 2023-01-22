@@ -29,6 +29,8 @@ public:
     std::vector<Entity> &getEntities();
     Entity& createEntity();
     Entity& createPlayer();
+
+    Entity &getEntityById(int id);
 };
 
 #endif //B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_SCENE_H

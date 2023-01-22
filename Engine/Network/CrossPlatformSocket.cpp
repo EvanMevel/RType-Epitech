@@ -4,7 +4,7 @@
 
 #include "CrossPlatformSocket.h"
 
-CrossPlatformSocket::CrossPlatformSocket()
+CrossPlatformSocket::CrossPlatformSocket() : lastAddress(), lastPort(0)
 {
     m_socket = -1;
 #ifdef _WIN32
@@ -64,6 +64,8 @@ bool CrossPlatformSocket::bind(const std::string& address, unsigned short port)
 
 bool CrossPlatformSocket::sendTo(const char* message, int len, const std::string& address, unsigned short port)
 {
+    lastAddress = address;
+    lastPort = port;
     struct sockaddr_in addr;
     memset(&addr, 0, sizeof(addr));
     addr.sin_family = AF_INET;
@@ -93,7 +95,6 @@ int CrossPlatformSocket::recvFrom(char* buffer, int len, std::string& address, u
     int recv_len = recvfrom(m_socket, buffer, len, 0, (struct sockaddr*)&addr, &addrLen);
 
     if (recv_len < 0) {
-        fprintf(stderr, "recv: %s (%d)\n", strerror(errno), errno);
         return recv_len;
     }
 #ifdef _WIN32

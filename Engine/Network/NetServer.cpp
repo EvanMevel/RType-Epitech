@@ -2,10 +2,12 @@
 // Created by evans on 22/01/2023.
 //
 
+#include <iostream>
 #include "NetServer.h"
 
 template<class Data>
-NetServer<Data>::NetServer(const std::string &address, unsigned short port): socket(std::make_shared<CrossPlatformSocket>()) {
+NetServer<Data>::NetServer(const std::string &address, unsigned short port)
+    : socket(std::make_shared<CrossPlatformSocket>()), _address(address), _port(port) {
     if (!socket->create()) {
         throw std::runtime_error("Cannot create socket");
     }
@@ -15,7 +17,10 @@ NetServer<Data>::NetServer(const std::string &address, unsigned short port): soc
 }
 
 void NetClient::send(const char *message, int length) {
-    socket->sendTo(message, length, address, port);
+    bool sent = socket->sendTo(message, length, address, port);
+    if (!sent) {
+        std::cout << "Cannot send message to " << address << ":" << port << std::endl;
+    }
 }
 
 NetClient::NetClient(const std::shared_ptr<CrossPlatformSocket> &socket, const std::string &address,
@@ -61,4 +66,17 @@ CrossPlatformSocket &NetServer<Data>::getSocket() {
 template<class Data>
 void NetServer<Data>::clientMessage(std::shared_ptr<NetClient> &client, Data &data, char *message, int length) {
     this->consumeMessage(message, length, client, data);
+}
+
+template<class Data>
+void NetServer<Data>::errorReceived(std::string address, int port, int err) {
+    if (address.empty()) {
+        address = this->_address;
+    }
+    std::string key = address + ":" + std::to_string(port);
+    auto it = clients.find(key);
+    if (it != clients.end()) {
+        std::cout << "Client " << key << " disconnected" << std::endl;
+        clients.erase(it);
+    }
 }

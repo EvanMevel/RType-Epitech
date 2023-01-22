@@ -7,13 +7,14 @@
 #include "Engine/Network/NetServer.h"
 #include "Engine/Component/EntityTypeComponent.h"
 #include "Engine/Network/Packets/TestPacket.h"
+#include "Engine/Network/Packets/EntityTestPacket.h"
 
 class TestSystem : public ISystem {
     void update(Engine &engine) override {
         std::cout << "begin test system" << std::endl;
         for (auto &entity: engine.getScene()->getEntities()) {
             std::cout << "entity: " << entity.getId() << std::endl;
-            auto *type = entity.getComponent<EntityTypeComponent>();
+            auto type = entity.getComponent<EntityTypeComponent>();
             if (entity.hasComponent<EntityTypeComponent>()) {
                 std::cout << "type: " << type->getType() << std::endl;
             }
@@ -63,12 +64,18 @@ void testSrv() {
     srv.addConsumer<TT>(15);
 
     srv.startListening();
-    Sleep(1000);
+    while (true) {
+        Sleep(300);
+        int random_number = std::rand() % 480;
+        int random_number2 = std::rand() % 480;
+        EntityTestPacket packet(0, random_number, random_number2);
+        srv.broadcast(packet);
+    }
 }
 
 int main()
 {
-    engine();
+    testSrv();
 
 
     return 10;

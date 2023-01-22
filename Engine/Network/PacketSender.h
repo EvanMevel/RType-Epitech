@@ -10,7 +10,7 @@
 template<class ...ConsumerType>
 class PacketSender {
 protected:
-    const unsigned char _magic = 242;
+    const unsigned char _magic = 232;
     PacketConsumers<ConsumerType...> packetConsumers;
 public:
     bool consumeMessage(char *message, int length, ConsumerType... args) {

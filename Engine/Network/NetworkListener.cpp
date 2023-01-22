@@ -19,8 +19,7 @@ void NetworkListener::listen() {
             std::cout << "Received message from " << address << ":" << port << ": " << buffer << std::endl;
             messageReceived(address, port, buffer, recv_len);
         } else {
-            std::cout << "Failed to receive message" << std::endl;
-            return;
+            errorReceived(getSocket().lastAddress, getSocket().lastPort, recv_len);
         }
     }
 }

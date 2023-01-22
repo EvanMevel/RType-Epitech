@@ -14,6 +14,9 @@ private:
 public:
     static const int ID = 1;
     TestPacket() = default;
+
+    explicit TestPacket(int value);
+
     ~TestPacket() = default;
 
     void setValue(int value);

@@ -2,6 +2,7 @@
 // Created by aaama on 17/01/2023.
 //
 
+#include <iostream>
 #include "Scene.h"
 #include "Engine.h"
 #include "EntityTypeComponent.h"
@@ -30,4 +31,15 @@ Entity &Scene::createPlayer() {
 
 Scene::Scene(EntityManager &entityManager) : entityManager(entityManager) {
 
+}
+
+Entity &Scene::getEntityById(int id) {
+    for (auto &ent: entities) {
+        if (ent.getId() == id) {
+            return ent;
+        }
+    }
+    Entity ent(id);
+    entities.push_back(ent);
+    return entities.back();
 }
