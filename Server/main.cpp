@@ -23,11 +23,11 @@ class TestSystem : public ISystem {
 
 void engine() {
     Engine e;
-    Scene *sc = e.createScene();
+    auto sc = e.createScene<Scene>();
     e.setScene(sc);
     Entity &ent = sc->createPlayer();
     Entity &ent2 = sc->createEntity();
-    sc->addSystem(new TestSystem());
+    sc->addSystem<TestSystem>();
     sc->update(e);
 }
 
@@ -68,7 +68,7 @@ void testSrv() {
 
 int main()
 {
-    testSrv();
+    engine();
 
 
     return 10;

@@ -5,15 +5,6 @@
 #include "IGraphicLib.h"
 #include "Engine.h"
 
-void IGraphicLib::addSystem(ISystem *sys) {
-    this->systems.push_back(sys);
-}
-
-void IGraphicLib::update(Engine &engine) {
-    for (auto &sys: systems) {
-        sys->update(engine);
-    }
-}
 
 template<class Event>
 void IGraphicLib::registerEventConsumer(IConsumer<Event> consumer) {

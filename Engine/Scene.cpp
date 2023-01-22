@@ -6,24 +6,11 @@
 #include "Engine.h"
 #include "EntityTypeComponent.h"
 
-void Scene::update(Engine &engine) {
-    for (auto &sys: systems) {
-        sys->update(engine);
-    }
+Scene::~Scene() {
 }
 
 void Scene::addEntity(Entity &entity) {
     this->entities.push_back(entity);
-}
-
-Scene::~Scene() {
-    for (const auto &sys: systems) {
-        delete sys;
-    }
-}
-
-void Scene::addSystem(ISystem *sys) {
-    this->systems.push_back(sys);
 }
 
 std::vector<Entity> &Scene::getEntities() {

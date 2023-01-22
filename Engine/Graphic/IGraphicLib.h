@@ -8,28 +8,23 @@
 #include <unordered_map>
 #include <typeindex>
 #include <any>
-#include <vector>
 #include <cstddef>
 #include <string>
 #include "../IConsumer.h"
 #include "IWindow.h"
-#include "../ISystem.h"
+#include "../SystemHolder.h"
 
 class Engine;
 
-class IGraphicLib {
+class IGraphicLib : public SystemHolder {
 private:
     std::unordered_map<std::type_index, std::any> eventConsumers;
-    std::vector<ISystem*> systems;
-
 public:
     virtual ~IGraphicLib();
 
     template<class Event>
     void registerEventConsumer(IConsumer<Event> consumer);
     void processEvents(Engine);
-    void addSystem(ISystem*);
-    void update(Engine&);
     virtual std::vector<std::any> retrieveEvents() = 0;
     virtual IWindow& createWindow(int width, int height, std::string title) = 0;
     virtual IWindow& getWindow() = 0;

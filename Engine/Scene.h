@@ -5,25 +5,27 @@
 #ifndef B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_SCENE_H
 #define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_SCENE_H
 
-#include <vector>
+#include "SystemHolder.h"
 #include "Entity.h"
-#include "ISystem.h"
 #include "EntityManager.h"
 
 class Engine;
 
-class Scene {
-private:
+class Scene : public SystemHolder {
+protected:
     std::vector<Entity> entities;
-    std::vector<ISystem*> systems;
     EntityManager &entityManager;
 public:
-    explicit Scene(EntityManager &entityManager);
+    Scene(EntityManager &entityManager);
+    Scene(const Scene &other) : SystemHolder(other), entityManager(other.entityManager) {
+        for (const auto &ent: other.entities) {
+            entities.push_back(ent);
+        }
+    }
 
-    virtual ~Scene();
-    void update(Engine&);
+    ~Scene();
     void addEntity(Entity&);
-    void addSystem(ISystem*);
+
     std::vector<Entity> &getEntities();
     Entity& createEntity();
     Entity& createPlayer();

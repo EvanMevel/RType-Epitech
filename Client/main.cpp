@@ -14,21 +14,20 @@
 
 void graphic() {
     Engine e;
-    Scene *sc = e.createScene();
+    auto sc = e.createScene<Scene>();
     e.setScene(sc);
 
-    auto *lib = new RaylibGraphicLib();
+    std::shared_ptr<IGraphicLib> lib = std::make_shared<RaylibGraphicLib>();
     e.setGraphicLib(lib);
 
-    auto *drawFixTextureSystem = new DrawFixTextureSystem();
-    lib->addSystem(drawFixTextureSystem);
+    lib->addSystem<DrawFixTextureSystem>();
 
     IWindow &window = lib->createWindow(500, 500, "teststs");
 
     Entity &ent = sc->createEntity();
     auto texture = lib->createTexture("../Client/assets/texture.png");
     ent.addComponent<FixTextureComponent>()->setTexture(texture);
-    auto *pos = ent.addComponent<PositionComponent>();
+    auto pos = ent.addComponent<PositionComponent>();
     pos->setX(100);
     pos->setY(100);
 
@@ -48,8 +47,7 @@ public:
     }
 };
 
-int main()
-{
+void testSrv() {
     NetworkRemoteServer server("127.0.0.1", 4242);
 
     server.addConsumer<tts>();
@@ -63,6 +61,10 @@ int main()
     while (true) {
         Sleep(1000);
     }
+}
 
+int main()
+{
+    graphic();
     return 0;
 }

@@ -5,7 +5,7 @@
 #ifndef B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ENTITY_H
 #define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ENTITY_H
 
-
+#include <memory>
 #include <unordered_map>
 #include <typeindex>
 #include <any>
@@ -15,7 +15,7 @@
 // We have to implement addComponent, getComponent and hasComponent in the header file because they are templates functions
 class Entity {
 private:
-    std::unordered_map<std::type_index, IComponent*> components;
+    std::unordered_map<std::type_index, std::shared_ptr<IComponent>> components;
     size_t id;
 public:
     Entity();
@@ -23,18 +23,22 @@ public:
 
     size_t getId() const;
 
-    template<class Type>
-    Type *addComponent() {
-        Type *component = new Type();
+    template<class Type, class ...Args>
+    std::shared_ptr<Type> addComponent(Args ...args) {
+        auto alreadyExist = components.find(typeid(Type));
+        if (alreadyExist != components.end()) {
+            return std::dynamic_pointer_cast<Type> (alreadyExist->second);
+        }
+        std::shared_ptr<IComponent> component = std::make_shared<Type>(args...);
         components[std::type_index(typeid(Type))] = component;
-        return component;
+        return std::dynamic_pointer_cast<Type> (component);
     }
 
-    template <typename T>
-    T* getComponent() {
-        auto it = components.find(std::type_index(typeid(T)));
+    template <typename Type>
+    std::shared_ptr<Type> getComponent() {
+        auto it = components.find(std::type_index(typeid(Type)));
         if (it != components.end()) {
-            return dynamic_cast<T*>(it->second);
+            return std::dynamic_pointer_cast<Type> (it->second);
         }
         return nullptr;
     }
