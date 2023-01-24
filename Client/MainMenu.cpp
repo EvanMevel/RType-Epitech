@@ -11,7 +11,7 @@ std::shared_ptr<Scene> mainMenu(Engine &e)
     std::cout << "EntityId: " << background.getId() << std::endl;
 
     auto graph = e.getGraphicLib();
-    auto texture = graph->createTexture("../Client/assets/texture.png");
+    auto texture = graph->createTexture("../Client/assets/img.png");
     background.addComponent<FixTextureComponent>()->setTexture(texture);
     auto pos = background.addComponent<PositionComponent>();
     pos->setX(0);

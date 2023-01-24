@@ -20,38 +20,6 @@ std::mutex graphicMutex;
 std::condition_variable cv;
 bool graphicReady = false;
 
-void initGraphic(Engine &e) {
-    std::unique_lock<std::mutex> lck(graphicMutex);
-
-    std::shared_ptr<IGraphicLib> lib = std::make_shared<RaylibGraphicLib>();
-    e.setGraphicLib(lib);
-
-    lib->addSystem<DrawFixTextureSystem>();
-
-    IWindow &window = lib->createWindow(500, 500, "teststs");
-    window.setTargetFPS(60);
-    std::cout << "Graph ready" << std::endl;
-
-    graphicReady = true;
-    cv.notify_all();
-}
-
-void graphicLoop(Engine &e) {
-
-    initGraphic(e);
-
-    std::shared_ptr<IGraphicLib> lib = e.getGraphicLib();
-    IWindow &window = lib->getWindow();
-
-    while (!window.shouldClose()) {
-        window.beginDrawing();
-        window.setBackground(ColorCodes::COLOR_BLACK);
-        e.updateGraphicLib();
-        e.updateScene();
-        window.endDrawing();
-    }
-}
-
 class tts : public PacketConsumer<TestPacket, Engine&> {
 public:
     void consume(TestPacket &packet, Engine &e) override {
@@ -74,25 +42,12 @@ public:
     }
 };
 
-void testSrv() {
-    Engine e;
-
-    //initGraphic(e);
-
-    std::cout << "done" << std::endl;
-
-
-    std::thread graph(graphicLoop, std::ref(e));
-
+void loadNetwork(Engine &e) {
     std::unique_lock<std::mutex> lck(graphicMutex);
 
     while (!graphicReady) {
         cv.wait(lck);
     }
-    std::cout << "apres" << std::endl;
-    auto sc = mainMenu(e);
-    e.setScene(sc);
-
     NetworkRemoteServer<Engine&> server(e, "127.0.0.1", 4242);
 
     server.addConsumer<tts>();
@@ -109,8 +64,56 @@ void testSrv() {
     }
 }
 
+void graphicLoop(Engine &e) {
+    std::shared_ptr<IGraphicLib> lib = e.getGraphicLib();
+    IWindow &window = lib->getWindow();
+
+    while (!window.shouldClose()) {
+        window.beginDrawing();
+        window.setBackground(ColorCodes::COLOR_BLACK);
+        e.updateGraphicLib();
+        e.updateScene();
+        window.endDrawing();
+    }
+}
+
+void loadScenes(Engine &e) {
+    auto sc = mainMenu(e);
+    e.setScene(sc);
+}
+
+void loadGraphsAndScenes(Engine &e) {
+    std::unique_lock<std::mutex> lck(graphicMutex);
+
+    std::shared_ptr<IGraphicLib> lib = std::make_shared<RaylibGraphicLib>();
+    e.setGraphicLib(lib);
+
+    lib->addSystem<DrawFixTextureSystem>();
+
+    IWindow &window = lib->createWindow(500, 500, "teststs");
+    window.setTargetFPS(60);
+    std::cout << "Graph ready" << std::endl;
+
+    loadScenes(e);
+    std::cout << "Scenes ready" << std::endl;
+
+    graphicReady = true;
+    cv.notify_all();
+
+    graphicLoop(e);
+}
+
+void loadAll() {
+    Engine e;
+
+    std::thread net(loadGraphsAndScenes, std::ref(e));
+
+    loadNetwork(e);
+
+}
+
 int main()
 {
-    testSrv();
+    loadAll();
     return 0;
 }
