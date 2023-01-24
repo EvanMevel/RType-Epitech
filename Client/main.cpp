@@ -12,6 +12,7 @@
 #include "Engine/Network/NetworkRemoteServer.h"
 #include "Engine/Network/Packets/TestPacket.h"
 #include "Engine/Network/Packets/EntityTestPacket.h"
+#include "MainMenu.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -29,16 +30,6 @@ void initGraphic(Engine &e) {
 
     IWindow &window = lib->createWindow(500, 500, "teststs");
     window.setTargetFPS(60);
-
-    Entity &ent = e.getScene()->createEntity();
-    std::cout << "EntityId: " << ent.getId() << std::endl;
-
-    auto texture = lib->createTexture("../Client/assets/texture.png");
-    ent.addComponent<FixTextureComponent>()->setTexture(texture);
-    auto pos = ent.addComponent<PositionComponent>();
-    pos->setX(100);
-    pos->setY(100);
-
     std::cout << "Graph ready" << std::endl;
 
     graphicReady = true;
@@ -85,8 +76,6 @@ public:
 
 void testSrv() {
     Engine e;
-    auto sc = e.createScene<Scene>();
-    e.setScene(sc);
 
     //initGraphic(e);
 
@@ -101,7 +90,8 @@ void testSrv() {
         cv.wait(lck);
     }
     std::cout << "apres" << std::endl;
-
+    auto sc = mainMenu(e);
+    e.setScene(sc);
 
     NetworkRemoteServer<Engine&> server(e, "127.0.0.1", 4242);
 
