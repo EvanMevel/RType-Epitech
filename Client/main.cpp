@@ -14,6 +14,8 @@
 #include "Engine/Network/Packets/EntityTestPacket.h"
 #include "PingPacketConsumer.h"
 #include "StayAliveSystem.h"
+#include "Engine/Network/Packets/HandshakePacket.h"
+#include "HandshakeResponseConsumer.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -102,10 +104,11 @@ void testSrv() {
 
     server.addConsumer<EntityTestConsumer>();
     server.addConsumer<PingPacketConsumer>(server);
+    server.addConsumer<HandshakeResponseConsumer>(server);
 
     server.addSystem<StayAliveSystem>(server);
 
-    server.sendPacket(PingPacket::current());
+    server.sendPacket(HandshakePacket());
 
     server.startListening();
 

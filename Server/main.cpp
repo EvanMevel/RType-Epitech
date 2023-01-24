@@ -12,6 +12,7 @@
 #include "RTypeServer.h"
 #include "PingPacketConsumer.h"
 #include "TimeoutSystem.h"
+#include "HandshakeConsumer.h"
 
 
 class TpEntitySystem : public ISystem {
@@ -47,6 +48,7 @@ void testSrv() {
     std::cout << "running" << std::endl;
 
     srv.addConsumer<PingPacketConsumer>();
+    srv.addConsumer<HandshakeConsumer>(srv);
     srv.addSystem<TimeoutSystem>(srv);
 
     Engine e;

@@ -16,7 +16,7 @@ void NetworkListener::listen() {
         unsigned short port;
         int recv_len = getSocket().recvFrom(buffer, 4096, address, port);
         if (recv_len > 0) {
-            std::cout << "Received message from " << address << ":" << port << ": " << buffer << std::endl;
+            //std::cout << "Received message from " << address << ":" << port << ": " << buffer << std::endl;
             messageReceived(address, port, buffer, recv_len);
         } else {
             errorReceived(getSocket().lastAddress, getSocket().lastPort, recv_len);
