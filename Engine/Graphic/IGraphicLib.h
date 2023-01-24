@@ -37,6 +37,10 @@ public:
     virtual ITexture createTexture(const std::string &texturePath) = 0;
     virtual void drawTexture(ITexture, int x, int y, ColorCodes) = 0;
     virtual void drawText(std::string, int x, int y, int size, ColorCodes) = 0;
+
+    void test(void (*func)()) {
+        func();
+    }
 };
 
 #endif //R_TYPE_SERVER_IGRAPHICLIB_H

@@ -14,7 +14,7 @@ include_directories(.)
 
 add_subdirectory(Engine)
 
-add_executable(r-type-client Client/main.cpp Client/RaylibGraphicLib.cpp Client/RaylibGraphicLib.h Client/RaylibWindow.cpp Client/RaylibWindow.h Client/RaylibTexture.cpp Client/RaylibTexture.h Client/FixTextureComponent.cpp Client/FixTextureComponent.h Client/DrawFixTextureSystem.cpp Client/DrawFixTextureSystem.h Client/PingPacketConsumer.cpp Client/PingPacketConsumer.h Client/StayAliveSystem.cpp Client/StayAliveSystem.h Client/HandshakeResponseConsumer.cpp Client/HandshakeResponseConsumer.h)
+add_executable(r-type-client Client/main.cpp Client/RaylibGraphicLib.cpp Client/RaylibGraphicLib.h Client/RaylibWindow.cpp Client/RaylibWindow.h Client/RaylibTexture.cpp Client/RaylibTexture.h Client/FixTextureComponent.cpp Client/FixTextureComponent.h Client/DrawFixTextureSystem.cpp Client/DrawFixTextureSystem.h Client/CreateButton.cpp Client/CreateButton.h Client/MainMenu.h Client/MainMenu.cpp Client/PingPacketConsumer.cpp Client/PingPacketConsumer.h Client/StayAliveSystem.cpp Client/StayAliveSystem.h Client/HandshakeResponseConsumer.cpp Client/HandshakeResponseConsumer.h)
 
 add_executable(r-type-server Server/main.cpp Server/ClientData.cpp Server/ClientData.h Server/RTypeServer.cpp Server/RTypeServer.h Server/PingPacketConsumer.cpp Server/PingPacketConsumer.h Server/TimeoutSystem.cpp Server/TimeoutSystem.h Server/HandshakeConsumer.cpp Server/HandshakeConsumer.h)
 
