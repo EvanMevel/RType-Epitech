@@ -9,39 +9,17 @@
 #include "Engine/Network/Packets/TestPacket.h"
 #include "Engine/Network/Packets/EntityTestPacket.h"
 #include "Engine/Component/PositionComponent.h"
+#include "RTypeServer.h"
+#include "PingPacketConsumer.h"
+#include "TimeoutSystem.h"
 
-
-class TT : public PacketClientConsumer<TestPacket, int> {
-private:
-    int e;
-public:
-    explicit TT(int e) : e(e) {}
-
-    void consume(TestPacket &packet, std::shared_ptr<NetClient> client, int i) override {
-        std::cout << "packet received: " << packet.getValue() << " data is " << i << " and e is " << e << std::endl;
-        client->sendPacket(packet);
-    }
-};
-
-class MyServer : public NetServer<int> {
-public:
-    MyServer(const std::string &address, unsigned short port) : NetServer(address, port) {}
-
-    int createData(std::shared_ptr<NetClient> &client) override {
-        return client->getPort();
-    }
-
-    void clientConnected(std::shared_ptr<NetClient> &client, int &data) override {
-        std::cout << "Client connected " << client->getAddress() << ":" << client->getPort() << std::endl;
-    }
-};
 
 class TpEntitySystem : public ISystem {
 public:
-    MyServer &srv;
+    RTypeServer &srv;
     int count = 0;
 
-    explicit TpEntitySystem(MyServer &srv) : srv(srv) {}
+    explicit TpEntitySystem(RTypeServer &srv) : srv(srv) {}
 
     void update(Engine &engine) override {
         count = (count + 1) % 4;
@@ -65,8 +43,11 @@ public:
 };
 
 void testSrv() {
-    MyServer srv("127.0.0.1", 4242);
+    RTypeServer srv("127.0.0.1", 4242);
     std::cout << "running" << std::endl;
+
+    srv.addConsumer<PingPacketConsumer>();
+    srv.addSystem<TimeoutSystem>(srv);
 
     Engine e;
     auto sc = e.createScene<Scene>();
@@ -76,13 +57,12 @@ void testSrv() {
     Entity &ent = sc->createEntity();
     ent.addComponent<PositionComponent>();
 
-    srv.addConsumer<TT>(15);
-
     srv.startListening();
     while (true) {
         auto start = std::chrono::system_clock::now();
 
         e.updateScene();
+        srv.update(e);
 
         auto end = std::chrono::system_clock::now();
         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);

@@ -12,6 +12,8 @@
 #include "Engine/Network/NetworkRemoteServer.h"
 #include "Engine/Network/Packets/TestPacket.h"
 #include "Engine/Network/Packets/EntityTestPacket.h"
+#include "PingPacketConsumer.h"
+#include "StayAliveSystem.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -61,17 +63,10 @@ void graphicLoop(Engine &e) {
     }
 }
 
-class tts : public PacketConsumer<TestPacket, Engine&> {
-public:
-    void consume(TestPacket &packet, Engine &e) override {
-        std::cout << "packet received: " << packet.getValue() << std::endl;
-    }
-};
-
 class EntityTestConsumer : public PacketConsumer<EntityTestPacket, Engine&> {
 public:
     void consume(EntityTestPacket &packet, Engine &e) override {
-        std::cout << "EntityTest id: " << packet.entityId << "x: " << packet.x << "y: " << packet.y << std::endl;
+        //std::cout << "EntityTest id: " << packet.entityId << "x: " << packet.x << "y: " << packet.y << std::endl;
 
         auto entity = e.getScene()->getEntityById(packet.entityId);
         auto pos = entity.getComponent<PositionComponent>();
@@ -105,17 +100,18 @@ void testSrv() {
 
     NetworkRemoteServer<Engine&> server(e, "127.0.0.1", 4242);
 
-    server.addConsumer<tts>();
     server.addConsumer<EntityTestConsumer>();
+    server.addConsumer<PingPacketConsumer>(server);
 
-    TestPacket packet;
-    packet.setValue(42);
-    server.sendPacket(packet);
+    server.addSystem<StayAliveSystem>(server);
+
+    server.sendPacket(PingPacket::current());
 
     server.startListening();
 
     while (true) {
-        Sleep(1000);
+        server.update(e);
+        Sleep(100);
     }
 }
 
