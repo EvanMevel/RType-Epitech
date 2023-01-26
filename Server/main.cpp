@@ -14,6 +14,7 @@
 #include "TimeoutSystem.h"
 #include "HandshakeConsumer.h"
 
+std::atomic<bool> running = true;
 
 class TpEntitySystem : public ISystem {
 public:
@@ -43,7 +44,7 @@ public:
     }
 };
 
-void testSrv() {
+void testSrv(Engine &e) {
     RTypeServer srv("127.0.0.1", 4242);
     std::cout << "running" << std::endl;
 
@@ -51,16 +52,13 @@ void testSrv() {
     srv.addConsumer<HandshakeConsumer>(srv);
     srv.addSystem<TimeoutSystem>(srv);
 
-    Engine e;
-    auto sc = e.createScene<Scene>();
-    e.setScene(sc);
-    sc->addSystem<TpEntitySystem>(srv);
+    srv.startListening();
+    e.getScene()->addSystem<TpEntitySystem>(srv);
 
-    Entity &ent = sc->createEntity();
+    Entity &ent = e.getScene()->createEntity();
     ent.addComponent<PositionComponent>();
 
-    srv.startListening();
-    while (true) {
+    while (running.load()) {
         auto start = std::chrono::system_clock::now();
 
         e.updateScene();
@@ -73,10 +71,22 @@ void testSrv() {
     }
 }
 
+void stopThread() {
+    std::cin.get();
+    running = false;
+}
+
 int main()
 {
-    testSrv();
+    std::thread t = std::thread(stopThread);
 
+    Engine e;
+    auto sc = e.createScene<Scene>();
+    e.setScene(sc);
+
+    testSrv(e);
+
+    t.join();
 
     return 10;
 }

@@ -29,6 +29,10 @@ public:
 
     NetworkRemoteServer(const NetworkRemoteServer &other) : data(other.data), socket(other.socket), _address(other._address), _port(other._port) {}
 
+    ~NetworkRemoteServer() override {
+
+    }
+
     void send(const char *message, int length) override;
 
     bool messageReceived(std::string address, int port, char *message, int length) override;

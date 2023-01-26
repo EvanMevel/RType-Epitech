@@ -24,6 +24,8 @@ std::mutex graphicMutex;
 std::condition_variable cv;
 bool graphicReady = false;
 
+bool windowClosed = false;
+
 class tts : public PacketConsumer<TestPacket, Engine&> {
 public:
     void consume(TestPacket &packet, Engine &e) override {
@@ -49,9 +51,11 @@ public:
 void loadNetwork(Engine &e) {
     std::unique_lock<std::mutex> lck(graphicMutex);
 
+    std::cout << "[NETWORK] waiting for graphic" << std::endl;
     while (!graphicReady) {
         cv.wait(lck);
     }
+    std::cout << "[NETWORK] graphic ready" << std::endl;
     NetworkRemoteServer<Engine&> server(e, "127.0.0.1", 4242);
 
     server.addConsumer<EntityTestConsumer>();
@@ -64,10 +68,12 @@ void loadNetwork(Engine &e) {
 
     server.startListening();
 
-    while (true) {
+    while (!windowClosed) {
         server.update(e);
         Sleep(100);
     }
+
+    std::cout << "Graphic closed, closing network" << std::endl;
 }
 
 void graphicLoop(Engine &e) {
@@ -81,6 +87,7 @@ void graphicLoop(Engine &e) {
         e.updateScene();
         window.endDrawing();
     }
+    windowClosed = true;
 }
 
 void loadScenes(Engine &e) {
@@ -91,6 +98,8 @@ void loadScenes(Engine &e) {
 void loadGraphsAndScenes(Engine &e) {
     std::unique_lock<std::mutex> lck(graphicMutex);
 
+    std::cout << "[Graphic] Starting..." << std::endl;
+
     std::shared_ptr<IGraphicLib> lib = std::make_shared<RaylibGraphicLib>();
     e.setGraphicLib(lib);
 
@@ -98,28 +107,37 @@ void loadGraphsAndScenes(Engine &e) {
 
     IWindow &window = lib->createWindow(500, 500, "teststs");
     window.setTargetFPS(60);
-    std::cout << "Graph ready" << std::endl;
+    std::cout << "[Graphic] Window created" << std::endl;
 
     loadScenes(e);
-    std::cout << "Scenes ready" << std::endl;
+    std::cout << "[Graphic] Scenes ready" << std::endl;
 
     graphicReady = true;
     cv.notify_all();
 
+    std::cout << "[Graphic] Finished loading" << std::endl;
+
+    lck.unlock();
+}
+
+void startGraph(Engine &e) {
+    loadGraphsAndScenes(e);
     graphicLoop(e);
 }
 
 void loadAll() {
     Engine e;
 
-    std::thread net(loadGraphsAndScenes, std::ref(e));
+    std::thread net(startGraph, std::ref(e));
 
     loadNetwork(e);
 
+    net.join();
 }
 
 int main()
 {
     loadAll();
+
     return 0;
 }

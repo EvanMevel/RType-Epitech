@@ -60,6 +60,10 @@ public:
         }
     }
 
+    ~NetServer() override {
+
+    }
+
     bool messageReceived(std::string address, int port, char *message, int length) override {
         std::string key = address + ":" + std::to_string(port);
         auto knownClient = clients.find(key);

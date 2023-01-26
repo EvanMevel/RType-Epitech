@@ -16,6 +16,10 @@ class RTypeServer : public NetServer<ClientData>, public SystemHolder {
 public:
     RTypeServer(const std::string &address, unsigned short port) : NetServer(address, port) {}
 
+    ~RTypeServer() override {
+
+    }
+
     ClientData createData(std::shared_ptr<NetClient> &client) override {
         return ClientData();
     }
