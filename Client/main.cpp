@@ -14,7 +14,7 @@
 #include "Engine/Network/NetworkRemoteServer.h"
 #include "Engine/Network/Packets/TestPacket.h"
 #include "Engine/Network/Packets/EntityTestPacket.h"
-#include "Engine/Network/Packets/EntityVelocityAccelerationPositionPacket.h"
+#include "Engine/Network/Packets/EntityVelocityPacket.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -87,25 +87,21 @@ public:
     }
 };
 
-class EntityVelocityAccelerationPositionPacketConsumer : public PacketConsumer<EntityVelocityAccelerationPositionPacket, Engine&> {
+class EntityVelocityPacketConsumer : public PacketConsumer<EntityVelocityPacket, Engine&> {
 public:
-    void consume(EntityVelocityAccelerationPositionPacket &packet, Engine &e) override {
-        std::cout << "EntityTest id: " << packet.entityId << " pos x: " << packet.pos.x << " pos y: " << packet.pos.y << " velocity x: " << packet.velocity.x << " velocity y: " << packet.velocity.y << " acceleration x: " << packet.acceleration.x << " acceleration y: " << packet.acceleration.y << std::endl;
+    void consume(EntityVelocityPacket &packet, Engine &e) override {
 
         auto entity = e.getScene()->getEntityById(packet.entityId);
         auto pos = entity.GetOrCreate<PositionComponent>();
         auto vel = entity.GetOrCreate<VelocityComponent>();
         auto accel = entity.GetOrCreate<AccelerationComponent>();
 
-        std::cout << "SET POS" << std::endl;
         pos->setX(packet.pos.x);
         pos->setY(packet.pos.y);
 
-        std::cout << "SET VELOCITY" << std::endl;
         vel->setX(packet.velocity.x);
         vel->setY(packet.velocity.y);
 
-        std::cout << "SET ACCELERATION" << std::endl;
         accel->setX(packet.acceleration.x);
         accel->setY(packet.acceleration.y);
     }
@@ -135,7 +131,7 @@ void testSrv() {
 
     server.addConsumer<tts>();
     server.addConsumer<EntityTestConsumer>();
-    server.addConsumer<EntityVelocityAccelerationPositionPacketConsumer>();
+    server.addConsumer<EntityVelocityPacketConsumer>();
 
     TestPacket packet;
     packet.setValue(42);

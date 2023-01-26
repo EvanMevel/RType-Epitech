@@ -8,7 +8,7 @@
 #include "Engine/Component/EntityTypeComponent.h"
 #include "Engine/Network/Packets/TestPacket.h"
 #include "Engine/Network/Packets/EntityTestPacket.h"
-#include "Engine/Network/Packets/EntityVelocityAccelerationPositionPacket.h"
+#include "Engine/Network/Packets/EntityVelocityPacket.h"
 #include "Engine/Component/PositionComponent.h"
 #include "Engine/Component/VelocityComponent.h"
 #include "Engine/Component/AccelerationComponent.h"
@@ -128,7 +128,7 @@ public:
                 else
                     vel->setY(0);
 
-                EntityVelocityAccelerationPositionPacket packet(entity.getId(), Vector2i(posX, posY), Vector2i(velX, velY), Vector2i(accelX, accelY));
+                EntityVelocityPacket packet(entity.getId(), Vector2i(posX, posY), Vector2i(velX, velY), Vector2i(accelX, accelY));
                 srv.broadcast(packet);
             }
         }
