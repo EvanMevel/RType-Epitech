@@ -85,25 +85,20 @@ public:
             auto accel = entity.getComponent<AccelerationComponent>();
             if (pos != nullptr && vel != nullptr && accel != nullptr) {
 
-                std::cout << "VELOCITY X : " << vel->getX() << " ACCELERATION X : " << accel->getX() << std::endl;
                 int velY = vel->getY() + accel->getY();
                 int velX = vel->getX() + accel->getX();
 
-                std::cout << "velY: " << velY << " velX: " << velX << "    ";
                 vel->setX(velX);
                 vel->setY(velY);
 
                 int posX = pos->getX() + vel->getX();
                 int posY = pos->getY() + vel->getY();
 
-                std::cout << "posY: " << posY << " posX: " << posX << "    ";
                 pos->setX(posX);
                 pos->setY(posY);
 
                 int accelX = accel->getX();
                 int accelY = accel->getY();
-
-                std::cout << "accelY: " << accelY << " accelX: " << accelX << std::endl;
 
                 if (accelX < 0)
                     accel->setX(accelX + 1);
@@ -158,7 +153,6 @@ void testSrv() {
     auto acc = ent.getComponent<AccelerationComponent>();
     acc->setX(5);
 
-    std::cout << "ACCELERATION X: " << acc->getX() << std::endl;
     srv.addConsumer<TT>(15);
 
     srv.startListening();
