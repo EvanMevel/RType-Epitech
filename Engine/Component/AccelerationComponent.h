@@ -10,8 +10,17 @@
 #include "IComponent.h"
 
 class AccelerationComponent : public IComponent{
-    size_t x;
-    size_t y;
+private:
+    int x;
+    int y;
+public:
+    int getX() const;
+
+    void setX(int x);
+
+    int getY() const;
+
+    void setY(int y);
 };
 
 

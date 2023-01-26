@@ -8,10 +8,13 @@
 #include "FixTextureComponent.h"
 #include "DrawFixTextureSystem.h"
 #include "Engine/Component/PositionComponent.h"
+#include "Engine/Component/VelocityComponent.h"
+#include "Engine/Component/AccelerationComponent.h"
 #include "Engine/Network/CrossPlatformSocket.h"
 #include "Engine/Network/NetworkRemoteServer.h"
 #include "Engine/Network/Packets/TestPacket.h"
 #include "Engine/Network/Packets/EntityTestPacket.h"
+#include "Engine/Network/Packets/EntityVelocityAccelerationPositionPacket.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -36,6 +39,7 @@ void initGraphic(Engine &e) {
     auto texture = lib->createTexture("../Client/assets/texture.png");
     ent.addComponent<FixTextureComponent>()->setTexture(texture);
     auto pos = ent.addComponent<PositionComponent>();
+
     pos->setX(100);
     pos->setY(100);
 
@@ -83,6 +87,30 @@ public:
     }
 };
 
+class EntityVelocityAccelerationPositionPacketConsumer : public PacketConsumer<EntityVelocityAccelerationPositionPacket, Engine&> {
+public:
+    void consume(EntityVelocityAccelerationPositionPacket &packet, Engine &e) override {
+        std::cout << "EntityTest id: " << packet.entityId << " pos x: " << packet.pos.x << " pos y: " << packet.pos.y << " velocity x: " << packet.velocity.x << " velocity y: " << packet.velocity.y << " acceleration x: " << packet.acceleration.x << " acceleration y: " << packet.acceleration.y << std::endl;
+
+        auto entity = e.getScene()->getEntityById(packet.entityId);
+        auto pos = entity.GetOrCreate<PositionComponent>();
+        auto vel = entity.GetOrCreate<VelocityComponent>();
+        auto accel = entity.GetOrCreate<AccelerationComponent>();
+
+        std::cout << "SET POS" << std::endl;
+        pos->setX(packet.pos.x);
+        pos->setY(packet.pos.y);
+
+        std::cout << "SET VELOCITY" << std::endl;
+        vel->setX(packet.velocity.x);
+        vel->setY(packet.velocity.y);
+
+        std::cout << "SET ACCELERATION" << std::endl;
+        accel->setX(packet.acceleration.x);
+        accel->setY(packet.acceleration.y);
+    }
+};
+
 void testSrv() {
     Engine e;
     auto sc = e.createScene<Scene>();
@@ -107,6 +135,7 @@ void testSrv() {
 
     server.addConsumer<tts>();
     server.addConsumer<EntityTestConsumer>();
+    server.addConsumer<EntityVelocityAccelerationPositionPacketConsumer>();
 
     TestPacket packet;
     packet.setValue(42);

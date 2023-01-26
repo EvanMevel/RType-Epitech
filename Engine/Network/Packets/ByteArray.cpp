@@ -19,3 +19,15 @@ ByteArray& operator>>(ByteArray &buffer, int &value) {
     buffer.read(value);
     return buffer;
 }
+
+ByteArray& operator<<(ByteArray &buffer, const Vector2i &value) {
+    buffer.write(value.x);
+    buffer.write(value.y);
+    return buffer;
+}
+
+ByteArray& operator>>(ByteArray &buffer, Vector2i &value) {
+    buffer.read(value.x);
+    buffer.read(value.y);
+    return buffer;
+}
