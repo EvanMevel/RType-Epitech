@@ -35,6 +35,8 @@ public:
 
     unsigned short getPort() const;
 
+    std::string addressPort() const;
+
     friend std::ostream &operator<<(std::ostream &os, const NetClient &client);
 };
 
@@ -103,7 +105,7 @@ public:
             this->consumeMessage(message, length, client, data);
         } catch (PacketConsumerException &e) {
             clients.erase(client->getAddress() + ":" + std::to_string(client->getPort()));
-            std::cout << "Client " << client << " kicked. Cause: " << e.what() << std::endl;
+            std::cout << "Client " << client->addressPort() << " kicked. Cause: " << e.what() << std::endl;
         }
     }
 

@@ -34,7 +34,11 @@ public:
 
     std::string lastAddress;
     unsigned short lastPort;
+
+    bool isClosed() const;
+
 private:
+    bool closed = false;
     int m_socket;
 #ifdef _WIN32
     WSADATA m_wsaData;

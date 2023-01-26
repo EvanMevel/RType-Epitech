@@ -13,7 +13,7 @@ void TimeoutSystem::update(Engine &engine) {
         auto &client = it->second.first;
         auto &data = it->second.second;
         if (data->getLastPing() + RTYPE_TIMEOUT < currentTime) {
-            std::cout << "Client " << client->getAddress() << ":" << client->getPort() << " timed out" << std::endl;
+            std::cout << "Client " << client->addressPort() << " timed out" << std::endl;
             it = server.getClients().erase(it);
         } else {
             it++;

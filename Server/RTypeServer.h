@@ -29,11 +29,11 @@ public:
 
     bool clientConnected(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> data) override {
         if (clients.size() >= MAX_CLIENTS) {
-            std::cout << client << " kicked. Cause: too many clients already connected" << std::endl;
+            std::cout << client->addressPort() << " kicked. Cause: too many clients already connected" << std::endl;
             client->sendPacket(HandshakeResponsePacket(HandshakeResponsePacketType::FULL));
             return false;
         }
-        std::cout << "Client " << client << " connected" << std::endl;
+        std::cout << "Client " << client->addressPort() << " connected" << std::endl;
         return true;
     }
 

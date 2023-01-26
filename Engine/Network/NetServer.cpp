@@ -33,6 +33,10 @@ NetClient::NetClient(const NetClient &other) : socket(other.socket), address(oth
 }
 
 std::ostream &operator<<(std::ostream &os, const NetClient &client) {
-    os << client.address << ":" << client.port;
+    os << client.addressPort();
     return os;
+}
+
+std::string NetClient::addressPort() const {
+    return address + ":" + std::to_string(port);
 }
