@@ -52,7 +52,10 @@ void testSrv(Engine &e) {
     srv.addConsumer<HandshakeConsumer>(srv);
     srv.addSystem<TimeoutSystem>(srv);
 
+    std::cout << "Server listening" << std::endl;
+
     srv.startListening();
+
     e.getScene()->addSystem<TpEntitySystem>(srv);
 
     Entity &ent = e.getScene()->createEntity();

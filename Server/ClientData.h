@@ -13,9 +13,13 @@ public:
     ClientData();
     virtual ~ClientData() = default;
 
+    bool handshake = false;
+
     long long int getLastPing() const;
 
     void setLastPing(long long int lastPing);
+
+    void hasShakeHands();
 };
 
 

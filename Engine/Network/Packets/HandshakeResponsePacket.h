@@ -9,7 +9,8 @@
 
 enum HandshakeResponsePacketType {
     OK = 0,
-    KO = 1
+    KO = 1,
+    FULL = 2
 };
 
 class HandshakeResponsePacket : public IPacket{

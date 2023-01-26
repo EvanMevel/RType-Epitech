@@ -5,14 +5,17 @@
 #ifndef R_TYPE_SERVER_RTYPESERVER_H
 #define R_TYPE_SERVER_RTYPESERVER_H
 
+#define MAX_CLIENTS 4
+
 
 #include <iostream>
 #include "Engine/Network/NetServer.h"
 #include "Engine/Network/Packets/PingPacket.h"
 #include "ClientData.h"
 #include "Engine/SystemHolder.h"
+#include "Engine/Network/Packets/HandshakeResponsePacket.h"
 
-class RTypeServer : public NetServer<ClientData>, public SystemHolder {
+class RTypeServer : public NetServer<std::shared_ptr<ClientData>>, public SystemHolder {
 public:
     RTypeServer(const std::string &address, unsigned short port) : NetServer(address, port) {}
 
@@ -20,13 +23,20 @@ public:
 
     }
 
-    ClientData createData(std::shared_ptr<NetClient> &client) override {
-        return ClientData();
+    std::shared_ptr<ClientData> createData(std::shared_ptr<NetClient> &client) override {
+        return std::make_shared<ClientData>();
     }
 
-    void clientConnected(std::shared_ptr<NetClient> &client, ClientData &data) override {
-        std::cout << "Client connected " << client->getAddress() << ":" << client->getPort() << std::endl;
+    bool clientConnected(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> data) override {
+        if (clients.size() >= MAX_CLIENTS) {
+            std::cout << client << " kicked. Cause: too many clients already connected" << std::endl;
+            client->sendPacket(HandshakeResponsePacket(HandshakeResponsePacketType::FULL));
+            return false;
+        }
+        std::cout << "Client " << client << " connected" << std::endl;
+        return true;
     }
+
 };
 
 

@@ -7,11 +7,11 @@
 
 #include "RTypeServer.h"
 
-class PingPacketConsumer : public PacketClientConsumer<PingPacket, ClientData&> {
+class PingPacketConsumer : public PacketClientConsumer<PingPacket, std::shared_ptr<ClientData>> {
 public:
     PingPacketConsumer();
 
-    void consume(PingPacket &packet, std::shared_ptr<NetClient> client, ClientData &data) override;
+    void consume(PingPacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) override;
 };
 
 

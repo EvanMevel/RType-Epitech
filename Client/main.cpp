@@ -64,9 +64,12 @@ void loadNetwork(Engine &e) {
 
     server.addSystem<StayAliveSystem>(server);
 
-    server.sendPacket(HandshakePacket());
+    std::cout << "Sending handshake" << std::endl;
 
     server.startListening();
+
+    server.sendPacket(HandshakePacket());
+
 
     while (!windowClosed) {
         server.update(e);

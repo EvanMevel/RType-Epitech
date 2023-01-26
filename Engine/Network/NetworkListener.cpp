@@ -15,7 +15,7 @@ void NetworkListener::listen() {
         std::string address;
         unsigned short port;
         int recv_len = getSocket().recvFrom(buffer, 4096, address, port);
-        if (running.load()) {
+        if (!running.load()) {
             return;
         }
         if (recv_len > 0) {

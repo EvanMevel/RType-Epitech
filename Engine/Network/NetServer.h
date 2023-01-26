@@ -7,10 +7,12 @@
 
 #include <thread>
 #include <utility>
+#include <ostream>
 #include "CrossPlatformSocket.h"
 #include "PacketReceiver.h"
 #include "PacketSender.h"
 #include "NetworkListener.h"
+#include "Engine/Network/Packets/PacketConsumerException.h"
 
 /**
  * @brief NetClient describes a client connected to the server
@@ -32,6 +34,8 @@ public:
     const std::string &getAddress() const;
 
     unsigned short getPort() const;
+
+    friend std::ostream &operator<<(std::ostream &os, const NetClient &client);
 };
 
 template<class Packet, class Data>
@@ -44,8 +48,8 @@ class PacketClientConsumer : public PacketConsumer<Packet, std::shared_ptr<NetCl
  * @tparam Data The type of data that will be passed to the packet consumers
  */
 template<class Data>
-class NetServer : public NetworkListener , public PacketSender<std::shared_ptr<NetClient>, Data&> {
-private:
+class NetServer : public NetworkListener , public PacketSender<std::shared_ptr<NetClient>, Data> {
+protected:
     const std::string &_address;
     unsigned short _port;
     std::shared_ptr<CrossPlatformSocket> socket;
@@ -70,9 +74,12 @@ public:
         if (knownClient == clients.end()) {
             auto cli = std::make_shared<NetClient>(socket, address, port);
             auto clientPair = std::make_pair(cli, createData(cli));
-            clients[key] = clientPair;
-            clientConnected(clientPair.first, clientPair.second);
-            clientMessage(clientPair.first, clientPair.second, message, length);
+            if (clientConnected(clientPair.first, clientPair.second)) {
+                clients[key] = clientPair;
+                clientMessage(clientPair.first, clientPair.second, message, length);
+            } else {
+                return false;
+            }
         } else {
             clientMessage(knownClient->second.first, knownClient->second.second, message, length);
         }
@@ -89,10 +96,15 @@ public:
 
     virtual Data createData(std::shared_ptr<NetClient> &client) = 0;
 
-    virtual void clientConnected(std::shared_ptr<NetClient> &client, Data& data) = 0;
+    virtual bool clientConnected(std::shared_ptr<NetClient> &client, Data data) = 0;
 
-    void clientMessage(std::shared_ptr<NetClient> &client, Data& data, char *message, int length) {
-        this->consumeMessage(message, length, client, data);
+    void clientMessage(std::shared_ptr<NetClient> &client, Data data, char *message, int length) {
+        try {
+            this->consumeMessage(message, length, client, data);
+        } catch (PacketConsumerException &e) {
+            clients.erase(client->getAddress() + ":" + std::to_string(client->getPort()));
+            std::cout << "Client " << client << " kicked. Cause: " << e.what() << std::endl;
+        }
     }
 
     void errorReceived(std::string address, int port, int err) override {

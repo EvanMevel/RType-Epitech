@@ -9,13 +9,13 @@
 #include "Engine/Network/Packets/HandshakePacket.h"
 #include "Engine/Network/Packets/HandshakeResponsePacket.h"
 
-class HandshakeConsumer : public PacketClientConsumer<HandshakePacket, ClientData&> {
+class HandshakeConsumer : public PacketClientConsumer<HandshakePacket, std::shared_ptr<ClientData>> {
 private:
     RTypeServer &server;
 public:
     explicit HandshakeConsumer(RTypeServer &server);
 
-    void consume(HandshakePacket &packet, std::shared_ptr<NetClient> client, ClientData &data) override;
+    void consume(HandshakePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) override;
 };
 
 

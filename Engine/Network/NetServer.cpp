@@ -31,3 +31,8 @@ NetClient::~NetClient() {
 NetClient::NetClient(const NetClient &other) : socket(other.socket), address(other.address), port(other.port) {
 
 }
+
+std::ostream &operator<<(std::ostream &os, const NetClient &client) {
+    os << client.address << ":" << client.port;
+    return os;
+}
