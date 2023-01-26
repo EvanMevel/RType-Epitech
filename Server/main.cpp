@@ -91,5 +91,5 @@ int main()
 
     t.join();
 
-    return 10;
+    return 0;
 }

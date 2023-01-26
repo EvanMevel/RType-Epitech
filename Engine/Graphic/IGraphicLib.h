@@ -24,12 +24,15 @@ class Engine;
 class IGraphicLib : public SystemHolder {
 private:
     std::unordered_map<std::type_index, std::any> eventConsumers;
+    std::vector<void (*)(std::shared_ptr<IGraphicLib>)> execs;
 public:
     virtual ~IGraphicLib();
 
     template<class Event>
     void registerEventConsumer(IConsumer<Event> consumer);
     void processEvents(Engine);
+    void execOnLibThread(void (*func)(std::shared_ptr<IGraphicLib>));
+    std::vector<void (*)(std::shared_ptr<IGraphicLib>)> &getExecs();
     virtual std::vector<std::any> retrieveEvents() = 0;
     virtual IWindow& createWindow(int width, int height, std::string title) = 0;
     virtual IWindow& getWindow() = 0;

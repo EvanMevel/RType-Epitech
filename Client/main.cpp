@@ -84,6 +84,14 @@ void graphicLoop(Engine &e) {
     IWindow &window = lib->getWindow();
 
     while (!window.shouldClose()) {
+        auto it = lib->getExecs().begin();
+        while (it != lib->getExecs().end()) {
+            (*it)(lib);
+            it = lib->getExecs().erase(it);
+        }
+        if (window.shouldClose()) {
+            break;
+        }
         window.beginDrawing();
         window.setBackground(ColorCodes::COLOR_BLACK);
         e.updateGraphicLib();

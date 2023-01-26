@@ -10,5 +10,12 @@ HandshakeResponseConsumer::HandshakeResponseConsumer(NetworkRemoteServer<Engine 
 }
 
 void HandshakeResponseConsumer::consume(HandshakeResponsePacket &packet, Engine &e) {
-    std::cout << "Handshake response received" << packet.getType() << std::endl;
+    if (packet.getType() != HandshakeResponsePacketType::OK) {
+        e.getGraphicLib()->execOnLibThread([] (std::shared_ptr<IGraphicLib> lib) {
+            if (lib->getWindow().shouldClose()) {
+                return;
+            }
+            lib->closeWindow();
+        });
+    }
 }
