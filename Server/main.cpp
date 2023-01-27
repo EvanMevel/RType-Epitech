@@ -56,7 +56,7 @@ void testSrv(Engine &e) {
 
     srv.startListening();
 
-    e.getScene()->addSystem<TpEntitySystem>(srv);
+    //e.getScene()->addSystem<TpEntitySystem>(srv);
 
     Entity &ent = e.getScene()->createEntity();
     ent.addComponent<PositionComponent>();

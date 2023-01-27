@@ -12,10 +12,10 @@
 #include "Engine/Network/NetworkRemoteServer.h"
 #include "Engine/Network/Packets/TestPacket.h"
 #include "Engine/Network/Packets/EntityTestPacket.h"
-#include "PingPacketConsumer.h"
+#include "Client/Consumers/PingPacketConsumer.h"
 #include "StayAliveSystem.h"
 #include "Engine/Network/Packets/HandshakePacket.h"
-#include "HandshakeResponseConsumer.h"
+#include "Client/Consumers/HandshakeResponseConsumer.h"
 #include "MainMenu.h"
 #include <mutex>
 #include <condition_variable>

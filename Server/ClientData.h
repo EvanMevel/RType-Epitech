@@ -15,6 +15,8 @@ public:
 
     bool handshake = false;
 
+    size_t playerId;
+
     long long int getLastPing() const;
 
     void setLastPing(long long int lastPing);
