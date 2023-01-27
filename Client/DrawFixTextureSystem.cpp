@@ -10,6 +10,8 @@
 void DrawFixTextureSystem::update(Engine &engine) {
     if (engine.getGraphicLib() == nullptr)
         return;
+    if(engine.getScene() == nullptr)
+        return;
 
     for (auto &entity: engine.getScene()->getEntities()) {
         auto textureComponent = entity.getComponent<FixTextureComponent>();

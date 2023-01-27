@@ -6,17 +6,20 @@
 #include "NetworkListener.h"
 
 void NetworkListener::startListening() {
-    listeningThread = std::thread(&NetworkListener::listen, this);
+    listeningThread = std::make_unique<std::thread>(&NetworkListener::listen, this);
 }
 
 void NetworkListener::listen() {
-    while (true) {
+    while (running.load()) {
         char buffer[4096];
         std::string address;
         unsigned short port;
         int recv_len = getSocket().recvFrom(buffer, 4096, address, port);
+        if (getSocket().isClosed() || !running.load()) {
+            return;
+        }
         if (recv_len > 0) {
-            std::cout << "Received message from " << address << ":" << port << ": " << buffer << std::endl;
+            //std::cout << "Received message from " << address << ":" << port << ": " << buffer << std::endl;
             messageReceived(address, port, buffer, recv_len);
         } else {
             errorReceived(getSocket().lastAddress, getSocket().lastPort, recv_len);
@@ -25,7 +28,8 @@ void NetworkListener::listen() {
 }
 
 NetworkListener::~NetworkListener() {
-    if (listeningThread.joinable()) {
-        listeningThread.join();
+    if (running.load() && listeningThread != nullptr && listeningThread->joinable()) {
+        running.store(false);
+        listeningThread->join();
     }
 }

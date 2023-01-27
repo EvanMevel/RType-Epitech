@@ -40,6 +40,10 @@ ByteArray& operator<<(ByteArray &buffer, const int &value);
 
 ByteArray& operator>>(ByteArray &buffer, int &value);
 
+ByteArray& operator<<(ByteArray &buffer, const long long &value);
+
+ByteArray& operator>>(ByteArray &buffer, long long &value);
+
 ByteArray& operator<<(ByteArray &buffer, const Vector2i &value);
 
 ByteArray& operator>>(ByteArray &buffer, Vector2i &value);

@@ -10,6 +10,7 @@
 #include "PacketReceiver.h"
 #include "PacketSender.h"
 #include "Packets/PacketConsumers.h"
+#include "Engine/SystemHolder.h"
 
 /**
  * @brief NetworkRemoteServer is a class that represents a remote server.
@@ -17,7 +18,7 @@
  * @details It is also used to listen to incoming packets from the remote server.
  */
 template<class Data>
-class NetworkRemoteServer : public NetworkListener, public PacketReceiver, public PacketSender<Data> {
+class NetworkRemoteServer : public NetworkListener, public PacketReceiver, public PacketSender<Data>, public SystemHolder {
 private:
     Data data;
     CrossPlatformSocket socket;
@@ -27,6 +28,10 @@ public:
     NetworkRemoteServer(Data dat, const std::string &address, unsigned short port);
 
     NetworkRemoteServer(const NetworkRemoteServer &other) : data(other.data), socket(other.socket), _address(other._address), _port(other._port) {}
+
+    ~NetworkRemoteServer() override {
+
+    }
 
     void send(const char *message, int length) override;
 
