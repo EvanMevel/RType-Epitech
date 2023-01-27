@@ -8,10 +8,13 @@
 #include "FixTextureComponent.h"
 #include "DrawFixTextureSystem.h"
 #include "Engine/Component/PositionComponent.h"
+#include "Engine/Component/VelocityComponent.h"
+#include "Engine/Component/AccelerationComponent.h"
 #include "Engine/Network/CrossPlatformSocket.h"
 #include "Engine/Network/NetworkRemoteServer.h"
 #include "Engine/Network/Packets/TestPacket.h"
 #include "Engine/Network/Packets/EntityTestPacket.h"
+#include "Engine/Network/Packets/EntityVelocityPacket.h"
 #include "Client/Consumers/PingPacketConsumer.h"
 #include "StayAliveSystem.h"
 #include "Engine/Network/Packets/HandshakePacket.h"
@@ -48,6 +51,26 @@ public:
     }
 };
 
+class EntityVelocityPacketConsumer : public PacketConsumer<EntityVelocityPacket, Engine&> {
+public:
+    void consume(EntityVelocityPacket &packet, Engine &e) override {
+
+        auto entity = e.getScene()->getEntityById(packet.entityId);
+        auto pos = entity.GetOrCreate<PositionComponent>();
+        auto vel = entity.GetOrCreate<VelocityComponent>();
+        auto accel = entity.GetOrCreate<AccelerationComponent>();
+
+        pos->setX(packet.pos.x);
+        pos->setY(packet.pos.y);
+
+        vel->setX(packet.velocity.x);
+        vel->setY(packet.velocity.y);
+
+        accel->setX(packet.acceleration.x);
+        accel->setY(packet.acceleration.y);
+    }
+};
+
 void loadNetwork(Engine &e) {
     std::unique_lock<std::mutex> lck(graphicMutex);
 
@@ -59,6 +82,7 @@ void loadNetwork(Engine &e) {
     NetworkRemoteServer<Engine&> server(e, "127.0.0.1", 4242);
 
     server.addConsumer<EntityTestConsumer>();
+    server.addConsumer<EntityVelocityPacketConsumer>();
     server.addConsumer<PingPacketConsumer>(server);
     server.addConsumer<HandshakeResponseConsumer>(server);
 

@@ -50,6 +50,14 @@ public:
     bool hasComponent() const {
         return components.find(std::type_index(typeid(Type))) != components.end();
     }
+
+    template<class Type, class ...Args>
+    std::shared_ptr<Type> GetOrCreate(Args ...args) {
+        auto component = getComponent<Type>();
+        if (component == nullptr)
+            return addComponent<Type>();
+        return component;
+    }
 };
 
 

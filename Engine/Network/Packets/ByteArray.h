@@ -6,6 +6,7 @@
 #define R_TYPE_SERVER_BYTEARRAY_H
 
 #include <sstream>
+#include "Engine/Vector2i.h"
 
 /**
  * @brief ByteArray is a buffer of bytes that can be used to serialize and deserialize data
@@ -42,6 +43,10 @@ ByteArray& operator>>(ByteArray &buffer, int &value);
 ByteArray& operator<<(ByteArray &buffer, const long long &value);
 
 ByteArray& operator>>(ByteArray &buffer, long long &value);
+
+ByteArray& operator<<(ByteArray &buffer, const Vector2i &value);
+
+ByteArray& operator>>(ByteArray &buffer, Vector2i &value);
 
 
 #endif //R_TYPE_SERVER_BYTEARRAY_H

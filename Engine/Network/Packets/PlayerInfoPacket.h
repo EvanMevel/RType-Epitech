@@ -14,7 +14,7 @@ public:
     static const int ID = 5;
     PlayerInfoPacket() = default;
 
-    size_t playerId;
+    int playerId;
     int x;
     int y;
 
