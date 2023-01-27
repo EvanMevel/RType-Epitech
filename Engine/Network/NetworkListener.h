@@ -5,7 +5,8 @@
 #ifndef R_TYPE_SERVER_NETWORKLISTENER_H
 #define R_TYPE_SERVER_NETWORKLISTENER_H
 
-
+#include <memory>
+#include <atomic>
 #include <thread>
 #include "CrossPlatformSocket.h"
 
@@ -15,7 +16,8 @@
  */
 class NetworkListener {
 private:
-    std::thread listeningThread;
+    std::unique_ptr<std::thread> listeningThread;
+    std::atomic<bool> running = true;
 
 public:
     virtual ~NetworkListener();

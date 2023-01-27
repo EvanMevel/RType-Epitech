@@ -39,5 +39,9 @@ ByteArray& operator<<(ByteArray &buffer, const int &value);
 
 ByteArray& operator>>(ByteArray &buffer, int &value);
 
+ByteArray& operator<<(ByteArray &buffer, const long long &value);
+
+ByteArray& operator>>(ByteArray &buffer, long long &value);
+
 
 #endif //R_TYPE_SERVER_BYTEARRAY_H

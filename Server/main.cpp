@@ -9,39 +9,19 @@
 #include "Engine/Network/Packets/TestPacket.h"
 #include "Engine/Network/Packets/EntityTestPacket.h"
 #include "Engine/Component/PositionComponent.h"
+#include "RTypeServer.h"
+#include "PingPacketConsumer.h"
+#include "TimeoutSystem.h"
+#include "HandshakeConsumer.h"
 
-
-class TT : public PacketClientConsumer<TestPacket, int> {
-private:
-    int e;
-public:
-    explicit TT(int e) : e(e) {}
-
-    void consume(TestPacket &packet, std::shared_ptr<NetClient> client, int i) override {
-        std::cout << "packet received: " << packet.getValue() << " data is " << i << " and e is " << e << std::endl;
-        client->sendPacket(packet);
-    }
-};
-
-class MyServer : public NetServer<int> {
-public:
-    MyServer(const std::string &address, unsigned short port) : NetServer(address, port) {}
-
-    int createData(std::shared_ptr<NetClient> &client) override {
-        return client->getPort();
-    }
-
-    void clientConnected(std::shared_ptr<NetClient> &client, int &data) override {
-        std::cout << "Client connected " << client->getAddress() << ":" << client->getPort() << std::endl;
-    }
-};
+std::atomic<bool> running = true;
 
 class TpEntitySystem : public ISystem {
 public:
-    MyServer &srv;
+    RTypeServer &srv;
     int count = 0;
 
-    explicit TpEntitySystem(MyServer &srv) : srv(srv) {}
+    explicit TpEntitySystem(RTypeServer &srv) : srv(srv) {}
 
     void update(Engine &engine) override {
         count = (count + 1) % 4;
@@ -64,25 +44,28 @@ public:
     }
 };
 
-void testSrv() {
-    MyServer srv("127.0.0.1", 4242);
+void testSrv(Engine &e) {
+    RTypeServer srv("127.0.0.1", 4242);
     std::cout << "running" << std::endl;
 
-    Engine e;
-    auto sc = e.createScene<Scene>();
-    e.setScene(sc);
-    sc->addSystem<TpEntitySystem>(srv);
+    srv.addConsumer<PingPacketConsumer>();
+    srv.addConsumer<HandshakeConsumer>(srv);
+    srv.addSystem<TimeoutSystem>(srv);
 
-    Entity &ent = sc->createEntity();
-    ent.addComponent<PositionComponent>();
-
-    srv.addConsumer<TT>(15);
+    std::cout << "Server listening" << std::endl;
 
     srv.startListening();
-    while (true) {
+
+    //e.getScene()->addSystem<TpEntitySystem>(srv);
+
+    Entity &ent = e.getScene()->createEntity();
+    ent.addComponent<PositionComponent>();
+
+    while (running.load()) {
         auto start = std::chrono::system_clock::now();
 
         e.updateScene();
+        srv.update(e);
 
         auto end = std::chrono::system_clock::now();
         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
@@ -91,10 +74,22 @@ void testSrv() {
     }
 }
 
+void stopThread() {
+    std::cin.get();
+    running = false;
+}
+
 int main()
 {
-    testSrv();
+    std::thread t = std::thread(stopThread);
 
+    Engine e;
+    auto sc = e.createScene<Scene>();
+    e.setScene(sc);
 
-    return 10;
+    testSrv(e);
+
+    t.join();
+
+    return 0;
 }
