@@ -50,10 +50,10 @@ public:
 
 class VelocitySystem : public ISystem {
 public:
-    MyServer &srv;
+    RTypeServer &srv;
     int count = 0;
 
-    explicit VelocitySystem(MyServer &srv) : srv(srv) {}
+    explicit VelocitySystem(RTypeServer &srv) : srv(srv) {}
 
     void update(Engine &engine) override {
         count = (count + 1) % 4;
@@ -121,7 +121,7 @@ void testSrv(Engine &e) {
     std::cout << "running" << std::endl;
 
     srv.addConsumer<PingPacketConsumer>();
-    srv.addConsumer<HandshakeConsumer>(srv);
+    srv.addConsumer<HandshakeConsumer>(srv, e);
     srv.addSystem<TimeoutSystem>(srv);
     e.getScene()->addSystem<VelocitySystem>(srv);
 

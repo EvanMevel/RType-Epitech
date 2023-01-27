@@ -24,7 +24,7 @@ void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClie
     comp->setY(100);
 
     PlayerInfoPacket playerInfo;
-    playerInfo.playerId = player.getId();
+    playerInfo.playerId = (int) player.getId();
     playerInfo.x = comp->getX();
     playerInfo.y = comp->getY();
     client->sendPacket(playerInfo);
