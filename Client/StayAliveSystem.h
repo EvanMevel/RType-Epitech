@@ -6,15 +6,15 @@
 #define R_TYPE_SERVER_STAYALIVESYSTEM_H
 
 #include "Engine/ISystem.h"
-#include "Engine/Network/NetworkRemoteServer.h"
+#include "Client/ClientNetServer.h"
 
 
 class StayAliveSystem : public ISystem {
 private:
-    NetworkRemoteServer<Engine&> &server;
+    RTypeServer server;
     long long lastPing = 0;
 public:
-    explicit StayAliveSystem(NetworkRemoteServer<Engine &> &server);
+    explicit StayAliveSystem(RTypeServer server);
 
 public:
     void update(Engine &engine) override;

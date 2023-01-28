@@ -3,22 +3,19 @@
 //
 
 #include <iostream>
-#include "Engine/Engine.h"
+#include "ClientNetServer.h"
 #include "RaylibGraphicLib.h"
-#include "FixTextureComponent.h"
 #include "DrawFixTextureSystem.h"
 #include "Engine/Component/PositionComponent.h"
 #include "Engine/Component/VelocityComponent.h"
 #include "Engine/Component/AccelerationComponent.h"
-#include "Engine/Network/CrossPlatformSocket.h"
-#include "Engine/Network/NetworkRemoteServer.h"
 #include "Engine/Network/Packets/TestPacket.h"
-#include "Engine/Network/Packets/EntityTestPacket.h"
 #include "Engine/Network/Packets/EntityVelocityPacket.h"
 #include "Client/Consumers/PingPacketConsumer.h"
 #include "StayAliveSystem.h"
 #include "Engine/Network/Packets/HandshakePacket.h"
 #include "Client/Consumers/HandshakeResponseConsumer.h"
+#include "Consumers/PlayerInfoConsumer.h"
 #include "MainMenu.h"
 #include <mutex>
 #include <condition_variable>
@@ -27,38 +24,19 @@ std::mutex graphicMutex;
 std::condition_variable cv;
 bool graphicReady = false;
 
+std::condition_variable cv2;
+bool registeredConsumers = false;
+
 bool windowClosed = false;
-
-class tts : public PacketConsumer<TestPacket, Engine&> {
-public:
-    void consume(TestPacket &packet, Engine &e) override {
-        std::cout << "packet received: " << packet.getValue() << std::endl;
-    }
-};
-
-class EntityTestConsumer : public PacketConsumer<EntityTestPacket, Engine&> {
-public:
-    void consume(EntityTestPacket &packet, Engine &e) override {
-        //std::cout << "EntityTest id: " << packet.entityId << "x: " << packet.x << "y: " << packet.y << std::endl;
-
-        auto entity = e.getScene()->getEntityById(packet.entityId);
-        auto pos = entity.getComponent<PositionComponent>();
-        if (pos == nullptr) {
-            pos = entity.addComponent<PositionComponent>();
-        }
-        pos->setX(packet.x);
-        pos->setY(packet.y);
-    }
-};
 
 class EntityVelocityPacketConsumer : public PacketConsumer<EntityVelocityPacket, Engine&> {
 public:
     void consume(EntityVelocityPacket &packet, Engine &e) override {
 
         auto entity = e.getScene()->getEntityById(packet.entityId);
-        auto pos = entity.GetOrCreate<PositionComponent>();
-        auto vel = entity.GetOrCreate<VelocityComponent>();
-        auto accel = entity.GetOrCreate<AccelerationComponent>();
+        auto pos = entity->getOrCreate<PositionComponent>();
+        auto vel = entity->getOrCreate<VelocityComponent>();
+        auto accel = entity->getOrCreate<AccelerationComponent>();
 
         pos->setX(packet.pos.x);
         pos->setY(packet.pos.y);
@@ -79,24 +57,41 @@ void loadNetwork(Engine &e) {
         cv.wait(lck);
     }
     std::cout << "[NETWORK] graphic ready" << std::endl;
-    NetworkRemoteServer<Engine&> server(e, "127.0.0.1", 4242);
+    RTypeServer server = std::make_shared<NetworkRemoteServer<Engine&>>(e, "127.0.0.1", 4242);
 
-    server.addConsumer<EntityTestConsumer>();
-    server.addConsumer<EntityVelocityPacketConsumer>();
-    server.addConsumer<PingPacketConsumer>(server);
-    server.addConsumer<HandshakeResponseConsumer>(server);
+    server->addConsumer<EntityVelocityPacketConsumer>();
+    server->addConsumer<PingPacketConsumer>(server);
+    server->addConsumer<HandshakeResponseConsumer>(server);
 
-    server.addSystem<StayAliveSystem>(server);
+
+    std::function<void(std::shared_ptr<IGraphicLib>, RTypeServer server)> fu = [](std::shared_ptr<IGraphicLib> lib, RTypeServer server) {
+
+        std::cout << "Registering server consumer on graphic thread..." << std::endl;
+        server->addConsumer<PlayerInfoConsumer>(lib->createTexture("../Client/assets/player.png"));
+
+        registeredConsumers = true;
+        cv2.notify_all();
+    };
+
+    e.getGraphicLib()->execOnLibThread(fu, e.getGraphicLib(), server);
+
+    server->addSystem<StayAliveSystem>(server);
+
+    std::cout << "Waiting for consumer register on graphicLib thread" << std::endl;
+
+    while (!registeredConsumers) {
+        cv2.wait(lck);
+    }
 
     std::cout << "Sending handshake" << std::endl;
 
-    server.startListening();
+    server->startListening();
 
-    server.sendPacket(HandshakePacket());
+    server->sendPacket(HandshakePacket());
 
 
     while (!windowClosed) {
-        server.update(e);
+        server->update(e);
         Sleep(100);
     }
 
@@ -110,7 +105,7 @@ void graphicLoop(Engine &e) {
     while (!window.shouldClose()) {
         auto it = lib->getExecs().begin();
         while (it != lib->getExecs().end()) {
-            (*it)(lib);
+            (*it)();
             it = lib->getExecs().erase(it);
         }
         if (window.shouldClose()) {

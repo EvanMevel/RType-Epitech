@@ -2,6 +2,7 @@
 // Created by evans on 20/01/2023.
 //
 
+#include <iostream>
 #include "DrawFixTextureSystem.h"
 #include "Engine/Engine.h"
 #include "FixTextureComponent.h"
@@ -12,10 +13,9 @@ void DrawFixTextureSystem::update(Engine &engine) {
         return;
     if(engine.getScene() == nullptr)
         return;
-
     for (auto &entity: engine.getScene()->getEntities()) {
-        auto textureComponent = entity.getComponent<FixTextureComponent>();
-        auto posComponent = entity.getComponent<PositionComponent>();
+        auto textureComponent = entity->getComponent<FixTextureComponent>();
+        auto posComponent = entity->getComponent<PositionComponent>();
         if (textureComponent != nullptr && posComponent != nullptr) {
             engine.getGraphicLib()->drawTexture(textureComponent->getTexture(), posComponent->getX(), posComponent->getY(), ColorCodes::COLOR_WHITE);
         }

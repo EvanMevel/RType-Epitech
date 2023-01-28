@@ -52,7 +52,7 @@ public:
     }
 
     template<class Type, class ...Args>
-    std::shared_ptr<Type> GetOrCreate(Args ...args) {
+    std::shared_ptr<Type> getOrCreate(Args ...args) {
         auto component = getComponent<Type>();
         if (component == nullptr)
             return addComponent<Type>();

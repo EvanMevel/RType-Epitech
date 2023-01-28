@@ -10,6 +10,7 @@
 #include <any>
 #include <cstddef>
 #include <string>
+#include <functional>
 #include "../IConsumer.h"
 #include "IWindow.h"
 #include "../SystemHolder.h"
@@ -24,15 +25,16 @@ class Engine;
 class IGraphicLib : public SystemHolder {
 private:
     std::unordered_map<std::type_index, std::any> eventConsumers;
-    std::vector<void (*)(std::shared_ptr<IGraphicLib>)> execs;
+    std::vector<std::function<void()>> execs;
 public:
     virtual ~IGraphicLib();
 
     template<class Event>
     void registerEventConsumer(IConsumer<Event> consumer);
     void processEvents(Engine);
-    void execOnLibThread(void (*func)(std::shared_ptr<IGraphicLib>));
-    std::vector<void (*)(std::shared_ptr<IGraphicLib>)> &getExecs();
+
+    std::vector<std::function<void()>> &getExecs();
+
     virtual std::vector<std::any> retrieveEvents() = 0;
     virtual IWindow& createWindow(int width, int height, std::string title) = 0;
     virtual IWindow& getWindow() = 0;
@@ -41,8 +43,15 @@ public:
     virtual void drawTexture(ITexture, int x, int y, ColorCodes) = 0;
     virtual void drawText(std::string, int x, int y, int size, ColorCodes) = 0;
 
-    void test(void (*func)()) {
-        func();
+    template<class ...Args>
+    void execOnLibThread(std::function<void(Args...)> func, Args... args) {
+        auto fu = std::bind(func, args...);
+        execs.push_back(fu);
+    }
+    template<class ...Args>
+    void execOnLibThread(void (*func)(Args...), Args... args) {
+        std::function<void(Args...)> fu = func;
+        return test(fu, args...);
     }
 };
 

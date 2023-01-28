@@ -12,9 +12,9 @@
 
 class TimeoutSystem : public ISystem {
 private:
-    RTypeServer &server;
+    RTypeServerPtr server;
 public:
-    explicit TimeoutSystem(RTypeServer &server);
+    explicit TimeoutSystem(RTypeServerPtr server);
 
 public:
     void update(Engine &engine) override;

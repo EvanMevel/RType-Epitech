@@ -8,19 +8,9 @@
 
 #include <cstddef>
 #include "IComponent.h"
+#include "Engine/Vector2i.h"
 
-class AccelerationComponent : public IComponent{
-private:
-    int x;
-    int y;
-public:
-    int getX() const;
-
-    void setX(int x);
-
-    int getY() const;
-
-    void setY(int y);
+class AccelerationComponent : public IComponent, public Vector2i {
 };
 
 

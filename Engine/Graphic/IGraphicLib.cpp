@@ -30,10 +30,7 @@ IGraphicLib::~IGraphicLib() {
 
 }
 
-void IGraphicLib::execOnLibThread(void (*func)(std::shared_ptr<IGraphicLib>)) {
-    execs.push_back(func);
-}
-
-std::vector<void (*)(std::shared_ptr<IGraphicLib>)> &IGraphicLib::getExecs() {
+std::vector<std::function<void()>> &IGraphicLib::getExecs() {
     return execs;
 }
+

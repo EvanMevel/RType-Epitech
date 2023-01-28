@@ -10,8 +10,8 @@ void StayAliveSystem::update(Engine &engine) {
     long long currentTime = getCurrentTime();
     if (currentTime - lastPing > 1000) {
         lastPing = currentTime;
-        server.sendPacket(PingPacket::current());
+        server->sendPacket(PingPacket::current());
     }
 }
 
-StayAliveSystem::StayAliveSystem(NetworkRemoteServer<Engine &> &server) : server(server) {}
+StayAliveSystem::StayAliveSystem(RTypeServer server) : server(server) {}

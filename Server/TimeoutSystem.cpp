@@ -8,17 +8,17 @@
 
 void TimeoutSystem::update(Engine &engine) {
     long long currentTime = getCurrentTime();
-    auto it = server.getClients().begin();
-    while (it != server.getClients().end()) {
+    auto it = server->getClients().begin();
+    while (it != server->getClients().end()) {
         auto &client = it->second.first;
         auto &data = it->second.second;
         if (data->getLastPing() + RTYPE_TIMEOUT < currentTime) {
             std::cout << "Client " << client->addressPort() << " timed out" << std::endl;
-            it = server.getClients().erase(it);
+            it = server->getClients().erase(it);
         } else {
             it++;
         }
     }
 }
 
-TimeoutSystem::TimeoutSystem(RTypeServer &server) : server(server) {}
+TimeoutSystem::TimeoutSystem(RTypeServerPtr server) : server(server) {}
