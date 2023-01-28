@@ -12,6 +12,7 @@
 #include "Client/PlayerMoveSystem.h"
 #include "Engine/Component/VelocityComponent.h"
 #include "Engine/Component/AccelerationComponent.h"
+#include "Engine/Component/MaxVelocityComponent.h"
 
 void PlayerInfoConsumer::consume(PlayerInfoPacket &packet, Engine &e) {
 
@@ -20,6 +21,8 @@ void PlayerInfoConsumer::consume(PlayerInfoPacket &packet, Engine &e) {
     auto pos = player->getOrCreate<PositionComponent>();
     player->addComponent<VelocityComponent>();
     player->addComponent<AccelerationComponent>();
+    auto maxVel = player->addComponent<MaxVelocityComponent>();
+    maxVel->setMaxVelocity(15);
 
     pos->setX(packet.x);
     pos->setY(packet.y);

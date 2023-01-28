@@ -9,6 +9,7 @@
 #include "Engine/Component/PositionComponent.h"
 #include "Engine/Component/VelocityComponent.h"
 #include "Engine/Component/AccelerationComponent.h"
+#include "MaxVelocityComponent.h"
 
 void VelocitySystem::update(Engine &engine) {
     count = (count + 1) % 4;
@@ -17,7 +18,7 @@ void VelocitySystem::update(Engine &engine) {
         auto vel = entity->getComponent<VelocityComponent>();
         auto accel = entity->getComponent<AccelerationComponent>();
         if (pos != nullptr && vel != nullptr && accel != nullptr) {
-            if (accel->length() != 0) {
+            if (accel->lengthSquare() != 0) {
                 // Add acceleration to velocity
                 vel->x += accel->x;
                 vel->y += accel->y;
@@ -26,9 +27,16 @@ void VelocitySystem::update(Engine &engine) {
                 accel->decrementTo0(1);
             }
 
-            if (vel->length() == 0) {
+            if (vel->lengthSquare() == 0) {
                 continue;
             }
+
+            auto maxVelo = entity->getComponent<MaxVelocityComponent>();
+            if (maxVelo != nullptr) {
+                vel->ensureNotGreater((int) maxVelo->getMaxVelocity());
+            }
+
+            std::cout << "Accel: " << accel->x << ", " << accel->y << " Vel: " << vel->x << ", " << vel->y << std::endl;
 
             // Add velocity to position
             pos->x += vel->x;

@@ -23,7 +23,7 @@ void PlayerMoveSystem::update(Engine &engine) {
     if (player->right) {
         acceleration.x += 3;
     }
-    if (acceleration.length() == 0) {
+    if (acceleration.lengthSquare() == 0) {
         return;
     }
     auto accel = player->entity->getOrCreate<AccelerationComponent>();
