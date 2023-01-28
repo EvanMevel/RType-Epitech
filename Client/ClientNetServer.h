@@ -26,7 +26,7 @@ class ClientPacketConsumer : public PacketConsumer<Packet, Engine&> {
 private:
     RTypeServer server;
 public:
-    explicit ClientPacketConsumer(RTypeServer server) : server(server) {}
+    explicit ClientPacketConsumer(const RTypeServer &server) : server(server) {}
 };
 
 #endif //R_TYPE_SERVER_CLIENTNETSERVER_H

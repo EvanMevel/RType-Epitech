@@ -30,8 +30,6 @@ void VelocitySystem::update(Engine &engine) {
                 continue;
             }
 
-            std::cout << "Entity " << entity->getId() << " moved from " << pos->x << ", " << pos->y << " to " << pos->x + vel->x << ", " << pos->y + vel->y << std::endl;
-
             // Add velocity to position
             pos->x += vel->x;
             pos->y += vel->y;

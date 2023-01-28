@@ -68,7 +68,7 @@ void loadNetwork(Engine &e) {
     std::function<void(std::shared_ptr<IGraphicLib>, RTypeServer server)> fu = [](std::shared_ptr<IGraphicLib> lib, RTypeServer server) {
 
         std::cout << "Registering server consumer on graphic thread..." << std::endl;
-        server->addConsumer<PlayerInfoConsumer>(lib->createTexture("../Client/assets/player.png"));
+        server->addConsumer<PlayerInfoConsumer>(lib->createTexture("../Client/assets/player.png"), server);
 
         registeredConsumers = true;
         cv2.notify_all();
