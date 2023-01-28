@@ -5,6 +5,8 @@
 #ifndef B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ISYSTEM_H
 #define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ISYSTEM_H
 
+#include <string>
+
 class Engine;
 
 /**
@@ -22,6 +24,8 @@ public:
      * @param engine the engine that is calling the system
      */
     virtual void update(Engine&);
+
+    virtual std::string getName();
 };
 
 

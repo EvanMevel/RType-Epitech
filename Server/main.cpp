@@ -13,7 +13,7 @@
 #include "HandshakeConsumer.h"
 #include "Engine/Component/VelocityComponent.h"
 #include "Engine/Component/AccelerationComponent.h"
-#include "VelocitySystem.h"
+#include "ServerVelocitySystem.h"
 
 std::atomic<bool> running = true;
 
@@ -24,7 +24,7 @@ void testSrv(Engine &e) {
     srv->addConsumer<PingPacketConsumer>();
     srv->addConsumer<HandshakeConsumer>(srv, e);
     srv->addSystem<TimeoutSystem>(srv);
-    e.getScene()->addSystem<VelocitySystem>(srv);
+    e.getScene()->addSystem<ServerVelocitySystem>(srv);
 
     std::cout << "Server listening" << std::endl;
 
@@ -35,9 +35,6 @@ void testSrv(Engine &e) {
     ent->addComponent<VelocityComponent>();
     ent->addComponent<AccelerationComponent>();
 
-    auto acc = ent->getComponent<AccelerationComponent>();
-    acc->setX(5);
-
     while (running.load()) {
         auto start = std::chrono::system_clock::now();
 
@@ -47,12 +44,26 @@ void testSrv(Engine &e) {
         auto end = std::chrono::system_clock::now();
         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
-        Sleep((1000 / 20) - elapsed.count());
+        auto waiting = (1000 / 20) - elapsed.count();
+
+        Sleep(waiting > 0 ? waiting : 0);
     }
+    std::cout << "Server stopped" << std::endl;
 }
 
-void stopThread() {
-    std::cin.get();
+void stopThread(Engine &e) {
+    std::string str;
+
+
+    do {
+        std::cin >> str;
+        if (str == "a") {
+            auto ent = e.getScene()->getEntityById(0);
+            auto acc = ent->getComponent<AccelerationComponent>();
+            acc->setX(5);
+        }
+    } while (str != "q");
+
     std::cout << "Closing..." << std::endl;
 
     running = false;
@@ -60,11 +71,11 @@ void stopThread() {
 
 int main()
 {
-    std::thread t = std::thread(stopThread);
-
     Engine e;
     auto sc = e.createScene<Scene>();
     e.setScene(sc);
+
+    std::thread t = std::thread(stopThread, std::ref(e));
 
     testSrv(e);
 

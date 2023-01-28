@@ -14,6 +14,7 @@
 #include "../IConsumer.h"
 #include "IWindow.h"
 #include "../SystemHolder.h"
+#include "KeyCodes.h"
 
 class Engine;
 
@@ -42,6 +43,7 @@ public:
     virtual ITexture createTexture(const std::string &texturePath) = 0;
     virtual void drawTexture(ITexture, int x, int y, ColorCodes) = 0;
     virtual void drawText(std::string, int x, int y, int size, ColorCodes) = 0;
+    virtual bool isKeyDown(KeyCodes) = 0;
 
     template<class ...Args>
     void execOnLibThread(std::function<void(Args...)> func, Args... args) {

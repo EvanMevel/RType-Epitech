@@ -5,6 +5,7 @@
 #ifndef R_TYPE_SERVER_SYSTEMHOLDER_H
 #define R_TYPE_SERVER_SYSTEMHOLDER_H
 
+#include <iostream>
 #include <memory>
 #include <vector>
 #include "ISystem.h"

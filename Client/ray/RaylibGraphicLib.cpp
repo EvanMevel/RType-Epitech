@@ -43,4 +43,18 @@ RaylibGraphicLib::RaylibGraphicLib() {
     colors[ColorCodes::COLOR_GREEN] = ray::GREEN;
     colors[ColorCodes::COLOR_BLUE] = ray::BLUE;
     colors[ColorCodes::COLOR_YELLOW] = ray::YELLOW;
+
+    keys[KeyCodes::KEY_A] = ray::KEY_A;
+    keys[KeyCodes::KEY_B] = ray::KEY_B;
+    keys[KeyCodes::KEY_C] = ray::KEY_C;
+    keys[KeyCodes::KEY_UP] = ray::KEY_UP;
+    keys[KeyCodes::KEY_DOWN] = ray::KEY_DOWN;
+    keys[KeyCodes::KEY_LEFT] = ray::KEY_LEFT;
+    keys[KeyCodes::KEY_RIGHT] = ray::KEY_RIGHT;
+    keys[KeyCodes::KEY_SPACE] = ray::KEY_SPACE;
+}
+
+bool RaylibGraphicLib::isKeyDown(KeyCodes code) {
+    ray::KeyboardKey key = keys[code];
+    return ray::IsKeyDown(key);
 }

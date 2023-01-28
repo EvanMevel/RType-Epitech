@@ -15,3 +15,7 @@ void StayAliveSystem::update(Engine &engine) {
 }
 
 StayAliveSystem::StayAliveSystem(RTypeServer server) : server(server) {}
+
+std::string StayAliveSystem::getName() {
+    return "StayAliveSystem";
+}

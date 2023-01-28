@@ -57,6 +57,10 @@ public:
     Vector2i clone() const {
         return {x, y};
     }
+
+    size_t length() {
+        return x * x + y * y;
+    }
 };
 
 

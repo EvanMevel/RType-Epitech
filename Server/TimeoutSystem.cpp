@@ -22,3 +22,7 @@ void TimeoutSystem::update(Engine &engine) {
 }
 
 TimeoutSystem::TimeoutSystem(RTypeServerPtr server) : server(server) {}
+
+std::string TimeoutSystem::getName() {
+    return "TimeoutSystem";
+}
