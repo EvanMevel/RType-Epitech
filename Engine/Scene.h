@@ -17,7 +17,7 @@ class Engine;
  */
 class Scene : public SystemHolder {
 protected:
-    std::vector<Entity> entities;
+    std::vector<std::shared_ptr<Entity>> entities;
     EntityManager &entityManager;
 public:
     Scene(EntityManager &entityManager);
@@ -28,13 +28,13 @@ public:
     }
 
     ~Scene();
-    void addEntity(Entity&);
+    void addEntity(std::shared_ptr<Entity>);
 
-    std::vector<Entity> &getEntities();
-    Entity& createEntity();
-    Entity& createPlayer();
+    std::vector<std::shared_ptr<Entity>> &getEntities();
+    std::shared_ptr<Entity> createEntity();
+    std::shared_ptr<Entity> createPlayer();
 
-    Entity &getEntityById(int id);
+    std::shared_ptr<Entity> getEntityById(int id);
 };
 
 #endif //B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_SCENE_H

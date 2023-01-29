@@ -2,6 +2,7 @@
 // Created by evans on 20/01/2023.
 //
 
+#include <iostream>
 #include "CrossPlatformSocket.h"
 
 CrossPlatformSocket::CrossPlatformSocket() : lastAddress(), lastPort(0)
@@ -14,6 +15,7 @@ CrossPlatformSocket::CrossPlatformSocket() : lastAddress(), lastPort(0)
 
 CrossPlatformSocket::~CrossPlatformSocket()
 {
+    closed = true;
 #ifdef _WIN32
     if (m_socket != -1) {
         closesocket(m_socket);
@@ -94,9 +96,7 @@ int CrossPlatformSocket::recvFrom(char* buffer, int len, std::string& address, u
 
     int recv_len = recvfrom(m_socket, buffer, len, 0, (struct sockaddr*)&addr, &addrLen);
 
-    if (recv_len < 0) {
-        return recv_len;
-    }
+
 #ifdef _WIN32
     address = inet_ntoa(addr.sin_addr);
 #else
@@ -105,4 +105,8 @@ int CrossPlatformSocket::recvFrom(char* buffer, int len, std::string& address, u
     port = ntohs(addr.sin_port);
 
     return recv_len;
+}
+
+bool CrossPlatformSocket::isClosed() const {
+    return closed;
 }

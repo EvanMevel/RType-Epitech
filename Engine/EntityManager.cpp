@@ -8,6 +8,6 @@ EntityManager::EntityManager() : nextId(0) {
 
 }
 
-Entity EntityManager::createEntity() {
-    return Entity(nextId++);
+std::shared_ptr<Entity> EntityManager::createEntity() {
+    return std::make_shared<Entity>(nextId++);
 }

@@ -8,10 +8,9 @@
 
 #include <cstddef>
 #include "IComponent.h"
+#include "Engine/Vector2i.h"
 
-class VelocityComponent : public IComponent{
-    int x;
-    int y;
+class VelocityComponent : public IComponent, public Vector2i {
 };
 
 

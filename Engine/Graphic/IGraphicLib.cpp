@@ -29,3 +29,8 @@ void IGraphicLib::processEvents(Engine engine) {
 IGraphicLib::~IGraphicLib() {
 
 }
+
+std::vector<std::function<void()>> &IGraphicLib::getExecs() {
+    return execs;
+}
+

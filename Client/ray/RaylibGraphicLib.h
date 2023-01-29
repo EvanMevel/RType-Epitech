@@ -12,6 +12,7 @@
 class RaylibGraphicLib : public IGraphicLib {
 private:
     std::unordered_map<ColorCodes, ray::Color> colors;
+    std::unordered_map<KeyCodes, ray::KeyboardKey> keys;
     RaylibWindow window;
 
 public:
@@ -28,6 +29,8 @@ public:
     ITexture createTexture(const std::string &texturePath) override;
 
     void drawTexture(ITexture texture, int x, int y, ColorCodes codes) override;
+
+    bool isKeyDown(KeyCodes codes) override;
 
     std::vector<std::any> retrieveEvents() override;
 };

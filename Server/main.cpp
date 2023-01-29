@@ -5,96 +5,81 @@
 #include <iostream>
 #include "Engine/Engine.h"
 #include "Engine/Network/NetServer.h"
-#include "Engine/Component/EntityTypeComponent.h"
 #include "Engine/Network/Packets/TestPacket.h"
-#include "Engine/Network/Packets/EntityTestPacket.h"
 #include "Engine/Component/PositionComponent.h"
+#include "RTypeServer.h"
+#include "PingPacketConsumer.h"
+#include "TimeoutSystem.h"
+#include "HandshakeConsumer.h"
+#include "Engine/Component/VelocityComponent.h"
+#include "Engine/Component/AccelerationComponent.h"
+#include "ServerVelocitySystem.h"
 
+std::atomic<bool> running = true;
 
-class TT : public PacketClientConsumer<TestPacket, int> {
-private:
-    int e;
-public:
-    explicit TT(int e) : e(e) {}
-
-    void consume(TestPacket &packet, std::shared_ptr<NetClient> client, int i) override {
-        std::cout << "packet received: " << packet.getValue() << " data is " << i << " and e is " << e << std::endl;
-        client->sendPacket(packet);
-    }
-};
-
-class MyServer : public NetServer<int> {
-public:
-    MyServer(const std::string &address, unsigned short port) : NetServer(address, port) {}
-
-    int createData(std::shared_ptr<NetClient> &client) override {
-        return client->getPort();
-    }
-
-    void clientConnected(std::shared_ptr<NetClient> &client, int &data) override {
-        std::cout << "Client connected " << client->getAddress() << ":" << client->getPort() << std::endl;
-    }
-};
-
-class TpEntitySystem : public ISystem {
-public:
-    MyServer &srv;
-    int count = 0;
-
-    explicit TpEntitySystem(MyServer &srv) : srv(srv) {}
-
-    void update(Engine &engine) override {
-        count = (count + 1) % 4;
-        if (count != 0) {
-            return;
-        }
-        for (auto &entity: engine.getScene()->getEntities()) {
-            auto pos = entity.getComponent<PositionComponent>();
-            if (pos != nullptr) {
-                int random_number = std::rand() % 480;
-                int random_number2 = std::rand() % 480;
-
-                pos->setX(random_number);
-                pos->setY(random_number2);
-
-                EntityTestPacket packet(entity.getId(), random_number, random_number2);
-                srv.broadcast(packet);
-            }
-        }
-    }
-};
-
-void testSrv() {
-    MyServer srv("127.0.0.1", 4242);
+void testSrv(Engine &e) {
+    RTypeServerPtr srv = std::make_shared<RTypeServer>("127.0.0.1", 4242);
     std::cout << "running" << std::endl;
 
-    Engine e;
-    auto sc = e.createScene<Scene>();
-    e.setScene(sc);
-    sc->addSystem<TpEntitySystem>(srv);
+    srv->addConsumer<PingPacketConsumer>();
+    srv->addConsumer<HandshakeConsumer>(srv, e);
+    srv->addSystem<TimeoutSystem>(srv);
+    e.getScene()->addSystem<ServerVelocitySystem>(srv);
 
-    Entity &ent = sc->createEntity();
-    ent.addComponent<PositionComponent>();
+    std::cout << "Server listening" << std::endl;
 
-    srv.addConsumer<TT>(15);
+    srv->startListening();
 
-    srv.startListening();
-    while (true) {
+    auto ent = e.getScene()->createEntity();
+    ent->addComponent<PositionComponent>();
+    ent->addComponent<VelocityComponent>();
+    ent->addComponent<AccelerationComponent>();
+
+    while (running.load()) {
         auto start = std::chrono::system_clock::now();
 
         e.updateScene();
+        srv->update(e);
 
         auto end = std::chrono::system_clock::now();
         auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
-        Sleep((1000 / 20) - elapsed.count());
+        auto waiting = (1000 / 20) - elapsed.count();
+
+        Sleep(waiting > 0 ? waiting : 0);
     }
+    std::cout << "Server stopped" << std::endl;
+}
+
+void stopThread(Engine &e) {
+    std::string str;
+
+
+    do {
+        std::cin >> str;
+        if (str == "a") {
+            auto ent = e.getScene()->getEntityById(0);
+            auto acc = ent->getComponent<AccelerationComponent>();
+            acc->setX(5);
+        }
+    } while (str != "q");
+
+    std::cout << "Closing..." << std::endl;
+
+    running = false;
 }
 
 int main()
 {
-    testSrv();
+    Engine e;
+    auto sc = e.createScene<Scene>();
+    e.setScene(sc);
 
+    std::thread t = std::thread(stopThread, std::ref(e));
 
-    return 10;
+    testSrv(e);
+
+    t.join();
+
+    return 0;
 }

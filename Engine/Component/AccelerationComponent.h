@@ -8,10 +8,9 @@
 
 #include <cstddef>
 #include "IComponent.h"
+#include "Engine/Vector2i.h"
 
-class AccelerationComponent : public IComponent{
-    size_t x;
-    size_t y;
+class AccelerationComponent : public IComponent, public Vector2i {
 };
 
 
