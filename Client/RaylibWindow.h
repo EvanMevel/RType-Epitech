@@ -26,6 +26,10 @@ public:
     void setBackground(ColorCodes code) override;
 
     void setColors(const std::unordered_map<ColorCodes, ray::Color> &colors);
+
+    int getWidth() override;
+
+    int getHeight() override;
 };
 
 

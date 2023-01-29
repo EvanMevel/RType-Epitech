@@ -90,7 +90,7 @@ void loadGraphsAndScenes(Engine &e) {
 
     lib->addSystem<DrawFixTextureSystem>();
 
-    IWindow &window = lib->createWindow(500, 500, "teststs");
+    IWindow &window = lib->createWindow(1920, 1005, "teststs");
     window.setTargetFPS(60);
     std::cout << "Graph ready" << std::endl;
 

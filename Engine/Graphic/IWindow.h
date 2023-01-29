@@ -19,6 +19,8 @@ public:
     virtual void endDrawing() = 0;
     virtual void setTargetFPS(int) = 0;
     virtual void setBackground(ColorCodes code) = 0;
+    virtual int getWidth() = 0;
+    virtual int getHeight() = 0;
 };
 
 #endif //IWINDOW_H
