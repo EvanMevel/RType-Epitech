@@ -12,7 +12,7 @@ void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClie
     std::cout << "Handshake received" << std::endl;
     data->handshake = true;
 
-    HandshakeResponsePacket responsePacket(HandshakeResponsePacketType::OK);
+    HandshakeResponsePacket responsePacket(HandshakeResponsePacketType::OK, e.getCurrentTick());
     client->sendPacket(responsePacket);
 
     auto player = e.getScene()->createPlayer();

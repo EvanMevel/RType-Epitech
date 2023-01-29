@@ -10,19 +10,15 @@
 #include "Client/Player.h"
 #include "Client/PlayerKeysSystem.h"
 #include "Client/PlayerMoveSystem.h"
-#include "Engine/Component/VelocityComponent.h"
-#include "Engine/Component/AccelerationComponent.h"
-#include "Engine/Component/MaxVelocityComponent.h"
+#include "Engine/Component/AccelerationPhysicComponent.h"
 
 void PlayerInfoConsumer::consume(PlayerInfoPacket &packet, Engine &e) {
 
     auto sc = e.getScene();
     auto player = sc->getEntityById(packet.playerId);
     auto pos = player->getOrCreate<PositionComponent>();
-    player->addComponent<VelocityComponent>();
-    player->addComponent<AccelerationComponent>();
-    auto maxVel = player->addComponent<MaxVelocityComponent>();
-    maxVel->setMaxVelocity(15);
+    auto physic = player->addComponent<AccelerationPhysicComponent>();
+    physic->maxVelocity = 15;
 
     pos->setX(packet.x);
     pos->setY(packet.y);

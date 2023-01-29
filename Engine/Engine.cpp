@@ -28,6 +28,7 @@ std::shared_ptr<IGraphicLib> &Engine::getGraphicLib() {
 }
 
 void Engine::updateScene() {
+    currentTick++;
     if (current != nullptr)
         current->update(*this);
 }
@@ -35,4 +36,12 @@ void Engine::updateScene() {
 void Engine::updateGraphicLib() {
     if (_graphicLib != nullptr)
         _graphicLib->update(*this);
+}
+
+unsigned long long int Engine::getCurrentTick() const {
+    return currentTick;
+}
+
+void Engine::setCurrentTick(unsigned long long int currentTick) {
+    Engine::currentTick = currentTick;
 }

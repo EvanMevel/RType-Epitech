@@ -16,7 +16,7 @@ public:
 
     explicit ServerVelocitySystem(RTypeServerPtr srv) : srv(srv) {}
 
-    void entityMoved(std::shared_ptr<Entity> entity) override;
+    void entityMoved(Engine &engine, std::shared_ptr<Entity> entity) override;
 
     std::string getName() override;
 };

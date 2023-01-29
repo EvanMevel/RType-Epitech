@@ -16,20 +16,18 @@ public:
     Vector2i pos;
     Vector2i velocity;
     Vector2i acceleration;
+    unsigned long long tick;
 public:
     static const int ID = 2;
 
-    EntityVelocityPacket() {}
+    EntityVelocityPacket();
 
-    EntityVelocityPacket(int entityId, Vector2i pos, Vector2i velocity, Vector2i acceleration) : entityId(entityId), pos(pos), velocity(velocity), acceleration(acceleration) {}
+    EntityVelocityPacket(int entityId, const Vector2i &pos, const Vector2i &velocity, const Vector2i &acceleration,
+                         unsigned long long int tick);
 
-    void write(ByteArray &buffer) const override {
-        buffer << entityId << pos << velocity << acceleration;
-    }
+    void write(ByteArray &buffer) const override;
 
-    void read(ByteArray &buffer) override {
-        buffer >> entityId >> pos >> velocity >> acceleration;
-    }
+    void read(ByteArray &buffer) override;
 };
 
 #endif //R_TYPE_SERVER_ENTITYVELOCITYPACKET_H

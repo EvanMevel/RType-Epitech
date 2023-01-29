@@ -16,10 +16,13 @@ enum HandshakeResponsePacketType {
 class HandshakeResponsePacket : public IPacket{
 private:
     HandshakeResponsePacketType type;
+    unsigned long long currentTick;
 public:
     static const int ID = 3;
 
-    explicit HandshakeResponsePacket(HandshakeResponsePacketType type);
+    HandshakeResponsePacket(HandshakeResponsePacketType type, unsigned long long int currentTick);
+
+    unsigned long long int getCurrentTick() const;
 
     HandshakeResponsePacket();
 
