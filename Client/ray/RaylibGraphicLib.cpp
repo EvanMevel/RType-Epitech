@@ -4,6 +4,7 @@
 
 #include "RaylibGraphicLib.h"
 #include "RaylibTexture.h"
+#include "RaylibAnimation.h"
 
 IWindow &RaylibGraphicLib::createWindow(int width, int height, std::string title) {
     ray::InitWindow(width, height, title.c_str());
@@ -16,7 +17,7 @@ IWindow &RaylibGraphicLib::getWindow() {
 }
 
 void RaylibGraphicLib::drawText(std::string string, int x, int y, int size, ColorCodes color) {
-    DrawText(string.c_str(), x, y, size, colors[color]);
+    ray::DrawText(string.c_str(), x, y, size, colors[color]);
 }
 
 void RaylibGraphicLib::closeWindow() {
@@ -29,7 +30,7 @@ ITexture RaylibGraphicLib::createTexture(const std::string &texturePath) {
 
 void RaylibGraphicLib::drawTexture(ITexture texture, int x, int y, ColorCodes code) {
     auto texture2D = any_cast<ray::Texture2D>(texture.handle);
-    DrawTexture(texture2D, x, y, colors[code]);
+    ray::DrawTexture(texture2D, x, y, colors[code]);
 }
 
 std::vector<std::any> RaylibGraphicLib::retrieveEvents() {
@@ -57,4 +58,13 @@ RaylibGraphicLib::RaylibGraphicLib() {
 bool RaylibGraphicLib::isKeyDown(KeyCodes code) {
     ray::KeyboardKey key = keys[code];
     return ray::IsKeyDown(key);
+}
+
+std::shared_ptr<IAnimation> RaylibGraphicLib::createAnimation(const std::string &texturePath) {
+    return std::make_shared<RaylibAnimation>(texturePath);
+}
+
+void RaylibGraphicLib::drawAnimation(std::shared_ptr<IAnimation> animation, int x, int y, ColorCodes codes) {
+    auto texture2D = any_cast<ray::Texture2D>(animation->texture);
+    ray::DrawTexture(texture2D, x, y, colors[codes]);
 }

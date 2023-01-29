@@ -15,6 +15,7 @@
 #include "IWindow.h"
 #include "../SystemHolder.h"
 #include "KeyCodes.h"
+#include "IAnimation.h"
 
 class Engine;
 
@@ -42,8 +43,10 @@ public:
     virtual void closeWindow() = 0;
     virtual ITexture createTexture(const std::string &texturePath) = 0;
     virtual void drawTexture(ITexture, int x, int y, ColorCodes) = 0;
+    virtual void drawAnimation(std::shared_ptr<IAnimation> animation, int x, int y, ColorCodes codes) = 0;
     virtual void drawText(std::string, int x, int y, int size, ColorCodes) = 0;
     virtual bool isKeyDown(KeyCodes) = 0;
+    virtual std::shared_ptr<IAnimation> createAnimation(const std::string &texturePath) = 0;
 
     template<class ...Args>
     void execOnLibThread(std::function<void(Args...)> func, Args... args) {

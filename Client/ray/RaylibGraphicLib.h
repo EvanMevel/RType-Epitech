@@ -33,6 +33,10 @@ public:
     bool isKeyDown(KeyCodes codes) override;
 
     std::vector<std::any> retrieveEvents() override;
+
+    std::shared_ptr<IAnimation> createAnimation(const std::string &texturePath) override;
+
+    void drawAnimation(std::shared_ptr<IAnimation> animation, int x, int y, ColorCodes codes) override;
 };
 
 

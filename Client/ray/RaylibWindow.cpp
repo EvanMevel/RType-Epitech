@@ -36,3 +36,7 @@ int RaylibWindow::getWidth() {
 int RaylibWindow::getHeight() {
     return ray::GetScreenHeight();
 }
+
+void RaylibWindow::setFullScreen() {
+ return ray::ToggleFullscreen();
+}

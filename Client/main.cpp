@@ -18,6 +18,7 @@
 #include "Consumers/PlayerInfoConsumer.h"
 #include "MainMenu.h"
 #include "Engine/VelocitySystem.h"
+#include "AnimationSystem.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -145,6 +146,7 @@ void loadGraphsAndScenes(Engine &e) {
     e.setGraphicLib(lib);
 
     lib->addSystem<DrawFixTextureSystem>();
+    lib->addSystem<AnimationSystem>();
 
     IWindow &window = lib->createWindow(1920, 1005, "teststs");
     window.setTargetFPS(60);

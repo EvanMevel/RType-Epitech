@@ -30,6 +30,8 @@ public:
     int getWidth() override;
 
     int getHeight() override;
+
+    void setFullScreen() override;
 };
 
 
