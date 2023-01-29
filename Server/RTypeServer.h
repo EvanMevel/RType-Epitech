@@ -39,5 +39,7 @@ public:
 
 };
 
+using RTypeServerPtr = std::shared_ptr<RTypeServer>;
+
 
 #endif //R_TYPE_SERVER_RTYPESERVER_H

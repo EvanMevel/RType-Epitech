@@ -7,19 +7,9 @@
 
 #include <cstddef>
 #include "IComponent.h"
+#include "Engine/Vector2i.h"
 
-class PositionComponent : public IComponent{
-private:
-    int x;
-    int y;
-public:
-    int getX() const;
-
-    void setX(int x);
-
-    int getY() const;
-
-    void setY(int y);
+class PositionComponent : public IComponent, public Vector2i {
 };
 
 

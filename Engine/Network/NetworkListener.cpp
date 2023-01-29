@@ -22,7 +22,11 @@ void NetworkListener::listen() {
             //std::cout << "Received message from " << address << ":" << port << ": " << buffer << std::endl;
             messageReceived(address, port, buffer, recv_len);
         } else {
-            errorReceived(getSocket().lastAddress, getSocket().lastPort, recv_len);
+            if (address.empty()) {
+                errorReceived(getSocket().lastAddress, getSocket().lastPort, recv_len);
+            } else {
+                errorReceived(address, port, recv_len);
+            }
         }
     }
 }

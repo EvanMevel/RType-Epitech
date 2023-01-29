@@ -18,7 +18,7 @@ private:
 
 public:
     EntityManager();
-    Entity createEntity();
+    std::shared_ptr<Entity> createEntity();
 };
 
 

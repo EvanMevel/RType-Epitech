@@ -5,16 +5,12 @@
 #ifndef R_TYPE_SERVER_HANDSHAKERESPONSECONSUMER_H
 #define R_TYPE_SERVER_HANDSHAKERESPONSECONSUMER_H
 
+#include "Client/ClientNetServer.h"
 #include "Engine/Network/Packets/HandshakeResponsePacket.h"
-#include "Engine/Engine.h"
-#include "Engine/Network/Packets/PacketConsumer.h"
-#include "Engine/Network/NetworkRemoteServer.h"
 
-class HandshakeResponseConsumer : public PacketConsumer<HandshakeResponsePacket, Engine&> {
-private:
-    NetworkRemoteServer<Engine&> &server;
+class HandshakeResponseConsumer : public ClientPacketConsumer<HandshakeResponsePacket> {
 public:
-    explicit HandshakeResponseConsumer(NetworkRemoteServer<Engine &> &server);
+    explicit HandshakeResponseConsumer(RTypeServer server);
 
     void consume(HandshakeResponsePacket &packet, Engine &e) override;
 };

@@ -11,6 +11,11 @@
 #include "Engine/Network/Packets/PacketConsumer.h"
 
 class PlayerInfoConsumer : public PacketConsumer<PlayerInfoPacket, Engine&> {
+private:
+    ITexture playerTexture;
+public:
+    explicit PlayerInfoConsumer(ITexture playerTexture);
+
 public:
     void consume(PlayerInfoPacket &packet, Engine &e) override;
 };

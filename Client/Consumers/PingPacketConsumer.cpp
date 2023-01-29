@@ -6,7 +6,6 @@
 #include "PingPacketConsumer.h"
 
 void PingPacketConsumer::consume(PingPacket &packet, Engine &e) {
-    std::cout << "Pong!" << std::endl;
 }
 
-PingPacketConsumer::PingPacketConsumer(NetworkRemoteServer<Engine &> &server) : server(server) {}
+PingPacketConsumer::PingPacketConsumer(RTypeServer server) : ClientPacketConsumer(server) {}

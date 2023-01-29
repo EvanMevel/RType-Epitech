@@ -7,7 +7,6 @@ include_directories(.)
 include_directories(Component)
 
 add_library(eng
-        Component/AccelerationComponent.cpp
         Component/AccelerationComponent.h
         Component/EntityTypeComponent.cpp
         Component/EntityTypeComponent.h
@@ -15,11 +14,9 @@ add_library(eng
         Component/HealthComponent.h
         Component/HitboxComponent.cpp
         Component/HitboxComponent.h
-        Component/PositionComponent.cpp
         Component/PositionComponent.h
         Component/TeamComponent.cpp
         Component/TeamComponent.h
-        Component/VelocityComponent.cpp
         Component/VelocityComponent.h
         Component/IComponent.h
 

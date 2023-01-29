@@ -97,9 +97,6 @@ int CrossPlatformSocket::recvFrom(char* buffer, int len, std::string& address, u
     int recv_len = recvfrom(m_socket, buffer, len, 0, (struct sockaddr*)&addr, &addrLen);
 
 
-    if (recv_len < 0) {
-        return recv_len;
-    }
 #ifdef _WIN32
     address = inet_ntoa(addr.sin_addr);
 #else

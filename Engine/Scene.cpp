@@ -10,22 +10,22 @@
 Scene::~Scene() {
 }
 
-void Scene::addEntity(Entity &entity) {
+void Scene::addEntity(std::shared_ptr<Entity> entity) {
     this->entities.push_back(entity);
 }
 
-std::vector<Entity> &Scene::getEntities() {
+std::vector<std::shared_ptr<Entity>> &Scene::getEntities() {
     return this->entities;
 }
 
-Entity &Scene::createEntity() {
+std::shared_ptr<Entity> Scene::createEntity() {
     this->entities.push_back(entityManager.createEntity());
     return this->entities.back();
 }
 
-Entity &Scene::createPlayer() {
-    Entity &ent = createEntity();
-    ent.addComponent<EntityTypeComponent>()->setType(EntityType::PLAYER);
+std::shared_ptr<Entity> Scene::createPlayer() {
+    std::shared_ptr<Entity> ent = createEntity();
+    ent->addComponent<EntityTypeComponent>()->setType(EntityType::PLAYER);
     return ent;
 }
 
@@ -33,13 +33,13 @@ Scene::Scene(EntityManager &entityManager) : entityManager(entityManager) {
 
 }
 
-Entity &Scene::getEntityById(int id) {
+std::shared_ptr<Entity> Scene::getEntityById(int id) {
     for (auto &ent: entities) {
-        if (ent.getId() == id) {
+        if (ent->getId() == id) {
             return ent;
         }
     }
-    Entity ent(id);
+    std::shared_ptr<Entity> ent = std::make_shared<Entity>(id);
     entities.push_back(ent);
     return entities.back();
 }

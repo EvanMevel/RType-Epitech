@@ -12,10 +12,10 @@
 
 class HandshakeConsumer : public PacketClientConsumer<HandshakePacket, std::shared_ptr<ClientData>> {
 private:
-    RTypeServer &server;
+    RTypeServerPtr server;
     Engine &e;
 public:
-    explicit HandshakeConsumer(RTypeServer &server, Engine &e);
+    explicit HandshakeConsumer(RTypeServerPtr server, Engine &e);
 
     void consume(HandshakePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) override;
 };
