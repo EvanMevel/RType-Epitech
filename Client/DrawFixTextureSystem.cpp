@@ -21,3 +21,7 @@ void DrawFixTextureSystem::update(Engine &engine) {
         }
     }
 }
+
+std::string DrawFixTextureSystem::getName() {
+    return "DrawFixTextureSystem";
+}

@@ -9,12 +9,14 @@
 #include "Engine/Network/Packets/PlayerInfoPacket.h"
 #include "Engine/Engine.h"
 #include "Engine/Network/Packets/PacketConsumer.h"
+#include "Client/ClientNetServer.h"
 
 class PlayerInfoConsumer : public PacketConsumer<PlayerInfoPacket, Engine&> {
 private:
     ITexture playerTexture;
+    RTypeServer server;
 public:
-    explicit PlayerInfoConsumer(ITexture playerTexture);
+    PlayerInfoConsumer(ITexture playerTexture, const RTypeServer &srv);
 
 public:
     void consume(PlayerInfoPacket &packet, Engine &e) override;

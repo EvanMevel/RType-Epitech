@@ -5,6 +5,7 @@
 #ifndef R_TYPE_SERVER_VECTOR2I_H
 #define R_TYPE_SERVER_VECTOR2I_H
 
+#include <cmath>
 
 class Vector2i {
 private:
@@ -19,6 +20,15 @@ private:
             if (var < 0) {
                 var = 0;
             }
+        }
+    }
+
+    void ensureNotGreater(int &var, int max) {
+        if (var > max) {
+            var = max;
+        }
+        if (var < -max) {
+            var = -max;
         }
     }
 
@@ -56,6 +66,28 @@ public:
 
     Vector2i clone() const {
         return {x, y};
+    }
+
+    size_t lengthSquare() {
+        return x * x + y * y;
+    }
+
+    size_t length() {
+        return (size_t) std::sqrt(lengthSquare());
+    }
+
+    void normalize() {
+        size_t len = length();
+        if (len == 0) {
+            return;
+        }
+        x /= (int) len;
+        y /= (int) len;
+    }
+
+    void ensureNotGreater(int max) {
+        this->ensureNotGreater(x, max);
+        this->ensureNotGreater(y, max);
     }
 };
 

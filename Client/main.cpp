@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "ClientNetServer.h"
-#include "RaylibGraphicLib.h"
+#include "Client/ray/RaylibGraphicLib.h"
 #include "DrawFixTextureSystem.h"
 #include "Engine/Component/PositionComponent.h"
 #include "Engine/Component/VelocityComponent.h"
@@ -17,6 +17,7 @@
 #include "Client/Consumers/HandshakeResponseConsumer.h"
 #include "Consumers/PlayerInfoConsumer.h"
 #include "MainMenu.h"
+#include "Engine/VelocitySystem.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -67,7 +68,7 @@ void loadNetwork(Engine &e) {
     std::function<void(std::shared_ptr<IGraphicLib>, RTypeServer server)> fu = [](std::shared_ptr<IGraphicLib> lib, RTypeServer server) {
 
         std::cout << "Registering server consumer on graphic thread..." << std::endl;
-        server->addConsumer<PlayerInfoConsumer>(lib->createTexture("../Client/assets/player.png"));
+        server->addConsumer<PlayerInfoConsumer>(lib->createTexture("../Client/assets/player.png"), server);
 
         registeredConsumers = true;
         cv2.notify_all();
@@ -91,8 +92,17 @@ void loadNetwork(Engine &e) {
 
 
     while (!windowClosed) {
+        auto start = std::chrono::system_clock::now();
+
+        e.updateScene();
         server->update(e);
-        Sleep(100);
+
+        auto end = std::chrono::system_clock::now();
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+        auto waiting = (1000 / 20) - elapsed.count();
+
+        Sleep(waiting > 0 ? waiting : 0);
     }
 
     std::cout << "Graphic closed, closing network" << std::endl;
@@ -114,7 +124,6 @@ void graphicLoop(Engine &e) {
         window.beginDrawing();
         window.setBackground(ColorCodes::COLOR_BLACK);
         e.updateGraphicLib();
-        e.updateScene();
         window.endDrawing();
     }
     windowClosed = true;
@@ -123,6 +132,8 @@ void graphicLoop(Engine &e) {
 void loadScenes(Engine &e) {
     auto sc = mainMenu(e);
     e.setScene(sc);
+
+    sc->addSystem<VelocitySystem>();
 }
 
 void loadGraphsAndScenes(Engine &e) {

@@ -11,6 +11,8 @@ class DrawFixTextureSystem : public ISystem {
 public:
     void update(Engine &engine) override;
 
+    std::string getName() override;
+
 };
 
 
