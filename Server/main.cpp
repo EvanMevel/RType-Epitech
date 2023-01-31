@@ -11,9 +11,8 @@
 #include "PingPacketConsumer.h"
 #include "TimeoutSystem.h"
 #include "HandshakeConsumer.h"
-#include "Engine/Component/VelocityComponent.h"
-#include "Engine/Component/AccelerationComponent.h"
 #include "ServerVelocitySystem.h"
+#include "Engine/Component/AccelerationPhysicComponent.h"
 
 std::atomic<bool> running = true;
 
@@ -32,8 +31,9 @@ void testSrv(Engine &e) {
 
     auto ent = e.getScene()->createEntity();
     ent->addComponent<PositionComponent>();
-    ent->addComponent<VelocityComponent>();
-    ent->addComponent<AccelerationComponent>();
+    ent->addComponent<AccelerationPhysicComponent>();
+
+    auto started = std::chrono::system_clock::now();
 
     while (running.load()) {
         auto start = std::chrono::system_clock::now();
@@ -46,7 +46,13 @@ void testSrv(Engine &e) {
 
         auto waiting = (1000 / 20) - elapsed.count();
 
-        Sleep(waiting > 0 ? waiting : 0);
+        if (waiting < 0) {
+            std::cout << "Server is lagging" << std::endl;
+            Sleep(0);
+        } else {
+            unsigned long long ticksBehind = (std::chrono::duration_cast<std::chrono::milliseconds>(end - started).count() / 50) - e.getScene()->getTick();
+            Sleep(waiting);
+        }
     }
     std::cout << "Server stopped" << std::endl;
 }
@@ -59,8 +65,8 @@ void stopThread(Engine &e) {
         std::cin >> str;
         if (str == "a") {
             auto ent = e.getScene()->getEntityById(0);
-            auto acc = ent->getComponent<AccelerationComponent>();
-            acc->setX(5);
+            auto physics = ent->getOrCreate<AccelerationPhysicComponent>();
+            physics->acceleration.setX(5);
         }
     } while (str != "q");
 

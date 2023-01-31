@@ -30,6 +30,16 @@ ByteArray& operator>>(ByteArray &buffer, long long &value) {
     return buffer;
 }
 
+ByteArray& operator<<(ByteArray &buffer, const unsigned long long &value) {
+    buffer.write(value);
+    return buffer;
+}
+
+ByteArray& operator>>(ByteArray &buffer, unsigned long long &value) {
+    buffer.read(value);
+    return buffer;
+}
+
 ByteArray& operator<<(ByteArray &buffer, const Vector2i &value) {
     buffer.write(value.x);
     buffer.write(value.y);

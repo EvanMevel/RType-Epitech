@@ -44,6 +44,10 @@ ByteArray& operator<<(ByteArray &buffer, const long long &value);
 
 ByteArray& operator>>(ByteArray &buffer, long long &value);
 
+ByteArray& operator<<(ByteArray &buffer, const unsigned long long &value);
+
+ByteArray& operator>>(ByteArray &buffer, unsigned long long &value);
+
 ByteArray& operator<<(ByteArray &buffer, const Vector2i &value);
 
 ByteArray& operator>>(ByteArray &buffer, Vector2i &value);

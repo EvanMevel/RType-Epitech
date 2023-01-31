@@ -15,7 +15,7 @@ public:
 
     void update(Engine &engine) override;
 
-    virtual void entityMoved(std::shared_ptr<Entity> entity);
+    virtual void entityMoved(Engine &engine, std::shared_ptr<Entity> entity);
 
     std::string getName() override;
 };

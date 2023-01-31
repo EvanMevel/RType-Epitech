@@ -18,6 +18,7 @@ private:
     std::shared_ptr<Scene> current;
     EntityManager entityManager;
     std::shared_ptr<IGraphicLib> _graphicLib;
+    unsigned long long currentTick = 0;
 public:
     explicit Engine();
 
@@ -37,6 +38,10 @@ public:
     void updateScene();
 
     void updateGraphicLib();
+
+    unsigned long long int getCurrentTick() const;
+
+    void setCurrentTick(unsigned long long int currentTick);
 };
 
 

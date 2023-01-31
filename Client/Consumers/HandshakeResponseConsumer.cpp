@@ -15,6 +15,8 @@ void HandshakeResponseConsumer::consume(HandshakeResponsePacket &packet, Engine 
         };
 
         e.getGraphicLib()->execOnLibThread(func, e.getGraphicLib());
+    } else {
+        e.setCurrentTick(packet.getCurrentTick());
     }
 }
 
