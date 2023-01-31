@@ -17,6 +17,7 @@
 #include "MainMenu.h"
 #include "Engine/VelocitySystem.h"
 #include "Engine/Component/AccelerationPhysicComponent.h"
+#include "Engine/TickUtil.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -71,7 +72,7 @@ void loadNetwork(Engine &e) {
         cv2.notify_all();
     };
 
-    e.getGraphicLib()->execOnLibThread(fu, e.getGraphicLib(), server);
+    e.getEngineComponent<IGraphicLib>()->execOnLibThread(fu, e.getEngineComponent<IGraphicLib>(), server);
 
     server->addSystem<StayAliveSystem>(server);
 
@@ -87,26 +88,22 @@ void loadNetwork(Engine &e) {
 
     server->sendPacket(HandshakePacket());
 
+    auto ticker = e.registerEngineComponent<TickUtil>(20);
 
     while (!windowClosed) {
-        auto start = std::chrono::system_clock::now();
+        ticker->startTick();
 
         e.updateScene();
         server->update(e);
 
-        auto end = std::chrono::system_clock::now();
-        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-
-        auto waiting = (1000 / 20) - elapsed.count();
-
-        Sleep(waiting > 0 ? waiting : 0);
+        ticker->endTickAndWait();
     }
 
     std::cout << "Graphic closed, closing network" << std::endl;
 }
 
 void graphicLoop(Engine &e) {
-    std::shared_ptr<IGraphicLib> lib = e.getGraphicLib();
+    auto lib = e.getEngineComponent<IGraphicLib>();
     IWindow &window = lib->getWindow();
 
     while (!window.shouldClose()) {
@@ -120,7 +117,7 @@ void graphicLoop(Engine &e) {
         }
         window.beginDrawing();
         window.setBackground(ColorCodes::COLOR_BLACK);
-        e.updateGraphicLib();
+        lib->update(e);
         window.endDrawing();
     }
     windowClosed = true;
@@ -138,8 +135,7 @@ void loadGraphsAndScenes(Engine &e) {
 
     std::cout << "[Graphic] Starting..." << std::endl;
 
-    std::shared_ptr<IGraphicLib> lib = std::make_shared<RaylibGraphicLib>();
-    e.setGraphicLib(lib);
+    std::shared_ptr<IGraphicLib> lib = e.registerIEngineComponent<IGraphicLib, RaylibGraphicLib>();
 
     lib->addSystem<DrawFixTextureSystem>();
 

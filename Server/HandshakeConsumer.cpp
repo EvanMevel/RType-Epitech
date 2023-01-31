@@ -5,6 +5,7 @@
 #include "HandshakeConsumer.h"
 #include "Engine/Component/PositionComponent.h"
 #include "Engine/Network/Packets/PlayerInfoPacket.h"
+#include "Engine/TickUtil.h"
 
 HandshakeConsumer::HandshakeConsumer(RTypeServerPtr server, Engine &e) : server(server), e(e) {}
 
@@ -12,7 +13,12 @@ void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClie
     std::cout << "Handshake received" << std::endl;
     data->handshake = true;
 
-    HandshakeResponsePacket responsePacket(HandshakeResponsePacketType::OK, e.getCurrentTick());
+
+    auto ticker = e.getEngineComponent<TickUtil>();
+
+    unsigned long long startedMs = std::chrono::time_point_cast<std::chrono::milliseconds>(ticker->getStarted()).time_since_epoch().count();
+
+    HandshakeResponsePacket responsePacket(HandshakeResponsePacketType::OK, ticker->getCurrentTick(), startedMs);
     client->sendPacket(responsePacket);
 
     auto player = e.getScene()->createPlayer();

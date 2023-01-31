@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "HandshakeResponseConsumer.h"
+#include "Engine/TickUtil.h"
 
 void HandshakeResponseConsumer::consume(HandshakeResponsePacket &packet, Engine &e) {
     if (packet.getType() != HandshakeResponsePacketType::OK) {
@@ -14,9 +15,12 @@ void HandshakeResponseConsumer::consume(HandshakeResponsePacket &packet, Engine 
             lib->closeWindow();
         };
 
-        e.getGraphicLib()->execOnLibThread(func, e.getGraphicLib());
+        e.getEngineComponent<IGraphicLib>()->execOnLibThread(func, e.getEngineComponent<IGraphicLib>());
     } else {
-        e.setCurrentTick(packet.getCurrentTick());
+        auto ticker = e.getEngineComponent<TickUtil>();
+
+        ticker->setCurrentTick(packet.getCurrentTick());
+        ticker->setStarted(packet.getStartedTime());
     }
 }
 

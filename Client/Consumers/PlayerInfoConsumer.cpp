@@ -31,7 +31,7 @@ void PlayerInfoConsumer::consume(PlayerInfoPacket &packet, Engine &e) {
     std::shared_ptr<Player> pl = std::make_shared<Player>();
     pl->entity = player;
 
-    e.getGraphicLib()->addSystem<PlayerKeysSystem>(pl);
+    e.getEngineComponent<IGraphicLib>()->addSystem<PlayerKeysSystem>(pl);
 
     e.getScene()->addSystem<PlayerMoveSystem>(pl, server);
 }
