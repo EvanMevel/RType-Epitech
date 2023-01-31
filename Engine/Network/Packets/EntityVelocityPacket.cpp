@@ -5,7 +5,7 @@
 #include "EntityVelocityPacket.h"
 
 
-EntityVelocityPacket::EntityVelocityPacket(int entityId, const Vector2i &pos, const Vector2i &velocity,
+EntityVelocityPacket::EntityVelocityPacket(size_t entityId, const Vector2i &pos, const Vector2i &velocity,
                                            const Vector2i &acceleration, unsigned long long int tick) : entityId(
         entityId), pos(pos), velocity(velocity), acceleration(acceleration), tick(tick) {}
 

@@ -8,6 +8,10 @@ Engine::Engine() : current(nullptr) {
 
 }
 
+Engine::Engine(size_t startId) : entityManager(startId), current(nullptr) {
+
+}
+
 Engine::~Engine() {
 }
 

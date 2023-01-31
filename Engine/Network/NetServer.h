@@ -127,6 +127,15 @@ public:
             client.second.first->sendPacket(packet);
         }
     }
+
+    template<class Packet>
+    void broadcast(const Packet &packet, std::shared_ptr<NetClient> cli) {
+        for (auto &client : clients) {
+            if (client.second.first != cli) {
+                client.second.first->sendPacket(packet);
+            }
+        }
+    }
 };
 
 template class NetServer<int>;

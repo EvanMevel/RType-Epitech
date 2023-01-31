@@ -26,9 +26,9 @@ public:
 
     void closeWindow() override;
 
-    ITexture createTexture(const std::string &texturePath) override;
+    std::shared_ptr<ITexture> createTexture(const std::string &texturePath) override;
 
-    void drawTexture(ITexture texture, int x, int y, ColorCodes codes) override;
+    void drawTexture(std::shared_ptr<ITexture> texture, int x, int y, ColorCodes codes) override;
 
     bool isKeyDown(KeyCodes codes) override;
 

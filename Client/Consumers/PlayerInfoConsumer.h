@@ -13,10 +13,10 @@
 
 class PlayerInfoConsumer : public PacketConsumer<PlayerInfoPacket, Engine&> {
 private:
-    ITexture playerTexture;
+    std::shared_ptr<ITexture> playerTexture;
     RTypeServer server;
 public:
-    PlayerInfoConsumer(ITexture playerTexture, const RTypeServer &srv);
+    PlayerInfoConsumer(std::shared_ptr<ITexture> playerTexture, const RTypeServer &srv);
 
 public:
     void consume(PlayerInfoPacket &packet, Engine &e) override;

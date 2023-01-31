@@ -14,6 +14,8 @@
 #include "ServerVelocitySystem.h"
 #include "Engine/Component/AccelerationPhysicComponent.h"
 #include "Engine/TickUtil.h"
+#include "Engine/Component/EntityTypeComponent.h"
+#include "PlayerMoveConsumer.h"
 
 std::atomic<bool> running = true;
 
@@ -23,6 +25,9 @@ void testSrv(Engine &e) {
 
     srv->addConsumer<PingPacketConsumer>();
     srv->addConsumer<HandshakeConsumer>(srv, e);
+    srv->addConsumer<PlayerMoveConsumer>(e, srv);
+
+
     srv->addSystem<TimeoutSystem>(srv);
     e.getScene()->addSystem<ServerVelocitySystem>(srv);
 
@@ -32,6 +37,12 @@ void testSrv(Engine &e) {
 
     auto ent = e.getScene()->createEntity();
     ent->addComponent<PositionComponent>();
+    ent->addComponent<EntityTypeComponent>()->setType(EntityType::ENEMY);
+    ent->addComponent<AccelerationPhysicComponent>();
+
+    ent = e.getScene()->createEntity();
+    ent->addComponent<PositionComponent>()->setX(32);
+    ent->addComponent<EntityTypeComponent>()->setType(EntityType::PROJECTILE);
     ent->addComponent<AccelerationPhysicComponent>();
 
     auto ticker = e.registerEngineComponent<TickUtil>(20);
@@ -54,11 +65,11 @@ void stopThread(Engine &e) {
     do {
         std::cin >> str;
         if (str == "a") {
-            auto ent = e.getScene()->getEntityById(0);
+            auto ent = e.getScene()->getEntityById(100);
             auto physics = ent->getOrCreate<AccelerationPhysicComponent>();
             physics->acceleration.setX(5);
         } else if (str == "z") {
-            auto ent = e.getScene()->getEntityById(0);
+            auto ent = e.getScene()->getEntityById(100);
             auto physics = ent->getOrCreate<AccelerationPhysicComponent>();
             physics->acceleration.setX(-5);
 
@@ -72,7 +83,7 @@ void stopThread(Engine &e) {
 
 int main()
 {
-    Engine e;
+    Engine e(100);
     auto sc = e.createScene<Scene>();
     e.setScene(sc);
 

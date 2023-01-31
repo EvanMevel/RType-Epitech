@@ -23,6 +23,8 @@ private:
 public:
     explicit Engine();
 
+    explicit Engine(size_t startId);
+
     virtual ~Engine();
 
     template <class SceneType, class ...Args>

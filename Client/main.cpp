@@ -18,6 +18,7 @@
 #include "Engine/VelocitySystem.h"
 #include "Engine/Component/AccelerationPhysicComponent.h"
 #include "Engine/TickUtil.h"
+#include "Client/Consumers/EntityInfoConsumer.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -34,7 +35,9 @@ class EntityVelocityPacketConsumer : public PacketConsumer<EntityVelocityPacket,
 public:
     void consume(EntityVelocityPacket &packet, Engine &e) override {
 
-        std::cout << "ServerTick: " << packet.tick << " Client tick: " << e.getCurrentTick() << std::endl;
+        auto ticker = e.getEngineComponent<TickUtil>();
+
+        std::cout << "ServerTick: " << packet.tick << " Client tick: " << ticker->getCurrentTick() << std::endl;
 
         auto entity = e.getScene()->getEntityById(packet.entityId);
         auto pos = entity->getOrCreate<PositionComponent>();
@@ -66,7 +69,16 @@ void loadNetwork(Engine &e) {
     std::function<void(std::shared_ptr<IGraphicLib>, RTypeServer server)> fu = [](std::shared_ptr<IGraphicLib> lib, RTypeServer server) {
 
         std::cout << "Registering server consumer on graphic thread..." << std::endl;
-        server->addConsumer<PlayerInfoConsumer>(lib->createTexture("../Client/assets/player.png"), server);
+        auto playerTexture = lib->createTexture("../Client/assets/player.png");
+        server->addConsumer<PlayerInfoConsumer>(playerTexture, server);
+
+        auto enemyTexture = lib->createTexture("../Client/assets/enemy.png");
+        std::unordered_map<EntityType, std::shared_ptr<ITexture>> textures;
+        textures[EntityType::PLAYER] = playerTexture;
+        textures[EntityType::ENEMY] = enemyTexture;
+        textures[EntityType::PROJECTILE] = lib->createTexture("../Client/assets/projectile.png");
+
+        server->addConsumer<EntityInfoConsumer>(textures);
 
         registeredConsumers = true;
         cv2.notify_all();

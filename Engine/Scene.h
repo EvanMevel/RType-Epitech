@@ -34,7 +34,7 @@ public:
     std::shared_ptr<Entity> createEntity();
     std::shared_ptr<Entity> createPlayer();
 
-    std::shared_ptr<Entity> getEntityById(int id);
+    std::shared_ptr<Entity> getEntityById(size_t id);
 };
 
 #endif //B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_SCENE_H

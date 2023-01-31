@@ -36,5 +36,5 @@ void PlayerInfoConsumer::consume(PlayerInfoPacket &packet, Engine &e) {
     e.getScene()->addSystem<PlayerMoveSystem>(pl, server);
 }
 
-PlayerInfoConsumer::PlayerInfoConsumer(ITexture playerTexture, const RTypeServer &srv) : playerTexture(std::move(
+PlayerInfoConsumer::PlayerInfoConsumer(std::shared_ptr<ITexture> playerTexture, const RTypeServer &srv) : playerTexture(std::move(
         playerTexture)), server(srv) {}
