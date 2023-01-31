@@ -5,8 +5,7 @@
 #include "PlayerShootSystem.h"
 #include "Engine/Network/Packets/PlayerShootPacket.h"
 
-PlayerShootSystem::PlayerShootSystem(const std::shared_ptr<Player> &player, const RTypeServer &server) : player(player),
-                                                                                                         server(server) {
+PlayerShootSystem::PlayerShootSystem(const std::shared_ptr<Player> &player) : player(player){
 
 }
 
@@ -15,7 +14,7 @@ void PlayerShootSystem::update(Engine &engine) {
         cooldown--;
     }
     if (player->shoot && cooldown == 0) {
-        server->sendPacket(PlayerShootPacket(player->entity->getId()));
+        engine.getModule<NetworkRemoteServer<Engine&>>()->sendPacket(PlayerShootPacket(player->entity->getId()));
         cooldown = 10;
     }
 }

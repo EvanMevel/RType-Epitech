@@ -6,6 +6,8 @@
 #define R_TYPE_SERVER_CLIENTDATA_H
 
 
+#include <memory>
+
 class ClientData {
 private:
     long long lastPing;

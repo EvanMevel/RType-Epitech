@@ -13,9 +13,8 @@
 class PlayerMoveSystem : public ISystem {
 private:
     std::shared_ptr<Player> player;
-    RTypeServer server;
 public:
-    PlayerMoveSystem(const std::shared_ptr<Player> &player, const RTypeServer &server);
+    PlayerMoveSystem(const std::shared_ptr<Player> &player);
 
     void update(Engine &engine) override;
 };

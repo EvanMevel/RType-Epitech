@@ -15,13 +15,11 @@ void HandshakeResponseConsumer::consume(HandshakeResponsePacket &packet, Engine 
             lib->closeWindow();
         };
 
-        e.getEngineComponent<IGraphicLib>()->execOnLibThread(func, e.getEngineComponent<IGraphicLib>());
+        e.getModule<IGraphicLib>()->execOnLibThread(func, e.getModule<IGraphicLib>());
     } else {
-        auto ticker = e.getEngineComponent<TickUtil>();
+        auto ticker = e.getModule<TickUtil>();
 
         ticker->setCurrentTick(packet.getCurrentTick());
         ticker->setStarted(packet.getStartedTime());
     }
 }
-
-HandshakeResponseConsumer::HandshakeResponseConsumer(RTypeServer server) : ClientPacketConsumer(server) {}

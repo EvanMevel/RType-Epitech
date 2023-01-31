@@ -4,11 +4,17 @@
 
 #include "TimeoutSystem.h"
 #include "Engine/TimeUtil.h"
+#include "RTypeServer.h"
 
+TimeoutSystem::TimeoutSystem() {
+
+}
 
 void TimeoutSystem::update(Engine &engine) {
-    long long currentTime = getCurrentTime();
+    auto server = engine.getModule<RTypeServer>();
     auto it = server->getClients().begin();
+
+    long long currentTime = getCurrentTime();
     while (it != server->getClients().end()) {
         auto &client = it->second.first;
         auto &data = it->second.second;
@@ -20,8 +26,6 @@ void TimeoutSystem::update(Engine &engine) {
         }
     }
 }
-
-TimeoutSystem::TimeoutSystem(RTypeServerPtr server) : server(server) {}
 
 std::string TimeoutSystem::getName() {
     return "TimeoutSystem";

@@ -9,7 +9,7 @@
 #include "Engine/Component/PositionComponent.h"
 
 void DrawFixTextureSystem::update(Engine &engine) {
-    auto lib = engine.getEngineComponent<IGraphicLib>();
+    auto lib = engine.getModule<IGraphicLib>();
     if (lib == nullptr)
         return;
     if(engine.getScene() == nullptr)

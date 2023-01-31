@@ -11,12 +11,7 @@
 
 class StayAliveSystem : public ISystem {
 private:
-    RTypeServer server;
     long long lastPing = 0;
-public:
-    explicit StayAliveSystem(RTypeServer server);
-
-public:
     void update(Engine &engine) override;
 
     std::string getName() override;

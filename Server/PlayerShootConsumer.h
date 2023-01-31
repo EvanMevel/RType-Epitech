@@ -8,17 +8,13 @@
 
 #include "RTypeServer.h"
 #include "Engine/Network/Packets/PlayerShootPacket.h"
-#include "Engine/Engine.h"
 
-class PlayerShootConsumer : public PacketClientConsumer<PlayerShootPacket, std::shared_ptr<ClientData>> {
-private:
-    Engine &e;
-    RTypeServerPtr server;
-
+class PlayerShootConsumer : public RTypePlayerPacketConsumer<PlayerShootPacket> {
 public:
-    PlayerShootConsumer(Engine &e, const RTypeServerPtr &server);
+    explicit PlayerShootConsumer(Engine &e);
 
-    void consume(PlayerShootPacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) override;
+    void consume(PlayerShootPacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data,
+                 std::shared_ptr<Entity> player) override;
 };
 
 

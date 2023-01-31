@@ -10,11 +10,9 @@ void StayAliveSystem::update(Engine &engine) {
     long long currentTime = getCurrentTime();
     if (currentTime - lastPing > 1000) {
         lastPing = currentTime;
-        server->sendPacket(PingPacket::current());
+        engine.getModule<NetworkRemoteServer<Engine&>>()->sendPacket(PingPacket::current());
     }
 }
-
-StayAliveSystem::StayAliveSystem(RTypeServer server) : server(server) {}
 
 std::string StayAliveSystem::getName() {
     return "StayAliveSystem";

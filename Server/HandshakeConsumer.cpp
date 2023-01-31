@@ -3,12 +3,11 @@
 //
 
 #include "HandshakeConsumer.h"
+#include "Engine/Network/Packets/HandshakeResponsePacket.h"
 #include "Engine/EntityUtils.h"
 #include "Engine/Network/Packets/PlayerInfoPacket.h"
 #include "Engine/TickUtil.h"
 #include "Engine/Network/Packets/EntityInfoPacket.h"
-
-HandshakeConsumer::HandshakeConsumer(RTypeServerPtr server, Engine &e) : server(server), e(e) {}
 
 static void sendEntitiesInfo(const std::shared_ptr<NetClient>& client, std::shared_ptr<Scene> scene) {
     for (auto &entity : scene->getEntities()) {
@@ -26,7 +25,7 @@ void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClie
     data->handshake = true;
 
     // Send handshake response with tick information
-    auto ticker = e.getEngineComponent<TickUtil>();
+    auto ticker = e.getModule<TickUtil>();
     unsigned long long startedMs = std::chrono::time_point_cast<std::chrono::milliseconds>(ticker->getStarted()).time_since_epoch().count();
     HandshakeResponsePacket responsePacket(HandshakeResponsePacketType::OK, ticker->getCurrentTick(), startedMs);
     client->sendPacket(responsePacket);
@@ -43,5 +42,7 @@ void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClie
 
     // Send new player info to all other clients
     EntityInfoPacket newPlayerInfo(player);
-    server->broadcast(newPlayerInfo, client);
+    e.getModule<RTypeServer>()->broadcast(newPlayerInfo, client);
 }
+
+HandshakeConsumer::HandshakeConsumer(Engine &e) : RTypePacketConsumer(e) {}

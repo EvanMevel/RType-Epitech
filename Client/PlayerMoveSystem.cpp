@@ -6,8 +6,7 @@
 #include "Engine/Network/Packets/PlayerMovePacket.h"
 #include "Engine/Component/AccelerationPhysicComponent.h"
 
-PlayerMoveSystem::PlayerMoveSystem(const std::shared_ptr<Player> &player, const RTypeServer &server) : player(player),
-                                                                                                       server(server) {}
+PlayerMoveSystem::PlayerMoveSystem(const std::shared_ptr<Player> &player) : player(player) {}
 
 void PlayerMoveSystem::update(Engine &engine) {
     Vector2i acceleration = {0, 0};
@@ -29,5 +28,6 @@ void PlayerMoveSystem::update(Engine &engine) {
     auto physic = player->entity->getOrCreate<AccelerationPhysicComponent>();
     physic->acceleration = acceleration;
 
-    server->sendPacket(PlayerMovePacket((int) player->entity->getId(), acceleration));
+    PlayerMovePacket packet(player->entity->getId(), acceleration);
+    engine.getModule<NetworkRemoteServer<Engine&>>()->sendPacket(packet);
 }

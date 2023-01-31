@@ -18,7 +18,6 @@ private:
 public:
     PlayerInfoConsumer(std::shared_ptr<ITexture> playerTexture, const RTypeServer &srv);
 
-public:
     void consume(PlayerInfoPacket &packet, Engine &e) override;
 };
 

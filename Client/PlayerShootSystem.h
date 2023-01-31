@@ -14,10 +14,9 @@
 class PlayerShootSystem : public ISystem {
 private:
     std::shared_ptr<Player> player;
-    RTypeServer server;
     size_t cooldown = 0;
 public:
-    PlayerShootSystem(const std::shared_ptr<Player> &player, const RTypeServer &server);
+    PlayerShootSystem(const std::shared_ptr<Player> &player);
 
     void update(Engine &engine) override;
 };

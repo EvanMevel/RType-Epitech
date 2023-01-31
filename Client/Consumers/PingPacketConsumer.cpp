@@ -7,5 +7,3 @@
 
 void PingPacketConsumer::consume(PingPacket &packet, Engine &e) {
 }
-
-PingPacketConsumer::PingPacketConsumer(RTypeServer server) : ClientPacketConsumer(server) {}

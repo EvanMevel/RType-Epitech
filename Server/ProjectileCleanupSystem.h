@@ -6,14 +6,10 @@
 #define R_TYPE_SERVER_PROJECTILECLEANUPSYSTEM_H
 
 #include "Engine/ISystem.h"
-#include "RTypeServer.h"
 
 class ProjectileCleanupSystem : public ISystem {
-private:
-    RTypeServerPtr server;
-
 public:
-    explicit ProjectileCleanupSystem(const RTypeServerPtr &server);
+    ProjectileCleanupSystem();
 
     void update(Engine &engine) override;
 };

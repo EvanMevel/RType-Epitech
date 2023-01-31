@@ -24,10 +24,10 @@ void PlayerInfoConsumer::consume(PlayerInfoPacket &packet, Engine &e) {
     std::shared_ptr<Player> pl = std::make_shared<Player>();
     pl->entity = player;
 
-    e.getEngineComponent<IGraphicLib>()->addSystem<PlayerKeysSystem>(pl);
+    e.getModule<IGraphicLib>()->addSystem<PlayerKeysSystem>(pl);
 
-    e.getScene()->addSystem<PlayerMoveSystem>(pl, server);
-    e.getScene()->addSystem<PlayerShootSystem>(pl, server);
+    e.getScene()->addSystem<PlayerMoveSystem>(pl);
+    e.getScene()->addSystem<PlayerShootSystem>(pl);
 }
 
 PlayerInfoConsumer::PlayerInfoConsumer(std::shared_ptr<ITexture> playerTexture, const RTypeServer &srv) : playerTexture(std::move(

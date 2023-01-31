@@ -9,34 +9,43 @@
 
 
 #include <iostream>
+#include "Engine/Engine.h"
 #include "Engine/Network/NetServer.h"
-#include "Engine/Network/Packets/PingPacket.h"
 #include "ClientData.h"
-#include "Engine/SystemHolder.h"
-#include "Engine/Network/Packets/HandshakeResponsePacket.h"
 
 class RTypeServer : public NetServer<std::shared_ptr<ClientData>>, public SystemHolder {
 public:
-    RTypeServer(const std::string &address, unsigned short port) : NetServer(address, port) {}
+    RTypeServer(const std::string &address, unsigned short port);
 
-    ~RTypeServer() override {
+    ~RTypeServer() override;
 
+    std::shared_ptr<ClientData> createData(std::shared_ptr<NetClient> &client) override;
+
+    bool clientConnected(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> data) override;
+
+};
+
+template<class Packet>
+class RTypePacketConsumer : public PacketClientConsumer<Packet, std::shared_ptr<ClientData>> {
+protected:
+    Engine &e;
+public:
+    explicit RTypePacketConsumer(Engine &e) : e(e) {}
+};
+
+template<class Packet>
+class RTypePlayerPacketConsumer : public RTypePacketConsumer<Packet> {
+public:
+    explicit RTypePlayerPacketConsumer(Engine &e) : RTypePacketConsumer<Packet>(e) {}
+
+    void consume(Packet &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) override {
+        data->hasShakeHands();
+        auto player = this->e.getScene()->getEntityById(data->playerId);
+        this->consume(packet, client, data, player);
     }
 
-    std::shared_ptr<ClientData> createData(std::shared_ptr<NetClient> &client) override {
-        return std::make_shared<ClientData>();
-    }
-
-    bool clientConnected(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> data) override {
-        if (clients.size() >= MAX_CLIENTS) {
-            std::cout << client->addressPort() << " kicked. Cause: too many clients already connected" << std::endl;
-            client->sendPacket(HandshakeResponsePacket(HandshakeResponsePacketType::FULL, 0, 0));
-            return false;
-        }
-        std::cout << "Client " << client->addressPort() << " connected" << std::endl;
-        return true;
-    }
-
+    virtual void consume(Packet &packet, std::shared_ptr<NetClient> client,
+                         std::shared_ptr<ClientData> data, std::shared_ptr<Entity> player) = 0;
 };
 
 using RTypeServerPtr = std::shared_ptr<RTypeServer>;

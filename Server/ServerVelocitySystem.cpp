@@ -3,12 +3,17 @@
 //
 
 #include "ServerVelocitySystem.h"
-#include "Engine/Engine.h"
 #include "Engine/Network/Packets/EntityVelocityPacket.h"
+#include "Engine/TickUtil.h"
+#include "RTypeServer.h"
+
+ServerVelocitySystem::ServerVelocitySystem() {}
 
 void ServerVelocitySystem::entityMoved(Engine &engine, std::shared_ptr<Entity> entity) {
-    EntityVelocityPacket packet(entity, engine.getCurrentTick());
-    srv->broadcast(packet);
+    auto ticker = engine.getModule<TickUtil>();
+
+    EntityVelocityPacket packet(entity, ticker->getCurrentTick());
+    engine.getModule<RTypeServer>()->broadcast(packet);
 }
 
 std::string ServerVelocitySystem::getName() {

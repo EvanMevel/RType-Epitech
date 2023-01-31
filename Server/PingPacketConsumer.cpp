@@ -5,6 +5,8 @@
 #include "PingPacketConsumer.h"
 #include "Engine/TimeUtil.h"
 
+PingPacketConsumer::PingPacketConsumer() {}
+
 void PingPacketConsumer::consume(PingPacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) {
     data->hasShakeHands();
 
@@ -14,5 +16,3 @@ void PingPacketConsumer::consume(PingPacket &packet, std::shared_ptr<NetClient> 
 
     client->sendPacket(PingPacket::current());
 }
-
-PingPacketConsumer::PingPacketConsumer() {}

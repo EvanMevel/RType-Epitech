@@ -16,10 +16,10 @@
 #include "Consumers/PlayerInfoConsumer.h"
 #include "MainMenu.h"
 #include "Engine/VelocitySystem.h"
-#include "Engine/Component/AccelerationPhysicComponent.h"
 #include "Engine/TickUtil.h"
 #include "Client/Consumers/EntityInfoConsumer.h"
 #include "Client/Consumers/EntityDestroyConsumer.h"
+#include "Client/Consumers/EntityVelocityPacketConsumer.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -32,26 +32,6 @@ bool registeredConsumers = false;
 
 bool windowClosed = false;
 
-class EntityVelocityPacketConsumer : public PacketConsumer<EntityVelocityPacket, Engine&> {
-public:
-    void consume(EntityVelocityPacket &packet, Engine &e) override {
-
-        auto ticker = e.getEngineComponent<TickUtil>();
-
-        //std::cout << "ServerTick: " << packet.tick << " Client tick: " << ticker->getCurrentTick() << std::endl;
-
-        auto entity = e.getScene()->getEntityById(packet.entityId);
-        auto pos = entity->getOrCreate<PositionComponent>();
-        auto physics = entity->getOrCreate<AccelerationPhysicComponent>();
-
-        pos->setX(packet.pos.x);
-        pos->setY(packet.pos.y);
-
-        physics->velocity = packet.velocity;
-        physics->acceleration = packet.acceleration;
-    }
-};
-
 void loadNetwork(Engine &e) {
     std::unique_lock<std::mutex> lck(graphicMutex);
 
@@ -60,14 +40,16 @@ void loadNetwork(Engine &e) {
         cv.wait(lck);
     }
     std::cout << "[NETWORK] graphic ready" << std::endl;
-    RTypeServer server = std::make_shared<NetworkRemoteServer<Engine&>>(e, "127.0.0.1", 4242);
+    RTypeServer server = e.registerModule<NetworkRemoteServer<Engine&>>(e, "127.0.0.1", 4242);
 
     server->addConsumer<EntityVelocityPacketConsumer>();
-    server->addConsumer<PingPacketConsumer>(server);
-    server->addConsumer<HandshakeResponseConsumer>(server);
+    server->addConsumer<PingPacketConsumer>();
+    server->addConsumer<HandshakeResponseConsumer>();
     server->addConsumer<EntityDestroyConsumer>();
 
+    server->addSystem<StayAliveSystem>();
 
+    //TODO this is not clean, maybe change arguments to be the engine
     std::function<void(std::shared_ptr<IGraphicLib>, RTypeServer server)> fu = [](std::shared_ptr<IGraphicLib> lib, RTypeServer server) {
 
         std::cout << "Registering server consumer on graphic thread..." << std::endl;
@@ -86,9 +68,8 @@ void loadNetwork(Engine &e) {
         cv2.notify_all();
     };
 
-    e.getEngineComponent<IGraphicLib>()->execOnLibThread(fu, e.getEngineComponent<IGraphicLib>(), server);
+    e.getModule<IGraphicLib>()->execOnLibThread(fu, e.getModule<IGraphicLib>(), server);
 
-    server->addSystem<StayAliveSystem>(server);
 
     std::cout << "Waiting for consumer register on graphicLib thread" << std::endl;
 
@@ -102,7 +83,7 @@ void loadNetwork(Engine &e) {
 
     server->sendPacket(HandshakePacket());
 
-    auto ticker = e.registerEngineComponent<TickUtil>(20);
+    auto ticker = e.registerModule<TickUtil>(20);
 
     while (!windowClosed) {
         ticker->startTick();
@@ -117,7 +98,7 @@ void loadNetwork(Engine &e) {
 }
 
 void graphicLoop(Engine &e) {
-    auto lib = e.getEngineComponent<IGraphicLib>();
+    auto lib = e.getModule<IGraphicLib>();
     IWindow &window = lib->getWindow();
 
     while (!window.shouldClose()) {
@@ -149,7 +130,7 @@ void loadGraphsAndScenes(Engine &e) {
 
     std::cout << "[Graphic] Starting..." << std::endl;
 
-    std::shared_ptr<IGraphicLib> lib = e.registerIEngineComponent<IGraphicLib, RaylibGraphicLib>();
+    std::shared_ptr<IGraphicLib> lib = e.registerIModule<IGraphicLib, RaylibGraphicLib>();
 
     lib->addSystem<DrawFixTextureSystem>();
 

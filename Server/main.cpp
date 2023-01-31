@@ -4,17 +4,13 @@
 
 #include <iostream>
 #include "Engine/Engine.h"
-#include "Engine/Network/NetServer.h"
-#include "Engine/Network/Packets/TestPacket.h"
-#include "Engine/Component/PositionComponent.h"
 #include "RTypeServer.h"
+#include "Engine/EntityUtils.h"
+#include "Engine/TickUtil.h"
 #include "PingPacketConsumer.h"
 #include "TimeoutSystem.h"
 #include "HandshakeConsumer.h"
 #include "ServerVelocitySystem.h"
-#include "Engine/Component/AccelerationPhysicComponent.h"
-#include "Engine/TickUtil.h"
-#include "Engine/Component/EntityTypeComponent.h"
 #include "PlayerMoveConsumer.h"
 #include "PlayerShootConsumer.h"
 #include "ProjectileCleanupSystem.h"
@@ -22,29 +18,27 @@
 std::atomic<bool> running = true;
 
 void testSrv(Engine &e) {
-    RTypeServerPtr srv = std::make_shared<RTypeServer>("127.0.0.1", 4242);
+    RTypeServerPtr srv = e.registerModule<RTypeServer>("127.0.0.1", 4242);
     std::cout << "running" << std::endl;
 
     srv->addConsumer<PingPacketConsumer>();
-    srv->addConsumer<HandshakeConsumer>(srv, e);
-    srv->addConsumer<PlayerMoveConsumer>(e, srv);
-    srv->addConsumer<PlayerShootConsumer>(e, srv);
+    srv->addConsumer<HandshakeConsumer>(e);
+    srv->addConsumer<PlayerMoveConsumer>(e);
+    srv->addConsumer<PlayerShootConsumer>(e);
 
 
-    srv->addSystem<TimeoutSystem>(srv);
-    e.getScene()->addSystem<ServerVelocitySystem>(srv);
-    e.getScene()->addSystem<ProjectileCleanupSystem>(srv);
+    srv->addSystem<TimeoutSystem>();
+    e.getScene()->addSystem<ServerVelocitySystem>();
+    e.getScene()->addSystem<ProjectileCleanupSystem>();
 
     std::cout << "Server listening" << std::endl;
 
     srv->startListening();
 
     auto ent = e.getScene()->createEntity();
-    ent->addComponent<PositionComponent>();
-    ent->addComponent<EntityTypeComponent>()->setType(EntityType::ENEMY);
-    ent->addComponent<AccelerationPhysicComponent>();
+    entity::initEnemy(ent, 0, 0);
 
-    auto ticker = e.registerEngineComponent<TickUtil>(20);
+    auto ticker = e.registerModule<TickUtil>(20);
 
     while (running.load()) {
         ticker->startTick();
@@ -59,7 +53,6 @@ void testSrv(Engine &e) {
 
 void stopThread(Engine &e) {
     std::string str;
-
 
     do {
         std::cin >> str;
