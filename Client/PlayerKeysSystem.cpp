@@ -5,10 +5,11 @@
 #include "PlayerKeysSystem.h"
 
 void PlayerKeysSystem::update(Engine &engine) {
-    player->up = engine.getGraphicLib()->isKeyDown(KeyCodes::KEY_UP);
-    player->down = engine.getGraphicLib()->isKeyDown(KeyCodes::KEY_DOWN);
-    player->left = engine.getGraphicLib()->isKeyDown(KeyCodes::KEY_LEFT);
-    player->right = engine.getGraphicLib()->isKeyDown(KeyCodes::KEY_RIGHT);
+    auto lib = engine.getEngineComponent<IGraphicLib>();
+    player->up = lib->isKeyDown(KeyCodes::KEY_UP);
+    player->down = lib->isKeyDown(KeyCodes::KEY_DOWN);
+    player->left = lib->isKeyDown(KeyCodes::KEY_LEFT);
+    player->right = lib->isKeyDown(KeyCodes::KEY_RIGHT);
 }
 
 PlayerKeysSystem::PlayerKeysSystem(const std::shared_ptr<Player> &player) : player(player) {}

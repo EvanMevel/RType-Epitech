@@ -13,7 +13,7 @@ void ServerVelocitySystem::entityMoved(Engine &engine, std::shared_ptr<Entity> e
     auto pos = entity->getComponent<PositionComponent>();
     auto physics = entity->getComponent<AccelerationPhysicComponent>();
 
-    EntityVelocityPacket packet((int) entity->getId(), pos->clone(), physics->velocity.clone(), physics->acceleration.clone(),
+    EntityVelocityPacket packet(entity->getId(), pos->clone(), physics->velocity.clone(), physics->acceleration.clone(),
                                 engine.getCurrentTick());
     srv->broadcast(packet);
 }

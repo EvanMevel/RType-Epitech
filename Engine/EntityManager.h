@@ -18,6 +18,9 @@ private:
 
 public:
     EntityManager();
+
+    explicit EntityManager(size_t nextId);
+
     std::shared_ptr<Entity> createEntity();
 };
 

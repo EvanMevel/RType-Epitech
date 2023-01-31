@@ -12,7 +12,7 @@
  */
 class EntityVelocityPacket : public IPacket {
 public:
-    int entityId;
+    size_t entityId;
     Vector2i pos;
     Vector2i velocity;
     Vector2i acceleration;
@@ -22,7 +22,7 @@ public:
 
     EntityVelocityPacket();
 
-    EntityVelocityPacket(int entityId, const Vector2i &pos, const Vector2i &velocity, const Vector2i &acceleration,
+    EntityVelocityPacket(size_t entityId, const Vector2i &pos, const Vector2i &velocity, const Vector2i &acceleration,
                          unsigned long long int tick);
 
     void write(ByteArray &buffer) const override;

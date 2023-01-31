@@ -9,7 +9,8 @@
 #include "Engine/Component/PositionComponent.h"
 
 void DrawFixTextureSystem::update(Engine &engine) {
-    if (engine.getGraphicLib() == nullptr)
+    auto lib = engine.getEngineComponent<IGraphicLib>();
+    if (lib == nullptr)
         return;
     if(engine.getScene() == nullptr)
         return;
@@ -17,7 +18,7 @@ void DrawFixTextureSystem::update(Engine &engine) {
         auto textureComponent = entity->getComponent<FixTextureComponent>();
         auto posComponent = entity->getComponent<PositionComponent>();
         if (textureComponent != nullptr && posComponent != nullptr) {
-            engine.getGraphicLib()->drawTexture(textureComponent->getTexture(), posComponent->getX(), posComponent->getY(), ColorCodes::COLOR_WHITE);
+            lib->drawTexture(textureComponent->getTexture(), posComponent->getX(), posComponent->getY(), ColorCodes::COLOR_WHITE);
         }
     }
 }

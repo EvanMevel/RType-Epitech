@@ -33,7 +33,7 @@ Scene::Scene(EntityManager &entityManager) : entityManager(entityManager) {
 
 }
 
-std::shared_ptr<Entity> Scene::getEntityById(int id) {
+std::shared_ptr<Entity> Scene::getEntityById(size_t id) {
     for (auto &ent: entities) {
         if (ent->getId() == id) {
             return ent;

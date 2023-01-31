@@ -17,10 +17,13 @@ class Engine {
 private:
     std::shared_ptr<Scene> current;
     EntityManager entityManager;
+    std::unordered_map<std::type_index, std::any> engineComponents;
     std::shared_ptr<IGraphicLib> _graphicLib;
     unsigned long long currentTick = 0;
 public:
     explicit Engine();
+
+    explicit Engine(size_t startId);
 
     virtual ~Engine();
 
@@ -31,13 +34,25 @@ public:
     void setScene(std::shared_ptr<Scene> &scene);
     std::shared_ptr<Scene> &getScene();
 
-    void setGraphicLib(std::shared_ptr<IGraphicLib> &graphicLib);
+    template<class EngineComponent, class ...Args>
+    std::shared_ptr<EngineComponent> registerEngineComponent(Args&&... args) {
+        std::shared_ptr<EngineComponent> engineComponent = std::make_shared<EngineComponent>(args...);
+        engineComponents[std::type_index(typeid(EngineComponent))] = engineComponent;
+        return engineComponent;
+    }
+    template<class IEngineComponent, class EngineComponent, class ...Args>
+    std::shared_ptr<IEngineComponent> registerIEngineComponent(Args&&... args) {
+        std::shared_ptr<IEngineComponent> engineComponent = std::make_shared<EngineComponent>(args...);
+        engineComponents[std::type_index(typeid(IEngineComponent))] = engineComponent;
+        return engineComponent;
+    }
 
-    std::shared_ptr<IGraphicLib> &getGraphicLib();
+    template<class EngineComponent>
+    std::shared_ptr<EngineComponent> getEngineComponent() {
+        return std::any_cast<std::shared_ptr<EngineComponent>>(engineComponents[std::type_index(typeid(EngineComponent))]);
+    }
 
     void updateScene();
-
-    void updateGraphicLib();
 
     unsigned long long int getCurrentTick() const;
 
