@@ -31,7 +31,7 @@ void VelocitySystem::update(Engine &engine) {
                 physic->velocity.ensureNotGreater((int) physic->maxVelocity);
             }
 
-            std::cout << "Accel: " << physic->acceleration.x << ", " << physic->acceleration.y << " Vel: " << physic->velocity.x << ", " << physic->velocity.y << std::endl;
+            //std::cout << "Accel: " << physic->acceleration.x << ", " << physic->acceleration.y << " Vel: " << physic->velocity.x << ", " << physic->velocity.y << std::endl;
 
             // Add velocity to position
             pos->x += physic->velocity.x;

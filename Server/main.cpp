@@ -16,6 +16,8 @@
 #include "Engine/TickUtil.h"
 #include "Engine/Component/EntityTypeComponent.h"
 #include "PlayerMoveConsumer.h"
+#include "PlayerShootConsumer.h"
+#include "ProjectileCleanupSystem.h"
 
 std::atomic<bool> running = true;
 
@@ -26,10 +28,12 @@ void testSrv(Engine &e) {
     srv->addConsumer<PingPacketConsumer>();
     srv->addConsumer<HandshakeConsumer>(srv, e);
     srv->addConsumer<PlayerMoveConsumer>(e, srv);
+    srv->addConsumer<PlayerShootConsumer>(e, srv);
 
 
     srv->addSystem<TimeoutSystem>(srv);
     e.getScene()->addSystem<ServerVelocitySystem>(srv);
+    e.getScene()->addSystem<ProjectileCleanupSystem>(srv);
 
     std::cout << "Server listening" << std::endl;
 
@@ -38,11 +42,6 @@ void testSrv(Engine &e) {
     auto ent = e.getScene()->createEntity();
     ent->addComponent<PositionComponent>();
     ent->addComponent<EntityTypeComponent>()->setType(EntityType::ENEMY);
-    ent->addComponent<AccelerationPhysicComponent>();
-
-    ent = e.getScene()->createEntity();
-    ent->addComponent<PositionComponent>()->setX(32);
-    ent->addComponent<EntityTypeComponent>()->setType(EntityType::PROJECTILE);
     ent->addComponent<AccelerationPhysicComponent>();
 
     auto ticker = e.registerEngineComponent<TickUtil>(20);

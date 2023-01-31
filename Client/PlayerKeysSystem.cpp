@@ -10,6 +10,7 @@ void PlayerKeysSystem::update(Engine &engine) {
     player->down = lib->isKeyDown(KeyCodes::KEY_DOWN);
     player->left = lib->isKeyDown(KeyCodes::KEY_LEFT);
     player->right = lib->isKeyDown(KeyCodes::KEY_RIGHT);
+    player->shoot = lib->isKeyDown(KeyCodes::KEY_SPACE);
 }
 
 PlayerKeysSystem::PlayerKeysSystem(const std::shared_ptr<Player> &player) : player(player) {}

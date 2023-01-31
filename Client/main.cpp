@@ -19,6 +19,7 @@
 #include "Engine/Component/AccelerationPhysicComponent.h"
 #include "Engine/TickUtil.h"
 #include "Client/Consumers/EntityInfoConsumer.h"
+#include "Client/Consumers/EntityDestroyConsumer.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -37,7 +38,7 @@ public:
 
         auto ticker = e.getEngineComponent<TickUtil>();
 
-        std::cout << "ServerTick: " << packet.tick << " Client tick: " << ticker->getCurrentTick() << std::endl;
+        //std::cout << "ServerTick: " << packet.tick << " Client tick: " << ticker->getCurrentTick() << std::endl;
 
         auto entity = e.getScene()->getEntityById(packet.entityId);
         auto pos = entity->getOrCreate<PositionComponent>();
@@ -64,6 +65,7 @@ void loadNetwork(Engine &e) {
     server->addConsumer<EntityVelocityPacketConsumer>();
     server->addConsumer<PingPacketConsumer>(server);
     server->addConsumer<HandshakeResponseConsumer>(server);
+    server->addConsumer<EntityDestroyConsumer>();
 
 
     std::function<void(std::shared_ptr<IGraphicLib>, RTypeServer server)> fu = [](std::shared_ptr<IGraphicLib> lib, RTypeServer server) {
