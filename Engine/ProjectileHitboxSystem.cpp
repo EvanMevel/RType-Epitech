@@ -29,11 +29,7 @@ void ProjectileHitboxSystem::update(Engine &engine) {
 
                     int tmpPosY = tmpPos->y + static_cast<int>(tmpHitbox->getLengthY());
                     int PosY = pos->y + static_cast<int>(hitbox->getLengthY());
-//
-//                    std::cout << "posx: " << pos->x << "  doit etre inferieure a : " << tmpPosX << std::endl;
-//                    std::cout << "Cette valeur : "<< PosX << "  doit etre superieure a: " << tmpPos->x << std::endl;
-//                    std::cout << "posy: " << pos->y << "  doit etre inferieure a : " << tmpPosY << std::endl;
-//                    std::cout << "Cette valeur : " << PosY << "  doit etre superieure a: " << tmpPos->y << std::endl << std::endl << std::endl << std::endl;
+
                     if (pos->x < tmpPosX && PosX > tmpPos->x   &&   pos->y < tmpPosY && PosY > tmpPos->y)
                         std::cout << "Collision detected !" << std::endl;
                 }
