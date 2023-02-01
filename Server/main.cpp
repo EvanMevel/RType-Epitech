@@ -11,11 +11,14 @@
 #include "PingPacketConsumer.h"
 #include "TimeoutSystem.h"
 #include "HandshakeConsumer.h"
+#include "Engine/Component/HitboxComponent.h"
+#include "Engine/Component/TeamComponent.h"
 #include "ServerVelocitySystem.h"
 #include "Engine/Component/AccelerationPhysicComponent.h"
 #include "Engine/TickUtil.h"
 #include "Engine/Component/EntityTypeComponent.h"
 #include "PlayerMoveConsumer.h"
+#include "ServerProjectileHitboxSystem.h"
 
 std::atomic<bool> running = true;
 
@@ -30,6 +33,7 @@ void testSrv(Engine &e) {
 
     srv->addSystem<TimeoutSystem>(srv);
     e.getScene()->addSystem<ServerVelocitySystem>(srv);
+    e.getScene()->addSystem<ServerProjectileHitboxSystem>(srv);
 
     std::cout << "Server listening" << std::endl;
 
@@ -39,6 +43,15 @@ void testSrv(Engine &e) {
     ent->addComponent<PositionComponent>();
     ent->addComponent<EntityTypeComponent>()->setType(EntityType::ENEMY);
     ent->addComponent<AccelerationPhysicComponent>();
+    ent->addComponent<HitboxComponent>();
+    ent->addComponent<TeamComponent>();
+
+    auto team = ent->getComponent<TeamComponent>();
+    team->setTeam(1);
+
+    auto hitbox = ent->getComponent<HitboxComponent>();
+    hitbox->setLengthX(55);
+    hitbox->setLengthY(55);
 
     ent = e.getScene()->createEntity();
     ent->addComponent<PositionComponent>()->setX(32);

@@ -4,6 +4,8 @@
 
 #include "HandshakeConsumer.h"
 #include "Engine/Component/PositionComponent.h"
+#include "Engine/Component/HitboxComponent.h"
+#include "Engine/Component/TeamComponent.h"
 #include "Engine/Network/Packets/PlayerInfoPacket.h"
 #include "Engine/TickUtil.h"
 #include "Engine/Network/Packets/EntityInfoPacket.h"
@@ -42,6 +44,15 @@ void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClie
     auto comp = player->addComponent<PositionComponent>();
     comp->setX(100);
     comp->setY(100);
+
+    auto tim = player->addComponent<TeamComponent>();
+    tim->setTeam(0);
+
+    player->addComponent<HitboxComponent>();
+
+    auto hitbox = player->getComponent<HitboxComponent>();
+    hitbox->setLengthX(55);
+    hitbox->setLengthY(55);
 
     PlayerInfoPacket playerInfo;
     playerInfo.playerId = player->getId();
