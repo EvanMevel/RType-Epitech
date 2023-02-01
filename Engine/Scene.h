@@ -21,6 +21,7 @@ protected:
     EntityManager &entityManager;
 public:
     Scene(EntityManager &entityManager);
+
     Scene(const Scene &other) : SystemHolder(other), entityManager(other.entityManager) {
         for (const auto &ent: other.entities) {
             entities.push_back(ent);
@@ -28,13 +29,16 @@ public:
     }
 
     ~Scene();
-    void addEntity(std::shared_ptr<Entity>);
 
     std::vector<std::shared_ptr<Entity>> &getEntities();
-    std::shared_ptr<Entity> createEntity();
-    std::shared_ptr<Entity> createPlayer();
 
-    std::shared_ptr<Entity> getEntityById(int id);
+    void addEntity(std::shared_ptr<Entity>);
+    std::shared_ptr<Entity> createEntity();
+    std::shared_ptr<Entity> getEntityById(size_t id);
+
+    void removeEntity(std::shared_ptr<Entity> entity);
+    void removeEntity(size_t entityId);
+
 };
 
 #endif //B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_SCENE_H

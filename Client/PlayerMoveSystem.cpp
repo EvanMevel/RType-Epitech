@@ -3,13 +3,12 @@
 //
 
 #include "PlayerMoveSystem.h"
-#include "Engine/Component/AccelerationComponent.h"
 #include "Engine/Network/Packets/PlayerMovePacket.h"
+#include "Engine/Component/AccelerationPhysicComponent.h"
 
-PlayerMoveSystem::PlayerMoveSystem(const std::shared_ptr<Player> &player, const RTypeServer &server) : player(player),
-                                                                                                       server(server) {}
+PlayerMoveSystem::PlayerMoveSystem(const std::shared_ptr<Player> &player) : player(player) {}
 
-void PlayerMoveSystem::update(Engine &engine) {
+void PlayerMoveSystem::update(EnginePtr engine) {
     Vector2i acceleration = {0, 0};
     if (player->up) {
         acceleration.y -= 3;
@@ -26,9 +25,9 @@ void PlayerMoveSystem::update(Engine &engine) {
     if (acceleration.lengthSquare() == 0) {
         return;
     }
-    auto accel = player->entity->getOrCreate<AccelerationComponent>();
-    accel->setX(acceleration.x);
-    accel->setY(acceleration.y);
+    auto physic = player->entity->getOrCreate<AccelerationPhysicComponent>();
+    physic->acceleration = acceleration;
 
-    server->sendPacket(PlayerMovePacket((int) player->entity->getId(), acceleration));
+    PlayerMovePacket packet(player->entity->getId(), acceleration);
+    engine->getModule<ClientNetServer>()->sendPacket(packet);
 }

@@ -4,14 +4,14 @@
 
 #include "FixTextureComponent.h"
 
-const ITexture &FixTextureComponent::getTexture() const {
-    return texture;
-}
-
 FixTextureComponent::FixTextureComponent() {
 
 }
 
-void FixTextureComponent::setTexture(const ITexture &texture) {
+const std::shared_ptr<ITexture> &FixTextureComponent::getTexture() const {
+    return texture;
+}
+
+void FixTextureComponent::setTexture(const std::shared_ptr<ITexture> &texture) {
     FixTextureComponent::texture = texture;
 }

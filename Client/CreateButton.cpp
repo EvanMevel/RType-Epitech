@@ -7,7 +7,7 @@
 std::shared_ptr<Entity> createButton(Engine &e, std::shared_ptr<Scene> sc, const std::string &texturePath, int x, int y)
 {
     auto button = sc->createEntity();
-    auto buttonTexture = e.getGraphicLib()->createTexture(texturePath);
+    auto buttonTexture = e.getModule<IGraphicLib>()->createTexture(texturePath);
     button->addComponent<EntityTypeComponent>()->setType(BUTTON);
     button->addComponent<FixTextureComponent>()->setTexture(buttonTexture);
     auto pos = button->addComponent<PositionComponent>();

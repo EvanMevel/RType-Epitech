@@ -17,11 +17,30 @@ class Engine {
 private:
     std::shared_ptr<Scene> current;
     EntityManager entityManager;
-    std::shared_ptr<IGraphicLib> _graphicLib;
+    std::unordered_map<std::type_index, std::any> engineComponents;
 public:
     explicit Engine();
 
+    explicit Engine(size_t startId);
+
     virtual ~Engine();
+
+    template<class Module, class ...Args>
+    std::shared_ptr<Module> registerModule(Args&&... args) {
+        std::shared_ptr<Module> engineComponent = std::make_shared<Module>(args...);
+        engineComponents[std::type_index(typeid(Module))] = engineComponent;
+        return engineComponent;
+    }
+    template<class IModule, class Module, class ...Args>
+    std::shared_ptr<IModule> registerIModule(Args&&... args) {
+        std::shared_ptr<IModule> engineComponent = std::make_shared<Module>(args...);
+        engineComponents[std::type_index(typeid(IModule))] = engineComponent;
+        return engineComponent;
+    }
+    template<class Module>
+    std::shared_ptr<Module> getModule() {
+        return std::any_cast<std::shared_ptr<Module>>(engineComponents[std::type_index(typeid(Module))]);
+    }
 
     template <class SceneType, class ...Args>
     std::shared_ptr<SceneType> createScene(Args&&... args) {
@@ -30,14 +49,10 @@ public:
     void setScene(std::shared_ptr<Scene> &scene);
     std::shared_ptr<Scene> &getScene();
 
-    void setGraphicLib(std::shared_ptr<IGraphicLib> &graphicLib);
+    void updateScene(EnginePtr engine);
 
-    std::shared_ptr<IGraphicLib> &getGraphicLib();
-
-    void updateScene();
-
-    void updateGraphicLib();
 };
 
+using EnginePtr = std::unique_ptr<Engine>&;
 
 #endif //B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ENGINE_H

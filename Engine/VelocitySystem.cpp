@@ -5,54 +5,49 @@
 #include <iostream>
 #include "VelocitySystem.h"
 #include "Engine/Engine.h"
-#include "Engine/Network/Packets/EntityVelocityPacket.h"
 #include "Engine/Component/PositionComponent.h"
-#include "Engine/Component/VelocityComponent.h"
-#include "Engine/Component/AccelerationComponent.h"
-#include "MaxVelocityComponent.h"
+#include "Engine/Component/AccelerationPhysicComponent.h"
 
-void VelocitySystem::update(Engine &engine) {
+void VelocitySystem::update(EnginePtr engine) {
     count = (count + 1) % 4;
-    for (auto &entity: engine.getScene()->getEntities()) {
+    for (auto &entity: engine->getScene()->getEntities()) {
         auto pos = entity->getComponent<PositionComponent>();
-        auto vel = entity->getComponent<VelocityComponent>();
-        auto accel = entity->getComponent<AccelerationComponent>();
-        if (pos != nullptr && vel != nullptr && accel != nullptr) {
-            if (accel->lengthSquare() != 0) {
+        auto physic = entity->getComponent<AccelerationPhysicComponent>();
+        if (pos != nullptr && physic != nullptr) {
+            if (physic->acceleration.lengthSquare() != 0) {
                 // Add acceleration to velocity
-                vel->x += accel->x;
-                vel->y += accel->y;
+                physic->velocity.x += physic->acceleration.x;
+                physic->velocity.y += physic->acceleration.y;
 
                 // Decrement acceleration
-                accel->decrementTo0(1);
+                physic->acceleration.decrementTo0(physic->accelerationSlow);
             }
 
-            if (vel->lengthSquare() == 0) {
+            if (physic->velocity.lengthSquare() == 0) {
                 continue;
             }
 
-            auto maxVelo = entity->getComponent<MaxVelocityComponent>();
-            if (maxVelo != nullptr) {
-                vel->ensureNotGreater((int) maxVelo->getMaxVelocity());
+            if (physic->maxVelocity != 0) {
+                physic->velocity.ensureNotGreater((int) physic->maxVelocity);
             }
 
-            std::cout << "Accel: " << accel->x << ", " << accel->y << " Vel: " << vel->x << ", " << vel->y << std::endl;
+            //std::cout << "Accel: " << physic->acceleration.x << ", " << physic->acceleration.y << " Vel: " << physic->velocity.x << ", " << physic->velocity.y << std::endl;
 
             // Add velocity to position
-            pos->x += vel->x;
-            pos->y += vel->y;
+            pos->x += physic->velocity.x;
+            pos->y += physic->velocity.y;
 
             // Decrement velocity
-            vel->decrementTo0(1);
+            physic->velocity.decrementTo0(physic->velocitySlow);
 
             if (count == 0) {
-                entityMoved(entity);
+                entityMoved(engine, entity);
             }
         }
     }
 }
 
-void VelocitySystem::entityMoved(std::shared_ptr<Entity> entity) {
+void VelocitySystem::entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity) {
 
 }
 

@@ -4,11 +4,13 @@
 
 #include "PlayerKeysSystem.h"
 
-void PlayerKeysSystem::update(Engine &engine) {
-    player->up = engine.getGraphicLib()->isKeyDown(KeyCodes::KEY_UP);
-    player->down = engine.getGraphicLib()->isKeyDown(KeyCodes::KEY_DOWN);
-    player->left = engine.getGraphicLib()->isKeyDown(KeyCodes::KEY_LEFT);
-    player->right = engine.getGraphicLib()->isKeyDown(KeyCodes::KEY_RIGHT);
+void PlayerKeysSystem::update(EnginePtr engine) {
+    auto lib = engine->getModule<IGraphicLib>();
+    player->up = lib->isKeyDown(KeyCodes::KEY_UP);
+    player->down = lib->isKeyDown(KeyCodes::KEY_DOWN);
+    player->left = lib->isKeyDown(KeyCodes::KEY_LEFT);
+    player->right = lib->isKeyDown(KeyCodes::KEY_RIGHT);
+    player->shoot = lib->isKeyDown(KeyCodes::KEY_SPACE);
 }
 
 PlayerKeysSystem::PlayerKeysSystem(const std::shared_ptr<Player> &player) : player(player) {}

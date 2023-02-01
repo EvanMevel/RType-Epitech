@@ -50,7 +50,7 @@ class PacketClientConsumer : public PacketConsumer<Packet, std::shared_ptr<NetCl
  * @tparam Data The type of data that will be passed to the packet consumers
  */
 template<class Data>
-class NetServer : public NetworkListener , public PacketSender<std::shared_ptr<NetClient>, Data> {
+class NetServer : public NetworkListener, public PacketSender<std::shared_ptr<NetClient>, Data> {
 protected:
     const std::string &_address;
     unsigned short _port;
@@ -100,6 +100,8 @@ public:
 
     virtual bool clientConnected(std::shared_ptr<NetClient> &client, Data data) = 0;
 
+    virtual void clientDisconnected(std::shared_ptr<NetClient> &client, Data data) = 0;
+
     void clientMessage(std::shared_ptr<NetClient> &client, Data data, char *message, int length) {
         try {
             this->consumeMessage(message, length, client, data);
@@ -117,6 +119,7 @@ public:
         auto it = clients.find(key);
         if (it != clients.end()) {
             std::cout << "Client " << key << " disconnected" << std::endl;
+            clientDisconnected(it->second.first, it->second.second);
             clients.erase(it);
         }
     }
@@ -127,8 +130,15 @@ public:
             client.second.first->sendPacket(packet);
         }
     }
-};
 
-template class NetServer<int>;
+    template<class Packet>
+    void broadcast(const Packet &packet, std::shared_ptr<NetClient> cli) {
+        for (auto &client : clients) {
+            if (client.second.first != cli) {
+                client.second.first->sendPacket(packet);
+            }
+        }
+    }
+};
 
 #endif //R_TYPE_SERVER_NETSERVER_H
