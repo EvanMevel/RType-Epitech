@@ -6,7 +6,8 @@
 #include "HandshakeResponseConsumer.h"
 #include "Engine/TickUtil.h"
 
-void HandshakeResponseConsumer::consume(HandshakeResponsePacket &packet, Engine &e) {
+void HandshakeResponseConsumer::consume(HandshakeResponsePacket &packet, EnginePtr engine,
+                                        RTypeServer server) {
     if (packet.getType() != HandshakeResponsePacketType::OK) {
         std::function<void(std::shared_ptr<IGraphicLib>)> func = [](std::shared_ptr<IGraphicLib> lib) {
             if (lib->getWindow().shouldClose()) {
@@ -15,9 +16,9 @@ void HandshakeResponseConsumer::consume(HandshakeResponsePacket &packet, Engine 
             lib->closeWindow();
         };
 
-        e.getModule<IGraphicLib>()->execOnLibThread(func, e.getModule<IGraphicLib>());
+        engine->getModule<IGraphicLib>()->execOnLibThread(func, engine->getModule<IGraphicLib>());
     } else {
-        auto ticker = e.getModule<TickUtil>();
+        auto ticker = engine->getModule<TickUtil>();
 
         ticker->setCurrentTick(packet.getCurrentTick());
         ticker->setStarted(packet.getStartedTime());

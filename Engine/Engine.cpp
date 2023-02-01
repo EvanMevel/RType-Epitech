@@ -23,7 +23,7 @@ std::shared_ptr<Scene> &Engine::getScene() {
     return this->current;
 }
 
-void Engine::updateScene() {
+void Engine::updateScene(EnginePtr engine) {
     if (current != nullptr)
-        current->update(*this);
+        current->update(engine);
 }

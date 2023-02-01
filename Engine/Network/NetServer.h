@@ -50,7 +50,7 @@ class PacketClientConsumer : public PacketConsumer<Packet, std::shared_ptr<NetCl
  * @tparam Data The type of data that will be passed to the packet consumers
  */
 template<class Data>
-class NetServer : public NetworkListener , public PacketSender<std::shared_ptr<NetClient>, Data> {
+class NetServer : public NetworkListener, public PacketSender<std::shared_ptr<NetClient>, Data> {
 protected:
     const std::string &_address;
     unsigned short _port;
@@ -137,7 +137,5 @@ public:
         }
     }
 };
-
-template class NetServer<int>;
 
 #endif //R_TYPE_SERVER_NETSERVER_H

@@ -5,12 +5,13 @@
 #include "EntityVelocityPacketConsumer.h"
 #include "Engine/TickUtil.h"
 
-void EntityVelocityPacketConsumer::consume(EntityVelocityPacket &packet, Engine &e) {
-    auto ticker = e.getModule<TickUtil>();
+void EntityVelocityPacketConsumer::consume(EntityVelocityPacket &packet, EnginePtr engine,
+                                           RTypeServer server) {
+    auto ticker = engine->getModule<TickUtil>();
 
     //std::cout << "ServerTick: " << packet.tick << " Client tick: " << ticker->getCurrentTick() << std::endl;
 
-    auto entity = e.getScene()->getEntityById(packet.entityId);
+    auto entity = engine->getScene()->getEntityById(packet.entityId);
     auto pos = entity->getOrCreate<PositionComponent>();
     auto physics = entity->getOrCreate<AccelerationPhysicComponent>();
 

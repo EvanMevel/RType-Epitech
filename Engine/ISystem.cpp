@@ -11,7 +11,7 @@ ISystem::~ISystem() {
 
 }
 
-void ISystem::update(Engine &) {
+void ISystem::update(EnginePtr &) {
 
 }
 

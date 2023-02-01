@@ -13,7 +13,7 @@ class TimeoutSystem : public ISystem {
 public:
     TimeoutSystem();
 
-    void update(Engine &engine) override;
+    void update(EnginePtr engine) override;
 
     std::string getName() override;
 };

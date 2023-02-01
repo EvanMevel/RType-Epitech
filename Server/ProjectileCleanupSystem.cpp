@@ -8,9 +8,9 @@
 #include "Engine/Component/PositionComponent.h"
 #include "Engine/Network/Packets/EntityDestroyPacket.h"
 
-void ProjectileCleanupSystem::update(Engine &engine) {
-    auto it = engine.getScene()->getEntities().begin();
-    while (it != engine.getScene()->getEntities().end()) {
+void ProjectileCleanupSystem::update(EnginePtr engine) {
+    auto it = engine->getScene()->getEntities().begin();
+    while (it != engine->getScene()->getEntities().end()) {
         auto &entity = *it;
         auto type = entity->getComponent<EntityTypeComponent>();
         if (type == nullptr || type->getType() != EntityType::PROJECTILE) {
@@ -24,8 +24,8 @@ void ProjectileCleanupSystem::update(Engine &engine) {
         }
         if (pos->getX() < -20 || pos->getX() > 200) {
             EntityDestroyPacket packet(entity->getId());
-            engine.getModule<RTypeServer>()->broadcast(packet);
-            it = engine.getScene()->getEntities().erase(it);
+            engine->getModule<RTypeServer>()->broadcast(packet);
+            it = engine->getScene()->getEntities().erase(it);
         } else {
             it++;
         }

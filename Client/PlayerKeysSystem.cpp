@@ -4,8 +4,8 @@
 
 #include "PlayerKeysSystem.h"
 
-void PlayerKeysSystem::update(Engine &engine) {
-    auto lib = engine.getModule<IGraphicLib>();
+void PlayerKeysSystem::update(EnginePtr engine) {
+    auto lib = engine->getModule<IGraphicLib>();
     player->up = lib->isKeyDown(KeyCodes::KEY_UP);
     player->down = lib->isKeyDown(KeyCodes::KEY_DOWN);
     player->left = lib->isKeyDown(KeyCodes::KEY_LEFT);

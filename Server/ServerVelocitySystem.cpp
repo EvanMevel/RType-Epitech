@@ -9,11 +9,11 @@
 
 ServerVelocitySystem::ServerVelocitySystem() {}
 
-void ServerVelocitySystem::entityMoved(Engine &engine, std::shared_ptr<Entity> entity) {
-    auto ticker = engine.getModule<TickUtil>();
+void ServerVelocitySystem::entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity) {
+    auto ticker = engine->getModule<TickUtil>();
 
     EntityVelocityPacket packet(entity, ticker->getCurrentTick());
-    engine.getModule<RTypeServer>()->broadcast(packet);
+    engine->getModule<RTypeServer>()->broadcast(packet);
 }
 
 std::string ServerVelocitySystem::getName() {

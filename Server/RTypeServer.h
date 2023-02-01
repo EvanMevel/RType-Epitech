@@ -28,19 +28,19 @@ public:
 template<class Packet>
 class RTypePacketConsumer : public PacketClientConsumer<Packet, std::shared_ptr<ClientData>> {
 protected:
-    Engine &e;
+    EnginePtr e;
 public:
-    explicit RTypePacketConsumer(Engine &e) : e(e) {}
+    explicit RTypePacketConsumer(EnginePtr e) : e(e) {}
 };
 
 template<class Packet>
 class RTypePlayerPacketConsumer : public RTypePacketConsumer<Packet> {
 public:
-    explicit RTypePlayerPacketConsumer(Engine &e) : RTypePacketConsumer<Packet>(e) {}
+    explicit RTypePlayerPacketConsumer(EnginePtr e) : RTypePacketConsumer<Packet>(e) {}
 
     void consume(Packet &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) override {
         data->hasShakeHands();
-        auto player = this->e.getScene()->getEntityById(data->playerId);
+        auto player = this->e->getScene()->getEntityById(data->playerId);
         this->consume(packet, client, data, player);
     }
 

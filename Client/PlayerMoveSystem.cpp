@@ -8,7 +8,7 @@
 
 PlayerMoveSystem::PlayerMoveSystem(const std::shared_ptr<Player> &player) : player(player) {}
 
-void PlayerMoveSystem::update(Engine &engine) {
+void PlayerMoveSystem::update(EnginePtr engine) {
     Vector2i acceleration = {0, 0};
     if (player->up) {
         acceleration.y -= 3;
@@ -29,5 +29,5 @@ void PlayerMoveSystem::update(Engine &engine) {
     physic->acceleration = acceleration;
 
     PlayerMovePacket packet(player->entity->getId(), acceleration);
-    engine.getModule<NetworkRemoteServer<Engine&>>()->sendPacket(packet);
+    engine->getModule<ClientNetServer>()->sendPacket(packet);
 }

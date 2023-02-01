@@ -6,15 +6,15 @@
 #include "Engine/EntityUtils.h"
 #include "Engine/Network/Packets/EntityInfoPacket.h"
 
-PlayerShootConsumer::PlayerShootConsumer(Engine &e) : RTypePlayerPacketConsumer(e) {}
+PlayerShootConsumer::PlayerShootConsumer(EnginePtr e) : RTypePlayerPacketConsumer(e) {}
 
 void PlayerShootConsumer::consume(PlayerShootPacket &packet, std::shared_ptr<NetClient> client,
                                   std::shared_ptr<ClientData> data, std::shared_ptr<Entity> player) {
     auto pos = player->getComponent<PositionComponent>();
 
-    auto projectile = e.getScene()->createEntity();
+    auto projectile = e->getScene()->createEntity();
     entity::initProjectile(projectile, pos->x + 20, pos->y + 20);
 
     EntityInfoPacket newEntityPacket(projectile);
-    e.getModule<RTypeServer>()->broadcast(newEntityPacket);
+    e->getModule<RTypeServer>()->broadcast(newEntityPacket);
 }

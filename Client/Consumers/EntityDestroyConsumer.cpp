@@ -4,6 +4,6 @@
 
 #include "EntityDestroyConsumer.h"
 
-void EntityDestroyConsumer::consume(EntityDestroyPacket &packet, Engine &e) {
-    e.getScene()->removeEntity(packet.entityId);
+void EntityDestroyConsumer::consume(EntityDestroyPacket &packet, EnginePtr engine, RTypeServer server) {
+    engine->getScene()->removeEntity(packet.entityId);
 }

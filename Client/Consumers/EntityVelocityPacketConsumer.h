@@ -6,13 +6,12 @@
 #define R_TYPE_SERVER_ENTITYVELOCITYPACKETCONSUMER_H
 
 
-#include "Engine/Network/Packets/PacketConsumer.h"
+#include "Client/ClientNetServer.h"
 #include "Engine/Network/Packets/EntityVelocityPacket.h"
-#include "Engine/Engine.h"
 
-class EntityVelocityPacketConsumer : public PacketConsumer<EntityVelocityPacket, Engine&>{
+class EntityVelocityPacketConsumer : public ClientPacketConsumer<EntityVelocityPacket>{
 public:
-    void consume(EntityVelocityPacket &packet, Engine& e) override;
+    void consume(EntityVelocityPacket &packet, EnginePtr engine, RTypeServer server) override;
 };
 
 

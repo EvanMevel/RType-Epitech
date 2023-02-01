@@ -10,8 +10,8 @@ TimeoutSystem::TimeoutSystem() {
 
 }
 
-void TimeoutSystem::update(Engine &engine) {
-    auto server = engine.getModule<RTypeServer>();
+void TimeoutSystem::update(EnginePtr engine) {
+    auto server = engine->getModule<RTypeServer>();
     auto it = server->getClients().begin();
 
     long long currentTime = getCurrentTime();

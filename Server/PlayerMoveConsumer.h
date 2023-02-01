@@ -11,7 +11,7 @@
 
 class PlayerMoveConsumer : public RTypePlayerPacketConsumer<PlayerMovePacket> {
 public:
-    explicit PlayerMoveConsumer(Engine &e);
+    explicit PlayerMoveConsumer(EnginePtr e);
 
     void consume(PlayerMovePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data,
                  std::shared_ptr<Entity> player) override;

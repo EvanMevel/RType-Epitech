@@ -11,7 +11,7 @@ class ProjectileCleanupSystem : public ISystem {
 public:
     ProjectileCleanupSystem();
 
-    void update(Engine &engine) override;
+    void update(EnginePtr engine) override;
 };
 
 

@@ -32,7 +32,7 @@ bool registeredConsumers = false;
 
 bool windowClosed = false;
 
-void loadNetwork(Engine &e) {
+void loadNetwork(EnginePtr engine) {
     std::unique_lock<std::mutex> lck(graphicMutex);
 
     std::cout << "[NETWORK] waiting for graphic" << std::endl;
@@ -40,7 +40,7 @@ void loadNetwork(Engine &e) {
         cv.wait(lck);
     }
     std::cout << "[NETWORK] graphic ready" << std::endl;
-    RTypeServer server = e.registerModule<NetworkRemoteServer<Engine&>>(e, "127.0.0.1", 4242);
+    RTypeServer server = engine->registerModule<ClientNetServer>(engine, "127.0.0.1", 4242);
 
     server->addConsumer<EntityVelocityPacketConsumer>();
     server->addConsumer<PingPacketConsumer>();
@@ -54,7 +54,7 @@ void loadNetwork(Engine &e) {
 
         std::cout << "Registering server consumer on graphic thread..." << std::endl;
         auto playerTexture = lib->createTexture("../Client/assets/player.png");
-        server->addConsumer<PlayerInfoConsumer>(playerTexture, server);
+        server->addConsumer<PlayerInfoConsumer>(playerTexture);
 
         auto enemyTexture = lib->createTexture("../Client/assets/enemy.png");
         std::unordered_map<EntityType, std::shared_ptr<ITexture>> textures;
@@ -68,7 +68,7 @@ void loadNetwork(Engine &e) {
         cv2.notify_all();
     };
 
-    e.getModule<IGraphicLib>()->execOnLibThread(fu, e.getModule<IGraphicLib>(), server);
+    engine->getModule<IGraphicLib>()->execOnLibThread(fu, engine->getModule<IGraphicLib>(), server);
 
 
     std::cout << "Waiting for consumer register on graphicLib thread" << std::endl;
@@ -83,13 +83,13 @@ void loadNetwork(Engine &e) {
 
     server->sendPacket(HandshakePacket());
 
-    auto ticker = e.registerModule<TickUtil>(20);
+    auto ticker = engine->registerModule<TickUtil>(20);
 
     while (!windowClosed) {
         ticker->startTick();
 
-        e.updateScene();
-        server->update(e);
+        engine->updateScene(engine);
+        server->update(engine);
 
         ticker->endTickAndWait();
     }
@@ -97,8 +97,8 @@ void loadNetwork(Engine &e) {
     std::cout << "Graphic closed, closing network" << std::endl;
 }
 
-void graphicLoop(Engine &e) {
-    auto lib = e.getModule<IGraphicLib>();
+void graphicLoop(EnginePtr engine) {
+    auto lib = engine->getModule<IGraphicLib>();
     IWindow &window = lib->getWindow();
 
     while (!window.shouldClose()) {
@@ -112,25 +112,25 @@ void graphicLoop(Engine &e) {
         }
         window.beginDrawing();
         window.setBackground(ColorCodes::COLOR_BLACK);
-        lib->update(e);
+        lib->update(engine);
         window.endDrawing();
     }
     windowClosed = true;
 }
 
-void loadScenes(Engine &e) {
-    auto sc = mainMenu(e);
-    e.setScene(sc);
+void loadScenes(EnginePtr engine) {
+    auto sc = mainMenu(engine);
+    engine->setScene(sc);
 
     sc->addSystem<VelocitySystem>();
 }
 
-void loadGraphsAndScenes(Engine &e) {
+void loadGraphsAndScenes(EnginePtr engine) {
     std::unique_lock<std::mutex> lck(graphicMutex);
 
     std::cout << "[Graphic] Starting..." << std::endl;
 
-    std::shared_ptr<IGraphicLib> lib = e.registerIModule<IGraphicLib, RaylibGraphicLib>();
+    std::shared_ptr<IGraphicLib> lib = engine->registerIModule<IGraphicLib, RaylibGraphicLib>();
 
     lib->addSystem<DrawFixTextureSystem>();
 
@@ -138,7 +138,7 @@ void loadGraphsAndScenes(Engine &e) {
     window.setTargetFPS(60);
     std::cout << "[Graphic] Window created" << std::endl;
 
-    loadScenes(e);
+    loadScenes(engine);
     std::cout << "[Graphic] Scenes ready" << std::endl;
 
     graphicReady = true;
@@ -149,17 +149,17 @@ void loadGraphsAndScenes(Engine &e) {
     lck.unlock();
 }
 
-void startGraph(Engine &e) {
-    loadGraphsAndScenes(e);
-    graphicLoop(e);
+void startGraph(EnginePtr engine) {
+    loadGraphsAndScenes(engine);
+    graphicLoop(engine);
 }
 
 void loadAll() {
-    Engine e;
+    std::unique_ptr<Engine> engine = std::make_unique<Engine>();
 
-    std::thread net(startGraph, std::ref(e));
+    std::thread net(startGraph, std::ref(engine));
 
-    loadNetwork(e);
+    loadNetwork(engine);
 
     net.join();
 }

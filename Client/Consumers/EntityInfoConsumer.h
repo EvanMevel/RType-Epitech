@@ -6,18 +6,16 @@
 #define R_TYPE_SERVER_ENTITYINFOCONSUMER_H
 
 
+#include "Client/ClientNetServer.h"
 #include "Engine/Network/Packets/EntityInfoPacket.h"
-#include "Engine/Engine.h"
-#include "Engine/Network/Packets/PacketConsumer.h"
-#include "Engine/EntityType.h"
 
-class EntityInfoConsumer : public PacketConsumer<EntityInfoPacket, Engine&> {
+class EntityInfoConsumer : public ClientPacketConsumer<EntityInfoPacket> {
 private:
     std::unordered_map<EntityType, std::shared_ptr<ITexture>> textures;
 public:
     explicit EntityInfoConsumer(const std::unordered_map<EntityType, std::shared_ptr<ITexture>> &textures);
 
-    void consume(EntityInfoPacket &packet, Engine &e) override;
+    void consume(EntityInfoPacket &packet, EnginePtr engine, RTypeServer server) override;
 };
 
 

@@ -6,14 +6,12 @@
 #define R_TYPE_SERVER_ENTITYDESTROYCONSUMER_H
 
 
+#include "Client/ClientNetServer.h"
 #include "Engine/Network/Packets/EntityDestroyPacket.h"
-#include "Engine/Engine.h"
-#include "Engine/Network/Packets/PacketConsumer.h"
 
-class EntityDestroyConsumer : public PacketConsumer<EntityDestroyPacket, Engine&>{
-
-    void consume(EntityDestroyPacket &packet, Engine &e) override;
+class EntityDestroyConsumer : public ClientPacketConsumer<EntityDestroyPacket>{
+public:
+    void consume(EntityDestroyPacket &packet, EnginePtr engine, RTypeServer server) override;
 };
-
 
 #endif //R_TYPE_SERVER_ENTITYDESTROYCONSUMER_H

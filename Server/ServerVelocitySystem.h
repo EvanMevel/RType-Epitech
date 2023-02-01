@@ -11,7 +11,7 @@ class ServerVelocitySystem : public VelocitySystem {
 public:
     ServerVelocitySystem();
 
-    void entityMoved(Engine &engine, std::shared_ptr<Entity> entity) override;
+    void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity) override;
 
     std::string getName() override;
 };

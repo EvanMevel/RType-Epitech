@@ -12,8 +12,10 @@
 #include "Client/PlayerMoveSystem.h"
 #include "Client/PlayerShootSystem.h"
 
-void PlayerInfoConsumer::consume(PlayerInfoPacket &packet, Engine &e) {
-    auto player = e.getScene()->getEntityById(packet.playerId);
+PlayerInfoConsumer::PlayerInfoConsumer(std::shared_ptr<ITexture> playerTexture) : playerTexture(std::move(playerTexture)) {}
+
+void PlayerInfoConsumer::consume(PlayerInfoPacket &packet, EnginePtr engine, RTypeServer server) {
+    auto player = engine->getScene()->getEntityById(packet.playerId);
     entity::initPlayer(player, packet.x, packet.y);
 
     auto texture = player->getOrCreate<FixTextureComponent>();
@@ -24,11 +26,8 @@ void PlayerInfoConsumer::consume(PlayerInfoPacket &packet, Engine &e) {
     std::shared_ptr<Player> pl = std::make_shared<Player>();
     pl->entity = player;
 
-    e.getModule<IGraphicLib>()->addSystem<PlayerKeysSystem>(pl);
+    engine->getModule<IGraphicLib>()->addSystem<PlayerKeysSystem>(pl);
 
-    e.getScene()->addSystem<PlayerMoveSystem>(pl);
-    e.getScene()->addSystem<PlayerShootSystem>(pl);
+    engine->getScene()->addSystem<PlayerMoveSystem>(pl);
+    engine->getScene()->addSystem<PlayerShootSystem>(pl);
 }
-
-PlayerInfoConsumer::PlayerInfoConsumer(std::shared_ptr<ITexture> playerTexture, const RTypeServer &srv) : playerTexture(std::move(
-        playerTexture)), server(srv) {}

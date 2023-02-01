@@ -5,5 +5,6 @@
 #include <iostream>
 #include "PingPacketConsumer.h"
 
-void PingPacketConsumer::consume(PingPacket &packet, Engine &e) {
+void PingPacketConsumer::consume(PingPacket &packet, EnginePtr engine, RTypeServer server) {
+
 }

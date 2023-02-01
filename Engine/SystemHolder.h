@@ -14,7 +14,7 @@
  * @brief Holds systems
  * Systems can be added using the addSystem method
  */
-class SystemHolder {
+class SystemHolder : public ISystem {
 protected:
     std::vector<std::shared_ptr<ISystem>> systems;
 public:
@@ -40,7 +40,7 @@ public:
      * @brief Call the update method of all systems
      * @param engine
      */
-    void update(Engine &engine) {
+    void update(EnginePtr engine) override {
         for (const auto &sys: systems) {
             sys->update(engine);
         }

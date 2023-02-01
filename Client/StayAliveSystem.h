@@ -12,7 +12,7 @@
 class StayAliveSystem : public ISystem {
 private:
     long long lastPing = 0;
-    void update(Engine &engine) override;
+    void update(EnginePtr engine) override;
 
     std::string getName() override;
 };

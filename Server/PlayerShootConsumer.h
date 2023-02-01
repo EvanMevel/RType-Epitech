@@ -11,7 +11,7 @@
 
 class PlayerShootConsumer : public RTypePlayerPacketConsumer<PlayerShootPacket> {
 public:
-    explicit PlayerShootConsumer(Engine &e);
+    explicit PlayerShootConsumer(EnginePtr e);
 
     void consume(PlayerShootPacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data,
                  std::shared_ptr<Entity> player) override;

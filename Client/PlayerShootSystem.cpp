@@ -9,12 +9,12 @@ PlayerShootSystem::PlayerShootSystem(const std::shared_ptr<Player> &player) : pl
 
 }
 
-void PlayerShootSystem::update(Engine &engine) {
+void PlayerShootSystem::update(EnginePtr engine) {
     if (cooldown > 0) {
         cooldown--;
     }
     if (player->shoot && cooldown == 0) {
-        engine.getModule<NetworkRemoteServer<Engine&>>()->sendPacket(PlayerShootPacket(player->entity->getId()));
+        engine->getModule<ClientNetServer>()->sendPacket(PlayerShootPacket(player->entity->getId()));
         cooldown = 10;
     }
 }

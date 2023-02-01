@@ -16,7 +16,7 @@ private:
 public:
     PlayerMoveSystem(const std::shared_ptr<Player> &player);
 
-    void update(Engine &engine) override;
+    void update(EnginePtr engine) override;
 };
 
 

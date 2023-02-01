@@ -6,8 +6,11 @@
 #define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ISYSTEM_H
 
 #include <string>
+#include <memory>
 
 class Engine;
+
+using EnginePtr = std::unique_ptr<Engine>&;
 
 /**
  * @brief ISystem is the base class for all systems of the ECS
@@ -23,7 +26,7 @@ public:
      * @details override this method to define the behavior of the system
      * @param engine the engine that is calling the system
      */
-    virtual void update(Engine&);
+    virtual void update(EnginePtr engine);
 
     virtual std::string getName();
 };

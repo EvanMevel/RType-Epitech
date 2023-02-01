@@ -10,7 +10,7 @@
 
 class HandshakeResponseConsumer : public ClientPacketConsumer<HandshakeResponsePacket> {
 public:
-    void consume(HandshakeResponsePacket &packet, Engine &e) override;
+    void consume(HandshakeResponsePacket &packet, EnginePtr engine, RTypeServer server) override;
 };
 
 

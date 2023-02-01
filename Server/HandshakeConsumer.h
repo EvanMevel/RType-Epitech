@@ -10,7 +10,7 @@
 
 class HandshakeConsumer : public RTypePacketConsumer<HandshakePacket> {
 public:
-    explicit HandshakeConsumer(Engine &e);
+    explicit HandshakeConsumer(EnginePtr e);
 
     void consume(HandshakePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) override;
 };

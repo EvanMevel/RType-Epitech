@@ -17,51 +17,51 @@
 
 std::atomic<bool> running = true;
 
-void testSrv(Engine &e) {
-    RTypeServerPtr srv = e.registerModule<RTypeServer>("127.0.0.1", 4242);
+void testSrv(EnginePtr engine) {
+    RTypeServerPtr srv = engine->registerModule<RTypeServer>("127.0.0.1", 4242);
     std::cout << "running" << std::endl;
 
     srv->addConsumer<PingPacketConsumer>();
-    srv->addConsumer<HandshakeConsumer>(e);
-    srv->addConsumer<PlayerMoveConsumer>(e);
-    srv->addConsumer<PlayerShootConsumer>(e);
+    srv->addConsumer<HandshakeConsumer>(engine);
+    srv->addConsumer<PlayerMoveConsumer>(engine);
+    srv->addConsumer<PlayerShootConsumer>(engine);
 
 
     srv->addSystem<TimeoutSystem>();
-    e.getScene()->addSystem<ServerVelocitySystem>();
-    e.getScene()->addSystem<ProjectileCleanupSystem>();
+    engine->getScene()->addSystem<ServerVelocitySystem>();
+    engine->getScene()->addSystem<ProjectileCleanupSystem>();
 
     std::cout << "Server listening" << std::endl;
 
     srv->startListening();
 
-    auto ent = e.getScene()->createEntity();
+    auto ent = engine->getScene()->createEntity();
     entity::initEnemy(ent, 0, 0);
 
-    auto ticker = e.registerModule<TickUtil>(20);
+    auto ticker = engine->registerModule<TickUtil>(20);
 
     while (running.load()) {
         ticker->startTick();
 
-        e.updateScene();
-        srv->update(e);
+        engine->updateScene(engine);
+        srv->update(engine);
 
         ticker->endTickAndWait();
     }
     std::cout << "Server stopped" << std::endl;
 }
 
-void stopThread(Engine &e) {
+void stopThread(EnginePtr engine) {
     std::string str;
 
     do {
         std::cin >> str;
         if (str == "a") {
-            auto ent = e.getScene()->getEntityById(100);
+            auto ent = engine->getScene()->getEntityById(100);
             auto physics = ent->getOrCreate<AccelerationPhysicComponent>();
             physics->acceleration.setX(5);
         } else if (str == "z") {
-            auto ent = e.getScene()->getEntityById(100);
+            auto ent = engine->getScene()->getEntityById(100);
             auto physics = ent->getOrCreate<AccelerationPhysicComponent>();
             physics->acceleration.setX(-5);
 
@@ -75,9 +75,9 @@ void stopThread(Engine &e) {
 
 int main()
 {
-    Engine e(100);
-    auto sc = e.createScene<Scene>();
-    e.setScene(sc);
+    std::unique_ptr<Engine> e = std::make_unique<Engine>(100);
+    auto sc = e->createScene<Scene>();
+    e->setScene(sc);
 
     std::thread t = std::thread(stopThread, std::ref(e));
 

@@ -49,9 +49,10 @@ public:
     void setScene(std::shared_ptr<Scene> &scene);
     std::shared_ptr<Scene> &getScene();
 
-    void updateScene();
+    void updateScene(EnginePtr engine);
 
 };
 
+using EnginePtr = std::unique_ptr<Engine>&;
 
 #endif //B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ENGINE_H

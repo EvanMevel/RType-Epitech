@@ -4,9 +4,9 @@
 
 #include "MainMenu.h"
 
-std::shared_ptr<Scene> mainMenu(Engine &e)
+std::shared_ptr<Scene> mainMenu(EnginePtr engine)
 {
-    auto sc = e.createScene<Scene>();
+    auto sc = engine->createScene<Scene>();
     /*auto background = sc->createEntity();
     std::cout << "EntityId: " << background->getId() << std::endl;
 

@@ -18,7 +18,7 @@ private:
 public:
     PlayerShootSystem(const std::shared_ptr<Player> &player);
 
-    void update(Engine &engine) override;
+    void update(EnginePtr engine) override;
 };
 
 
