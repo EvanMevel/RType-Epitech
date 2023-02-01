@@ -22,7 +22,7 @@ void ProjectileCleanupSystem::update(EnginePtr engine) {
             it++;
             continue;
         }
-        if (pos->getX() < -20 || pos->getX() > 200) {
+        if (pos->getX() < -20 || pos->getX() > 600) {
             EntityDestroyPacket packet(entity->getId());
             engine->getModule<RTypeServer>()->broadcast(packet);
             it = engine->getScene()->getEntities().erase(it);

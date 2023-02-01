@@ -23,6 +23,7 @@ public:
 
     bool clientConnected(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> data) override;
 
+    void clientDisconnected(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> data) override;
 };
 
 template<class Packet>

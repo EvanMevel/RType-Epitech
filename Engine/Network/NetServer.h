@@ -100,6 +100,8 @@ public:
 
     virtual bool clientConnected(std::shared_ptr<NetClient> &client, Data data) = 0;
 
+    virtual void clientDisconnected(std::shared_ptr<NetClient> &client, Data data) = 0;
+
     void clientMessage(std::shared_ptr<NetClient> &client, Data data, char *message, int length) {
         try {
             this->consumeMessage(message, length, client, data);
@@ -117,6 +119,7 @@ public:
         auto it = clients.find(key);
         if (it != clients.end()) {
             std::cout << "Client " << key << " disconnected" << std::endl;
+            clientDisconnected(it->second.first, it->second.second);
             clients.erase(it);
         }
     }

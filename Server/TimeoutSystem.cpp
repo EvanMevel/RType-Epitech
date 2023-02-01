@@ -20,6 +20,7 @@ void TimeoutSystem::update(EnginePtr engine) {
         auto &data = it->second.second;
         if (data->getLastPing() + RTYPE_TIMEOUT < currentTime) {
             std::cout << "Client " << client->addressPort() << " timed out" << std::endl;
+            server->clientDisconnected(client, data);
             it = server->getClients().erase(it);
         } else {
             it++;

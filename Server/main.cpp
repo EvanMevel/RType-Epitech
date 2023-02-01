@@ -14,6 +14,7 @@
 #include "PlayerMoveConsumer.h"
 #include "PlayerShootConsumer.h"
 #include "ProjectileCleanupSystem.h"
+#include "EnemyRandomSpawnSystem.h"
 
 std::atomic<bool> running = true;
 
@@ -30,13 +31,11 @@ void testSrv(EnginePtr engine) {
     srv->addSystem<TimeoutSystem>();
     engine->getScene()->addSystem<ServerVelocitySystem>();
     engine->getScene()->addSystem<ProjectileCleanupSystem>();
+    engine->getScene()->addSystem<EnemyRandomSpawnSystem>();
 
     std::cout << "Server listening" << std::endl;
 
     srv->startListening();
-
-    auto ent = engine->getScene()->createEntity();
-    entity::initEnemy(ent, 0, 0);
 
     auto ticker = engine->registerModule<TickUtil>(20);
 

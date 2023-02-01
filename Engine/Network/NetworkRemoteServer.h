@@ -19,7 +19,7 @@
  */
 template<class Data>
 class NetworkRemoteServer : public NetworkListener, public PacketReceiver, public PacketSender<Data>, public SystemHolder {
-private:
+protected:
     Data data;
     CrossPlatformSocket socket;
     std::string _address;

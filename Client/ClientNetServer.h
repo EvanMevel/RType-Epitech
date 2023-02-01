@@ -17,6 +17,17 @@ public:
     ~ClientNetServer() override {
 
     }
+
+    void errorReceived(std::string address, int port, int err) override {
+        std::function<void(std::shared_ptr<IGraphicLib>)> func = [](std::shared_ptr<IGraphicLib> lib) {
+            if (lib->getWindow().shouldClose()) {
+                return;
+            }
+            lib->closeWindow();
+        };
+
+        this->data->getModule<IGraphicLib>()->execOnLibThread(func, this->data->getModule<IGraphicLib>());
+    }
 };
 
 using RTypeServer = std::shared_ptr<ClientNetServer>;
