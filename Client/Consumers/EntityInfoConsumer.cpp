@@ -14,7 +14,7 @@ EntityInfoConsumer::EntityInfoConsumer(const std::unordered_map<EntityType, std:
 void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTypeServer server) {
     auto entity = engine->getScene()->getEntityById(packet.id);
     if (packet.type == EntityType::PROJECTILE) {
-        entity::initProjectile(entity, packet.x, packet.y);
+        entity::initProjectile(entity, packet.x, packet.y, 0);
     } else if (packet.type == EntityType::ENEMY) {
         entity::initEnemy(entity, packet.x, packet.y);
     } else if (packet.type == EntityType::PLAYER) {
