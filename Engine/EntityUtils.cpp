@@ -13,13 +13,13 @@ void entity::initPlayer(std::shared_ptr<Entity> entity, int x, int y) {
     physic->maxVelocity = 15;
 }
 
-void entity::initProjectile(std::shared_ptr<Entity> entity, int x, int y) {
+void entity::initProjectile(std::shared_ptr<Entity> entity, int x, int y, int velX) {
     entity->addComponent<EntityTypeComponent>()->setType(EntityType::PROJECTILE);
     auto pos = entity->addComponent<PositionComponent>();
     pos->setX(x);
     pos->setY(y);
     auto physic = entity->addComponent<AccelerationPhysicComponent>();
-    physic->velocity.x = 10;
+    physic->velocity.x = velX;
     physic->velocitySlow = 0;
 }
 

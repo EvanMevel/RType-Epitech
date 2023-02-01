@@ -6,6 +6,7 @@
 #include "Engine/EntityUtils.h"
 #include "RTypeServer.h"
 #include "Engine/Network/Packets/EntityInfoPacket.h"
+#include "CooldownComponent.h"
 
 void EnemyRandomSpawnSystem::update(std::unique_ptr<Engine> &engine) {
     count = (count + 1) % 20;
@@ -25,6 +26,9 @@ void EnemyRandomSpawnSystem::update(std::unique_ptr<Engine> &engine) {
         int x = 400;
         int y = distr(gen);
         entity::initEnemy(ent, x, y);
+
+        auto cd = ent->addComponent<CooldownComponent>();
+        cd->cooldown = 100;
         enemies++;
 
         EntityInfoPacket newEntityPacket(ent);

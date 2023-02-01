@@ -15,6 +15,7 @@
 #include "PlayerShootConsumer.h"
 #include "ProjectileCleanupSystem.h"
 #include "EnemyRandomSpawnSystem.h"
+#include "EnemyShootSystem.h"
 
 std::atomic<bool> running = true;
 
@@ -32,6 +33,7 @@ void testSrv(EnginePtr engine) {
     engine->getScene()->addSystem<ServerVelocitySystem>();
     engine->getScene()->addSystem<ProjectileCleanupSystem>();
     engine->getScene()->addSystem<EnemyRandomSpawnSystem>();
+    engine->getScene()->addSystem<EnemyShootSystem>();
 
     std::cout << "Server listening" << std::endl;
 

@@ -16,7 +16,7 @@
 namespace entity {
     void initPlayer(std::shared_ptr<Entity> entity, int x, int y);
 
-    void initProjectile(std::shared_ptr<Entity> entity, int x, int y);
+    void initProjectile(std::shared_ptr<Entity> entity, int x, int y, int velX);
 
     void initEnemy(std::shared_ptr<Entity> entity, int x, int y);
 }
