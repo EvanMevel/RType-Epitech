@@ -32,6 +32,23 @@ bool registeredConsumers = false;
 
 bool windowClosed = false;
 
+void execOnGraph(std::shared_ptr<IGraphicLib> lib, RTypeServer server) {
+    std::cout << "Registering server consumer on graphic thread..." << std::endl;
+    auto playerTexture = lib->createTexture("../Client/assets/player.png");
+    server->addConsumer<PlayerInfoConsumer>(playerTexture);
+
+    auto enemyTexture = lib->createTexture("../Client/assets/enemy.png");
+    std::unordered_map<EntityType, std::shared_ptr<ITexture>> textures;
+    textures[EntityType::PLAYER] = playerTexture;
+    textures[EntityType::ENEMY] = enemyTexture;
+    textures[EntityType::PROJECTILE] = lib->createTexture("../Client/assets/projectile.png");
+
+    server->addConsumer<EntityInfoConsumer>(textures);
+
+    registeredConsumers = true;
+    cv2.notify_all();
+}
+
 void loadNetwork(EnginePtr engine) {
     std::unique_lock<std::mutex> lck(graphicMutex);
 
@@ -49,27 +66,8 @@ void loadNetwork(EnginePtr engine) {
 
     server->addSystem<StayAliveSystem>();
 
-    //TODO this is not clean, maybe change arguments to be the engine
-    std::function<void(std::shared_ptr<IGraphicLib>, RTypeServer server)> fu = [](std::shared_ptr<IGraphicLib> lib, RTypeServer server) {
-
-        std::cout << "Registering server consumer on graphic thread..." << std::endl;
-        auto playerTexture = lib->createTexture("../Client/assets/player.png");
-        server->addConsumer<PlayerInfoConsumer>(playerTexture);
-
-        auto enemyTexture = lib->createTexture("../Client/assets/enemy.png");
-        std::unordered_map<EntityType, std::shared_ptr<ITexture>> textures;
-        textures[EntityType::PLAYER] = playerTexture;
-        textures[EntityType::ENEMY] = enemyTexture;
-        textures[EntityType::PROJECTILE] = lib->createTexture("../Client/assets/projectile.png");
-
-        server->addConsumer<EntityInfoConsumer>(textures);
-
-        registeredConsumers = true;
-        cv2.notify_all();
-    };
-
-    engine->getModule<IGraphicLib>()->execOnLibThread(fu, engine->getModule<IGraphicLib>(), server);
-
+    std::function<void(std::shared_ptr<IGraphicLib>, RTypeServer server)> graphExec = execOnGraph;
+    engine->getModule<IGraphicLib>()->execOnLibThread(graphExec, engine->getModule<IGraphicLib>(), server);
 
     std::cout << "Waiting for consumer register on graphicLib thread" << std::endl;
 
@@ -78,9 +76,7 @@ void loadNetwork(EnginePtr engine) {
     }
 
     std::cout << "Sending handshake" << std::endl;
-
     server->startListening();
-
     server->sendPacket(HandshakePacket());
 
     auto ticker = engine->registerModule<TickUtil>(20);

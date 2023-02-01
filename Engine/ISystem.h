@@ -26,7 +26,7 @@ public:
      * @details override this method to define the behavior of the system
      * @param engine the engine that is calling the system
      */
-    virtual void update(EnginePtr engine);
+    virtual void update(EnginePtr engine) = 0;
 
     virtual std::string getName();
 };

@@ -11,10 +11,6 @@ ISystem::~ISystem() {
 
 }
 
-void ISystem::update(EnginePtr &) {
-
-}
-
 std::string ISystem::getName() {
     return "ISystem";
 }
