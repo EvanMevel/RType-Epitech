@@ -32,7 +32,7 @@ bool Hitbox::isColliding(Hitbox &other) {
             y + height > other.y);
 }
 
-bool Hitbox::contains(int x, int y) {
+bool Hitbox::contains(int x, int y) const{
     return (x >= this->x && x <= this->x + this->width && y >= this->y && y <= this->y + this->height);
 }
 

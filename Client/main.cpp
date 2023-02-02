@@ -22,6 +22,8 @@
 #include "Client/Consumers/EntityVelocityPacketConsumer.h"
 #include "AnimationSystem.h"
 #include "MouseSystem.h"
+#include "Engine/SceneHolder.h"
+#include "SceneEnum.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -117,9 +119,10 @@ void graphicLoop(EnginePtr engine) {
 }
 
 void loadScenes(EnginePtr engine) {
+    auto sceneHolder = engine->registerModule<SceneHolder>();
     auto sc = mainMenu(engine);
     engine->setScene(sc);
-
+    sceneHolder->addScene(SceneEnum::MAIN_MENU,sc);
     sc->addSystem<VelocitySystem>();
 }
 

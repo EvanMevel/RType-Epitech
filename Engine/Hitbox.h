@@ -26,7 +26,7 @@ public:
 
     bool isColliding(Hitbox &other);
 
-    bool contains(int x, int y);
+    bool contains(int x, int y) const;
 
 };
 
