@@ -15,6 +15,9 @@ void PlayerShootConsumer::consume(PlayerShootPacket &packet, std::shared_ptr<Net
     auto projectile = e->getScene()->createEntity();
     entity::initProjectile(projectile, pos->x + 20, pos->y + 20, 10);
 
+    auto team = projectile->addComponent<TeamComponent>();
+    team->setTeam(0);
+
     EntityInfoPacket newEntityPacket(projectile);
     e->getModule<RTypeServer>()->broadcast(newEntityPacket);
 }

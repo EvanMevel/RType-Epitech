@@ -12,6 +12,7 @@
 #include "Engine/Component/AccelerationPhysicComponent.h"
 #include "Engine/Component/HitboxComponent.h"
 #include "Engine/Component/TeamComponent.h"
+#include "Engine/Component/ColliderComponent.h"
 
 namespace entity {
     void initPlayer(std::shared_ptr<Entity> entity, int x, int y);
