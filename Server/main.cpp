@@ -10,12 +10,15 @@
 #include "PingPacketConsumer.h"
 #include "TimeoutSystem.h"
 #include "HandshakeConsumer.h"
+#include "Engine/Component/HitboxComponent.h"
+#include "Engine/Component/TeamComponent.h"
 #include "ServerVelocitySystem.h"
 #include "PlayerMoveConsumer.h"
 #include "PlayerShootConsumer.h"
 #include "ProjectileCleanupSystem.h"
 #include "EnemyRandomSpawnSystem.h"
 #include "EnemyShootSystem.h"
+#include "ServerProjectileHitboxSystem.h"
 
 std::atomic<bool> running = true;
 
@@ -34,6 +37,7 @@ void testSrv(EnginePtr engine) {
     engine->getScene()->addSystem<ProjectileCleanupSystem>();
     engine->getScene()->addSystem<EnemyRandomSpawnSystem>();
     engine->getScene()->addSystem<EnemyShootSystem>();
+    engine->getScene()->addSystem<ServerProjectileHitboxSystem>();
 
     std::cout << "Server listening" << std::endl;
 

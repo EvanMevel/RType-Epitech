@@ -11,7 +11,18 @@
 
 class HitboxComponent : public IComponent{
     size_t length_x;
+public:
+    void setLengthX(size_t lengthX);
+
+private:
     size_t length_y;
+public:
+    void setLengthY(size_t lengthY);
+
+public:
+    size_t getLengthX() const;
+
+    size_t getLengthY() const;
 };
 
 
