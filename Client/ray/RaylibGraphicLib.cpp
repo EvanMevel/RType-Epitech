@@ -24,12 +24,12 @@ void RaylibGraphicLib::closeWindow() {
     ray::CloseWindow();
 }
 
-ITexture RaylibGraphicLib::createTexture(const std::string &texturePath) {
-    return RaylibTexture(texturePath);
+std::shared_ptr<ITexture> RaylibGraphicLib::createTexture(const std::string &texturePath) {
+    return std::make_shared<RaylibTexture>(texturePath);
 }
 
-void RaylibGraphicLib::drawTexture(ITexture texture, int x, int y, ColorCodes code) {
-    auto texture2D = any_cast<ray::Texture2D>(texture.handle);
+void RaylibGraphicLib::drawTexture(std::shared_ptr<ITexture> texture, int x, int y, ColorCodes code) {
+    auto texture2D = any_cast<ray::Texture2D>(texture->handle);
     ray::DrawTexture(texture2D, x, y, colors[code]);
 }
 

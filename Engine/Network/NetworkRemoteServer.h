@@ -19,13 +19,17 @@
  */
 template<class Data>
 class NetworkRemoteServer : public NetworkListener, public PacketReceiver, public PacketSender<Data>, public SystemHolder {
-private:
+protected:
     Data data;
     CrossPlatformSocket socket;
     std::string _address;
     unsigned short _port;
 public:
-    NetworkRemoteServer(Data dat, const std::string &address, unsigned short port);
+    NetworkRemoteServer(Data dat, const std::string &address, unsigned short port)  : data(dat), _address(address), _port(port) {
+        if (!socket.create()) {
+            throw std::runtime_error("Cannot create socket");
+        }
+    }
 
     NetworkRemoteServer(const NetworkRemoteServer &other) : data(other.data), socket(other.socket), _address(other._address), _port(other._port) {}
 
@@ -33,17 +37,21 @@ public:
 
     }
 
-    void send(const char *message, int length) override;
+    void send(const char *message, int length) override {
+        socket.sendTo(message, length, _address, _port);
+    }
 
-    bool messageReceived(std::string address, int port, char *message, int length) override;
+    bool messageReceived(std::string address, int port, char *message, int length) override {
+        return this->consumeMessage(message, length, data);
+    }
 
-    void errorReceived(std::string address, int port, int err) override;
+    void errorReceived(std::string address, int port, int err) override {
+        std::cout << "Error received: " << err << std::endl;
+    }
 
-    CrossPlatformSocket &getSocket() override;
+    CrossPlatformSocket &getSocket() override {
+        return socket;
+    }
 };
-
-class Engine;
-
-template class NetworkRemoteServer<Engine&>;
 
 #endif //R_TYPE_SERVER_NETWORKREMOTESERVER_H

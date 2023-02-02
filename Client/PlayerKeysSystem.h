@@ -13,7 +13,7 @@ class PlayerKeysSystem : public ISystem {
 private:
     std::shared_ptr<Player> player;
 public:
-    void update(Engine &engine) override;
+    void update(EnginePtr engine) override;
 
     std::string getName() override;
 

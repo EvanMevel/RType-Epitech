@@ -6,7 +6,7 @@
 
 PlayerMovePacket::PlayerMovePacket() {}
 
-PlayerMovePacket::PlayerMovePacket(int playerId, const Vector2i &acceleration) : playerId(playerId),
+PlayerMovePacket::PlayerMovePacket(size_t playerId, const Vector2i &acceleration) : playerId(playerId),
                                                                                  acceleration(acceleration) {}
 
 void PlayerMovePacket::write(ByteArray &buffer) const {

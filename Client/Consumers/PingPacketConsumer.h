@@ -10,9 +10,7 @@
 
 class PingPacketConsumer : public ClientPacketConsumer<PingPacket> {
 public:
-    void consume(PingPacket &packet, Engine &e) override;
-
-    explicit PingPacketConsumer(RTypeServer server);
+    void consume(PingPacket &packet, EnginePtr engine, RTypeServer server) override;
 };
 
 

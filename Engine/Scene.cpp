@@ -23,17 +23,11 @@ std::shared_ptr<Entity> Scene::createEntity() {
     return this->entities.back();
 }
 
-std::shared_ptr<Entity> Scene::createPlayer() {
-    std::shared_ptr<Entity> ent = createEntity();
-    ent->addComponent<EntityTypeComponent>()->setType(EntityType::PLAYER);
-    return ent;
-}
-
 Scene::Scene(EntityManager &entityManager) : entityManager(entityManager) {
 
 }
 
-std::shared_ptr<Entity> Scene::getEntityById(int id) {
+std::shared_ptr<Entity> Scene::getEntityById(size_t id) {
     for (auto &ent: entities) {
         if (ent->getId() == id) {
             return ent;
@@ -42,4 +36,22 @@ std::shared_ptr<Entity> Scene::getEntityById(int id) {
     std::shared_ptr<Entity> ent = std::make_shared<Entity>(id);
     entities.push_back(ent);
     return entities.back();
+}
+
+void Scene::removeEntity(std::shared_ptr<Entity> entity) {
+    for (auto it = entities.begin(); it != entities.end(); it++) {
+        if (*it == entity) {
+            entities.erase(it);
+            return;
+        }
+    }
+}
+
+void Scene::removeEntity(size_t entityId) {
+    for (auto it = entities.begin(); it != entities.end(); it++) {
+        if (it->get()->getId() == entityId) {
+            entities.erase(it);
+            return;
+        }
+    }
 }

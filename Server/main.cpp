@@ -4,63 +4,68 @@
 
 #include <iostream>
 #include "Engine/Engine.h"
-#include "Engine/Network/NetServer.h"
-#include "Engine/Network/Packets/TestPacket.h"
-#include "Engine/Component/PositionComponent.h"
 #include "RTypeServer.h"
+#include "Engine/EntityUtils.h"
+#include "Engine/TickUtil.h"
 #include "PingPacketConsumer.h"
 #include "TimeoutSystem.h"
 #include "HandshakeConsumer.h"
-#include "Engine/Component/VelocityComponent.h"
-#include "Engine/Component/AccelerationComponent.h"
 #include "ServerVelocitySystem.h"
+#include "PlayerMoveConsumer.h"
+#include "PlayerShootConsumer.h"
+#include "ProjectileCleanupSystem.h"
+#include "EnemyRandomSpawnSystem.h"
+#include "EnemyShootSystem.h"
 
 std::atomic<bool> running = true;
 
-void testSrv(Engine &e) {
-    RTypeServerPtr srv = std::make_shared<RTypeServer>("127.0.0.1", 4242);
+void testSrv(EnginePtr engine) {
+    RTypeServerPtr srv = engine->registerModule<RTypeServer>("127.0.0.1", 4242);
     std::cout << "running" << std::endl;
 
     srv->addConsumer<PingPacketConsumer>();
-    srv->addConsumer<HandshakeConsumer>(srv, e);
-    srv->addSystem<TimeoutSystem>(srv);
-    e.getScene()->addSystem<ServerVelocitySystem>(srv);
+    srv->addConsumer<HandshakeConsumer>(engine);
+    srv->addConsumer<PlayerMoveConsumer>(engine);
+    srv->addConsumer<PlayerShootConsumer>(engine);
+
+
+    srv->addSystem<TimeoutSystem>();
+    engine->getScene()->addSystem<ServerVelocitySystem>();
+    engine->getScene()->addSystem<ProjectileCleanupSystem>();
+    engine->getScene()->addSystem<EnemyRandomSpawnSystem>();
+    engine->getScene()->addSystem<EnemyShootSystem>();
 
     std::cout << "Server listening" << std::endl;
 
     srv->startListening();
 
-    auto ent = e.getScene()->createEntity();
-    ent->addComponent<PositionComponent>();
-    ent->addComponent<VelocityComponent>();
-    ent->addComponent<AccelerationComponent>();
+    auto ticker = engine->registerModule<TickUtil>(20);
 
     while (running.load()) {
-        auto start = std::chrono::system_clock::now();
+        ticker->startTick();
 
-        e.updateScene();
-        srv->update(e);
+        engine->updateScene(engine);
+        srv->update(engine);
 
-        auto end = std::chrono::system_clock::now();
-        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-
-        auto waiting = (1000 / 20) - elapsed.count();
-
-        Sleep(waiting > 0 ? waiting : 0);
+        ticker->endTickAndWait();
     }
     std::cout << "Server stopped" << std::endl;
 }
 
-void stopThread(Engine &e) {
+void stopThread(EnginePtr engine) {
     std::string str;
-
 
     do {
         std::cin >> str;
         if (str == "a") {
-            auto ent = e.getScene()->getEntityById(0);
-            auto acc = ent->getComponent<AccelerationComponent>();
-            acc->setX(5);
+            auto ent = engine->getScene()->getEntityById(100);
+            auto physics = ent->getOrCreate<AccelerationPhysicComponent>();
+            physics->acceleration.setX(5);
+        } else if (str == "z") {
+            auto ent = engine->getScene()->getEntityById(100);
+            auto physics = ent->getOrCreate<AccelerationPhysicComponent>();
+            physics->acceleration.setX(-5);
+
         }
     } while (str != "q");
 
@@ -71,9 +76,9 @@ void stopThread(Engine &e) {
 
 int main()
 {
-    Engine e;
-    auto sc = e.createScene<Scene>();
-    e.setScene(sc);
+    std::unique_ptr<Engine> e = std::make_unique<Engine>(100);
+    auto sc = e->createScene<Scene>();
+    e->setScene(sc);
 
     std::thread t = std::thread(stopThread, std::ref(e));
 

@@ -9,5 +9,8 @@
 
 long long getCurrentTime();
 
+void preciseSleep(std::chrono::milliseconds);
+
+void preciseSleep(long long sleepMs);
 
 #endif //R_TYPE_SERVER_TIMEUTIL_H

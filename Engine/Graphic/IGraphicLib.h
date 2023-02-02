@@ -41,8 +41,8 @@ public:
     virtual IWindow& createWindow(int width, int height, std::string title) = 0;
     virtual IWindow& getWindow() = 0;
     virtual void closeWindow() = 0;
-    virtual ITexture createTexture(const std::string &texturePath) = 0;
-    virtual void drawTexture(ITexture, int x, int y, ColorCodes) = 0;
+    virtual std::shared_ptr<ITexture> createTexture(const std::string &texturePath) = 0;
+    virtual void drawTexture(std::shared_ptr<ITexture>, int x, int y, ColorCodes) = 0;
     virtual void drawAnimation(std::shared_ptr<IAnimation> animation, int x, int y, ColorCodes codes) = 0;
     virtual void drawText(std::string, int x, int y, int size, ColorCodes) = 0;
     virtual bool isKeyDown(KeyCodes) = 0;
