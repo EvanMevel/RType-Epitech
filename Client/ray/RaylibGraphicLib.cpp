@@ -53,6 +53,7 @@ RaylibGraphicLib::RaylibGraphicLib() {
     keys[KeyCodes::KEY_LEFT] = ray::KEY_LEFT;
     keys[KeyCodes::KEY_RIGHT] = ray::KEY_RIGHT;
     keys[KeyCodes::KEY_SPACE] = ray::KEY_SPACE;
+
 }
 
 bool RaylibGraphicLib::isKeyDown(KeyCodes code) {
@@ -67,4 +68,8 @@ std::shared_ptr<IAnimation> RaylibGraphicLib::createAnimation(const std::string 
 void RaylibGraphicLib::drawAnimation(std::shared_ptr<IAnimation> animation, int x, int y, ColorCodes codes) {
     auto texture2D = any_cast<ray::Texture2D>(animation->texture);
     ray::DrawTexture(texture2D, x, y, colors[codes]);
+}
+
+IMouse &RaylibGraphicLib::getMouse() {
+    return this->mouse;
 }

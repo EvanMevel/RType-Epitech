@@ -21,6 +21,7 @@
 #include "Client/Consumers/EntityDestroyConsumer.h"
 #include "Client/Consumers/EntityVelocityPacketConsumer.h"
 #include "AnimationSystem.h"
+#include "MouseSystem.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -131,6 +132,7 @@ void loadGraphsAndScenes(EnginePtr engine) {
 
     lib->addSystem<DrawFixTextureSystem>();
     lib->addSystem<AnimationSystem>();
+    lib->addSystem<MouseSystem>();
 
     IWindow &window = lib->createWindow(1920, 1005, "teststs");
     window.setTargetFPS(60);

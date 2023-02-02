@@ -3,7 +3,6 @@
 //
 
 #include "RaylibWindow.h"
-#include "raylib.h"
 
 bool RaylibWindow::shouldClose() {
     return ray::WindowShouldClose();

@@ -16,6 +16,7 @@
 #include "../SystemHolder.h"
 #include "KeyCodes.h"
 #include "IAnimation.h"
+#include "IMouse.h"
 
 class Engine;
 
@@ -47,6 +48,7 @@ public:
     virtual void drawText(std::string, int x, int y, int size, ColorCodes) = 0;
     virtual bool isKeyDown(KeyCodes) = 0;
     virtual std::shared_ptr<IAnimation> createAnimation(const std::string &texturePath) = 0;
+    virtual IMouse &getMouse() = 0;
 
     template<class ...Args>
     void execOnLibThread(std::function<void(Args...)> func, Args... args) {

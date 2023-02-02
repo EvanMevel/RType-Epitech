@@ -23,7 +23,7 @@ std::shared_ptr<Scene> mainMenu(EnginePtr engine)
 
 
     auto title = createButton(engine,sc,"../Client/assets/rtype.png",width/2-(800/2),height/3-(400/2));
-    auto playButton = createButton(engine,sc,"../Client/assets/img_3.png",width/2-(400/2),height*0.45-(100/2));
+    auto playButton = createButton(engine,sc,"../Client/assets/play-button.png",width/2-(400/2),height*0.45-(100/2));
     auto optionButton = createButton(engine,sc,"../Client/assets/img_3.png",width/2-(400/2),height*0.65-(100/2));
     auto quitButton = createButton(engine,sc,"../Client/assets/img_3.png",width/2-(400/2),height*0.85-(100/2));
 
