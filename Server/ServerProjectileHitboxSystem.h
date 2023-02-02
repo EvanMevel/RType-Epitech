@@ -12,12 +12,6 @@
 
 class ServerProjectileHitboxSystem : public ProjectileHitboxSystem {
 public:
-    RTypeServerPtr srv;
-
-    explicit ServerProjectileHitboxSystem(RTypeServerPtr srv) : srv(srv) {}
-
-    void entityMoved(std::shared_ptr<Entity> entity) override;
-
     std::string getName() override;
 };
 

@@ -8,5 +8,3 @@ std::string ServerProjectileHitboxSystem::getName() {
     return "ServerVelocitySystem";
 }
 
-void ServerProjectileHitboxSystem::entityMoved(std::shared_ptr<Entity> entity) {
-}

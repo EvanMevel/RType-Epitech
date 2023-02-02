@@ -13,9 +13,7 @@ class ProjectileHitboxSystem : public ISystem {
 public:
     int count = 0;
 
-    void update(Engine &engine) override;
-
-    virtual void entityMoved(std::shared_ptr<Entity> entity);
+    void update(EnginePtr engine) override;
 
     std::string getName() override;
 };

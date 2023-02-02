@@ -9,15 +9,15 @@
 #include "Engine/Component/TeamComponent.h"
 #include "Engine/Component/PositionComponent.h"
 
-void ProjectileHitboxSystem::update(Engine &engine) {
+void ProjectileHitboxSystem::update(EnginePtr engine) {
     count = (count + 1) % 4;
-    for (auto &entity: engine.getScene()->getEntities()) {
+    for (auto &entity: engine->getScene()->getEntities()) {
         auto hitbox = entity->getComponent<HitboxComponent>();
         auto team = entity->getComponent<TeamComponent>();
         auto pos = entity->getComponent<PositionComponent>();
 
         if (hitbox != nullptr && team != nullptr && pos != nullptr) {
-            for (auto &ent: engine.getScene()->getEntities()) {
+            for (auto &ent: engine->getScene()->getEntities()) {
                 auto tmpPos = ent->getComponent<PositionComponent>();
                 auto tmpHitbox = ent->getComponent<HitboxComponent>();
                 auto tmpTeam = ent->getComponent<TeamComponent>();
@@ -40,7 +40,4 @@ void ProjectileHitboxSystem::update(Engine &engine) {
 
 std::string ProjectileHitboxSystem::getName() {
     return "ProjectileHitboxSystem";
-}
-
-void ProjectileHitboxSystem::entityMoved(std::shared_ptr<Entity> entity) {
 }

@@ -37,7 +37,7 @@ void testSrv(EnginePtr engine) {
     engine->getScene()->addSystem<ProjectileCleanupSystem>();
     engine->getScene()->addSystem<EnemyRandomSpawnSystem>();
     engine->getScene()->addSystem<EnemyShootSystem>();
-    engine->getScene()->addSystem<ServerProjectileHitboxSystem>(srv);
+    engine->getScene()->addSystem<ServerProjectileHitboxSystem>();
 
     std::cout << "Server listening" << std::endl;
 
