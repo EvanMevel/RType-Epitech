@@ -13,6 +13,10 @@ namespace ray {
 class RaylibTexture : public ITexture {
 public:
     RaylibTexture(const std::string &path);
+
+    int getWidth() override;
+
+    int getHeight() override;
 };
 
 

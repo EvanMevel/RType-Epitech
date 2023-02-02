@@ -35,3 +35,7 @@ bool Hitbox::isColliding(Hitbox &other) {
 bool Hitbox::contains(int x, int y) {
     return (x >= this->x && x <= this->x + this->width && y >= this->y && y <= this->y + this->height);
 }
+
+Hitbox::Hitbox() : x(0), y(0), width(0), height(0){
+
+}

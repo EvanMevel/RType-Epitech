@@ -13,6 +13,8 @@
 class ITexture {
 public:
     std::any handle;
+    virtual int getWidth() = 0;
+    virtual int getHeight() = 0;
 };
 
 #endif //R_TYPE_SERVER_ITEXTURE_H
