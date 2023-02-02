@@ -11,10 +11,10 @@ class PlayerMovePacket : public IPacket {
 public:
     static const int ID = 6;
 
-    int playerId;
+    size_t playerId;
     Vector2i acceleration;
 
-    PlayerMovePacket(int playerId, const Vector2i &acceleration);
+    PlayerMovePacket(size_t playerId, const Vector2i &acceleration);
 
     PlayerMovePacket();
 

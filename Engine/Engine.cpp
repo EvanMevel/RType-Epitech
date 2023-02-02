@@ -23,16 +23,7 @@ std::shared_ptr<Scene> &Engine::getScene() {
     return this->current;
 }
 
-void Engine::updateScene() {
-    currentTick++;
+void Engine::updateScene(EnginePtr engine) {
     if (current != nullptr)
-        current->update(*this);
-}
-
-unsigned long long int Engine::getCurrentTick() const {
-    return currentTick;
-}
-
-void Engine::setCurrentTick(unsigned long long int currentTick) {
-    Engine::currentTick = currentTick;
+        current->update(engine);
 }

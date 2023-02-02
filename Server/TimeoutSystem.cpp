@@ -4,24 +4,29 @@
 
 #include "TimeoutSystem.h"
 #include "Engine/TimeUtil.h"
+#include "RTypeServer.h"
 
+TimeoutSystem::TimeoutSystem() {
 
-void TimeoutSystem::update(Engine &engine) {
-    long long currentTime = getCurrentTime();
+}
+
+void TimeoutSystem::update(EnginePtr engine) {
+    auto server = engine->getModule<RTypeServer>();
     auto it = server->getClients().begin();
+
+    long long currentTime = getCurrentTime();
     while (it != server->getClients().end()) {
         auto &client = it->second.first;
         auto &data = it->second.second;
         if (data->getLastPing() + RTYPE_TIMEOUT < currentTime) {
             std::cout << "Client " << client->addressPort() << " timed out" << std::endl;
+            server->clientDisconnected(client, data);
             it = server->getClients().erase(it);
         } else {
             it++;
         }
     }
 }
-
-TimeoutSystem::TimeoutSystem(RTypeServerPtr server) : server(server) {}
 
 std::string TimeoutSystem::getName() {
     return "TimeoutSystem";

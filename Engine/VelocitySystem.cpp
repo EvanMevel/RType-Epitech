@@ -8,9 +8,9 @@
 #include "Engine/Component/PositionComponent.h"
 #include "Engine/Component/AccelerationPhysicComponent.h"
 
-void VelocitySystem::update(Engine &engine) {
+void VelocitySystem::update(EnginePtr engine) {
     count = (count + 1) % 4;
-    for (auto &entity: engine.getScene()->getEntities()) {
+    for (auto &entity: engine->getScene()->getEntities()) {
         auto pos = entity->getComponent<PositionComponent>();
         auto physic = entity->getComponent<AccelerationPhysicComponent>();
         if (pos != nullptr && physic != nullptr) {
@@ -31,7 +31,7 @@ void VelocitySystem::update(Engine &engine) {
                 physic->velocity.ensureNotGreater((int) physic->maxVelocity);
             }
 
-            std::cout << "Accel: " << physic->acceleration.x << ", " << physic->acceleration.y << " Vel: " << physic->velocity.x << ", " << physic->velocity.y << std::endl;
+            //std::cout << "Accel: " << physic->acceleration.x << ", " << physic->acceleration.y << " Vel: " << physic->velocity.x << ", " << physic->velocity.y << std::endl;
 
             // Add velocity to position
             pos->x += physic->velocity.x;
@@ -47,7 +47,7 @@ void VelocitySystem::update(Engine &engine) {
     }
 }
 
-void VelocitySystem::entityMoved(Engine &engine, std::shared_ptr<Entity> entity) {
+void VelocitySystem::entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity) {
 
 }
 

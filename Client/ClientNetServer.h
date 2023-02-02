@@ -5,28 +5,44 @@
 #ifndef R_TYPE_SERVER_CLIENTNETSERVER_H
 #define R_TYPE_SERVER_CLIENTNETSERVER_H
 
-#include "Engine/Network/NetworkRemoteServer.h"
 #include "Engine/Engine.h"
+#include "Engine/Network/NetworkRemoteServer.h"
 
-class ClientNetServer : public NetworkRemoteServer<Engine&> {
+class ClientNetServer : public NetworkRemoteServer<EnginePtr> {
 public:
-    ClientNetServer(Engine &dat, const std::string &address, unsigned short port) : NetworkRemoteServer(dat, address, port) {}
+    ClientNetServer(EnginePtr engine, const std::string &address, unsigned short port) : NetworkRemoteServer(engine, address, port) {}
 
     ClientNetServer(const ClientNetServer &other) : NetworkRemoteServer(other) {}
 
     ~ClientNetServer() override {
 
     }
+
+    void errorReceived(std::string address, int port, int err) override {
+        std::function<void(std::shared_ptr<IGraphicLib>)> func = [](std::shared_ptr<IGraphicLib> lib) {
+            if (lib->getWindow().shouldClose()) {
+                return;
+            }
+            lib->closeWindow();
+        };
+
+        this->data->getModule<IGraphicLib>()->execOnLibThread(func, this->data->getModule<IGraphicLib>());
+    }
 };
 
-using RTypeServer = std::shared_ptr<NetworkRemoteServer<Engine&>>;
+using RTypeServer = std::shared_ptr<ClientNetServer>;
 
 template<class Packet>
-class ClientPacketConsumer : public PacketConsumer<Packet, Engine&> {
-private:
-    RTypeServer server;
+class ClientPacketConsumer : public PacketConsumer<Packet, EnginePtr> {
 public:
-    explicit ClientPacketConsumer(const RTypeServer &server) : server(server) {}
+    virtual void consume(Packet &packet, EnginePtr engine, RTypeServer server) = 0;
+
+    void consume(Packet &packet, EnginePtr engine) override {
+        RTypeServer server = engine->getModule<ClientNetServer>();
+        if (server) {
+            consume(packet, engine, server);
+        }
+    }
 };
 
 #endif //R_TYPE_SERVER_CLIENTNETSERVER_H

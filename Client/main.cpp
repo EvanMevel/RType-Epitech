@@ -16,9 +16,10 @@
 #include "Consumers/PlayerInfoConsumer.h"
 #include "MainMenu.h"
 #include "Engine/VelocitySystem.h"
-#include "Engine/Component/AccelerationPhysicComponent.h"
 #include "Engine/TickUtil.h"
 #include "Client/Consumers/EntityInfoConsumer.h"
+#include "Client/Consumers/EntityDestroyConsumer.h"
+#include "Client/Consumers/EntityVelocityPacketConsumer.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -31,27 +32,24 @@ bool registeredConsumers = false;
 
 bool windowClosed = false;
 
-class EntityVelocityPacketConsumer : public PacketConsumer<EntityVelocityPacket, Engine&> {
-public:
-    void consume(EntityVelocityPacket &packet, Engine &e) override {
+void execOnGraph(std::shared_ptr<IGraphicLib> lib, RTypeServer server) {
+    std::cout << "Registering server consumer on graphic thread..." << std::endl;
+    auto playerTexture = lib->createTexture("../Client/assets/player.png");
+    server->addConsumer<PlayerInfoConsumer>(playerTexture);
 
-        auto ticker = e.getEngineComponent<TickUtil>();
+    auto enemyTexture = lib->createTexture("../Client/assets/enemy.png");
+    std::unordered_map<EntityType, std::shared_ptr<ITexture>> textures;
+    textures[EntityType::PLAYER] = playerTexture;
+    textures[EntityType::ENEMY] = enemyTexture;
+    textures[EntityType::PROJECTILE] = lib->createTexture("../Client/assets/projectile.png");
 
-        std::cout << "ServerTick: " << packet.tick << " Client tick: " << ticker->getCurrentTick() << std::endl;
+    server->addConsumer<EntityInfoConsumer>(textures);
 
-        auto entity = e.getScene()->getEntityById(packet.entityId);
-        auto pos = entity->getOrCreate<PositionComponent>();
-        auto physics = entity->getOrCreate<AccelerationPhysicComponent>();
+    registeredConsumers = true;
+    cv2.notify_all();
+}
 
-        pos->setX(packet.pos.x);
-        pos->setY(packet.pos.y);
-
-        physics->velocity = packet.velocity;
-        physics->acceleration = packet.acceleration;
-    }
-};
-
-void loadNetwork(Engine &e) {
+void loadNetwork(EnginePtr engine) {
     std::unique_lock<std::mutex> lck(graphicMutex);
 
     std::cout << "[NETWORK] waiting for graphic" << std::endl;
@@ -59,34 +57,17 @@ void loadNetwork(Engine &e) {
         cv.wait(lck);
     }
     std::cout << "[NETWORK] graphic ready" << std::endl;
-    RTypeServer server = std::make_shared<NetworkRemoteServer<Engine&>>(e, "127.0.0.1", 4242);
+    RTypeServer server = engine->registerModule<ClientNetServer>(engine, "127.0.0.1", 4242);
 
     server->addConsumer<EntityVelocityPacketConsumer>();
-    server->addConsumer<PingPacketConsumer>(server);
-    server->addConsumer<HandshakeResponseConsumer>(server);
+    server->addConsumer<PingPacketConsumer>();
+    server->addConsumer<HandshakeResponseConsumer>();
+    server->addConsumer<EntityDestroyConsumer>();
 
+    server->addSystem<StayAliveSystem>();
 
-    std::function<void(std::shared_ptr<IGraphicLib>, RTypeServer server)> fu = [](std::shared_ptr<IGraphicLib> lib, RTypeServer server) {
-
-        std::cout << "Registering server consumer on graphic thread..." << std::endl;
-        auto playerTexture = lib->createTexture("../Client/assets/player.png");
-        server->addConsumer<PlayerInfoConsumer>(playerTexture, server);
-
-        auto enemyTexture = lib->createTexture("../Client/assets/enemy.png");
-        std::unordered_map<EntityType, std::shared_ptr<ITexture>> textures;
-        textures[EntityType::PLAYER] = playerTexture;
-        textures[EntityType::ENEMY] = enemyTexture;
-        textures[EntityType::PROJECTILE] = lib->createTexture("../Client/assets/projectile.png");
-
-        server->addConsumer<EntityInfoConsumer>(textures);
-
-        registeredConsumers = true;
-        cv2.notify_all();
-    };
-
-    e.getEngineComponent<IGraphicLib>()->execOnLibThread(fu, e.getEngineComponent<IGraphicLib>(), server);
-
-    server->addSystem<StayAliveSystem>(server);
+    std::function<void(std::shared_ptr<IGraphicLib>, RTypeServer server)> graphExec = execOnGraph;
+    engine->getModule<IGraphicLib>()->execOnLibThread(graphExec, engine->getModule<IGraphicLib>(), server);
 
     std::cout << "Waiting for consumer register on graphicLib thread" << std::endl;
 
@@ -95,18 +76,16 @@ void loadNetwork(Engine &e) {
     }
 
     std::cout << "Sending handshake" << std::endl;
-
     server->startListening();
-
     server->sendPacket(HandshakePacket());
 
-    auto ticker = e.registerEngineComponent<TickUtil>(20);
+    auto ticker = engine->registerModule<TickUtil>(20);
 
     while (!windowClosed) {
         ticker->startTick();
 
-        e.updateScene();
-        server->update(e);
+        engine->updateScene(engine);
+        server->update(engine);
 
         ticker->endTickAndWait();
     }
@@ -114,8 +93,8 @@ void loadNetwork(Engine &e) {
     std::cout << "Graphic closed, closing network" << std::endl;
 }
 
-void graphicLoop(Engine &e) {
-    auto lib = e.getEngineComponent<IGraphicLib>();
+void graphicLoop(EnginePtr engine) {
+    auto lib = engine->getModule<IGraphicLib>();
     IWindow &window = lib->getWindow();
 
     while (!window.shouldClose()) {
@@ -129,25 +108,25 @@ void graphicLoop(Engine &e) {
         }
         window.beginDrawing();
         window.setBackground(ColorCodes::COLOR_BLACK);
-        lib->update(e);
+        lib->update(engine);
         window.endDrawing();
     }
     windowClosed = true;
 }
 
-void loadScenes(Engine &e) {
-    auto sc = mainMenu(e);
-    e.setScene(sc);
+void loadScenes(EnginePtr engine) {
+    auto sc = mainMenu(engine);
+    engine->setScene(sc);
 
     sc->addSystem<VelocitySystem>();
 }
 
-void loadGraphsAndScenes(Engine &e) {
+void loadGraphsAndScenes(EnginePtr engine) {
     std::unique_lock<std::mutex> lck(graphicMutex);
 
     std::cout << "[Graphic] Starting..." << std::endl;
 
-    std::shared_ptr<IGraphicLib> lib = e.registerIEngineComponent<IGraphicLib, RaylibGraphicLib>();
+    std::shared_ptr<IGraphicLib> lib = engine->registerIModule<IGraphicLib, RaylibGraphicLib>();
 
     lib->addSystem<DrawFixTextureSystem>();
 
@@ -155,7 +134,7 @@ void loadGraphsAndScenes(Engine &e) {
     window.setTargetFPS(60);
     std::cout << "[Graphic] Window created" << std::endl;
 
-    loadScenes(e);
+    loadScenes(engine);
     std::cout << "[Graphic] Scenes ready" << std::endl;
 
     graphicReady = true;
@@ -166,17 +145,17 @@ void loadGraphsAndScenes(Engine &e) {
     lck.unlock();
 }
 
-void startGraph(Engine &e) {
-    loadGraphsAndScenes(e);
-    graphicLoop(e);
+void startGraph(EnginePtr engine) {
+    loadGraphsAndScenes(engine);
+    graphicLoop(engine);
 }
 
 void loadAll() {
-    Engine e;
+    std::unique_ptr<Engine> engine = std::make_unique<Engine>();
 
-    std::thread net(startGraph, std::ref(e));
+    std::thread net(startGraph, std::ref(engine));
 
-    loadNetwork(e);
+    loadNetwork(engine);
 
     net.join();
 }

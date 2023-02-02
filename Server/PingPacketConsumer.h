@@ -6,6 +6,7 @@
 #define R_TYPE_SERVER_PINGPACKETCONSUMER_H
 
 #include "RTypeServer.h"
+#include "Engine/Network/Packets/PingPacket.h"
 
 class PingPacketConsumer : public PacketClientConsumer<PingPacket, std::shared_ptr<ClientData>> {
 public:

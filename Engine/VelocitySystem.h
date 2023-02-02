@@ -13,9 +13,9 @@ class VelocitySystem : public ISystem {
 public:
     int count = 0;
 
-    void update(Engine &engine) override;
+    void update(EnginePtr engine) override;
 
-    virtual void entityMoved(Engine &engine, std::shared_ptr<Entity> entity);
+    virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
 
     std::string getName() override;
 };

@@ -3,23 +3,18 @@
 //
 
 #include "PlayerMoveConsumer.h"
-#include "Engine/Component/AccelerationPhysicComponent.h"
-#include "Engine/Component/PositionComponent.h"
 #include "Engine/Network/Packets/EntityVelocityPacket.h"
 #include "Engine/TickUtil.h"
 
-void PlayerMoveConsumer::consume(PlayerMovePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) {
-    auto player = e.getScene()->getEntityById(data->playerId);
+PlayerMoveConsumer::PlayerMoveConsumer(EnginePtr e) : RTypePlayerPacketConsumer(e) {}
+
+void PlayerMoveConsumer::consume(PlayerMovePacket &packet, std::shared_ptr<NetClient> client,
+                                 std::shared_ptr<ClientData> data, std::shared_ptr<Entity> player) {
     auto physics = player->getOrCreate<AccelerationPhysicComponent>();
     physics->acceleration = packet.acceleration;
 
-    auto ticker = e.getEngineComponent<TickUtil>();
+    auto ticker = e->getModule<TickUtil>();
 
-    auto pos = player->getComponent<PositionComponent>();
-
-    EntityVelocityPacket velPacket(player->getId(), pos->clone(), physics->velocity.clone(), physics->acceleration.clone(),
-                                ticker->getCurrentTick());
-    server->broadcast(velPacket);
+    EntityVelocityPacket velPacket(player, ticker->getCurrentTick());
+    e->getModule<RTypeServer>()->broadcast(velPacket);
 }
-
-PlayerMoveConsumer::PlayerMoveConsumer(Engine &e, RTypeServerPtr server) : e(e), server(server) {}

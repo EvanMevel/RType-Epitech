@@ -8,16 +8,12 @@
 #define RTYPE_TIMEOUT 5000
 
 #include "Engine/ISystem.h"
-#include "RTypeServer.h"
 
 class TimeoutSystem : public ISystem {
-private:
-    RTypeServerPtr server;
 public:
-    explicit TimeoutSystem(RTypeServerPtr server);
+    TimeoutSystem();
 
-public:
-    void update(Engine &engine) override;
+    void update(EnginePtr engine) override;
 
     std::string getName() override;
 };
