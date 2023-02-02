@@ -10,7 +10,7 @@
 
 class AnimationSystem : public ISystem {
 public:
-    void update(Engine &engine) override;
+    void update(EnginePtr engine) override;
 
 };
 

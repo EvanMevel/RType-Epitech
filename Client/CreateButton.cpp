@@ -4,10 +4,10 @@
 
 #include "CreateButton.h"
 
-std::shared_ptr<Entity> createButton(Engine &e, std::shared_ptr<Scene> sc, const std::string &texturePath, int x, int y)
+std::shared_ptr<Entity> createButton(EnginePtr engine, std::shared_ptr<Scene> sc, const std::string &texturePath, int x, int y)
 {
     auto button = sc->createEntity();
-    auto buttonTexture = e.getModule<IGraphicLib>()->createTexture(texturePath);
+    auto buttonTexture = engine->getModule<IGraphicLib>()->createTexture(texturePath);
     button->addComponent<EntityTypeComponent>()->setType(BUTTON);
     button->addComponent<FixTextureComponent>()->setTexture(buttonTexture);
     auto pos = button->addComponent<PositionComponent>();

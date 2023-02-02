@@ -9,12 +9,13 @@
 /**
  * @brief update current animation frame if we have to change it(depends on frmaedelay) we change it and then update
  */
-void AnimationSystem::update(Engine &engine) {
-    if (engine.getGraphicLib() == nullptr)
+void AnimationSystem::update(EnginePtr engine) {
+    auto lib = engine->getModule<IGraphicLib>();
+    if (lib == nullptr)
         return;
-    if(engine.getScene() == nullptr)
+    if(engine->getScene() == nullptr)
         return;
-    for (auto &entity: engine.getScene()->getEntities()) {
+    for (auto &entity: engine->getScene()->getEntities()) {
         auto animationComponent = entity->getComponent<AnimationComponent>();
         auto posComponent = entity->getComponent<PositionComponent>();
         if (animationComponent != nullptr && posComponent != nullptr) {
@@ -23,7 +24,7 @@ void AnimationSystem::update(Engine &engine) {
                animationComponent->currentAnimFrame = (animationComponent->currentAnimFrame + 1) % animationComponent->getAnimation()->frame;
                animationComponent->getAnimation()->setAnimationFrame(animationComponent->currentAnimFrame);
            }
-           engine.getGraphicLib()->drawAnimation(animationComponent->getAnimation(),posComponent->getX(),posComponent->getY(), ColorCodes::COLOR_WHITE);
+           lib->drawAnimation(animationComponent->getAnimation(),posComponent->getX(),posComponent->getY(), ColorCodes::COLOR_WHITE);
         }
     }
 }

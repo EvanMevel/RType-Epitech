@@ -10,7 +10,7 @@ std::shared_ptr<Scene> mainMenu(EnginePtr engine)
     auto background = sc->createEntity();
     std::cout << "EntityId: " << background->getId() << std::endl;
 
-    auto graph = engine->getEngineComponent<IGraphicLib>();
+    auto graph = engine->getModule<IGraphicLib>();
 
     //graph->getWindow().setFullScreen();
     auto height = graph->getWindow().getHeight();
