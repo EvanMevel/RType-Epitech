@@ -11,8 +11,6 @@
 class ProjectileHitboxSystem : public ISystem {
 
 public:
-    int count = 0;
-
     void update(EnginePtr engine) override;
 
     std::string getName() override;

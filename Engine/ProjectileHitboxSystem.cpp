@@ -8,15 +8,18 @@
 #include "Engine/Component/HitboxComponent.h"
 #include "Engine/Component/TeamComponent.h"
 #include "Engine/Component/PositionComponent.h"
+#include "Hitbox.h"
 
 void ProjectileHitboxSystem::update(EnginePtr engine) {
-    count = (count + 1) % 4;
     for (auto &entity: engine->getScene()->getEntities()) {
-        auto hitbox = entity->getComponent<HitboxComponent>();
+        auto hitboxComp = entity->getComponent<HitboxComponent>();
         auto team = entity->getComponent<TeamComponent>();
         auto pos = entity->getComponent<PositionComponent>();
 
-        if (hitbox != nullptr && team != nullptr && pos != nullptr) {
+        if (hitboxComp != nullptr && team != nullptr && pos != nullptr) {
+
+            auto hitbox = Hitbox(pos, hitboxComp);
+
             for (auto &ent: engine->getScene()->getEntities()) {
                 auto tmpPos = ent->getComponent<PositionComponent>();
                 auto tmpHitbox = ent->getComponent<HitboxComponent>();
@@ -24,13 +27,8 @@ void ProjectileHitboxSystem::update(EnginePtr engine) {
                 if (tmpHitbox != nullptr && tmpTeam != nullptr && tmpPos != nullptr) {
                     if (team->getTeam() == tmpTeam->getTeam())
                         continue;
-                    int tmpPosX = tmpPos->x + static_cast<int>(tmpHitbox->getLengthX());
-                    int PosX = pos->x + static_cast<int>(hitbox->getLengthX());
-
-                    int tmpPosY = tmpPos->y + static_cast<int>(tmpHitbox->getLengthY());
-                    int PosY = pos->y + static_cast<int>(hitbox->getLengthY());
-
-                    if (pos->x < tmpPosX && PosX > tmpPos->x   &&   pos->y < tmpPosY && PosY > tmpPos->y)
+                    auto otherHitbox = Hitbox(tmpPos, tmpHitbox);
+                    if (hitbox.isColliding(otherHitbox))
                         std::cout << "Collision detected !" << std::endl;
                 }
             }
