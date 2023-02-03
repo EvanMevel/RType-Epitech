@@ -6,6 +6,11 @@
 #include "Engine/Engine.h"
 #include "Engine/Component/EntityTypeComponent.h"
 #include "HitboxFixComponent.h"
+#include "GameScene.h"
+#include "Engine/SceneHolder.h"
+#include "SceneEnum.h"
+#include "Engine/Network/Packets/HandshakePacket.h"
+#include "ClientNetServer.h"
 
 void MouseSystem::update(EnginePtr engine) {
     auto lib = engine->getModule<IGraphicLib>();
@@ -23,6 +28,14 @@ void MouseSystem::update(EnginePtr engine) {
             if (typeComponent != nullptr && typeComponent->getType() == EntityType::BUTTON && hitboxfixComponent != nullptr) {
                 if (hitboxfixComponent->getHitbox().contains(testMousePos.x,testMousePos.y)) {
                     std::cout <<"C Est DEDANS OU QUOI LA"<< std::endl;
+                    auto sceneHolder = engine->registerModule<SceneHolder>();
+                    auto sc = gameScene(engine);
+                    engine->setScene(sc);
+                    sceneHolder->addScene(SceneEnum::GAME,sc);
+                    auto server = engine->getModule<ClientNetServer>();
+                    std::cout << "Sending handshake" << std::endl;
+                    server->startListening();
+                    server->sendPacket(HandshakePacket());
                 }
             }
         }

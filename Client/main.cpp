@@ -79,10 +79,6 @@ void loadNetwork(EnginePtr engine) {
         cv2.wait(lck);
     }
 
-    std::cout << "Sending handshake" << std::endl;
-    server->startListening();
-    server->sendPacket(HandshakePacket());
-
     auto ticker = engine->registerModule<TickUtil>(20);
 
     while (!windowClosed) {
