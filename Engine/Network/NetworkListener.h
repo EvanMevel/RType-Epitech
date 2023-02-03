@@ -17,7 +17,7 @@
 class NetworkListener {
 private:
     std::unique_ptr<std::thread> listeningThread;
-    std::atomic<bool> running = true;
+    std::atomic<bool> running = false;
 
 public:
     virtual ~NetworkListener();
@@ -40,6 +40,8 @@ public:
      */
     virtual void errorReceived(std::string address, int port, int err) = 0;
     virtual CrossPlatformSocket &getSocket() = 0;
+
+    bool isRunning() const;
 
 };
 

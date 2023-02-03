@@ -14,8 +14,10 @@
 #include "ClientData.h"
 
 class RTypeServer : public NetServer<std::shared_ptr<ClientData>>, public SystemHolder {
+private:
+    EnginePtr engine;
 public:
-    RTypeServer(const std::string &address, unsigned short port);
+    RTypeServer(EnginePtr engine, const std::string &address, unsigned short port);
 
     ~RTypeServer() override;
 

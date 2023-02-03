@@ -55,3 +55,12 @@ void Scene::removeEntity(size_t entityId) {
         }
     }
 }
+
+void Scene::removeEntityById(size_t id) {
+    for (auto it = entities.begin(); it != entities.end(); it++) {
+        if (it->get()->getId() == id) {
+            entities.erase(it);
+            return;
+        }
+    }
+}

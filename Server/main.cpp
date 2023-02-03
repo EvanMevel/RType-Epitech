@@ -23,7 +23,7 @@
 std::atomic<bool> running = true;
 
 void testSrv(EnginePtr engine) {
-    RTypeServerPtr srv = engine->registerModule<RTypeServer>("127.0.0.1", 4242);
+    RTypeServerPtr srv = engine->registerModule<RTypeServer>(engine, "127.0.0.1", 4242);
     std::cout << "running" << std::endl;
 
     srv->addConsumer<PingPacketConsumer>();

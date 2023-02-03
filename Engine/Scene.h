@@ -35,6 +35,7 @@ public:
     void addEntity(std::shared_ptr<Entity>);
     std::shared_ptr<Entity> createEntity();
     std::shared_ptr<Entity> getEntityById(size_t id);
+    void removeEntityById(size_t id);
 
     void removeEntity(std::shared_ptr<Entity> entity);
     void removeEntity(size_t entityId);

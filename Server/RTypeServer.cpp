@@ -6,7 +6,7 @@
 #include "Engine/Network/Packets/HandshakeResponsePacket.h"
 #include "Engine/Network/Packets/EntityDestroyPacket.h"
 
-RTypeServer::RTypeServer(const std::string &address, unsigned short port) : NetServer(address, port) {
+RTypeServer::RTypeServer(EnginePtr engine, const std::string &address, unsigned short port) : NetServer(address, port), engine(engine) {
 
 }
 
@@ -31,4 +31,5 @@ std::shared_ptr<ClientData> RTypeServer::createData(std::shared_ptr<NetClient> &
 void RTypeServer::clientDisconnected(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> data) {
     EntityDestroyPacket packet(data->playerId);
     broadcast(packet, client);
+    engine->getScene()->removeEntity(data->playerId);
 }

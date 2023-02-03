@@ -7,6 +7,7 @@
 
 void NetworkListener::startListening() {
     listeningThread = std::make_unique<std::thread>(&NetworkListener::listen, this);
+    running.store(true);
 }
 
 void NetworkListener::listen() {
@@ -36,4 +37,8 @@ NetworkListener::~NetworkListener() {
         running.store(false);
         listeningThread->join();
     }
+}
+
+bool NetworkListener::isRunning() const {
+    return running.load();
 }
