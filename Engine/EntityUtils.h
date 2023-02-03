@@ -20,6 +20,8 @@ namespace entity {
     void initProjectile(std::shared_ptr<Entity> entity, int x, int y, int velX);
 
     void initEnemy(std::shared_ptr<Entity> entity, int x, int y);
+
+    bool applyPhysic(std::shared_ptr<Entity> entity);
 }
 
 

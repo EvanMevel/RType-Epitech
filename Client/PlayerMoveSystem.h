@@ -10,6 +10,8 @@
 #include "Engine/ISystem.h"
 #include "ClientNetServer.h"
 
+#define PLAYER_SPEED 2
+
 class PlayerMoveSystem : public ISystem {
 private:
     std::shared_ptr<Player> player;

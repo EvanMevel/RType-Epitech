@@ -9,26 +9,28 @@
 #include "CooldownComponent.h"
 
 void EnemyRandomSpawnSystem::update(std::unique_ptr<Engine> &engine) {
-    count = (count + 1) % 20;
+    count = (count + 1) % ENGINE_TPS;
     if (count != 0) {
         return;
     }
     RTypeServerPtr srv = engine->getModule<RTypeServer>();
     size_t enemies = 0;
-    for (auto &ent : engine->getScene()->getEntities()) {
+
+    std::function<void(std::shared_ptr<Entity>)> countEnemies = [&enemies](std::shared_ptr<Entity> ent) {
         auto type = ent->getComponent<EntityTypeComponent>();
         if (type && type->getType() == EntityType::ENEMY) {
             enemies++;
         }
-    }
-    while (enemies < srv->getClients().size()) {
+    };
+    engine->getScene()->forEachEntity(countEnemies);
+    while (enemies < srv->getClientCount()) {
         auto ent = engine->getScene()->createEntity();
         int x = 400;
         int y = distr(gen);
         entity::initEnemy(ent, x, y);
 
         auto cd = ent->addComponent<CooldownComponent>();
-        cd->cooldown = 100;
+        cd->cooldown = ENGINE_TPS * 2;
         enemies++;
 
         EntityInfoPacket newEntityPacket(ent);

@@ -24,6 +24,8 @@ public:
     Entity();
     explicit Entity(size_t id);
 
+    virtual ~Entity();
+
     size_t getId() const;
 
     template<class Type, class ...Args>

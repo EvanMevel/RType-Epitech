@@ -24,7 +24,6 @@ std::atomic<bool> running = true;
 
 void testSrv(EnginePtr engine) {
     RTypeServerPtr srv = engine->registerModule<RTypeServer>(engine, "127.0.0.1", 4242);
-    std::cout << "running" << std::endl;
 
     srv->addConsumer<PingPacketConsumer>();
     srv->addConsumer<HandshakeConsumer>(engine);
@@ -39,11 +38,11 @@ void testSrv(EnginePtr engine) {
     engine->getScene()->addSystem<EnemyShootSystem>();
     engine->getScene()->addSystem<ServerProjectileHitboxSystem>();
 
-    std::cout << "Server listening" << std::endl;
+    log() << "Server listening" << std::endl;
 
     srv->startListening();
 
-    auto ticker = engine->registerModule<TickUtil>(20);
+    auto ticker = engine->registerModule<TickUtil>(ENGINE_TPS);
 
     while (running.load()) {
         ticker->startTick();
@@ -53,7 +52,7 @@ void testSrv(EnginePtr engine) {
 
         ticker->endTickAndWait();
     }
-    std::cout << "Server stopped" << std::endl;
+    log() << "Server stopped" << std::endl;
 }
 
 void stopThread(EnginePtr engine) {
@@ -73,7 +72,7 @@ void stopThread(EnginePtr engine) {
         }
     } while (str != "q");
 
-    std::cout << "Closing..." << std::endl;
+    log() << "Closing..." << std::endl;
 
     running = false;
 }

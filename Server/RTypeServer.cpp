@@ -16,11 +16,11 @@ RTypeServer::~RTypeServer() {
 
 bool RTypeServer::clientConnected(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> data) {
     if (clients.size() >= MAX_CLIENTS) {
-        std::cout << client->addressPort() << " kicked. Cause: too many clients already connected" << std::endl;
+        log() << client->addressPort() << " kicked. Cause: too many clients already connected" << std::endl;
         client->sendPacket(HandshakeResponsePacket(HandshakeResponsePacketType::FULL, 0, 0));
         return false;
     }
-    std::cout << "Client " << client->addressPort() << " connected" << std::endl;
+    log() << "Client " << client->addressPort() << " connected" << std::endl;
     return true;
 }
 

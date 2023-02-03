@@ -3,6 +3,7 @@
 //
 
 #include <thread>
+#include <iomanip>
 #include "TimeUtil.h"
 
 long long getCurrentTime() {
@@ -26,4 +27,11 @@ void preciseSleep(std::chrono::milliseconds sleepMs) {
 
 void preciseSleep(long long sleepMs) {
     preciseSleep(std::chrono::milliseconds(sleepMs));
+}
+
+std::ostream &log() {
+    auto t = std::time(nullptr);
+    auto tm = *std::localtime(&t);
+    std::cout << '[' << std::put_time(&tm, "%H-%M-%S") << "] ";
+    return std::cout;
 }

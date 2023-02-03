@@ -10,7 +10,7 @@ void entity::initPlayer(std::shared_ptr<Entity> entity, int x, int y) {
     pos->setX(x);
     pos->setY(y);
     auto physic = entity->addComponent<AccelerationPhysicComponent>();
-    physic->maxVelocity = 15;
+    physic->maxVelocity = 10;
 
     auto hitbox = entity->addComponent<HitboxComponent>();
     hitbox->setLengthX(50);
@@ -55,4 +55,39 @@ void entity::initEnemy(std::shared_ptr<Entity> entity, int x, int y) {
     auto hitbox = entity->addComponent<HitboxComponent>();
     hitbox->setLengthX(50);
     hitbox->setLengthY(50);
+}
+
+bool entity::applyPhysic(std::shared_ptr<Entity> entity) {
+    auto pos = entity->getComponent<PositionComponent>();
+    auto physic = entity->getComponent<AccelerationPhysicComponent>();
+    if (pos != nullptr && physic != nullptr) {
+        if (physic->acceleration.lengthSquare() != 0) {
+            // Add acceleration to velocity
+            physic->velocity.x += physic->acceleration.x;
+            physic->velocity.y += physic->acceleration.y;
+
+            // Decrement acceleration
+            physic->acceleration.decrementTo0(physic->accelerationSlow);
+        }
+
+        if (physic->velocity.lengthSquare() == 0) {
+            return false;
+        }
+
+        if (physic->maxVelocity != 0) {
+            physic->velocity.ensureNotGreater((int) physic->maxVelocity);
+        }
+
+        //std::cout << "Accel: " << physic->acceleration.x << ", " << physic->acceleration.y << " Vel: " << physic->velocity.x << ", " << physic->velocity.y << std::endl;
+
+        // Add velocity to position
+        pos->x += physic->velocity.x;
+        pos->y += physic->velocity.y;
+
+        // Decrement velocity
+        physic->velocity.decrementTo0(physic->velocitySlow);
+
+        return true;
+    }
+    return false;
 }

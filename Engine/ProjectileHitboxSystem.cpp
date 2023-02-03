@@ -11,6 +11,7 @@
 void ProjectileHitboxSystem::update(EnginePtr engine) {
     std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> teams;
     std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>, size_t>> colliders;
+    auto lock = engine->getScene()->obtainLock();
     for (auto &entity: engine->getScene()->getEntities()) {
         auto hitboxComp = entity->getComponent<HitboxComponent>();
         auto team = entity->getComponent<TeamComponent>();
