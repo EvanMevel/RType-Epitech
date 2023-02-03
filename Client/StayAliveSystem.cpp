@@ -7,10 +7,14 @@
 #include "Engine/Network/Packets/PingPacket.h"
 
 void StayAliveSystem::update(EnginePtr engine) {
+    auto server = engine->getModule<ClientNetServer>();
+    if (server == nullptr || !server->isRunning()) {
+        return;
+    }
     long long currentTime = getCurrentTime();
     if (currentTime - lastPing > 1000) {
         lastPing = currentTime;
-        engine->getModule<ClientNetServer>()->sendPacket(PingPacket::current());
+        server->sendPacket(PingPacket::current());
     }
 }
 
