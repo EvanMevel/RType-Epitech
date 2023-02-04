@@ -12,20 +12,19 @@ TimeoutSystem::TimeoutSystem() {
 
 void TimeoutSystem::update(EnginePtr engine) {
     auto server = engine->getModule<RTypeServer>();
-    auto it = server->getClients().begin();
 
     long long currentTime = getCurrentTime();
-    while (it != server->getClients().end()) {
-        auto &client = it->second.first;
-        auto &data = it->second.second;
+
+    std::function<bool(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> &data)> func = [server, currentTime](std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> &data) {
         if (data->getLastPing() + RTYPE_TIMEOUT < currentTime) {
-            std::cout << "Client " << client->addressPort() << " timed out" << std::endl;
+            log() << "Client " << client->addressPort() << " timed out" << std::endl;
             server->clientDisconnected(client, data);
-            it = server->getClients().erase(it);
-        } else {
-            it++;
+            return true;
         }
-    }
+        return false;
+    };
+
+    server->filterClients(func);
 }
 
 std::string TimeoutSystem::getName() {

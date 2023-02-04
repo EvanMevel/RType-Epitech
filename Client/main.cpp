@@ -79,7 +79,7 @@ void loadNetwork(EnginePtr engine) {
         cv2.wait(lck);
     }
 
-    auto ticker = engine->registerModule<TickUtil>(20);
+    auto ticker = engine->registerModule<TickUtil>(ENGINE_TPS);
 
     while (!windowClosed) {
         ticker->startTick();
@@ -133,7 +133,7 @@ void loadGraphsAndScenes(EnginePtr engine) {
     lib->addSystem<AnimationSystem>();
     lib->addSystem<MouseSystem>();
 
-    IWindow &window = lib->createWindow(1920, 1005, "teststs");
+    IWindow &window = lib->createWindow(500, 500, "teststs");
     window.setTargetFPS(60);
     std::cout << "[Graphic] Window created" << std::endl;
 

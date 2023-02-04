@@ -15,6 +15,6 @@ void PlayerShootSystem::update(EnginePtr engine) {
     }
     if (player->shoot && cooldown == 0) {
         engine->getModule<ClientNetServer>()->sendPacket(PlayerShootPacket(player->entity->getId()));
-        cooldown = 10;
+        cooldown = ENGINE_TPS / 2;
     }
 }

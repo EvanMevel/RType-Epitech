@@ -10,7 +10,10 @@
 #include "RTypeServer.h"
 
 void EnemyShootSystem::update(std::unique_ptr<Engine> &engine) {
-    for (auto &ent : engine->getScene()->getEntities()) {
+    auto lock = engine->getScene()->obtainLock();
+    auto &entities = engine->getScene()->getEntities();
+    for (size_t i = 0; i < entities.size(); i++) {
+        auto &ent = entities[i];
         auto type = ent->getComponent<EntityTypeComponent>();
         if (type && type->getType() == EntityType::ENEMY) {
             auto cd = ent->getComponent<CooldownComponent>();
@@ -21,8 +24,11 @@ void EnemyShootSystem::update(std::unique_ptr<Engine> &engine) {
             cd->current++;
             if (cd->current >= cd->cooldown) {
                 cd->current = 0;
-                auto projectile = engine->getScene()->createEntity();
-                entity::initProjectile(projectile, pos->x, pos->y + 20, -10);
+                auto projectile = engine->getScene()->unsafeCreateEntity();
+                entity::initProjectile(projectile, pos->x, pos->y + 20, -5);
+
+                auto team = projectile->addComponent<TeamComponent>();
+                team->setTeam(1);
 
                 EntityInfoPacket newEntityPacket(projectile);
                 engine->getModule<RTypeServer>()->broadcast(newEntityPacket);

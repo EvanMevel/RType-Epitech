@@ -11,16 +11,16 @@ PlayerMoveSystem::PlayerMoveSystem(const std::shared_ptr<Player> &player) : play
 void PlayerMoveSystem::update(EnginePtr engine) {
     Vector2i acceleration = {0, 0};
     if (player->up) {
-        acceleration.y -= 3;
+        acceleration.y -= PLAYER_SPEED;
     }
     if (player->down) {
-        acceleration.y += 3;
+        acceleration.y += PLAYER_SPEED;
     }
     if (player->left) {
-        acceleration.x -= 3;
+        acceleration.x -= PLAYER_SPEED;
     }
     if (player->right) {
-        acceleration.x += 3;
+        acceleration.x += PLAYER_SPEED;
     }
     if (acceleration.lengthSquare() == 0) {
         return;

@@ -12,14 +12,15 @@
 HandshakeConsumer::HandshakeConsumer(EnginePtr e) : RTypePacketConsumer(e) {}
 
 static void sendEntitiesInfo(const std::shared_ptr<NetClient>& client, std::shared_ptr<Scene> scene) {
-    for (auto &entity : scene->getEntities()) {
+    std::function<void(std::shared_ptr<Entity>)> sendEntityInfo = [&client](std::shared_ptr<Entity> entity) {
         auto pos = entity->getComponent<PositionComponent>();
         auto type = entity->getComponent<EntityTypeComponent>();
         if (pos && type) {
             EntityInfoPacket packet(entity, type, pos);
             client->sendPacket(packet);
         }
-    }
+    };
+    scene->forEachEntity(sendEntityInfo);
 }
 
 void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) {

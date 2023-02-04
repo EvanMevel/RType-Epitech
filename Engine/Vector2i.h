@@ -9,21 +9,21 @@
 
 class Vector2i {
 private:
-    void absoluteVarTo0(int &var, int i) {
+    static void absoluteVarTo0(int &var, size_t i) {
         if (var < 0) {
-            var = var + i;
+            var = (int) (var + i);
             if (var > 0) {
                 var = 0;
             }
         } else {
-            var = var - i;
+            var = (int) (var - i);
             if (var < 0) {
                 var = 0;
             }
         }
     }
 
-    void ensureNotGreater(int &var, int max) {
+    static void ensureNotGreater(int &var, int max) {
         if (var > max) {
             var = max;
         }
@@ -59,7 +59,7 @@ public:
         y += other.y;
     }
 
-    void decrementTo0(int decr) {
+    void decrementTo0(size_t decr) {
         absoluteVarTo0(x, decr);
         absoluteVarTo0(y, decr);
     }
@@ -68,11 +68,11 @@ public:
         return {x, y};
     }
 
-    size_t lengthSquare() {
+    size_t lengthSquare() const {
         return x * x + y * y;
     }
 
-    size_t length() {
+    size_t length() const {
         return (size_t) std::sqrt(lengthSquare());
     }
 
@@ -86,8 +86,8 @@ public:
     }
 
     void ensureNotGreater(int max) {
-        this->ensureNotGreater(x, max);
-        this->ensureNotGreater(y, max);
+        ensureNotGreater(x, max);
+        ensureNotGreater(y, max);
     }
 };
 
