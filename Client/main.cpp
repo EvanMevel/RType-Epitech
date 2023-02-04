@@ -79,7 +79,7 @@ void loadNetwork(EnginePtr engine) {
     server->startListening();
     server->sendPacket(HandshakePacket());
 
-    auto ticker = engine->registerModule<TickUtil>(20);
+    auto ticker = engine->registerModule<TickUtil>(ENGINE_TPS);
 
     while (!windowClosed) {
         ticker->startTick();

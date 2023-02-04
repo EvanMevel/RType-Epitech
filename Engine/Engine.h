@@ -10,6 +10,8 @@
 #include "Scene.h"
 #include "Graphic/IGraphicLib.h"
 
+#define ENGINE_TPS 60
+
 /**
  * @brief base of the Engine that contains the current scene and the graphic library if it is set
  */

@@ -8,11 +8,13 @@
 #include <thread>
 #include <utility>
 #include <ostream>
+#include <functional>
 #include "CrossPlatformSocket.h"
 #include "PacketReceiver.h"
 #include "PacketSender.h"
 #include "NetworkListener.h"
 #include "Engine/Network/Packets/PacketConsumerException.h"
+#include "Engine/TimeUtil.h"
 
 /**
  * @brief NetClient describes a client connected to the server
@@ -56,6 +58,7 @@ protected:
     unsigned short _port;
     std::shared_ptr<CrossPlatformSocket> socket;
     std::unordered_map<std::string, std::pair<std::shared_ptr<NetClient>, Data>> clients;
+    std::mutex clientsMutex;
 public:
     NetServer(const std::string &address, unsigned short port) : socket(std::make_shared<CrossPlatformSocket>()), _address(address), _port(port) {
         if (!socket->create()) {
@@ -67,7 +70,6 @@ public:
     }
 
     ~NetServer() override {
-
     }
 
     bool messageReceived(std::string address, int port, char *message, int length) override {
@@ -92,8 +94,25 @@ public:
         return *socket;
     }
 
-    std::unordered_map<std::string, std::pair<std::shared_ptr<NetClient>, Data>> &getClients() {
-        return clients;
+    size_t getClientCount() const {
+        return clients.size();
+    }
+
+    void filterClients(std::function<bool (std::shared_ptr<NetClient> &client, Data &data)> filter) {
+        std::lock_guard<std::mutex> lock(clientsMutex);
+        auto it = clients.begin();
+        while (it != clients.end()) {
+            if (filter(it->second.first, it->second.second)) {
+                it = clients.erase(it);
+            } else {
+                ++it;
+            }
+        }
+    }
+
+    virtual void removeClient(std::shared_ptr<NetClient> &client) {
+        std::lock_guard<std::mutex> lock(clientsMutex);
+        clients.erase(client->getAddress() + ":" + std::to_string(client->getPort()));
     }
 
     virtual Data createData(std::shared_ptr<NetClient> &client) = 0;
@@ -106,8 +125,9 @@ public:
         try {
             this->consumeMessage(message, length, client, data);
         } catch (PacketConsumerException &e) {
-            clients.erase(client->getAddress() + ":" + std::to_string(client->getPort()));
-            std::cout << "Client " << client->addressPort() << " kicked. Cause: " << e.what() << std::endl;
+            log() << "Client " << client->addressPort() << " kicked. Cause: " << e.what() << std::endl;
+            clientDisconnected(client, data);
+            removeClient(client);
         }
     }
 
@@ -118,14 +138,16 @@ public:
         std::string key = address + ":" + std::to_string(port);
         auto it = clients.find(key);
         if (it != clients.end()) {
-            std::cout << "Client " << key << " disconnected" << std::endl;
+            log() << "Client " << key << " disconnected" << std::endl;
             clientDisconnected(it->second.first, it->second.second);
+            std::lock_guard<std::mutex> lock(clientsMutex);
             clients.erase(it);
         }
     }
 
     template<class Packet>
     void broadcast(const Packet &packet) {
+        std::lock_guard<std::mutex> lock(clientsMutex);
         for (auto &client : clients) {
             client.second.first->sendPacket(packet);
         }
@@ -133,6 +155,7 @@ public:
 
     template<class Packet>
     void broadcast(const Packet &packet, std::shared_ptr<NetClient> cli) {
+        std::lock_guard<std::mutex> lock(clientsMutex);
         for (auto &client : clients) {
             if (client.second.first != cli) {
                 client.second.first->sendPacket(packet);
