@@ -37,15 +37,15 @@ std::shared_ptr<Scene> mainMenu(EnginePtr engine)
     auto pos = background->addComponent<PositionComponent>();
     pos->setX(200);
     pos->setY(200);
-    //auto anima = graph->createAnimation("../Client/assets/giftest.gif");
+    //auto anima = graph->createAnimation("./assets/giftest.gif");
     //background->addComponent<AnimationComponent>()->setAnimation(anima);
 
 
-    auto title = createButton(engine,sc,"../Client/assets/rtype.png",width/2-(800/2),height/3-(400/2));
-    auto playButton = createButton(engine,sc,"../Client/assets/play-button.png",width/2-(400/2),height*0.45-(100/2));
+    auto title = createButton(engine,sc,"./assets/rtype.png",width/2-(800/2),height/3-(400/2));
+    auto playButton = createButton(engine,sc,"./assets/play-button.png",width/2-(400/2),height*0.45-(100/2));
     auto hitboxPlaybutton = playButton->addComponent<HitboxComponent>();
-    auto optionButton = createButton(engine,sc,"../Client/assets/img_3.png",width/2-(400/2),height*0.65-(100/2));
-    auto quitButton = createButton(engine,sc,"../Client/assets/img_3.png",width/2-(400/2),height*0.85-(100/2));
+    auto optionButton = createButton(engine,sc,"./assets/img_3.png",width/2-(400/2),height*0.65-(100/2));
+    auto quitButton = createButton(engine,sc,"./assets/img_3.png",width/2-(400/2),height*0.85-(100/2));
 
     return sc;
 }

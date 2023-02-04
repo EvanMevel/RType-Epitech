@@ -31,14 +31,14 @@ std::shared_ptr<Scene> gameScene(EnginePtr engine){
     auto background = sc->createEntity();
     auto lib = engine->getModule<IGraphicLib>();
 
-    auto playerTexture = lib->createTexture("../Client/assets/player.png");
+    auto playerTexture = lib->createTexture("./assets/player.png");
    // server->addConsumer<PlayerInfoConsumer>(playerTexture);
 
-    auto enemyTexture = lib->createTexture("../Client/assets/enemy.png");
+    auto enemyTexture = lib->createTexture("./assets/enemy.png");
     std::unordered_map<EntityType, std::shared_ptr<ITexture>> textures;
     textures[EntityType::PLAYER] = playerTexture;
     textures[EntityType::ENEMY] = enemyTexture;
-    textures[EntityType::PROJECTILE] = lib->createTexture("../Client/assets/projectile.png");
+    textures[EntityType::PROJECTILE] = lib->createTexture("./assets/projectile.png");
 
     return sc;
 }
