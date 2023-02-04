@@ -27,5 +27,7 @@ Check out the [Wiki](https://github.com/EpitechPromo2025/B-CPP-500-REN-5-2-rtype
 
 # Authors
 Evan Mevel
+
 Théo Guguen
+
 Audrey Amar
