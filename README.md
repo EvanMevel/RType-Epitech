@@ -11,11 +11,17 @@ To compile this project you need to have :
 - Ninja
 
 # Compilation
+
 On Windows :
+
     start build.bat
+    
  On Linux :
+ 
     ./build.sh
+    
 You will find the executable in the build directory :
+
 - r-type-server
 - r-type-client
 
