@@ -20,6 +20,10 @@
 #include "Client/Consumers/EntityInfoConsumer.h"
 #include "Client/Consumers/EntityDestroyConsumer.h"
 #include "Client/Consumers/EntityVelocityPacketConsumer.h"
+#include "AnimationSystem.h"
+#include "MouseSystem.h"
+#include "Engine/SceneHolder.h"
+#include "SceneEnum.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -75,10 +79,6 @@ void loadNetwork(EnginePtr engine) {
         cv2.wait(lck);
     }
 
-    std::cout << "Sending handshake" << std::endl;
-    server->startListening();
-    server->sendPacket(HandshakePacket());
-
     auto ticker = engine->registerModule<TickUtil>(ENGINE_TPS);
 
     while (!windowClosed) {
@@ -115,9 +115,10 @@ void graphicLoop(EnginePtr engine) {
 }
 
 void loadScenes(EnginePtr engine) {
+    auto sceneHolder = engine->registerModule<SceneHolder>();
     auto sc = mainMenu(engine);
     engine->setScene(sc);
-
+    sceneHolder->addScene(SceneEnum::MAIN_MENU,sc);
     sc->addSystem<VelocitySystem>();
 }
 
@@ -129,6 +130,8 @@ void loadGraphsAndScenes(EnginePtr engine) {
     std::shared_ptr<IGraphicLib> lib = engine->registerIModule<IGraphicLib, RaylibGraphicLib>();
 
     lib->addSystem<DrawFixTextureSystem>();
+    lib->addSystem<AnimationSystem>();
+    lib->addSystem<MouseSystem>();
 
     IWindow &window = lib->createWindow(500, 500, "teststs");
     window.setTargetFPS(60);

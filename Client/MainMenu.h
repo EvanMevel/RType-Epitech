@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include "FixTextureComponent.h"
+#include "AnimationComponent.h"
 #include "Engine/EntityType.h"
 #include "CreateButton.h"
 
