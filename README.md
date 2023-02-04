@@ -17,9 +17,9 @@ On Windows :
     ./build.sh
 You will find the executable in the build directory :
 - r-type-server
--r-type-client
+- r-type-client
 
-#Coding Style
+# Coding Style
 This r-type is developed with XXXXXXXX coding style.
 
 # Wiki
