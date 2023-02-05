@@ -39,7 +39,8 @@ void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTy
         }
     } else if (packet.type == EntityType::ENEMY) {
         entity::initEnemy(entity, packet.x, packet.y);
-        sprite = spriteManager->getSprite(SpriteType::ENEMY);
+        SpriteType type = static_cast<SpriteType>(((int) SpriteType::ENEMY_1) + packet.entityInfo);
+        sprite = spriteManager->getSprite(type);
     } else if (packet.type == EntityType::PLAYER) {
         entity::initPlayer(entity, packet.x, packet.y);
         SpriteType type = static_cast<SpriteType>(((int) SpriteType::PLAYER_1) + packet.entityInfo - 1);

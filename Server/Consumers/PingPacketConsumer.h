@@ -20,35 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_SPRITEMANAGER_H
-#define R_TYPE_SERVER_SPRITEMANAGER_H
+#ifndef R_TYPE_SERVER_PINGPACKETCONSUMER_H
+#define R_TYPE_SERVER_PINGPACKETCONSUMER_H
 
-#include <unordered_map>
-#include "Engine/Graphic/Sprite.h"
+#include "Server/RTypeServer.h"
+#include "Engine/Network/Packets/PingPacket.h"
 
-enum class SpriteType {
-    PLAYER_1 = 0,
-    PLAYER_2 = 1,
-    PLAYER_3 = 2,
-    PLAYER_4 = 3,
-    PROJECTILE_1 = 4,
-    PROJECTILE_2 = 5,
-    ENEMY_1 = 6,
-    ENEMY_2 = 7,
-};
-
-
-
-class SpriteManager {
-private:
-    std::unordered_map<SpriteType, std::shared_ptr<Sprite>> _sprites;
-
+class PingPacketConsumer : public PacketClientConsumer<PingPacket, std::shared_ptr<ClientData>> {
 public:
-    SpriteManager();
-    std::shared_ptr<Sprite> getSprite(SpriteType type);
+    PingPacketConsumer();
 
-    void addSprite(SpriteType type, std::shared_ptr<Sprite> sprite);
+    void consume(PingPacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) override;
 };
 
 
-#endif //R_TYPE_SERVER_SPRITEMANAGER_H
+#endif //R_TYPE_SERVER_PINGPACKETCONSUMER_H

@@ -32,7 +32,8 @@ private:
     std::random_device rd;
     std::mt19937 gen;
     std::uniform_int_distribution<> distrx;
-    std::uniform_int_distribution<> distry;
+    std::uniform_int_distribution<> distry;;
+    std::uniform_int_distribution<> distrType;
 public:
     EnemyRandomSpawnSystem();
 

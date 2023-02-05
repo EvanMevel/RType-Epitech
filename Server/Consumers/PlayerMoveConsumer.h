@@ -20,18 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PINGPACKETCONSUMER_H
-#define R_TYPE_SERVER_PINGPACKETCONSUMER_H
+#ifndef R_TYPE_SERVER_PLAYERMOVECONSUMER_H
+#define R_TYPE_SERVER_PLAYERMOVECONSUMER_H
 
-#include "RTypeServer.h"
-#include "Engine/Network/Packets/PingPacket.h"
 
-class PingPacketConsumer : public PacketClientConsumer<PingPacket, std::shared_ptr<ClientData>> {
+#include "Server/RTypeServer.h"
+#include "Engine/Network/Packets/PlayerMovePacket.h"
+
+class PlayerMoveConsumer : public RTypePlayerPacketConsumer<PlayerMovePacket> {
 public:
-    PingPacketConsumer();
+    explicit PlayerMoveConsumer(EnginePtr e);
 
-    void consume(PingPacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) override;
+    void consume(PlayerMovePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data,
+                 std::shared_ptr<Entity> player) override;
 };
 
 
-#endif //R_TYPE_SERVER_PINGPACKETCONSUMER_H
+#endif //R_TYPE_SERVER_PLAYERMOVECONSUMER_H

@@ -20,35 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_SPRITEMANAGER_H
-#define R_TYPE_SERVER_SPRITEMANAGER_H
-
-#include <unordered_map>
-#include "Engine/Graphic/Sprite.h"
-
-enum class SpriteType {
-    PLAYER_1 = 0,
-    PLAYER_2 = 1,
-    PLAYER_3 = 2,
-    PLAYER_4 = 3,
-    PROJECTILE_1 = 4,
-    PROJECTILE_2 = 5,
-    ENEMY_1 = 6,
-    ENEMY_2 = 7,
-};
+#ifndef R_TYPE_SERVER_PLAYERSHOOTCONSUMER_H
+#define R_TYPE_SERVER_PLAYERSHOOTCONSUMER_H
 
 
+#include "Server/RTypeServer.h"
+#include "Engine/Network/Packets/PlayerShootPacket.h"
 
-class SpriteManager {
-private:
-    std::unordered_map<SpriteType, std::shared_ptr<Sprite>> _sprites;
-
+class PlayerShootConsumer : public RTypePlayerPacketConsumer<PlayerShootPacket> {
 public:
-    SpriteManager();
-    std::shared_ptr<Sprite> getSprite(SpriteType type);
+    explicit PlayerShootConsumer(EnginePtr e);
 
-    void addSprite(SpriteType type, std::shared_ptr<Sprite> sprite);
+    void consume(PlayerShootPacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data,
+                 std::shared_ptr<Entity> player) override;
 };
 
 
-#endif //R_TYPE_SERVER_SPRITEMANAGER_H
+#endif //R_TYPE_SERVER_PLAYERSHOOTCONSUMER_H

@@ -20,20 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYERSHOOTCONSUMER_H
-#define R_TYPE_SERVER_PLAYERSHOOTCONSUMER_H
+#ifndef R_TYPE_SERVER_HANDSHAKECONSUMER_H
+#define R_TYPE_SERVER_HANDSHAKECONSUMER_H
 
+#include "Server/RTypeServer.h"
+#include "Engine/Network/Packets/HandshakePacket.h"
 
-#include "RTypeServer.h"
-#include "Engine/Network/Packets/PlayerShootPacket.h"
-
-class PlayerShootConsumer : public RTypePlayerPacketConsumer<PlayerShootPacket> {
+class HandshakeConsumer : public RTypePacketConsumer<HandshakePacket> {
 public:
-    explicit PlayerShootConsumer(EnginePtr e);
+    explicit HandshakeConsumer(EnginePtr e);
 
-    void consume(PlayerShootPacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data,
-                 std::shared_ptr<Entity> player) override;
+    void consume(HandshakePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) override;
 };
 
 
-#endif //R_TYPE_SERVER_PLAYERSHOOTCONSUMER_H
+#endif //R_TYPE_SERVER_HANDSHAKECONSUMER_H

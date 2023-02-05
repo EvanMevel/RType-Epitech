@@ -31,8 +31,8 @@ void entity::initPlayer(std::shared_ptr<Entity> entity, int x, int y) {
     physic->maxVelocity = 10;
 
     auto hitbox = entity->addComponent<HitboxComponent>();
-    hitbox->setLengthX(50);
-    hitbox->setLengthY(50);
+    hitbox->setLengthX(100);
+    hitbox->setLengthY(56);
 
     auto tim = entity->addComponent<TeamComponent>();
     tim->setTeam(0);
@@ -92,8 +92,8 @@ void entity::initProjectile(std::shared_ptr<Entity> entity, int x, int y, int ve
     collider->_onCollision = projectileHit;
 
     auto hitbox = entity->addComponent<HitboxComponent>();
-    hitbox->setLengthX(50);
-    hitbox->setLengthY(20);
+    hitbox->setLengthX(81);
+    hitbox->setLengthY(16);
 }
 
 void entity::initEnemy(std::shared_ptr<Entity> entity, int x, int y) {
@@ -107,8 +107,8 @@ void entity::initEnemy(std::shared_ptr<Entity> entity, int x, int y) {
     team->setTeam(1);
 
     auto hitbox = entity->addComponent<HitboxComponent>();
-    hitbox->setLengthX(50);
-    hitbox->setLengthY(50);
+    hitbox->setLengthX(99);
+    hitbox->setLengthY(66);
 
     auto health = entity->addComponent<HealthComponent>();
     health->setHealth(50);
