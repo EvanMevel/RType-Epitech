@@ -29,20 +29,22 @@
 void ProjectileHitboxSystem::update(EnginePtr engine) {
     std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> teams;
     std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>, size_t>> colliders;
-    auto lock = engine->getScene()->obtainLock();
-    for (auto &entity: engine->getScene()->getEntities()) {
-        auto hitboxComp = entity->getComponent<HitboxComponent>();
-        auto team = entity->getComponent<TeamComponent>();
-        auto pos = entity->getComponent<PositionComponent>();
+    {
+        auto lock = engine->getScene()->obtainLock();
+        for (auto &entity: engine->getScene()->getEntities()) {
+            auto hitboxComp = entity->getComponent<HitboxComponent>();
+            auto team = entity->getComponent<TeamComponent>();
+            auto pos = entity->getComponent<PositionComponent>();
 
-        if (hitboxComp != nullptr && team != nullptr && pos != nullptr) {
-            auto hitbox = Hitbox(pos, hitboxComp);
+            if (hitboxComp != nullptr && team != nullptr && pos != nullptr) {
+                auto hitbox = Hitbox(pos, hitboxComp);
 
-            std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>> &v = teams[team->getTeam()];
+                std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>> &v = teams[team->getTeam()];
 
-            v.emplace_back(hitbox, entity);
-            if (entity->hasComponent<ColliderComponent>()) {
-                colliders.emplace_back(hitbox, entity, team->getTeam());
+                v.emplace_back(hitbox, entity);
+                if (entity->hasComponent<ColliderComponent>()) {
+                    colliders.emplace_back(hitbox, entity, team->getTeam());
+                }
             }
         }
     }

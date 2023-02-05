@@ -31,6 +31,7 @@
 #include "Engine/Component/HitboxComponent.h"
 #include "Engine/Component/TeamComponent.h"
 #include "Engine/Component/ColliderComponent.h"
+#include "Engine/Component/HealthComponent.h"
 
 namespace entity {
     void initPlayer(std::shared_ptr<Entity> entity, int x, int y);

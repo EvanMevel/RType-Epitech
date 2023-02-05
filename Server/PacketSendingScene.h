@@ -20,30 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "HealthComponent.h"
-#include "TimeUtil.h"
+#ifndef R_TYPE_SERVER_PACKETSENDINGSCENE_H
+#define R_TYPE_SERVER_PACKETSENDINGSCENE_H
 
-void HealthComponent::damage(size_t damage) {
-    lastDamageTime = getCurrentTime();
-    if (health > damage) {
-        health -= damage;
-    } else {
-        health = 0;
-    }
-}
 
-bool HealthComponent::isAlive() const {
-    return health > 0;
-}
+#include "Engine/Scene.h"
+#include "RTypeServer.h"
 
-bool HealthComponent::isInvincible() const {
-    return lastDamageTime + invincibilityTime > getCurrentTime();
-}
+class PacketSendingScene : public Scene {
+private:
+    RTypeServerPtr server;
+public:
+    PacketSendingScene(EntityManager &entityManager, const RTypeServerPtr &server);
 
-void HealthComponent::setInvincibilityTime(size_t time) {
-    HealthComponent::invincibilityTime = time;
-}
+    void removeEntity(std::shared_ptr<Entity> entity) override;
 
-void HealthComponent::setHealth(size_t health) {
-    HealthComponent::health = health;
-}
+    void removeEntity(size_t entityId) override;
+
+    void filterEntities(std::function<bool(std::shared_ptr<Entity>)> filter) override;
+
+    void filterEntities(std::function<bool(std::shared_ptr<Entity>, EnginePtr)> func,
+                        std::unique_ptr<Engine> &engine) override;
+};
+
+
+#endif //R_TYPE_SERVER_PACKETSENDINGSCENE_H
