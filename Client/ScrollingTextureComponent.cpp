@@ -26,8 +26,6 @@ int ScrollingTextureComponent::getScroll() const {
     return scroll;
 }
 
-
-
 void ScrollingTextureComponent::setScroll(int scroll) {
     ScrollingTextureComponent::scroll = scroll;
 }

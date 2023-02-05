@@ -27,8 +27,6 @@
 #include "RaylibWindow.h"
 #include "Engine/Graphic/ColorCodes.h"
 #include "RaylibMouse.h"
-#include "raylib.h"
-#include "build/_deps/raylib-src/src/raylib.h"
 
 class RaylibGraphicLib : public IGraphicLib {
 private:
