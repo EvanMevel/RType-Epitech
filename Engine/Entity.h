@@ -75,7 +75,7 @@ public:
     std::shared_ptr<Type> getOrCreate(Args ...args) {
         auto component = getComponent<Type>();
         if (component == nullptr)
-            return addComponent<Type>();
+            return addComponent<Type>(args...);
         return component;
     }
 };

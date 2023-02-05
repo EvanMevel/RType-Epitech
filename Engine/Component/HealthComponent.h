@@ -23,12 +23,24 @@
 #ifndef B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_HEALTHCOMPONENT_H
 #define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_HEALTHCOMPONENT_H
 
-
 #include <cstddef>
 #include "IComponent.h"
 
-class HealthComponent : public IComponent{
+class HealthComponent : public IComponent {
+private:
     size_t health;
+    unsigned long long lastDamageTime = 0;
+    size_t invincibilityTime = 0;
+public:
+    void setHealth(size_t health);
+
+    void damage(size_t damage);
+
+    bool isAlive() const;
+
+    void setInvincibilityTime(size_t invincibilityTime);
+
+    bool isInvincible() const;
 };
 
 

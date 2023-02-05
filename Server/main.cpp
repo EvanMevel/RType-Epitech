@@ -37,11 +37,12 @@
 #include "EnemyRandomSpawnSystem.h"
 #include "EnemyShootSystem.h"
 #include "ServerProjectileHitboxSystem.h"
+#include "PacketSendingScene.h"
 
 std::atomic<bool> running = true;
 
 void testSrv(EnginePtr engine) {
-    RTypeServerPtr srv = engine->registerModule<RTypeServer>(engine, "127.0.0.1", 4242);
+    RTypeServerPtr srv = engine->getModule<RTypeServer>();
 
     srv->addConsumer<PingPacketConsumer>();
     srv->addConsumer<HandshakeConsumer>(engine);
@@ -95,12 +96,16 @@ void stopThread(EnginePtr engine) {
     running = false;
 }
 
+void createScene(EnginePtr engine) {
+    RTypeServerPtr srv = engine->registerModule<RTypeServer>(engine, "127.0.0.1", 4242);
+    auto sc = engine->createScene<PacketSendingScene>(srv);
+    engine->setScene(sc);
+}
+
 int main()
 {
     std::unique_ptr<Engine> e = std::make_unique<Engine>(100);
-    auto sc = e->createScene<Scene>();
-    e->setScene(sc);
-
+    createScene(e);
     std::thread t = std::thread(stopThread, std::ref(e));
 
     testSrv(e);

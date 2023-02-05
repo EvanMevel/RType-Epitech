@@ -37,8 +37,6 @@ void ProjectileCleanupSystem::update(EnginePtr engine) {
             return false;
         }
         if (pos->getX() < -20 || pos->getX() > 600) {
-            EntityDestroyPacket packet(entity->getId());
-            engine->getModule<RTypeServer>()->broadcast(packet);
             return true;
         }
         return false;

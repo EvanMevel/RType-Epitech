@@ -47,7 +47,5 @@ std::shared_ptr<ClientData> RTypeServer::createData(std::shared_ptr<NetClient> &
 }
 
 void RTypeServer::clientDisconnected(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> data) {
-    EntityDestroyPacket packet(data->playerId);
-    broadcast(packet, client);
     engine->getScene()->removeEntity(data->playerId);
 }

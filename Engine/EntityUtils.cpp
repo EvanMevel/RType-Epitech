@@ -36,11 +36,47 @@ void entity::initPlayer(std::shared_ptr<Entity> entity, int x, int y) {
 
     auto tim = entity->addComponent<TeamComponent>();
     tim->setTeam(0);
+
+    auto health = entity->addComponent<HealthComponent>();
+    health->setHealth(100);
+    health->setInvincibilityTime(1000);
+}
+
+void entityDied(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<Entity> cause) {
+    engine->getScene()->removeEntity(entity);
+}
+
+void entityDamaged(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<Entity> cause) {
 }
 
 void projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
                    std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams) {
-    std::cout << "Projectile " << self->getId() << " hit " << other->getId() << std::endl;
+    auto health = other->getComponent<HealthComponent>();
+    if (health != nullptr) {
+        if (!health->isInvincible()) {
+            health->damage(10);
+            if (!health->isAlive()) {
+                entityDied(engine, other, self);
+                auto team = teams[other->getComponent<TeamComponent>()->getTeam()];
+                team.erase(std::remove_if(team.begin(), team.end(),
+                                          [other](std::tuple<Hitbox, std::shared_ptr<Entity>> &t) {
+                                              return std::get<1>(t)->getId() == other->getId();
+                                          }), team.end());
+            } else {
+                entityDamaged(engine, other, self);
+            }
+        }
+    } else {
+        auto type = other->getComponent<EntityTypeComponent>();
+        if (type != nullptr && type->getType() == EntityType::PROJECTILE) {
+            entityDied(engine, other, self);
+            auto team = teams[other->getComponent<TeamComponent>()->getTeam()];
+            team.erase(std::remove_if(team.begin(), team.end(), [other](std::tuple<Hitbox, std::shared_ptr<Entity>> &t) {
+                return std::get<1>(t)->getId() == other->getId();
+            }), team.end());
+        }
+    }
+    entityDied(engine, self, other);
 }
 
 void entity::initProjectile(std::shared_ptr<Entity> entity, int x, int y, int velX) {
@@ -73,6 +109,10 @@ void entity::initEnemy(std::shared_ptr<Entity> entity, int x, int y) {
     auto hitbox = entity->addComponent<HitboxComponent>();
     hitbox->setLengthX(50);
     hitbox->setLengthY(50);
+
+    auto health = entity->addComponent<HealthComponent>();
+    health->setHealth(50);
+    health->setInvincibilityTime(400);
 }
 
 bool entity::applyPhysic(std::shared_ptr<Entity> entity) {

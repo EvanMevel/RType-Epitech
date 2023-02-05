@@ -63,7 +63,7 @@ public:
     }
 
     template <class SceneType, class ...Args>
-    std::shared_ptr<SceneType> createScene(Args&&... args) {
+    std::shared_ptr<Scene> createScene(Args&&... args) {
         return std::make_shared<SceneType>(entityManager, args...);
     }
     void setScene(std::shared_ptr<Scene> &scene);
