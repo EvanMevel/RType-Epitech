@@ -153,10 +153,10 @@ void loadGraphsAndScenes(EnginePtr engine) {
     lib->addSystem<AnimationSystem>();
     lib->addSystem<MouseSystem>();
 
-    IWindow &window = lib->createWindow(1000, 1000, "R-type");
+    IWindow &window = lib->createWindow(1920, 1080, "R-type");
     window.setTargetFPS(60);
     std::cout << "[Graphic] Window created" << std::endl;
-
+    window.setFullScreen();
     loadScenes(engine);
     std::cout << "[Graphic] Scenes ready" << std::endl;
 

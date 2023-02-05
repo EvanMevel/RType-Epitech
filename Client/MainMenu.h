@@ -29,6 +29,7 @@
 #include "AnimationComponent.h"
 #include "Engine/EntityType.h"
 #include "CreateButton.h"
+#include "CreateScrollingTexture.h"
 
 std::shared_ptr<Scene> mainMenu(EnginePtr engine);
 

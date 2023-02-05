@@ -20,24 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "GameScene.h"
-#include "SceneEnum.h"
-#include "Engine/SceneHolder.h"
-#include "Engine/VelocitySystem.h"
-#include "Client/Consumers/PlayerInfoConsumer.h"
-#include "ScrollingTextureComponent.h"
 #include "CreateScrollingTexture.h"
 
-
-std::shared_ptr<Scene> gameScene(EnginePtr engine){
-    auto sc = engine->createScene<Scene>();
-    auto lib = engine->getModule<IGraphicLib>();
-
-    auto background = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 01 - Solid colour.png",-1);
-    auto fourthground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 02 - Shadows.png",-2);
-    auto thirdground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 02 - Shadows 2.png",-2);
-    auto secondground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 03 - Stars.png",-3);
-    auto firstground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 03 - Stars 2.png",-4);
-
-    return sc;
+std::shared_ptr<Entity> createScrollingTextureComponent(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Scene> sc, const std::string &texturePath, int speed) {
+    auto scrollingEntity = sc->createEntity();
+    auto scrollingComponent = scrollingEntity->addComponent<ScrollingTextureComponent>();
+    auto pos = scrollingEntity->addComponent<PositionComponent>();
+    pos->setX(0);
+    pos->setY(0);
+    auto scrollingTexture =  lib->createTexture(texturePath);
+    scrollingComponent->setTexture(scrollingTexture);
+    scrollingComponent->setScrollingSpeed(speed);
+    auto scale = (float)lib->getWindow().getHeight() / (float)scrollingTexture->getHeight();
+    scrollingComponent->setScale(scale);
+    return scrollingEntity;
 }
