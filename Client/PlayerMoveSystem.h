@@ -30,6 +30,9 @@
 
 #define PLAYER_SPEED 2
 
+/**
+ * @brief System that moves the player
+ */
 class PlayerMoveSystem : public ISystem {
 private:
     std::shared_ptr<Player> player;

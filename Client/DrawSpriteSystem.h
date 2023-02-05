@@ -26,6 +26,9 @@
 #include "SpriteComponent.h"
 #include "Engine/ISystem.h"
 
+/**
+ * @brief System that draws ans update sprites of entities
+ */
 class DrawSpriteSystem : public ISystem {
 public:
     void update(std::unique_ptr<Engine> &engine) override;

@@ -27,6 +27,9 @@
 #include "Server/RTypeServer.h"
 #include "Engine/Network/Packets/PlayerShootPacket.h"
 
+/**
+ * @brief Consumer for PlayerShootPacket
+ */
 class PlayerShootConsumer : public RTypePlayerPacketConsumer<PlayerShootPacket> {
 public:
     explicit PlayerShootConsumer(EnginePtr e);

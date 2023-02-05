@@ -26,6 +26,9 @@
 
 #include "Engine/ISystem.h"
 
+/**
+ * @brief System that updates the animation of the entities
+ */
 class AnimationSystem : public ISystem {
 public:
     void update(EnginePtr engine) override;

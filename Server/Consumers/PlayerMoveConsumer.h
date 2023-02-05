@@ -27,6 +27,10 @@
 #include "Server/RTypeServer.h"
 #include "Engine/Network/Packets/PlayerMovePacket.h"
 
+/**
+ * @brief Consumer for PlayerMovePacket
+ * @details This consumer is used to move the player
+ */
 class PlayerMoveConsumer : public RTypePlayerPacketConsumer<PlayerMovePacket> {
 public:
     explicit PlayerMoveConsumer(EnginePtr e);

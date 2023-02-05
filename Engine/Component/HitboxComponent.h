@@ -27,6 +27,9 @@
 #include <cstddef>
 #include "IComponent.h"
 
+/**
+ * @brief Component that defines the hitbox of an entity
+ */
 class HitboxComponent : public IComponent{
     size_t length_x;
 public:

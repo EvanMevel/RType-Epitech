@@ -28,6 +28,9 @@
 #include "Engine/Component/IComponent.h"
 #include "Engine/Graphic/IAnimation.h"
 
+/**
+ * @brief Animation component containing an animation
+ */
 class AnimationComponent : public IComponent {
 private:
     std::shared_ptr<IAnimation> animation;

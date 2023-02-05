@@ -37,8 +37,9 @@ enum class SpriteType {
     ENEMY_2 = 7,
 };
 
-
-
+/**
+ * @brief SpriteManager contains all the sprites of the game
+ */
 class SpriteManager {
 private:
     std::unordered_map<SpriteType, std::shared_ptr<Sprite>> _sprites;

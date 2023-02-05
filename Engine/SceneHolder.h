@@ -26,6 +26,9 @@
 
 #include "Scene.h"
 
+/**
+ * @brief SceneHolder is a class that holds all the scenes of the game
+ */
 class SceneHolder {
 private:
     std::unordered_map<int,std::shared_ptr<Scene>> scenes;

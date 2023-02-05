@@ -31,7 +31,7 @@ void EntityVelocityPacketConsumer::consume(EntityVelocityPacket &packet, EngineP
 
     auto entity = engine->getScene()->getEntityById(packet.entityId);
     auto pos = entity->getOrCreate<PositionComponent>();
-    auto physics = entity->getOrCreate<AccelerationPhysicComponent>();
+    auto physics = entity->getOrCreate<PhysicComponent>();
 
     pos->setX(packet.pos.x);
     pos->setY(packet.pos.y);

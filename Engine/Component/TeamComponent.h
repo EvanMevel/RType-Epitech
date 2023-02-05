@@ -27,6 +27,9 @@
 #include <cstddef>
 #include "IComponent.h"
 
+/**
+ * @brief Component that defines the team of an entity
+ */
 class TeamComponent : public IComponent{
     size_t team;
 public:

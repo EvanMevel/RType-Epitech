@@ -36,7 +36,7 @@
 #include "ProjectileCleanupSystem.h"
 #include "EnemyRandomSpawnSystem.h"
 #include "EnemyShootSystem.h"
-#include "ServerProjectileHitboxSystem.h"
+#include "ServerColliderSystem.h"
 #include "PacketSendingScene.h"
 
 std::atomic<bool> running = true;
@@ -55,7 +55,7 @@ void testSrv(EnginePtr engine) {
     engine->getScene()->addSystem<ProjectileCleanupSystem>();
     engine->getScene()->addSystem<EnemyRandomSpawnSystem>();
     engine->getScene()->addSystem<EnemyShootSystem>();
-    engine->getScene()->addSystem<ServerProjectileHitboxSystem>();
+    engine->getScene()->addSystem<ServerColliderSystem>();
 
     log() << "Server listening" << std::endl;
 
@@ -81,11 +81,11 @@ void stopThread(EnginePtr engine) {
         std::cin >> str;
         if (str == "a") {
             auto ent = engine->getScene()->getEntityById(100);
-            auto physics = ent->getOrCreate<AccelerationPhysicComponent>();
+            auto physics = ent->getOrCreate<PhysicComponent>();
             physics->acceleration.setX(5);
         } else if (str == "z") {
             auto ent = engine->getScene()->getEntityById(100);
-            auto physics = ent->getOrCreate<AccelerationPhysicComponent>();
+            auto physics = ent->getOrCreate<PhysicComponent>();
             physics->acceleration.setX(-5);
 
         }

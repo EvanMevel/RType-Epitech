@@ -25,6 +25,10 @@
 
 #include <chrono>
 
+/**
+ * @brief Utility class to handle ticks
+ * @details This class is used to handle ticks. It is used to wait for the next tick to start.
+ */
 class TickUtil {
 private:
     unsigned long long currentTick = 0;

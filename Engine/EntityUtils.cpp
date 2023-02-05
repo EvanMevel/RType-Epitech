@@ -27,7 +27,7 @@ void entity::initPlayer(std::shared_ptr<Entity> entity, int x, int y) {
     auto pos = entity->addComponent<PositionComponent>();
     pos->setX(x);
     pos->setY(y);
-    auto physic = entity->addComponent<AccelerationPhysicComponent>();
+    auto physic = entity->addComponent<PhysicComponent>();
     physic->maxVelocity = 10;
 
     auto hitbox = entity->addComponent<HitboxComponent>();
@@ -84,7 +84,7 @@ void entity::initProjectile(std::shared_ptr<Entity> entity, int x, int y, int ve
     auto pos = entity->addComponent<PositionComponent>();
     pos->setX(x);
     pos->setY(y);
-    auto physic = entity->addComponent<AccelerationPhysicComponent>();
+    auto physic = entity->addComponent<PhysicComponent>();
     physic->velocity.x = velX;
     physic->velocitySlow = 0;
 
@@ -101,7 +101,7 @@ void entity::initEnemy(std::shared_ptr<Entity> entity, int x, int y) {
     auto pos = entity->addComponent<PositionComponent>();
     pos->setX(x);
     pos->setY(y);
-    auto physic = entity->addComponent<AccelerationPhysicComponent>();
+    auto physic = entity->addComponent<PhysicComponent>();
 
     auto team = entity->addComponent<TeamComponent>();
     team->setTeam(1);
@@ -117,7 +117,7 @@ void entity::initEnemy(std::shared_ptr<Entity> entity, int x, int y) {
 
 bool entity::applyPhysic(std::shared_ptr<Entity> entity) {
     auto pos = entity->getComponent<PositionComponent>();
-    auto physic = entity->getComponent<AccelerationPhysicComponent>();
+    auto physic = entity->getComponent<PhysicComponent>();
     if (pos != nullptr && physic != nullptr) {
         if (physic->acceleration.lengthSquare() != 0) {
             // Add acceleration to velocity

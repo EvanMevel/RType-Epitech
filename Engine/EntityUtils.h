@@ -27,7 +27,7 @@
 #include "Engine/EntityType.h"
 #include "Engine/Component/EntityTypeComponent.h"
 #include "Engine/Component/PositionComponent.h"
-#include "Engine/Component/AccelerationPhysicComponent.h"
+#include "Engine/Component/PhysicComponent.h"
 #include "Engine/Component/HitboxComponent.h"
 #include "Engine/Component/TeamComponent.h"
 #include "Engine/Component/ColliderComponent.h"

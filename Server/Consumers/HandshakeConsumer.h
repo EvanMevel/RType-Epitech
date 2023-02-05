@@ -26,6 +26,9 @@
 #include "Server/RTypeServer.h"
 #include "Engine/Network/Packets/HandshakePacket.h"
 
+/**
+ * @brief Listens to HandshakePacket and sends a HandshakePacketResponse back to the client
+ */
 class HandshakeConsumer : public RTypePacketConsumer<HandshakePacket> {
 public:
     explicit HandshakeConsumer(EnginePtr e);

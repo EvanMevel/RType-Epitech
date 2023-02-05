@@ -26,6 +26,9 @@
 
 #include "Engine/ISystem.h"
 
+/**
+ * @brief System that handles mouse input
+ */
 class MouseSystem : public ISystem {
 public:
     void update(EnginePtr engine) override;

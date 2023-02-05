@@ -26,6 +26,9 @@
 #include "Client/ClientNetServer.h"
 #include "Engine/Network/Packets/HandshakeResponsePacket.h"
 
+/**
+ * @brief Listen to HandshakeResponsePacket and create the player
+ */
 class HandshakeResponseConsumer : public ClientPacketConsumer<HandshakeResponsePacket> {
 public:
     void consume(HandshakeResponsePacket &packet, EnginePtr engine, RTypeServer server) override;

@@ -24,7 +24,9 @@
 #define R_TYPE_SERVER_RECTANGLE_H
 
 
-
+/**
+ * @brief A rectangle
+ */
 class Rectangle {
 public:
     int x;

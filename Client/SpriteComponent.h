@@ -26,6 +26,9 @@
 #include "Engine/Component/IComponent.h"
 #include "Engine/Graphic/Sprite.h"
 
+/**
+ * @brief Component that contains a sprite
+ */
 class SpriteComponent : public IComponent {
 private:
     std::shared_ptr<Sprite> sprite;

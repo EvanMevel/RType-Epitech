@@ -27,6 +27,9 @@
 #include "Engine/Rectangle.h"
 #include "ITexture.h"
 
+/**
+ * @brief Sprite class
+ */
 class Sprite {
 public:
     std::shared_ptr<ITexture> texture;

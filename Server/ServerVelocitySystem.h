@@ -25,6 +25,9 @@
 
 #include "Engine/VelocitySystem.h"
 
+/**
+ * @brief ServerVelocitySystem
+ */
 class ServerVelocitySystem : public VelocitySystem {
 public:
     ServerVelocitySystem();

@@ -27,6 +27,9 @@
 #include "Client/ClientNetServer.h"
 #include "Engine/Network/Packets/EntityDestroyPacket.h"
 
+/**
+ * @brief Listen to EntityDestroyPacket and destroy the entity
+ */
 class EntityDestroyConsumer : public ClientPacketConsumer<EntityDestroyPacket>{
 public:
     void consume(EntityDestroyPacket &packet, EnginePtr engine, RTypeServer server) override;

@@ -25,6 +25,9 @@
 
 #include "Engine/ISystem.h"
 
+/**
+ * @brief System that checks if a projectile is out of bounds and deletes it
+ */
 class ProjectileCleanupSystem : public ISystem {
 public:
     ProjectileCleanupSystem();

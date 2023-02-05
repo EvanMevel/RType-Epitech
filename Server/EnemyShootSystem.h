@@ -26,6 +26,9 @@
 
 #include "Engine/ISystem.h"
 
+/**
+ * @brief System that make enemies shoot
+ */
 class EnemyShootSystem : public ISystem {
 public:
     void update(std::unique_ptr<Engine> &engine) override;

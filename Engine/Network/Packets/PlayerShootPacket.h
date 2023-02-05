@@ -26,6 +26,9 @@
 
 #include "IPacket.h"
 
+/**
+ * @brief Packet sent by the client to the server when its player shoots
+ */
 class PlayerShootPacket : public IPacket {
 public:
     static const int ID = 8;

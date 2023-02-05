@@ -20,19 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef VECTOR2F_H
-#define VECTOR2F_H
+#ifndef R_TYPE_SERVER_COLLIDERHITBOXSYSTEM_H
+#define R_TYPE_SERVER_COLLIDERHITBOXSYSTEM_H
 
-#include <cstddef>
+#include "Engine/ISystem.h"
+#include "Engine/Entity.h"
 
-class Vector2f {
+/**
+ * @brief System that checks if a collider is colliding with another entity
+ */
+class ColliderHitboxSystem : public ISystem {
+
 public:
-    float x, y;
+    void update(EnginePtr engine) override;
 
-    Vector2f operator+(const Vector2f& v2) const;
-    Vector2f operator-(const Vector2f& v2) const;
-    Vector2f operator*(const Vector2f& v2) const;
-    Vector2f& operator=(const Vector2f& v2);
+    std::string getName() override;
 };
 
-#endif
+
+#endif //R_TYPE_SERVER_COLLIDERHITBOXSYSTEM_H

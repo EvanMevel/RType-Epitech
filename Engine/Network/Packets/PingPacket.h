@@ -26,6 +26,9 @@
 
 #include "IPacket.h"
 
+/**
+ * @brief Packet used to ping
+ */
 class PingPacket : public IPacket {
 public:
     static const int ID = 0;

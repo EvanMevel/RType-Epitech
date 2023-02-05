@@ -27,6 +27,9 @@
 #include "Client/ClientNetServer.h"
 #include "Engine/Network/Packets/EntityInfoPacket.h"
 
+/**
+ * @brief Listen to EntityInfoPacket and create the entity
+ */
 class EntityInfoConsumer : public ClientPacketConsumer<EntityInfoPacket> {
 public:
     explicit EntityInfoConsumer() = default;

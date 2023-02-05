@@ -27,6 +27,9 @@
 #include "Engine/Component/HitboxComponent.h"
 #include "Engine/Entity.h"
 
+/**
+ * @brief Hitbox class used to check collisions
+ */
 class Hitbox {
 public:
     int x;

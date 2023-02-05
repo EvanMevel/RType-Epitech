@@ -20,9 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "ServerProjectileHitboxSystem.h"
+#ifndef R_TYPE_SERVER_SERVERCOLLIDERSYSTEM_H
+#define R_TYPE_SERVER_SERVERCOLLIDERSYSTEM_H
 
-std::string ServerProjectileHitboxSystem::getName() {
-    return "ServerVelocitySystem";
-}
+#include "RTypeServer.h"
+#include "Engine/ISystem.h"
+#include "Engine/Entity.h"
+#include "Engine/ColliderHitboxSystem.h"
 
+class ServerColliderSystem : public ColliderHitboxSystem {
+public:
+    std::string getName() override;
+};
+
+#endif //R_TYPE_SERVER_SERVERCOLLIDERSYSTEM_H

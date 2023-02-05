@@ -25,6 +25,9 @@
 
 #include "Engine/Entity.h"
 
+/**
+ * @brief Describes a player and its inputs
+ */
 class Player {
 public:
     bool up = false;

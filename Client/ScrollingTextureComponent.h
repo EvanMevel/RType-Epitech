@@ -26,6 +26,9 @@
 #include "Engine/Component/IComponent.h"
 #include "FixTextureComponent.h"
 
+/**
+ * @brief Component that allows to scroll a texture
+ */
 class ScrollingTextureComponent : public FixTextureComponent{
 private:
     int scroll = 0;

@@ -22,7 +22,7 @@
 
 #include "PlayerMoveSystem.h"
 #include "Engine/Network/Packets/PlayerMovePacket.h"
-#include "Engine/Component/AccelerationPhysicComponent.h"
+#include "Engine/Component/PhysicComponent.h"
 
 PlayerMoveSystem::PlayerMoveSystem(const std::shared_ptr<Player> &player) : player(player) {}
 
@@ -43,7 +43,7 @@ void PlayerMoveSystem::update(EnginePtr engine) {
     if (acceleration.lengthSquare() == 0) {
         return;
     }
-    auto physic = player->entity->getOrCreate<AccelerationPhysicComponent>();
+    auto physic = player->entity->getOrCreate<PhysicComponent>();
     physic->acceleration = acceleration;
 
     PlayerMovePacket packet(player->entity->getId(), acceleration);

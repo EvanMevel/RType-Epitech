@@ -20,13 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
-#include "ProjectileHitboxSystem.h"
+#include "ColliderHitboxSystem.h"
 #include "Engine/Engine.h"
 #include "Engine/EntityUtils.h"
 #include "Hitbox.h"
 
-void ProjectileHitboxSystem::update(EnginePtr engine) {
+void ColliderHitboxSystem::update(EnginePtr engine) {
     std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> teams;
     std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>, size_t>> colliders;
     {
@@ -85,6 +84,6 @@ void ProjectileHitboxSystem::update(EnginePtr engine) {
     }
 }
 
-std::string ProjectileHitboxSystem::getName() {
+std::string ColliderHitboxSystem::getName() {
     return "ProjectileHitboxSystem";
 }

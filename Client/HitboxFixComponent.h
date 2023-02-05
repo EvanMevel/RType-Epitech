@@ -27,6 +27,10 @@
 #include "Engine/Component/IComponent.h"
 #include "Engine/Hitbox.h"
 
+/**
+ * @brief Component that contains a FIX hitbox, it does not move
+ * @details This component is used to create hitboxes that do not move. It is used for buttons
+ */
 class HitboxFixComponent  : public IComponent {
 private:
     Hitbox hitbox;

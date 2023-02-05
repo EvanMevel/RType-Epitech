@@ -27,6 +27,9 @@
 #include "Engine/Scene.h"
 #include "RTypeServer.h"
 
+/**
+ * @brief Scene that sends packets to the clients when entities are removed
+ */
 class PacketSendingScene : public Scene {
 private:
     RTypeServerPtr server;

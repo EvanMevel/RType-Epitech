@@ -29,6 +29,9 @@
 #include "Engine/Entity.h"
 #include "Engine/Component/PositionComponent.h"
 
+/**
+ * @brief Packet sent by the server to the client to inform it of its own player id and position
+ */
 class PlayerInfoPacket : public IPacket {
 
 public:

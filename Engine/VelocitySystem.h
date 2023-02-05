@@ -26,6 +26,9 @@
 #include "Engine/ISystem.h"
 #include "Engine/Entity.h"
 
+/**
+ * @brief System that updates the position of entities with a velocity component
+ */
 class VelocitySystem : public ISystem {
 
 public:

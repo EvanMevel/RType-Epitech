@@ -27,6 +27,9 @@
 #include "Client/ClientNetServer.h"
 #include "Engine/Network/Packets/PlayerInfoPacket.h"
 
+/**
+ * @brief Listen to PlayerInfoPacket and update the player info
+ */
 class PlayerInfoConsumer : public ClientPacketConsumer<PlayerInfoPacket> {
 public:
     PlayerInfoConsumer();
