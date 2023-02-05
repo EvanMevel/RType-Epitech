@@ -31,7 +31,7 @@ void PlayerShootConsumer::consume(PlayerShootPacket &packet, std::shared_ptr<Net
     auto pos = player->getComponent<PositionComponent>();
 
     auto projectile = e->getScene()->createEntity();
-    entity::initProjectile(projectile, pos->x + 20, pos->y + 20, 5);
+    entity::initProjectile(projectile, pos->x + 20, pos->y + 20, 10);
 
     auto team = projectile->addComponent<TeamComponent>();
     team->setTeam(0);

@@ -26,6 +26,8 @@
 #include "Engine/Network/Packets/EntityInfoPacket.h"
 #include "CooldownComponent.h"
 
+EnemyRandomSpawnSystem::EnemyRandomSpawnSystem() : gen(rd()), distrx(0, 400), distry(0, 900) {}
+
 void EnemyRandomSpawnSystem::update(std::unique_ptr<Engine> &engine) {
     count = (count + 1) % ENGINE_TPS;
     if (count != 0) {
@@ -43,8 +45,8 @@ void EnemyRandomSpawnSystem::update(std::unique_ptr<Engine> &engine) {
     engine->getScene()->forEachEntity(countEnemies);
     while (enemies < srv->getClientCount()) {
         auto ent = engine->getScene()->createEntity();
-        int x = 400;
-        int y = distr(gen);
+        int x = 1300 + distrx(gen);
+        int y = distry(gen);
         entity::initEnemy(ent, x, y);
 
         auto cd = ent->addComponent<CooldownComponent>();
@@ -55,5 +57,3 @@ void EnemyRandomSpawnSystem::update(std::unique_ptr<Engine> &engine) {
         srv->broadcast(newEntityPacket);
     }
 }
-
-EnemyRandomSpawnSystem::EnemyRandomSpawnSystem() : gen(rd()), distr(0, 400) {}
