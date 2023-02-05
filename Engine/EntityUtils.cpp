@@ -44,11 +44,9 @@ void entity::initPlayer(std::shared_ptr<Entity> entity, int x, int y) {
 
 void entityDied(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<Entity> cause) {
     engine->getScene()->removeEntity(entity);
-    std::cout << "Entity " << entity->getId() << " died" << std::endl;
 }
 
 void entityDamaged(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<Entity> cause) {
-    std::cout << "Entity " << entity->getId() << " damaged" << std::endl;
 }
 
 void projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
@@ -78,7 +76,6 @@ void projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_p
             }), team.end());
         }
     }
-    std::cout << "Projectile " << self->getId() << " hit " << other->getId() << std::endl;
     entityDied(engine, self, other);
 }
 
