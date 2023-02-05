@@ -42,6 +42,7 @@
 #include "MouseSystem.h"
 #include "Engine/SceneHolder.h"
 #include "SceneEnum.h"
+#include "ScrollingTextureSystem.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -147,11 +148,12 @@ void loadGraphsAndScenes(EnginePtr engine) {
 
     std::shared_ptr<IGraphicLib> lib = engine->registerIModule<IGraphicLib, RaylibGraphicLib>();
 
+    lib->addSystem<ScrollingTextureSystem>();
     lib->addSystem<DrawFixTextureSystem>();
     lib->addSystem<AnimationSystem>();
     lib->addSystem<MouseSystem>();
 
-    IWindow &window = lib->createWindow(500, 500, "teststs");
+    IWindow &window = lib->createWindow(1000, 1000, "R-type");
     window.setTargetFPS(60);
     std::cout << "[Graphic] Window created" << std::endl;
 

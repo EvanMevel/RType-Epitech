@@ -22,6 +22,7 @@
 
 #include "MainMenu.h"
 #include "Engine/Component/HitboxComponent.h"
+#include "assets/test.h"
 
 std::shared_ptr<Scene> mainMenu(EnginePtr engine)
 {
@@ -41,11 +42,11 @@ std::shared_ptr<Scene> mainMenu(EnginePtr engine)
     //background->addComponent<AnimationComponent>()->setAnimation(anima);
 
 
-    auto title = createButton(engine,sc,"../Client/assets/rtype.png",width/2-(800/2),height/3-(400/2));
+    auto title = createButton(engine,sc,"rtype.png",width/2-(800/2),height/3-(400/2));
     auto playButton = createButton(engine,sc,"../Client/assets/play-button.png",width/2-(400/2),height*0.45-(100/2));
     auto hitboxPlaybutton = playButton->addComponent<HitboxComponent>();
     auto optionButton = createButton(engine,sc,"../Client/assets/img_3.png",width/2-(400/2),height*0.65-(100/2));
-    auto quitButton = createButton(engine,sc,"../Client/assets/img_3.png",width/2-(400/2),height*0.85-(100/2));
+    auto quitButton = createButton(engine,sc,"img.png",width/2-(400/2),height*0.85-(100/2));
 
     return sc;
 }

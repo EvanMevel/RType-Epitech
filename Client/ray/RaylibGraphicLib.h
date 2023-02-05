@@ -27,6 +27,8 @@
 #include "RaylibWindow.h"
 #include "Engine/Graphic/ColorCodes.h"
 #include "RaylibMouse.h"
+#include "raylib.h"
+#include "build/_deps/raylib-src/src/raylib.h"
 
 class RaylibGraphicLib : public IGraphicLib {
 private:
@@ -59,6 +61,9 @@ public:
     void drawAnimation(std::shared_ptr<IAnimation> animation, int x, int y, ColorCodes codes) override;
 
     IMouse &getMouse() override;
+
+    void
+    drawTextureEx(std::shared_ptr<ITexture> ptr, int x, int y, float rotation, float scale, ColorCodes codes) override;
 };
 
 

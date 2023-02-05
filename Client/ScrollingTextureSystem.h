@@ -20,25 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_FIXTEXTURECOMPONENT_H
-#define R_TYPE_SERVER_FIXTEXTURECOMPONENT_H
+#ifndef R_TYPE_SERVER_SCROLLINGTEXTURESYSTEM_H
+#define R_TYPE_SERVER_SCROLLINGTEXTURESYSTEM_H
 
-#include <memory>
-#include "Engine/Component/IComponent.h"
-#include "Engine/Graphic/ITexture.h"
 
-class FixTextureComponent : public IComponent {
-protected:
-    std::shared_ptr<ITexture> texture;
+#include "Engine/ISystem.h"
+
+class ScrollingTextureSystem : public ISystem {
 public:
-    explicit FixTextureComponent();
-
-    ~FixTextureComponent() override = default;
-
-    const std::shared_ptr<ITexture> &getTexture() const;
-
-    void setTexture(const std::shared_ptr<ITexture> &texture);
+    void update(std::unique_ptr<Engine> &engine) override;
 };
 
 
-#endif //R_TYPE_SERVER_FIXTEXTURECOMPONENT_H
+#endif //R_TYPE_SERVER_SCROLLINGTEXTURESYSTEM_H
