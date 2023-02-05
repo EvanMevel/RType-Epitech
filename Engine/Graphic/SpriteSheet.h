@@ -35,6 +35,8 @@ public:
 
     std::shared_ptr<Sprite> createSprite(int startX, int startY, int lengthX, int lengthY, int repeatX, int repeatY, size_t frameSpeed);
 
+    std::shared_ptr<Sprite> createSprite(int startX, int startY, int lengthX, int lengthY, int repeatX, int repeatY, size_t frameSpeed, float scale);
+
 };
 
 #endif //R_TYPE_SERVER_SPRITESHEET_H

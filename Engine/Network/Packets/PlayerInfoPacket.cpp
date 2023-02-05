@@ -21,27 +21,33 @@
 // SOFTWARE.
 
 #include "PlayerInfoPacket.h"
+#include "Server/PlayerInfoComponent.h"
 
 PlayerInfoPacket::PlayerInfoPacket() {
 
 }
 
-void PlayerInfoPacket::write(ByteArray &buffer) const {
-    buffer << playerId << x << y;
-}
-
-void PlayerInfoPacket::read(ByteArray &buffer) {
-    buffer >> playerId >> x >> y;
-}
-
-PlayerInfoPacket::PlayerInfoPacket(std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos) {
+PlayerInfoPacket::PlayerInfoPacket(std::shared_ptr<Entity> entity) {
     playerId = entity->getId();
+    auto pos = entity->getComponent<PositionComponent>();
     if (pos) {
         x = pos->getX();
         y = pos->getY();
+    } else {
+        throw std::runtime_error("Player has no position component");
+    }
+    auto player = entity->getComponent<PlayerInfoComponent>();
+    if (player) {
+        playerNumber = (int) player->playerNumber;
+    } else {
+        throw std::runtime_error("Player has no player info component");
     }
 }
 
-PlayerInfoPacket::PlayerInfoPacket(std::shared_ptr<Entity> entity) : PlayerInfoPacket(entity, entity->getComponent<PositionComponent>()) {
+void PlayerInfoPacket::write(ByteArray &buffer) const {
+    buffer << playerId << x << y << playerNumber;
+}
 
+void PlayerInfoPacket::read(ByteArray &buffer) {
+    buffer >> playerId >> x >> y >> playerNumber;
 }

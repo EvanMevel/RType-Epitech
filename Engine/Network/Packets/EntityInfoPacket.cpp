@@ -21,20 +21,8 @@
 // SOFTWARE.
 
 #include "EntityInfoPacket.h"
-
-void EntityInfoPacket::write(ByteArray &buffer) const {
-    buffer << id << type << x << y;
-}
-
-void EntityInfoPacket::read(ByteArray &buffer) {
-    buffer >> id;
-    int ptype;
-    buffer >> ptype;
-    this->type = static_cast<EntityType>(ptype);
-    buffer >> x >> y;
-}
-
-EntityInfoPacket::EntityInfoPacket(size_t id, EntityType type, int x, int y) : id(id), type(type), x(x), y(y) {}
+#include "Engine/EntityUtils.h"
+#include "Server/PlayerInfoComponent.h"
 
 EntityInfoPacket::EntityInfoPacket() {}
 
@@ -47,6 +35,17 @@ EntityInfoPacket::EntityInfoPacket(std::shared_ptr<Entity> entity, std::shared_p
     this->id = entity->getId();
     if (type) {
         this->type = type->getType();
+        if (type->getType() == EntityType::PROJECTILE) {
+            auto team = entity->getComponent<TeamComponent>();
+            if (team) {
+                this->entityInfo = (int) team->getTeam();
+            }
+        } else if (type->getType() == EntityType::PLAYER) {
+            auto playerInfo = entity->getComponent<PlayerInfoComponent>();
+            if (playerInfo) {
+                this->entityInfo = (int) playerInfo->playerNumber;
+            }
+        }
     }
     if (pos) {
         this->x = pos->getX();
@@ -54,12 +53,14 @@ EntityInfoPacket::EntityInfoPacket(std::shared_ptr<Entity> entity, std::shared_p
     }
 }
 
-EntityInfoPacket::EntityInfoPacket(std::shared_ptr<Entity> entity, EntityType type,
-                                   std::shared_ptr<PositionComponent> pos) {
-    this->id = entity->getId();
-    this->type = type;
-    if (pos) {
-        this->x = pos->getX();
-        this->y = pos->getY();
-    }
+void EntityInfoPacket::write(ByteArray &buffer) const {
+    buffer << id << type << x << y << entityInfo;
+}
+
+void EntityInfoPacket::read(ByteArray &buffer) {
+    buffer >> id;
+    int ptype;
+    buffer >> ptype;
+    this->type = static_cast<EntityType>(ptype);
+    buffer >> x >> y >> entityInfo;
 }

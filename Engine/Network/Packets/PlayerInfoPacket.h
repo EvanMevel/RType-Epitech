@@ -38,10 +38,9 @@ public:
     size_t playerId;
     int x;
     int y;
+    int playerNumber;
 
     explicit PlayerInfoPacket(std::shared_ptr<Entity> entity);
-
-    PlayerInfoPacket(std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos);
 
     void write(ByteArray &buffer) const override;
 

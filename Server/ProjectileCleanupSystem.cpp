@@ -36,7 +36,7 @@ void ProjectileCleanupSystem::update(EnginePtr engine) {
         if (pos == nullptr) {
             return false;
         }
-        if (pos->getX() < -20 || pos->getX() > 600) {
+        if (pos->getX() < -20 || pos->getX() > 1920) {
             return true;
         }
         return false;

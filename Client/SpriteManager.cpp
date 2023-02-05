@@ -20,19 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYERINFOCONSUMER_H
-#define R_TYPE_SERVER_PLAYERINFOCONSUMER_H
+#include "SpriteManager.h"
 
+SpriteManager::SpriteManager() {
 
-#include "Client/ClientNetServer.h"
-#include "Engine/Network/Packets/PlayerInfoPacket.h"
+}
 
-class PlayerInfoConsumer : public ClientPacketConsumer<PlayerInfoPacket> {
-public:
-    PlayerInfoConsumer();
+std::shared_ptr<Sprite> SpriteManager::getSprite(SpriteType type) {
+    return _sprites[type];
+}
 
-    void consume(PlayerInfoPacket &packet, EnginePtr engine, RTypeServer server) override;
-};
-
-
-#endif //R_TYPE_SERVER_PLAYERINFOCONSUMER_H
+void SpriteManager::addSprite(SpriteType type, std::shared_ptr<Sprite> sprite) {
+    _sprites[type] = sprite;
+}

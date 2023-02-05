@@ -20,19 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYERINFOCONSUMER_H
-#define R_TYPE_SERVER_PLAYERINFOCONSUMER_H
+#include "PlayerInfoComponent.h"
 
+PlayerInfoComponent::PlayerInfoComponent() {}
 
-#include "Client/ClientNetServer.h"
-#include "Engine/Network/Packets/PlayerInfoPacket.h"
+PlayerInfoComponent::~PlayerInfoComponent() {
 
-class PlayerInfoConsumer : public ClientPacketConsumer<PlayerInfoPacket> {
-public:
-    PlayerInfoConsumer();
-
-    void consume(PlayerInfoPacket &packet, EnginePtr engine, RTypeServer server) override;
-};
-
-
-#endif //R_TYPE_SERVER_PLAYERINFOCONSUMER_H
+}

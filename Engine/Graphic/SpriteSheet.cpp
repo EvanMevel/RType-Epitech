@@ -29,3 +29,9 @@ std::shared_ptr<Sprite> SpriteSheet::createSprite(int startX, int startY, int le
     return std::make_shared<Sprite>(texture, startX, startY, lengthX, lengthY, repeatX, repeatY, frameSpeed);
 }
 
+std::shared_ptr<Sprite>
+SpriteSheet::createSprite(int startX, int startY, int lengthX, int lengthY, int repeatX, int repeatY, size_t frameSpeed,
+                          float scale) {
+    return std::make_shared<Sprite>(texture, startX, startY, lengthX, lengthY, repeatX, repeatY, frameSpeed, scale);
+}
+

@@ -50,6 +50,9 @@ public:
 
     Sprite(const std::shared_ptr<ITexture> &texture, int startX, int startY, int lengthX, int lengthY, int repeatX,
            int repeatY, size_t frameSpeed);
+
+    Sprite(const std::shared_ptr<ITexture> &texture, int startX, int startY, int lengthX, int lengthY, int repeatX,
+           int repeatY, size_t frameSpeed, float scale);
 };
 
 

@@ -20,19 +20,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYERINFOCONSUMER_H
-#define R_TYPE_SERVER_PLAYERINFOCONSUMER_H
+#ifndef R_TYPE_SERVER_SPRITEMANAGER_H
+#define R_TYPE_SERVER_SPRITEMANAGER_H
 
+#include <unordered_map>
+#include "Engine/Graphic/Sprite.h"
 
-#include "Client/ClientNetServer.h"
-#include "Engine/Network/Packets/PlayerInfoPacket.h"
-
-class PlayerInfoConsumer : public ClientPacketConsumer<PlayerInfoPacket> {
-public:
-    PlayerInfoConsumer();
-
-    void consume(PlayerInfoPacket &packet, EnginePtr engine, RTypeServer server) override;
+enum class SpriteType {
+    ENEMY = 0,
+    PLAYER_1 = 1,
+    PLAYER_2 = 2,
+    PLAYER_3 = 3,
+    PLAYER_4 = 4,
+    PROJECTILE_1 = 5,
+    PROJECTILE_2 = 6,
 };
 
 
-#endif //R_TYPE_SERVER_PLAYERINFOCONSUMER_H
+
+class SpriteManager {
+private:
+    std::unordered_map<SpriteType, std::shared_ptr<Sprite>> _sprites;
+
+public:
+    SpriteManager();
+    std::shared_ptr<Sprite> getSprite(SpriteType type);
+
+    void addSprite(SpriteType type, std::shared_ptr<Sprite> sprite);
+};
+
+
+#endif //R_TYPE_SERVER_SPRITEMANAGER_H

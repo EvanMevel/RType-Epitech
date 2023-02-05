@@ -38,14 +38,11 @@ public:
     EntityType type;
     int x;
     int y;
+    int entityInfo = 0;
 
     EntityInfoPacket();
 
-    EntityInfoPacket(size_t id, EntityType type, int x, int y);
-
     explicit EntityInfoPacket(std::shared_ptr<Entity> entity);
-
-    EntityInfoPacket(std::shared_ptr<Entity> entity, EntityType type, std::shared_ptr<PositionComponent> pos);
 
     EntityInfoPacket(std::shared_ptr<Entity> entity, std::shared_ptr<EntityTypeComponent> type, std::shared_ptr<PositionComponent> pos);
 

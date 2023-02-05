@@ -29,6 +29,13 @@ Sprite::Sprite(const std::shared_ptr<ITexture> &texture, int startX, int startY,
     currentRect = Rectangle(startX, startY, lengthX, lengthY);
 }
 
+Sprite::Sprite(const std::shared_ptr<ITexture> &texture, int startX, int startY, int lengthX, int lengthY, int repeatX,
+               int repeatY, size_t frameSpeed, float scale) : texture(texture), startX(startX), startY(startY),
+                                                              lengthX(lengthX), lengthY(lengthY), repeatX(repeatX),
+                                                              repeatY(repeatY), frameSpeed(frameSpeed), scale(scale) {
+    currentRect = Rectangle(startX, startY, lengthX, lengthY);
+}
+
 /**
  * Update the currentRect of the sprite
  */
