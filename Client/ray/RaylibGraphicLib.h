@@ -52,16 +52,15 @@ public:
 
     bool isKeyDown(KeyCodes codes) override;
 
-    std::vector<std::any> retrieveEvents() override;
-
     std::shared_ptr<IAnimation> createAnimation(const std::string &texturePath) override;
 
     void drawAnimation(std::shared_ptr<IAnimation> animation, int x, int y, ColorCodes codes) override;
 
     IMouse &getMouse() override;
 
-    void
-    drawTextureEx(std::shared_ptr<ITexture> ptr, int x, int y, float rotation, float scale, ColorCodes codes) override;
+    void drawTextureEx(std::shared_ptr<ITexture> ptr, int x, int y, float rotation, float scale, ColorCodes codes) override;
+
+    void drawSprite(std::shared_ptr<Sprite> sprite, int x, int y, ColorCodes codes) override;
 };
 
 

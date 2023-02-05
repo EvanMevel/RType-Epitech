@@ -23,9 +23,11 @@
 #include "EntityInfoConsumer.h"
 #include "Engine/EntityUtils.h"
 #include "Client/FixTextureComponent.h"
+#include "Client/Player.h"
+#include "Client/SpriteComponent.h"
 
-EntityInfoConsumer::EntityInfoConsumer(const std::unordered_map<EntityType, std::shared_ptr<ITexture>> &textures)
-        : textures(textures) {
+EntityInfoConsumer::EntityInfoConsumer(const std::unordered_map<EntityType, std::shared_ptr<Sprite>> &sprites)
+        : sprites(sprites) {
 
 }
 
@@ -38,6 +40,10 @@ void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTy
     } else if (packet.type == EntityType::PLAYER) {
         entity::initPlayer(entity, packet.x, packet.y);
     }
-    auto texture = entity->getOrCreate<FixTextureComponent>();
-    texture->setTexture(textures[packet.type]);
+    auto player = engine->getModule<Player>();
+    if (player && player->entity->getId() == packet.id) {
+        return;
+    }
+    auto sprite = entity->getOrCreate<SpriteComponent>();
+    sprite->setSprite(sprites[packet.type]);
 }

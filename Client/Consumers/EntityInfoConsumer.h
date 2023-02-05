@@ -29,9 +29,9 @@
 
 class EntityInfoConsumer : public ClientPacketConsumer<EntityInfoPacket> {
 private:
-    std::unordered_map<EntityType, std::shared_ptr<ITexture>> textures;
+    std::unordered_map<EntityType, std::shared_ptr<Sprite>> sprites;
 public:
-    explicit EntityInfoConsumer(const std::unordered_map<EntityType, std::shared_ptr<ITexture>> &textures);
+    explicit EntityInfoConsumer(const std::unordered_map<EntityType, std::shared_ptr<Sprite>> &sprites);
 
     void consume(EntityInfoPacket &packet, EnginePtr engine, RTypeServer server) override;
 };

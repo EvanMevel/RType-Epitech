@@ -20,20 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "GameScene.h"
-#include "ScrollingTextureComponent.h"
-#include "CreateScrollingTexture.h"
+#include "Sprite.h"
 
+Sprite::Sprite(const std::shared_ptr<ITexture> &texture, int startX, int startY, int lengthX, int lengthY, int repeatX,
+               int repeatY, size_t frameSpeed) : texture(texture), startX(startX), startY(startY), lengthX(lengthX),
+                                                 lengthY(lengthY), repeatX(repeatX), repeatY(repeatY),
+                                                 frameSpeed(frameSpeed) {
+    currentRect = Rectangle(startX, startY, lengthX, lengthY);
+}
 
-std::shared_ptr<Scene> gameScene(EnginePtr engine){
-    auto sc = engine->createScene<Scene>();
-    auto lib = engine->getModule<IGraphicLib>();
-
-    auto background = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 01 - Solid colour.png",-1);
-    auto fourthground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 02 - Shadows.png",-2);
-    auto thirdground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 02 - Shadows 2.png",-2);
-    auto secondground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 03 - Stars.png",-3);
-    auto firstground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 03 - Stars 2.png",-4);
-
-    return sc;
+/**
+ * Update the currentRect of the sprite
+ */
+void Sprite::updateRect() {
+    currentFrame = (currentFrame + 1) % (frameSpeed);
+    if (currentFrame == 0) {
+        if (repeatX != 0) {
+            currentRect.x = startX + ((currentRect.x - startX + lengthX) % (lengthX * repeatX));
+        }
+        if (repeatY != 0) {
+            currentRect.y = startY + ((currentRect.y - startY + lengthY) % (lengthY * repeatY));
+        }
+    }
 }

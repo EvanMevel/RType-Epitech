@@ -20,20 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "GameScene.h"
-#include "ScrollingTextureComponent.h"
-#include "CreateScrollingTexture.h"
+#include "Rectangle.h"
 
+Rectangle::Rectangle(int x, int y, int width, int height) : x(x), y(y), width(width), height(height) {}
 
-std::shared_ptr<Scene> gameScene(EnginePtr engine){
-    auto sc = engine->createScene<Scene>();
-    auto lib = engine->getModule<IGraphicLib>();
-
-    auto background = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 01 - Solid colour.png",-1);
-    auto fourthground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 02 - Shadows.png",-2);
-    auto thirdground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 02 - Shadows 2.png",-2);
-    auto secondground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 03 - Stars.png",-3);
-    auto firstground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 03 - Stars 2.png",-4);
-
-    return sc;
-}
+Rectangle::Rectangle() {}

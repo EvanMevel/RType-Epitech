@@ -29,9 +29,9 @@
 
 class PlayerInfoConsumer : public ClientPacketConsumer<PlayerInfoPacket> {
 private:
-    std::shared_ptr<ITexture> playerTexture;
+    std::shared_ptr<Sprite> playerSprite;
 public:
-    PlayerInfoConsumer(std::shared_ptr<ITexture> playerTexture);
+    PlayerInfoConsumer(std::shared_ptr<Sprite> playerTexture);
 
     void consume(PlayerInfoPacket &packet, EnginePtr engine, RTypeServer server) override;
 };

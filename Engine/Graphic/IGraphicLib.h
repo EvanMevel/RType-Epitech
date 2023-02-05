@@ -35,6 +35,7 @@
 #include "KeyCodes.h"
 #include "IAnimation.h"
 #include "IMouse.h"
+#include "SpriteSheet.h"
 
 class Engine;
 
@@ -45,28 +46,31 @@ class Engine;
  */
 class IGraphicLib : public SystemHolder {
 private:
-    std::unordered_map<std::type_index, std::any> eventConsumers;
+    std::unordered_map<std::type_index, std::any> modules;
     std::vector<std::function<void()>> execs;
 public:
     virtual ~IGraphicLib();
 
-    template<class Event>
-    void registerEventConsumer(IConsumer<Event> consumer);
-    void processEvents(Engine);
-
     std::vector<std::function<void()>> &getExecs();
 
-    virtual std::vector<std::any> retrieveEvents() = 0;
     virtual IWindow& createWindow(int width, int height, std::string title) = 0;
     virtual IWindow& getWindow() = 0;
     virtual void closeWindow() = 0;
+
     virtual std::shared_ptr<ITexture> createTexture(const std::string &texturePath) = 0;
     virtual void drawTexture(std::shared_ptr<ITexture>, int x, int y, ColorCodes) = 0;
     virtual void drawTextureEx(std::shared_ptr<ITexture>, int x, int y, float rotation, float scale, ColorCodes) = 0;
-    virtual void drawAnimation(std::shared_ptr<IAnimation> animation, int x, int y, ColorCodes codes) = 0;
-    virtual void drawText(std::string, int x, int y, int size, ColorCodes) = 0;
-    virtual bool isKeyDown(KeyCodes) = 0;
+
+    std::shared_ptr<SpriteSheet> createSpriteSheet(const std::string &texturePath);
+    virtual void drawSprite(std::shared_ptr<Sprite> sprite, int x, int y, ColorCodes codes) = 0;
+
     virtual std::shared_ptr<IAnimation> createAnimation(const std::string &texturePath) = 0;
+    virtual void drawAnimation(std::shared_ptr<IAnimation> animation, int x, int y, ColorCodes codes) = 0;
+
+    virtual void drawText(std::string, int x, int y, int size, ColorCodes) = 0;
+
+    virtual bool isKeyDown(KeyCodes) = 0;
+
     virtual IMouse &getMouse() = 0;
 
     template<class ...Args>

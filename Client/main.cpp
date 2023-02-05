@@ -43,6 +43,7 @@
 #include "Engine/SceneHolder.h"
 #include "SceneEnum.h"
 #include "ScrollingTextureSystem.h"
+#include "DrawSpriteSystem.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -57,14 +58,27 @@ bool windowClosed = false;
 
 void execOnGraph(std::shared_ptr<IGraphicLib> lib, RTypeServer server) {
     std::cout << "Registering server consumer on graphic thread..." << std::endl;
-    auto playerTexture = lib->createTexture("../Client/assets/player.png");
-    server->addConsumer<PlayerInfoConsumer>(playerTexture);
+    auto playerSpriteSheet = lib->createSpriteSheet("../Client/assets/r-typesheet42.gif");
 
-    auto enemyTexture = lib->createTexture("../Client/assets/enemy.png");
-    std::unordered_map<EntityType, std::shared_ptr<ITexture>> textures;
-    textures[EntityType::PLAYER] = playerTexture;
-    textures[EntityType::ENEMY] = enemyTexture;
-    textures[EntityType::PROJECTILE] = lib->createTexture("../Client/assets/projectile.png");
+    auto playerSprite = playerSpriteSheet->createSprite(0, 0, 33, 17, 5, 0, 30);
+    playerSprite->scale = 4.0f;
+
+    auto projSpriteSheet = lib->createSpriteSheet("../Client/assets/r-typesheet1.gif");
+
+    auto projSprite = projSpriteSheet->createSprite(103, 170, 81, 16, 2, 0, 30);
+    projSprite->scale = 1.0f;
+
+    auto enemySpriteSheet = lib->createSpriteSheet("../Client/assets/r-typesheet23.gif");
+
+    auto enemySprite = enemySpriteSheet->createSprite(0, 6, 33, 22, 8, 0, 30);
+    enemySprite->scale = 4.0f;
+
+    server->addConsumer<PlayerInfoConsumer>(playerSprite);
+
+    std::unordered_map<EntityType, std::shared_ptr<Sprite>> textures;
+    textures[EntityType::PLAYER] = playerSprite;
+    textures[EntityType::ENEMY] = enemySprite;
+    textures[EntityType::PROJECTILE] = projSprite;
 
     server->addConsumer<EntityInfoConsumer>(textures);
 
@@ -150,13 +164,15 @@ void loadGraphsAndScenes(EnginePtr engine) {
 
     lib->addSystem<ScrollingTextureSystem>();
     lib->addSystem<DrawFixTextureSystem>();
+    lib->addSystem<DrawSpriteSystem>();
     lib->addSystem<AnimationSystem>();
     lib->addSystem<MouseSystem>();
 
-    IWindow &window = lib->createWindow(1920, 1080, "R-type");
+
+    IWindow &window = lib->createWindow(1820, 1000, "R-type");
     window.setTargetFPS(60);
     std::cout << "[Graphic] Window created" << std::endl;
-    window.setFullScreen();
+    //window.setFullScreen();
     loadScenes(engine);
     std::cout << "[Graphic] Scenes ready" << std::endl;
 
