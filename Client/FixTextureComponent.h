@@ -28,7 +28,7 @@
 #include "Engine/Graphic/ITexture.h"
 
 class FixTextureComponent : public IComponent {
-private:
+protected:
     std::shared_ptr<ITexture> texture;
 public:
     explicit FixTextureComponent();

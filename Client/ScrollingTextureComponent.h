@@ -20,24 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "GameScene.h"
-#include "SceneEnum.h"
-#include "Engine/SceneHolder.h"
-#include "Engine/VelocitySystem.h"
-#include "Client/Consumers/PlayerInfoConsumer.h"
-#include "ScrollingTextureComponent.h"
-#include "CreateScrollingTexture.h"
+#ifndef R_TYPE_SERVER_SCROLLINGTEXTURECOMPONENT_H
+#define R_TYPE_SERVER_SCROLLINGTEXTURECOMPONENT_H
+
+#include "Engine/Component/IComponent.h"
+#include "FixTextureComponent.h"
+
+class ScrollingTextureComponent : public FixTextureComponent{
+private:
+    int scroll = 0;
+    int scrollingSpeed = 0;
+    float scale = 1.0;
+public:
+    int getScroll() const;
+
+    void setScroll(int scroll);
+
+    int getScrollingSpeed() const;
+
+    void setScrollingSpeed(int scrollingSpeed);
+
+    void applySpeed();
+
+    float getScale() const;
+
+    void setScale(float scale);
+
+};
 
 
-std::shared_ptr<Scene> gameScene(EnginePtr engine){
-    auto sc = engine->createScene<Scene>();
-    auto lib = engine->getModule<IGraphicLib>();
-
-    auto background = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 01 - Solid colour.png",-1);
-    auto fourthground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 02 - Shadows.png",-2);
-    auto thirdground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 02 - Shadows 2.png",-2);
-    auto secondground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 03 - Stars.png",-3);
-    auto firstground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 03 - Stars 2.png",-4);
-
-    return sc;
-}
+#endif //R_TYPE_SERVER_SCROLLINGTEXTURECOMPONENT_H

@@ -91,3 +91,8 @@ void RaylibGraphicLib::drawAnimation(std::shared_ptr<IAnimation> animation, int 
 IMouse &RaylibGraphicLib::getMouse() {
     return this->mouse;
 }
+
+void RaylibGraphicLib::drawTextureEx(std::shared_ptr<ITexture> texture, int x, int y, float rotation, float scale,ColorCodes code) {
+    auto texture2D = any_cast<ray::Texture2D>(texture->handle);
+    ray::DrawTextureEx(texture2D, (ray::Vector2) {(float) x, (float) y}, rotation,scale, colors[code]);
+}
