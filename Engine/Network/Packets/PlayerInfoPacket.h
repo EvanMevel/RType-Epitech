@@ -25,7 +25,6 @@
 
 
 #include "IPacket.h"
-#include <memory>
 #include "Engine/Entity.h"
 #include "Engine/Component/PositionComponent.h"
 
@@ -36,14 +35,15 @@ class PlayerInfoPacket : public IPacket {
 
 public:
     static const int ID = 5;
-    PlayerInfoPacket();
 
-    size_t playerId;
+    EntityId playerId;
     int x;
     int y;
     int playerNumber;
 
-    explicit PlayerInfoPacket(std::shared_ptr<Entity> entity);
+    PlayerInfoPacket();
+
+    explicit PlayerInfoPacket(EntityPtr entity);
 
     void write(ByteArray &buffer) const override;
 

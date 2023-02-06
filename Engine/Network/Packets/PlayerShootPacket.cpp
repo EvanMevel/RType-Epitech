@@ -22,9 +22,10 @@
 
 #include "PlayerShootPacket.h"
 
-PlayerShootPacket::PlayerShootPacket(size_t playerId) : playerId(playerId) {}
+PlayerShootPacket::PlayerShootPacket() : playerId(0) {
+}
 
-PlayerShootPacket::PlayerShootPacket() {}
+PlayerShootPacket::PlayerShootPacket(EntityId playerId) : playerId(playerId) {}
 
 void PlayerShootPacket::write(ByteArray &buffer) const {
     buffer << playerId;

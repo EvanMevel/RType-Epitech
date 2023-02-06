@@ -24,11 +24,11 @@
 
 Entity::Entity() {}
 
-Entity::Entity(size_t id) : id(id) {}
+Entity::Entity(EntityId id) : id(id) {}
 
 Entity::~Entity() {
 }
 
-size_t Entity::getId() const {
+EntityId Entity::getId() const {
     return id;
 }

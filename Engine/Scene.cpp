@@ -53,7 +53,7 @@ Scene::Scene(EntityManager &entityManager) : entityManager(entityManager) {
 
 }
 
-std::shared_ptr<Entity> Scene::getOrCreateEntityById(size_t id) {
+std::shared_ptr<Entity> Scene::getOrCreateEntityById(EntityId id) {
     for (auto &ent: entities) {
         if (ent->getId() == id) {
             return ent;
@@ -64,7 +64,7 @@ std::shared_ptr<Entity> Scene::getOrCreateEntityById(size_t id) {
     return entities.back();
 }
 
-std::shared_ptr<Entity> Scene::getEntityById(size_t id) {
+std::shared_ptr<Entity> Scene::getEntityById(EntityId id) {
     for (auto &ent: entities) {
         if (ent->getId() == id) {
             return ent;
@@ -83,7 +83,7 @@ void Scene::removeEntity(std::shared_ptr<Entity> entity) {
     }
 }
 
-void Scene::removeEntity(size_t entityId) {
+void Scene::removeEntity(EntityId entityId) {
     std::lock_guard<std::mutex> lock(entityMutex);
     for (auto it = entities.begin(); it != entities.end(); it++) {
         if (it->get()->getId() == entityId) {

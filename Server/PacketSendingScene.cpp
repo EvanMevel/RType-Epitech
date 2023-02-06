@@ -32,7 +32,7 @@ void PacketSendingScene::removeEntity(std::shared_ptr<Entity> entity) {
     server->broadcast(packet);
 }
 
-void PacketSendingScene::removeEntity(size_t entityId) {
+void PacketSendingScene::removeEntity(EntityId entityId) {
     Scene::removeEntity(entityId);
     EntityDestroyPacket packet(entityId);
     server->broadcast(packet);

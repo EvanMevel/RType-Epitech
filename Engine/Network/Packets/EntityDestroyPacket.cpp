@@ -22,9 +22,9 @@
 
 #include "EntityDestroyPacket.h"
 
-EntityDestroyPacket::EntityDestroyPacket(size_t entityId) : entityId(entityId) {}
+EntityDestroyPacket::EntityDestroyPacket(EntityId entityId) : entityId(entityId) {}
 
-EntityDestroyPacket::EntityDestroyPacket() {}
+EntityDestroyPacket::EntityDestroyPacket() : entityId(0) {}
 
 void EntityDestroyPacket::write(ByteArray &buffer) const {
     buffer << entityId;

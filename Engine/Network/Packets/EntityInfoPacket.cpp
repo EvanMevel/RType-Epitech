@@ -25,13 +25,13 @@
 #include "Server/PlayerInfoComponent.h"
 #include "Server/EnemyInfoComponent.h"
 
-EntityInfoPacket::EntityInfoPacket() {}
+EntityInfoPacket::EntityInfoPacket() : id(0), type(EntityType::ENEMY), x(0), y(0) {}
 
-EntityInfoPacket::EntityInfoPacket(std::shared_ptr<Entity> entity) :
+EntityInfoPacket::EntityInfoPacket(EntityPtr entity) :
     EntityInfoPacket(entity, entity->getComponent<EntityTypeComponent>(), entity->getComponent<PositionComponent>()) {
 }
 
-EntityInfoPacket::EntityInfoPacket(std::shared_ptr<Entity> entity, std::shared_ptr<EntityTypeComponent> type,
+EntityInfoPacket::EntityInfoPacket(EntityPtr entity, std::shared_ptr<EntityTypeComponent> type,
                                    std::shared_ptr<PositionComponent> pos) {
     this->id = entity->getId();
     if (type) {

@@ -25,6 +25,7 @@
 
 #include <sstream>
 #include "Engine/Vector2i.h"
+#include "Engine/EngineTypes.h"
 
 /**
  * @brief ByteArray is a buffer of bytes that can be used to serialize and deserialize data
@@ -57,6 +58,10 @@ ByteArray& operator<<(ByteArray &buffer, const std::string &value);
 ByteArray& operator<<(ByteArray &buffer, const int &value);
 
 ByteArray& operator>>(ByteArray &buffer, int &value);
+
+ByteArray& operator<<(ByteArray &buffer, const unsigned int &value);
+
+ByteArray& operator>>(ByteArray &buffer, unsigned int &value);
 
 ByteArray& operator<<(ByteArray &buffer, const long long &value);
 

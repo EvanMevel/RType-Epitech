@@ -32,12 +32,12 @@
  */
 class EntityManager {
 private:
-    std::size_t nextId;
+    EntityId nextId;
 
 public:
     EntityManager();
 
-    explicit EntityManager(size_t nextId);
+    explicit EntityManager(EntityId nextId);
 
     std::shared_ptr<Entity> createEntity();
 };

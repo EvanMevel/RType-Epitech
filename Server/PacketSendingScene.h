@@ -38,7 +38,7 @@ public:
 
     void removeEntity(std::shared_ptr<Entity> entity) override;
 
-    void removeEntity(size_t entityId) override;
+    void removeEntity(EntityId entityId) override;
 
     void filterEntities(std::function<bool(std::shared_ptr<Entity>)> filter) override;
 

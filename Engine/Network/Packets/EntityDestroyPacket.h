@@ -23,7 +23,7 @@
 #ifndef R_TYPE_SERVER_ENTITYDESTROYPACKET_H
 #define R_TYPE_SERVER_ENTITYDESTROYPACKET_H
 
-
+#include "Engine/EngineTypes.h"
 #include "IPacket.h"
 
 /**
@@ -32,11 +32,11 @@
 class EntityDestroyPacket : public IPacket {
 public:
     static const int ID = 9;
-    size_t entityId;
+    EntityId entityId;
 
     EntityDestroyPacket();
 
-    explicit EntityDestroyPacket(size_t entityId);
+    explicit EntityDestroyPacket(EntityId entityId);
 
     void write(ByteArray &buffer) const override;
 

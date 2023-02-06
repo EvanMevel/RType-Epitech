@@ -20,33 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_ENTITYTESTPACKET_H
-#define R_TYPE_SERVER_ENTITYTESTPACKET_H
+#ifndef R_TYPE_SERVER_ENGINETYPES_H
+#define R_TYPE_SERVER_ENGINETYPES_H
 
-#include "IPacket.h"
+#include <memory>
 
-/**
- * @brief EntityTestPacket is a packet used to test the Entity class
- */
-class EntityTestPacket : public IPacket {
-public:
-    int entityId;
-    int x;
-    int y;
-public:
-    static const int ID = 4;
+class Engine;
 
-    EntityTestPacket() {}
+using EnginePtr = std::unique_ptr<Engine>&;
 
-    EntityTestPacket(int entityId, int x, int y) : entityId(entityId), x(x), y(y) {}
+using EntityId = unsigned int;
 
-    void write(ByteArray &buffer) const override {
-        buffer << entityId << x << y;
-    }
+class Entity;
 
-    void read(ByteArray &buffer) override {
-        buffer >> entityId >> x >> y;
-    }
-};
+using EntityPtr = std::shared_ptr<Entity>&;
 
-#endif //R_TYPE_SERVER_ENTITYTESTPACKET_H
+template<class Component>
+using ComponentPtr = std::shared_ptr<Component>&;
+
+#endif //R_TYPE_SERVER_ENGINETYPES_H
