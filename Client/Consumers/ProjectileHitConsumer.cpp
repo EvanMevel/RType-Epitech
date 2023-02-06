@@ -28,6 +28,7 @@ void ProjectileHitConsumer::consume(ProjectileHitPacket &packet, std::unique_ptr
     auto soundManager = engine->getModule<SoundManager>();
     auto sound = soundManager->getSound(SoundType::PROJECTILE_HIT);
 
+    // We need to play the sound on the lib thread because raylib functions can't be used from multiple threads
     std::function<void(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<ISound> projectileSound)> playSoundFunct = [](std::shared_ptr<IGraphicLib> lib, std::shared_ptr<ISound> projectileSound){
         lib->playSound(projectileSound);
     };
