@@ -23,7 +23,9 @@
 #ifndef R_TYPE_SERVER_LEVELS_H
 #define R_TYPE_SERVER_LEVELS_H
 
-
+/**
+ * @brief Class that stores the number of enemies and the number of enemies killed
+ */
 class Levels {
 public:
     unsigned int enemyCount = 1;

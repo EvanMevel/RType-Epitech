@@ -25,6 +25,9 @@
 
 #include <cmath>
 
+/**
+ * @brief A 2D vector
+ */
 class Vector2i {
 private:
     static void absoluteVarTo0(int &var, size_t i) {

@@ -25,6 +25,10 @@
 
 class Engine;
 
+/**
+ * @brief Interface for the consumer
+ * @tparam Type
+ */
 template<typename Type>
 class IConsumer {
 public:

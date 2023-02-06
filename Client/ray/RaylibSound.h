@@ -30,6 +30,9 @@ namespace ray {
 #include "raylib.h"
 }
 
+/**
+ * @brief Raylib implementation of ISound
+ */
 class RaylibSound : public ISound{
 public:
     RaylibSound(const std::string &soundPath);

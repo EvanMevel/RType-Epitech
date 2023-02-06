@@ -31,6 +31,11 @@
 #include "CreateButton.h"
 #include "CreateScrollingTexture.h"
 
+/**
+ * @brief function that return mainMenu Scene
+ * @param engine
+ * @return mainMenu scene
+ */
 std::shared_ptr<Scene> mainMenu(EnginePtr engine);
 
 #endif //R_TYPE_SERVER_MAINMENU_H

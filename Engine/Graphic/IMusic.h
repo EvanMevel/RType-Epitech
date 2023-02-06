@@ -25,6 +25,9 @@
 
 #include <any>
 
+/**
+ * @brief Interface for the music
+ */
 class IMusic {
 public:
     std::any music;

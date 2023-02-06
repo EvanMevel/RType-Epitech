@@ -29,6 +29,11 @@
 #include "Engine/Entity.h"
 #include "Engine/Engine.h"
 
+/**
+ * @brief function that return gameScene
+ * @param engine
+ * @return gameScene
+ */
 std::shared_ptr<Scene> gameScene(EnginePtr engine);
 
 #endif //R_TYPE_SERVER_GAMESCENE_H

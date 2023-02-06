@@ -29,6 +29,9 @@
 
 #include <any>
 
+/**
+ * @brief Interface for the sound
+ */
 class ISound {
 public:
     std::any sound;

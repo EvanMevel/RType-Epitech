@@ -25,6 +25,9 @@
 
 #include "Engine/Network/Packets/PacketSerializer.h"
 
+/**
+ * @brief Abstract class used to decribe a packet receiver
+ */
 class PacketReceiver {
 private:
     const PacketSerializer packetSerializer;

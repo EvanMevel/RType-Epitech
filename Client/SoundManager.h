@@ -27,11 +27,17 @@
 #include <memory>
 #include "Engine/Graphic/ISound.h"
 
+/**
+ * @brief Enum of all the sounds
+ */
 enum class SoundType {
     PROJECTILE_SHOOT = 0,
     PROJECTILE_HIT = 1
 };
 
+/**
+ * @brief Class that manages the sounds
+ */
 class SoundManager {
 private:
     std::unordered_map<SoundType, std::shared_ptr<ISound>> _sound;

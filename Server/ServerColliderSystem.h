@@ -28,6 +28,9 @@
 #include "Engine/Entity.h"
 #include "Engine/ColliderHitboxSystem.h"
 
+/**
+ * @brief System that do the collision between entities
+ */
 class ServerColliderSystem : public ColliderHitboxSystem {
 public:
     std::string getName() override;

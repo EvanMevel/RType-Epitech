@@ -27,6 +27,9 @@
 #include "Client/ClientNetServer.h"
 #include "Engine/Network/Packets/EntityVelocityPacket.h"
 
+/**
+ * @brief Listen to EntityVelocityPacket and update the entity velocity
+ */
 class EntityVelocityPacketConsumer : public ClientPacketConsumer<EntityVelocityPacket>{
 public:
     void consume(EntityVelocityPacket &packet, EnginePtr engine, RTypeServer server) override;

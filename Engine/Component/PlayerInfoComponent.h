@@ -25,6 +25,9 @@
 
 #include "Engine/Component/IComponent.h"
 
+/**
+ * @brief Component that contains all the player data
+ */
 class PlayerInfoComponent : public IComponent {
 public:
     int playerNumber;

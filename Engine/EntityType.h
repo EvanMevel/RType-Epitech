@@ -25,6 +25,9 @@
 #ifndef R_TYPE_SERVER_ENTITYTYPE_H
 #define R_TYPE_SERVER_ENTITYTYPE_H
 
+/**
+ * @brief Enum that contains all the types of entities
+ */
 enum EntityType {
     PLAYER,
     ENEMY,

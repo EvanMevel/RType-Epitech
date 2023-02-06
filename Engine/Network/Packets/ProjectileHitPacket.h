@@ -26,6 +26,9 @@
 
 #include "IPacket.h"
 
+/**
+ * @brief Packet sent by the server to notify the client that a projectile has hit something
+ */
 class ProjectileHitPacket : public IPacket {
 public:
     static const int ID = 10;
