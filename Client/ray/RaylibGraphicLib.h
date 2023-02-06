@@ -61,6 +61,16 @@ public:
     void drawTextureEx(std::shared_ptr<ITexture> ptr, int x, int y, float rotation, float scale, ColorCodes codes) override;
 
     void drawSprite(std::shared_ptr<Sprite> sprite, int x, int y, ColorCodes codes) override;
+
+    void initAudio() override;
+
+    std::shared_ptr<IMusic> createMusic(const std::string &musicPath) override;
+
+    std::shared_ptr<ISound> createSound(const std::string &soundPath) override;
+
+    void playMusic(std::shared_ptr<IMusic>) override;
+
+    void playSound(std::shared_ptr<ISound> ptr) override;
 };
 
 

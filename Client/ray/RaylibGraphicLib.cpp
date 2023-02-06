@@ -23,6 +23,8 @@
 #include "RaylibGraphicLib.h"
 #include "RaylibTexture.h"
 #include "RaylibAnimation.h"
+#include "RaylibMusic.h"
+#include "RaylibSound.h"
 
 RaylibGraphicLib::RaylibGraphicLib() {
     colors[ColorCodes::COLOR_WHITE] = ray::WHITE;
@@ -110,4 +112,26 @@ IMouse &RaylibGraphicLib::getMouse() {
 bool RaylibGraphicLib::isKeyDown(KeyCodes code) {
     ray::KeyboardKey key = keys[code];
     return ray::IsKeyDown(key);
+}
+
+void RaylibGraphicLib::initAudio() {
+    ray::InitAudioDevice();
+}
+
+std::shared_ptr<IMusic> RaylibGraphicLib::createMusic(const std::string &musicPath) {
+    return std::make_shared<RaylibMusic>(musicPath);
+}
+
+void RaylibGraphicLib::playMusic(std::shared_ptr<IMusic> music) {
+    ray::Music raylibMusic = std::any_cast<ray::Music>(music->music);
+    ray::PlayMusicStream(raylibMusic);
+}
+
+std::shared_ptr<ISound> RaylibGraphicLib::createSound(const std::string &soundPath) {
+    return std::make_shared<RaylibSound>(soundPath);
+}
+
+void RaylibGraphicLib::playSound(std::shared_ptr<ISound> sound) {
+    ray::Sound raylibSound = std::any_cast<ray::Sound>(sound->sound);
+    ray::PlaySound(raylibSound);
 }

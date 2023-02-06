@@ -20,27 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "PlayerShootSystem.h"
-#include "Engine/Network/Packets/PlayerShootPacket.h"
-#include "SoundManager.h"
+#ifndef R_TYPE_SERVER_IMUSIC_H
+#define R_TYPE_SERVER_IMUSIC_H
 
-PlayerShootSystem::PlayerShootSystem(const std::shared_ptr<Player> &player) : player(player){
+#include <any>
 
-}
-
-void PlayerShootSystem::update(EnginePtr engine) {
-    if (cooldown > 0) {
-        cooldown--;
-    }
-    if (player->shoot && cooldown == 0) {
-        engine->getModule<ClientNetServer>()->sendPacket(PlayerShootPacket(player->entity->getId()));
-        cooldown = ENGINE_TPS / 2;
-        auto lib = engine->getModule<IGraphicLib>();
-        auto soundManager = engine->getModule<SoundManager>();
-        auto projetcileSound = soundManager->getSound(SoundType::PROJECTILE);
-        std::function<void(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<ISound> projectileSound)> playSoundFunct = [](std::shared_ptr<IGraphicLib> lib, std::shared_ptr<ISound> projectileSound){
-            lib->playSound(projectileSound);
-        };
-        lib->execOnLibThread(playSoundFunct, lib ,projetcileSound);
-    }
-}
+class IMusic {
+public:
+    std::any music;
+    virtual void updateMusic() = 0;
+};
+#endif //R_TYPE_SERVER_IMUSIC_H
