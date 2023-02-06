@@ -94,7 +94,7 @@ bool CrossPlatformSocket::sendTo(const char* message, int len, const std::string
 #ifdef _WIN32
     addr.sin_addr.S_un.S_addr = inet_addr(address.c_str());
 #else
-    inet_aton(address, &addr.sin_addr);
+    inet_aton(address.c_str(), &addr.sin_addr);
 #endif
 
     int sent_len = sendto(m_socket, message, len, 0, (struct sockaddr*)&addr, sizeof(addr));
@@ -109,7 +109,7 @@ bool CrossPlatformSocket::sendTo(const char* message, int len, const std::string
 int CrossPlatformSocket::recvFrom(char* buffer, int len, std::string& address, unsigned short& port)
 {
     struct sockaddr_in addr;
-    int addrLen = sizeof(addr);
+    unsigned int addrLen = sizeof(addr);
     memset(&addr, 0, sizeof(addr));
 
     int recv_len = recvfrom(m_socket, buffer, len, 0, (struct sockaddr*)&addr, &addrLen);
@@ -118,7 +118,9 @@ int CrossPlatformSocket::recvFrom(char* buffer, int len, std::string& address, u
 #ifdef _WIN32
     address = inet_ntoa(addr.sin_addr);
 #else
-    inet_ntop(AF_INET, &addr.sin_addr, address, INET_ADDRSTRLEN);
+    char *addressBuffer = new char[INET6_ADDRSTRLEN];
+    inet_ntop(AF_INET, &addr.sin_addr, addressBuffer, INET_ADDRSTRLEN);
+    address = addressBuffer;
 #endif
     port = ntohs(addr.sin_port);
 

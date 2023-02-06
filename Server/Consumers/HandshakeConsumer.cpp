@@ -26,7 +26,7 @@
 #include "Engine/Network/Packets/PlayerInfoPacket.h"
 #include "Engine/TickUtil.h"
 #include "Engine/Network/Packets/EntityInfoPacket.h"
-#include "Server/PlayerInfoComponent.h"
+#include "Engine/Component/PlayerInfoComponent.h"
 
 HandshakeConsumer::HandshakeConsumer(EnginePtr e) : RTypePacketConsumer(e) {}
 

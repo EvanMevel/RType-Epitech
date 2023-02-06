@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 #include "PlayerInfoPacket.h"
-#include "Server/PlayerInfoComponent.h"
+#include "Engine/Component/PlayerInfoComponent.h"
 
 PlayerInfoPacket::PlayerInfoPacket() : playerId(0), x(0), y(0), playerNumber(0) {
 }
