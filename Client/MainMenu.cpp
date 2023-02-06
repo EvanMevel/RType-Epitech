@@ -28,19 +28,19 @@ std::shared_ptr<Scene> mainMenu(EnginePtr engine)
     auto sc = engine->createScene<Scene>();
     auto graph = engine->getModule<IGraphicLib>();
 
-    auto background = createScrollingTextureComponent(graph, sc, "../Client/assets/Starry background  - Layer 01 - Solid colour.png",-1);
-    auto fourthground = createScrollingTextureComponent(graph, sc, "../Client/assets/Starry background  - Layer 02 - Shadows.png",-2);
-    auto thirdground = createScrollingTextureComponent(graph, sc, "../Client/assets/Starry background  - Layer 02 - Shadows 2.png",-2);
-    auto secondground = createScrollingTextureComponent(graph, sc, "../Client/assets/Starry background  - Layer 03 - Stars.png",-3);
-    auto firstground = createScrollingTextureComponent(graph, sc, "../Client/assets/Starry background  - Layer 03 - Stars 2.png",-4);
+    auto background = createScrollingTextureComponent(graph, sc, "assets/Starry background  - Layer 01 - Solid colour.png",-1);
+    auto fourthground = createScrollingTextureComponent(graph, sc, "assets/Starry background  - Layer 02 - Shadows.png",-2);
+    auto thirdground = createScrollingTextureComponent(graph, sc, "assets/Starry background  - Layer 02 - Shadows 2.png",-2);
+    auto secondground = createScrollingTextureComponent(graph, sc, "assets/Starry background  - Layer 03 - Stars.png",-3);
+    auto firstground = createScrollingTextureComponent(graph, sc, "assets/Starry background  - Layer 03 - Stars 2.png",-4);
 
     auto height = graph->getWindow().getHeight();
     auto width = graph->getWindow().getWidth();
 
-    auto title = createButton(engine,sc,"../Client/assets/rtype.png",width/2-(800/2),height/3-(400/2));
-    auto playButton = createButton(engine,sc,"../Client/assets/play-button.png",width/2-(400/2),height*0.45-(100/2));
+    auto title = createButton(engine,sc,"assets/rtype.png",width/2-(800/2),height/3-(400/2));
+    auto playButton = createButton(engine,sc,"assets/play-button.png",width/2-(400/2),height*0.45-(100/2));
     auto hitboxPlaybutton = playButton->addComponent<HitboxComponent>();
-    //auto optionButton = createButton(engine,sc,"../Client/assets/img_3.png",width/2-(400/2),height*0.65-(100/2));
+    //auto optionButton = createButton(engine,sc,"assets/img_3.png",width/2-(400/2),height*0.65-(100/2));
     //auto quitButton = createButton(engine,sc,"img.png",width/2-(400/2),height*0.85-(100/2));
 
     return sc;
