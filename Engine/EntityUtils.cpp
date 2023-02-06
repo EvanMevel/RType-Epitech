@@ -49,7 +49,7 @@ void entityDied(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_pt
 void entityDamaged(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<Entity> cause) {
 }
 
-void projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
+void entity::projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
                    std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams) {
     auto health = other->getComponent<HealthComponent>();
     if (health != nullptr) {
@@ -87,9 +87,6 @@ void entity::initProjectile(std::shared_ptr<Entity> entity, int x, int y, int ve
     auto physic = entity->addComponent<PhysicComponent>();
     physic->velocity.x = velX;
     physic->velocitySlow = 0;
-
-    auto collider = entity->addComponent<ColliderComponent>();
-    collider->_onCollision = projectileHit;
 
     auto hitbox = entity->addComponent<HitboxComponent>();
     hitbox->setLengthX(81);

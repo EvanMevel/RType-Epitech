@@ -118,7 +118,9 @@ void loadSounds(EnginePtr engine) {
     auto soundManager = engine->registerModule<SoundManager>();
     auto shootSound = lib->createSound("../Client/assets/basicShoot.ogg");
 
-    soundManager->addSound(SoundType::PROJECTILE,shootSound);
+    soundManager->addSound(SoundType::PROJECTILE_SHOOT, shootSound);
+    soundManager->addSound(SoundType::PROJECTILE_HIT,
+                           lib->createSound("../Client/assets/projectile-hit.ogg"));
 }
 
 void loadSprites(EnginePtr engine) {

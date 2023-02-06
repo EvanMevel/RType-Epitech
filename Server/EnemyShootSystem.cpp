@@ -26,6 +26,18 @@
 #include "CooldownComponent.h"
 #include "Engine/Network/Packets/EntityInfoPacket.h"
 #include "RTypeServer.h"
+#include "Engine/Network/Packets/ProjectileHitPacket.h"
+
+
+static void projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
+                   std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams) {
+    auto server = engine->getModule<RTypeServer>();
+
+    ProjectileHitPacket packet;
+    server->broadcast(packet);
+
+    entity::projectileHit(engine, self, other, teams);
+}
 
 void EnemyShootSystem::update(std::unique_ptr<Engine> &engine) {
     auto lock = engine->getScene()->obtainLock();
@@ -44,6 +56,9 @@ void EnemyShootSystem::update(std::unique_ptr<Engine> &engine) {
                 cd->current = 0;
                 auto projectile = engine->getScene()->unsafeCreateEntity();
                 entity::initProjectile(projectile, pos->x, pos->y + 20, -10);
+
+                auto collider = projectile->addComponent<ColliderComponent>();
+                collider->_onCollision = projectileHit;
 
                 auto team = projectile->addComponent<TeamComponent>();
                 team->setTeam(1);
