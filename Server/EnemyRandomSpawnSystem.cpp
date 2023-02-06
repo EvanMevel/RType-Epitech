@@ -26,10 +26,15 @@
 #include "Engine/Network/Packets/EntityInfoPacket.h"
 #include "CooldownComponent.h"
 #include "EnemyInfoComponent.h"
+#include "Levels.h"
 
 EnemyRandomSpawnSystem::EnemyRandomSpawnSystem() : gen(rd()), distrx(0, 400), distry(0, 750), distrType(0, 1) {}
 
 void EnemyRandomSpawnSystem::update(std::unique_ptr<Engine> &engine) {
+    auto levels = engine->getModule<Levels>();
+    if (levels == nullptr) {
+        return;
+    }
     count = (count + 1) % ENGINE_TPS;
     if (count != 0) {
         return;
@@ -44,7 +49,13 @@ void EnemyRandomSpawnSystem::update(std::unique_ptr<Engine> &engine) {
         }
     };
     engine->getScene()->forEachEntity(countEnemies);
-    while (enemies < srv->getClientCount()) {
+    if (enemies < levels->enemyCount) {
+        levels->enemyDead++;
+        levels->enemyCount = 1 + (levels->enemyDead / 2);
+    } else {
+        return;
+    }
+    while (enemies < levels->enemyCount) {
 
         auto ent = engine->getScene()->createEntity();
         int x = 1300 + distrx(gen);
