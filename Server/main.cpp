@@ -100,7 +100,12 @@ void stopThread(EnginePtr engine) {
 void createScene(EnginePtr engine) {
     engine->registerModule<Levels>();
 
-    RTypeServerPtr srv = engine->registerModule<RTypeServer>(engine, "127.0.0.1", 4242);
+    char *rtypeServerIp = std::getenv("RTYPE_SERVER_IP");
+    std::string serverIp = rtypeServerIp ? rtypeServerIp : "127.0.0.1";
+    char *rtypeServerPort = std::getenv("RTYPE_SERVER_PORT");
+    int serverport = rtypeServerPort ? std::stoi(rtypeServerPort) : 4242;
+
+    RTypeServerPtr srv = engine->registerModule<RTypeServer>(engine, serverIp, serverport);
     auto sc = engine->createScene<PacketSendingScene>(srv);
     engine->setScene(sc);
 

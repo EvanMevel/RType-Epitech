@@ -64,7 +64,13 @@ void loadNetwork(EnginePtr engine) {
         cv.wait(lck);
     }
     std::cout << "[NETWORK] graphic ready" << std::endl;
-    RTypeServer server = engine->registerModule<ClientNetServer>(engine, "127.0.0.1", 4242);
+
+    char *rtypeServerIp = std::getenv("RTYPE_SERVER_IP");
+    std::string serverIp = rtypeServerIp ? rtypeServerIp : "127.0.0.1";
+    char *rtypeServerPort = std::getenv("RTYPE_SERVER_PORT");
+    int serverport = rtypeServerPort ? std::stoi(rtypeServerPort) : 4242;
+
+    RTypeServer server = engine->registerModule<ClientNetServer>(engine, serverIp, serverport);
 
     server->addConsumer<EntityVelocityPacketConsumer>();
     server->addConsumer<PingPacketConsumer>();
