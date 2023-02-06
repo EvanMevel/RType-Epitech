@@ -21,7 +21,6 @@
 // SOFTWARE.
 
 #include <iostream>
-#include <utility>
 #include "PlayerInfoConsumer.h"
 #include "Engine/EntityUtils.h"
 #include "Client/FixTextureComponent.h"
@@ -29,19 +28,24 @@
 #include "Client/PlayerKeysSystem.h"
 #include "Client/PlayerMoveSystem.h"
 #include "Client/PlayerShootSystem.h"
+#include "Client/SpriteComponent.h"
+#include "Client/SpriteManager.h"
 
-PlayerInfoConsumer::PlayerInfoConsumer(std::shared_ptr<ITexture> playerTexture) : playerTexture(std::move(playerTexture)) {}
+PlayerInfoConsumer::PlayerInfoConsumer() {}
 
 void PlayerInfoConsumer::consume(PlayerInfoPacket &packet, EnginePtr engine, RTypeServer server) {
     auto player = engine->getScene()->getEntityById(packet.playerId);
+    auto spriteManager = engine->getModule<SpriteManager>();
     entity::initPlayer(player, packet.x, packet.y);
 
-    auto texture = player->getOrCreate<FixTextureComponent>();
-    texture->setTexture(playerTexture);
+    auto spriteComponent = player->getOrCreate<SpriteComponent>();
+    SpriteType type = static_cast<SpriteType>(((int) SpriteType::PLAYER_1) + packet.playerNumber - 1);
+    auto sprite = spriteManager->getSprite(type);
+    spriteComponent->setSprite(sprite);
 
-    std::cout << ">> We are player " << packet.playerId << std::endl;
+    std::cout << ">> We are player " << packet.playerId << " (" << packet.playerNumber << ")" << std::endl;
 
-    std::shared_ptr<Player> pl = std::make_shared<Player>();
+    auto pl = engine->registerModule<Player>();
     pl->entity = player;
 
     engine->getModule<IGraphicLib>()->addSystem<PlayerKeysSystem>(pl);

@@ -20,20 +20,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "GameScene.h"
-#include "ScrollingTextureComponent.h"
-#include "CreateScrollingTexture.h"
+#ifndef R_TYPE_SERVER_SPRITEMANAGER_H
+#define R_TYPE_SERVER_SPRITEMANAGER_H
+
+#include <unordered_map>
+#include "Engine/Graphic/Sprite.h"
+
+enum class SpriteType {
+    ENEMY = 0,
+    PLAYER_1 = 1,
+    PLAYER_2 = 2,
+    PLAYER_3 = 3,
+    PLAYER_4 = 4,
+    PROJECTILE_1 = 5,
+    PROJECTILE_2 = 6,
+};
 
 
-std::shared_ptr<Scene> gameScene(EnginePtr engine){
-    auto sc = engine->createScene<Scene>();
-    auto lib = engine->getModule<IGraphicLib>();
 
-    auto background = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 01 - Solid colour.png",-1);
-    auto fourthground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 02 - Shadows.png",-2);
-    auto thirdground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 02 - Shadows 2.png",-2);
-    auto secondground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 03 - Stars.png",-3);
-    auto firstground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 03 - Stars 2.png",-4);
+class SpriteManager {
+private:
+    std::unordered_map<SpriteType, std::shared_ptr<Sprite>> _sprites;
 
-    return sc;
-}
+public:
+    SpriteManager();
+    std::shared_ptr<Sprite> getSprite(SpriteType type);
+
+    void addSprite(SpriteType type, std::shared_ptr<Sprite> sprite);
+};
+
+
+#endif //R_TYPE_SERVER_SPRITEMANAGER_H

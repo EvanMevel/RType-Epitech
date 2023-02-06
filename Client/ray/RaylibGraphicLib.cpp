@@ -23,37 +23,8 @@
 #include "RaylibGraphicLib.h"
 #include "RaylibTexture.h"
 #include "RaylibAnimation.h"
-
-IWindow &RaylibGraphicLib::createWindow(int width, int height, std::string title) {
-    ray::InitWindow(width, height, title.c_str());
-    this->window.setColors(colors);
-    return this->window;
-}
-
-IWindow &RaylibGraphicLib::getWindow() {
-    return this->window;
-}
-
-void RaylibGraphicLib::drawText(std::string string, int x, int y, int size, ColorCodes color) {
-    ray::DrawText(string.c_str(), x, y, size, colors[color]);
-}
-
-void RaylibGraphicLib::closeWindow() {
-    ray::CloseWindow();
-}
-
-std::shared_ptr<ITexture> RaylibGraphicLib::createTexture(const std::string &texturePath) {
-    return std::make_shared<RaylibTexture>(texturePath);
-}
-
-void RaylibGraphicLib::drawTexture(std::shared_ptr<ITexture> texture, int x, int y, ColorCodes code) {
-    auto texture2D = any_cast<ray::Texture2D>(texture->handle);
-    ray::DrawTexture(texture2D, x, y, colors[code]);
-}
-
-std::vector<std::any> RaylibGraphicLib::retrieveEvents() {
-    return std::vector<std::any>();
-}
+#include "RaylibMusic.h"
+#include "RaylibSound.h"
 
 RaylibGraphicLib::RaylibGraphicLib() {
     colors[ColorCodes::COLOR_WHITE] = ray::WHITE;
@@ -74,9 +45,55 @@ RaylibGraphicLib::RaylibGraphicLib() {
 
 }
 
-bool RaylibGraphicLib::isKeyDown(KeyCodes code) {
-    ray::KeyboardKey key = keys[code];
-    return ray::IsKeyDown(key);
+IWindow &RaylibGraphicLib::createWindow(int width, int height, std::string title) {
+    ray::InitWindow(width, height, title.c_str());
+    this->window.setColors(colors);
+    return this->window;
+}
+
+IWindow &RaylibGraphicLib::getWindow() {
+    return this->window;
+}
+
+void RaylibGraphicLib::closeWindow() {
+    ray::CloseWindow();
+}
+
+std::shared_ptr<ITexture> RaylibGraphicLib::createTexture(const std::string &texturePath) {
+    return std::make_shared<RaylibTexture>(texturePath);
+}
+
+void RaylibGraphicLib::drawText(std::string string, int x, int y, int size, ColorCodes color) {
+    ray::DrawText(string.c_str(), x, y, size, colors[color]);
+}
+
+void RaylibGraphicLib::drawTextureEx(std::shared_ptr<ITexture> texture, int x, int y, float rotation, float scale,ColorCodes code) {
+    auto texture2D = any_cast<ray::Texture2D>(texture->handle);
+    ray::DrawTextureEx(texture2D, (ray::Vector2) {(float) x, (float) y}, rotation,scale, colors[code]);
+}
+
+void RaylibGraphicLib::drawTexture(std::shared_ptr<ITexture> texture, int x, int y, ColorCodes code) {
+    auto texture2D = any_cast<ray::Texture2D>(texture->handle);
+    ray::DrawTexture(texture2D, x, y, colors[code]);
+}
+
+void RaylibGraphicLib::drawSprite(std::shared_ptr<Sprite> sprite, int x, int y, ColorCodes codes) {
+    auto texture2D = any_cast<ray::Texture2D>(sprite->texture->handle);
+    ray::Rectangle sourceRec = {(float) sprite->currentRect.x, (float) sprite->currentRect.y,
+                                (float) sprite->currentRect.width, (float) sprite->currentRect.height};
+    float width = (float) sprite->currentRect.width * sprite->scale;
+    float height = (float) sprite->currentRect.height * sprite->scale;
+    ray::Rectangle destRec = {
+            (float) x + (float) width / 2.0f,
+            (float) y + (float) height / 2.0f,
+            (float) width,
+            (float) height
+    };
+    ray::Vector2 origin = {
+            (float) width / 2.0f,
+            (float) height / 2.0f
+    };
+    ray::DrawTexturePro(texture2D, sourceRec, destRec, origin, 0.0f, colors[codes]);
 }
 
 std::shared_ptr<IAnimation> RaylibGraphicLib::createAnimation(const std::string &texturePath) {
@@ -92,7 +109,29 @@ IMouse &RaylibGraphicLib::getMouse() {
     return this->mouse;
 }
 
-void RaylibGraphicLib::drawTextureEx(std::shared_ptr<ITexture> texture, int x, int y, float rotation, float scale,ColorCodes code) {
-    auto texture2D = any_cast<ray::Texture2D>(texture->handle);
-    ray::DrawTextureEx(texture2D, (ray::Vector2) {(float) x, (float) y}, rotation,scale, colors[code]);
+bool RaylibGraphicLib::isKeyDown(KeyCodes code) {
+    ray::KeyboardKey key = keys[code];
+    return ray::IsKeyDown(key);
+}
+
+void RaylibGraphicLib::initAudio() {
+    ray::InitAudioDevice();
+}
+
+std::shared_ptr<IMusic> RaylibGraphicLib::createMusic(const std::string &musicPath) {
+    return std::make_shared<RaylibMusic>(musicPath);
+}
+
+void RaylibGraphicLib::playMusic(std::shared_ptr<IMusic> music) {
+    ray::Music raylibMusic = std::any_cast<ray::Music>(music->music);
+    ray::PlayMusicStream(raylibMusic);
+}
+
+std::shared_ptr<ISound> RaylibGraphicLib::createSound(const std::string &soundPath) {
+    return std::make_shared<RaylibSound>(soundPath);
+}
+
+void RaylibGraphicLib::playSound(std::shared_ptr<ISound> sound) {
+    ray::Sound raylibSound = std::any_cast<ray::Sound>(sound->sound);
+    ray::PlaySound(raylibSound);
 }

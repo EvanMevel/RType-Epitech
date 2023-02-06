@@ -43,7 +43,7 @@ void EnemyShootSystem::update(std::unique_ptr<Engine> &engine) {
             if (cd->current >= cd->cooldown) {
                 cd->current = 0;
                 auto projectile = engine->getScene()->unsafeCreateEntity();
-                entity::initProjectile(projectile, pos->x, pos->y + 20, -5);
+                entity::initProjectile(projectile, pos->x, pos->y + 20, -10);
 
                 auto team = projectile->addComponent<TeamComponent>();
                 team->setTeam(1);

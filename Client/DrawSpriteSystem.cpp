@@ -20,20 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "GameScene.h"
-#include "ScrollingTextureComponent.h"
-#include "CreateScrollingTexture.h"
+#include "DrawSpriteSystem.h"
+#include "Engine/Engine.h"
+#include "Engine/Component/PositionComponent.h"
 
+void drawEntitySprite(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entity) {
+    auto spriteComponent = entity->getComponent<SpriteComponent>();
+    auto positionComponent = entity->getComponent<PositionComponent>();
+    if (spriteComponent && positionComponent) {
+        auto sprite = spriteComponent->getSprite();
+        sprite->updateRect();
+        lib->drawSprite(sprite, positionComponent->getX(), positionComponent->getY(), ColorCodes::COLOR_WHITE);
+    }
+}
 
-std::shared_ptr<Scene> gameScene(EnginePtr engine){
-    auto sc = engine->createScene<Scene>();
+void DrawSpriteSystem::update(std::unique_ptr<Engine> &engine) {
     auto lib = engine->getModule<IGraphicLib>();
-
-    auto background = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 01 - Solid colour.png",-1);
-    auto fourthground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 02 - Shadows.png",-2);
-    auto thirdground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 02 - Shadows 2.png",-2);
-    auto secondground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 03 - Stars.png",-3);
-    auto firstground = createScrollingTextureComponent(lib, sc, "../Client/assets/Starry background  - Layer 03 - Stars 2.png",-4);
-
-    return sc;
+    if (lib == nullptr)
+        return;
+    if(engine->getScene() == nullptr)
+        return;
+    std::function<void(std::shared_ptr<Entity>)> draw = [&lib](std::shared_ptr<Entity> entity) {
+        drawEntitySprite(lib, entity);
+    };
+    engine->getScene()->forEachEntity(draw);
 }

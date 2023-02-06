@@ -23,21 +23,30 @@
 #include "EntityInfoConsumer.h"
 #include "Engine/EntityUtils.h"
 #include "Client/FixTextureComponent.h"
-
-EntityInfoConsumer::EntityInfoConsumer(const std::unordered_map<EntityType, std::shared_ptr<ITexture>> &textures)
-        : textures(textures) {
-
-}
+#include "Client/SpriteComponent.h"
+#include "Client/SpriteManager.h"
 
 void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTypeServer server) {
     auto entity = engine->getScene()->getEntityById(packet.id);
+    auto spriteManager = engine->getModule<SpriteManager>();
+    std::shared_ptr<Sprite> sprite;
     if (packet.type == EntityType::PROJECTILE) {
         entity::initProjectile(entity, packet.x, packet.y, 0);
+        if (packet.entityInfo == 0) {
+            sprite = spriteManager->getSprite(SpriteType::PROJECTILE_1);
+        } else {
+            sprite = spriteManager->getSprite(SpriteType::PROJECTILE_2);
+        }
     } else if (packet.type == EntityType::ENEMY) {
         entity::initEnemy(entity, packet.x, packet.y);
+        sprite = spriteManager->getSprite(SpriteType::ENEMY);
     } else if (packet.type == EntityType::PLAYER) {
         entity::initPlayer(entity, packet.x, packet.y);
+        SpriteType type = static_cast<SpriteType>(((int) SpriteType::PLAYER_1) + packet.entityInfo - 1);
+        sprite = spriteManager->getSprite(type);
     }
-    auto texture = entity->getOrCreate<FixTextureComponent>();
-    texture->setTexture(textures[packet.type]);
+    if (sprite) {
+        auto spriteComponent = entity->getOrCreate<SpriteComponent>();
+        spriteComponent->setSprite(sprite);
+    }
 }

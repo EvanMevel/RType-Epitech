@@ -28,10 +28,8 @@
 #include "Engine/Network/Packets/EntityInfoPacket.h"
 
 class EntityInfoConsumer : public ClientPacketConsumer<EntityInfoPacket> {
-private:
-    std::unordered_map<EntityType, std::shared_ptr<ITexture>> textures;
 public:
-    explicit EntityInfoConsumer(const std::unordered_map<EntityType, std::shared_ptr<ITexture>> &textures);
+    explicit EntityInfoConsumer() = default;
 
     void consume(EntityInfoPacket &packet, EnginePtr engine, RTypeServer server) override;
 };

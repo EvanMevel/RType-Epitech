@@ -43,34 +43,18 @@
 #include "Engine/SceneHolder.h"
 #include "SceneEnum.h"
 #include "ScrollingTextureSystem.h"
+#include "DrawSpriteSystem.h"
+#include "SpriteManager.h"
+#include "SoundManager.h"
 #include <mutex>
 #include <condition_variable>
+
 
 std::mutex graphicMutex;
 std::condition_variable cv;
 bool graphicReady = false;
 
-std::condition_variable cv2;
-bool registeredConsumers = false;
-
 bool windowClosed = false;
-
-void execOnGraph(std::shared_ptr<IGraphicLib> lib, RTypeServer server) {
-    std::cout << "Registering server consumer on graphic thread..." << std::endl;
-    auto playerTexture = lib->createTexture("../Client/assets/player.png");
-    server->addConsumer<PlayerInfoConsumer>(playerTexture);
-
-    auto enemyTexture = lib->createTexture("../Client/assets/enemy.png");
-    std::unordered_map<EntityType, std::shared_ptr<ITexture>> textures;
-    textures[EntityType::PLAYER] = playerTexture;
-    textures[EntityType::ENEMY] = enemyTexture;
-    textures[EntityType::PROJECTILE] = lib->createTexture("../Client/assets/projectile.png");
-
-    server->addConsumer<EntityInfoConsumer>(textures);
-
-    registeredConsumers = true;
-    cv2.notify_all();
-}
 
 void loadNetwork(EnginePtr engine) {
     std::unique_lock<std::mutex> lck(graphicMutex);
@@ -87,16 +71,11 @@ void loadNetwork(EnginePtr engine) {
     server->addConsumer<HandshakeResponseConsumer>();
     server->addConsumer<EntityDestroyConsumer>();
 
+    server->addConsumer<PlayerInfoConsumer>();
+
+    server->addConsumer<EntityInfoConsumer>();
+
     server->addSystem<StayAliveSystem>();
-
-    std::function<void(std::shared_ptr<IGraphicLib>, RTypeServer server)> graphExec = execOnGraph;
-    engine->getModule<IGraphicLib>()->execOnLibThread(graphExec, engine->getModule<IGraphicLib>(), server);
-
-    std::cout << "Waiting for consumer register on graphicLib thread" << std::endl;
-
-    while (!registeredConsumers) {
-        cv2.wait(lck);
-    }
 
     auto ticker = engine->registerModule<TickUtil>(ENGINE_TPS);
 
@@ -115,7 +94,8 @@ void loadNetwork(EnginePtr engine) {
 void graphicLoop(EnginePtr engine) {
     auto lib = engine->getModule<IGraphicLib>();
     IWindow &window = lib->getWindow();
-
+    auto music = lib->createMusic("../Client/assets/GameMusic.mp3");
+    lib->playMusic(music);
     while (!window.shouldClose()) {
         auto it = lib->getExecs().begin();
         while (it != lib->getExecs().end()) {
@@ -125,12 +105,49 @@ void graphicLoop(EnginePtr engine) {
         if (window.shouldClose()) {
             break;
         }
+        music->updateMusic();
         window.beginDrawing();
         window.setBackground(ColorCodes::COLOR_BLACK);
         lib->update(engine);
         window.endDrawing();
     }
     windowClosed = true;
+}
+
+void loadSounds(EnginePtr engine) {
+    std::shared_ptr<IGraphicLib> lib = engine->getModule<IGraphicLib>();
+    auto soundManager = engine->registerModule<SoundManager>();
+    auto shootSound = lib->createSound("../Client/assets/basicShoot.ogg");
+
+    soundManager->addSound(SoundType::PROJECTILE,shootSound);
+}
+
+void loadSprites(EnginePtr engine) {
+    std::shared_ptr<IGraphicLib> lib = engine->getModule<IGraphicLib>();
+    auto spriteManager = engine->registerModule<SpriteManager>();
+    auto playerSpriteSheet = lib->createSpriteSheet("../Client/assets/r-typesheet42.gif");
+
+    spriteManager->addSprite(SpriteType::PLAYER_1,
+                             playerSpriteSheet->createSprite(0, 3, 33, 14, 5, 0, 30, 4.0f));
+    spriteManager->addSprite(SpriteType::PLAYER_2,
+                             playerSpriteSheet->createSprite(0, 20, 33, 14, 5, 0, 30, 4.0f));
+    spriteManager->addSprite(SpriteType::PLAYER_3,
+                             playerSpriteSheet->createSprite(0, 37, 33, 14, 5, 0, 30, 4.0f));
+    spriteManager->addSprite(SpriteType::PLAYER_4,
+                             playerSpriteSheet->createSprite(0, 54, 33, 14, 5, 0, 30, 4.0f));
+
+    auto projSpriteSheet = lib->createSpriteSheet("../Client/assets/r-typesheet1.gif");
+
+    auto projSprite = projSpriteSheet->createSprite(103, 170, 81, 16, 2, 0, 30);
+    auto projSprite2 = projSpriteSheet->createSprite(267, 170, 81, 16, 2, 0, 30);
+    spriteManager->addSprite(SpriteType::PROJECTILE_1, projSprite);
+    spriteManager->addSprite(SpriteType::PROJECTILE_2, projSprite2);
+
+
+    auto enemySpriteSheet = lib->createSpriteSheet("../Client/assets/r-typesheet23.gif");
+
+    auto enemySprite = enemySpriteSheet->createSprite(0, 6, 33, 22, 8, 0, 30, 3.0f);
+    spriteManager->addSprite(SpriteType::ENEMY, enemySprite);
 }
 
 void loadScenes(EnginePtr engine) {
@@ -150,16 +167,22 @@ void loadGraphsAndScenes(EnginePtr engine) {
 
     lib->addSystem<ScrollingTextureSystem>();
     lib->addSystem<DrawFixTextureSystem>();
+    lib->addSystem<DrawSpriteSystem>();
     lib->addSystem<AnimationSystem>();
     lib->addSystem<MouseSystem>();
 
-    IWindow &window = lib->createWindow(1920, 1080, "R-type");
+
+    IWindow &window = lib->createWindow(1820, 1000, "R-type");
     window.setTargetFPS(60);
+    lib->initAudio();
+    //window.setFullScreen();
     std::cout << "[Graphic] Window created" << std::endl;
-    window.setFullScreen();
     loadScenes(engine);
     std::cout << "[Graphic] Scenes ready" << std::endl;
-
+    loadSprites(engine);
+    std::cout << "[Graphic] Sprites ready" << std::endl;
+    loadSounds(engine);
+    std::cout << "[Graphic] Sounds ready" << std::endl;
     graphicReady = true;
     cv.notify_all();
 

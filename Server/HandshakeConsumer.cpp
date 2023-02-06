@@ -26,6 +26,7 @@
 #include "Engine/Network/Packets/PlayerInfoPacket.h"
 #include "Engine/TickUtil.h"
 #include "Engine/Network/Packets/EntityInfoPacket.h"
+#include "PlayerInfoComponent.h"
 
 HandshakeConsumer::HandshakeConsumer(EnginePtr e) : RTypePacketConsumer(e) {}
 
@@ -42,6 +43,7 @@ static void sendEntitiesInfo(const std::shared_ptr<NetClient>& client, std::shar
 }
 
 void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) {
+    auto server = e->getModule<RTypeServer>();
     std::cout << "Handshake received" << std::endl;
     data->handshake = true;
 
@@ -55,6 +57,8 @@ void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClie
     auto player = e->getScene()->createEntity();
     entity::initPlayer(player, 100, 100);
     data->playerId = player->getId();
+    auto playerInfoComponent = player->addComponent<PlayerInfoComponent>();
+    playerInfoComponent->playerNumber = server->getClientCount();
 
     // Send player info to client then send all entities to client
     PlayerInfoPacket playerInfo(player);
@@ -63,5 +67,5 @@ void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClie
 
     // Send new player info to all other clients
     EntityInfoPacket newPlayerInfo(player);
-    e->getModule<RTypeServer>()->broadcast(newPlayerInfo, client);
+    server->broadcast(newPlayerInfo, client);
 }

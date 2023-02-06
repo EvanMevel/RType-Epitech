@@ -28,10 +28,8 @@
 #include "Engine/Network/Packets/PlayerInfoPacket.h"
 
 class PlayerInfoConsumer : public ClientPacketConsumer<PlayerInfoPacket> {
-private:
-    std::shared_ptr<ITexture> playerTexture;
 public:
-    PlayerInfoConsumer(std::shared_ptr<ITexture> playerTexture);
+    PlayerInfoConsumer();
 
     void consume(PlayerInfoPacket &packet, EnginePtr engine, RTypeServer server) override;
 };
