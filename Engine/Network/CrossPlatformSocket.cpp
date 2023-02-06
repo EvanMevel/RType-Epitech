@@ -109,7 +109,11 @@ bool CrossPlatformSocket::sendTo(const char* message, int len, const std::string
 int CrossPlatformSocket::recvFrom(char* buffer, int len, std::string& address, unsigned short& port)
 {
     struct sockaddr_in addr;
+#ifdef _WIN32
+    int addrLen = sizeof(addr);
+#else
     unsigned int addrLen = sizeof(addr);
+#endif
     memset(&addr, 0, sizeof(addr));
 
     int recv_len = recvfrom(m_socket, buffer, len, 0, (struct sockaddr*)&addr, &addrLen);
