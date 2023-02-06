@@ -26,6 +26,9 @@
 
 #include <memory>
 
+/**
+ * @brief Data of a client
+ */
 class ClientData {
 private:
     long long lastPing;

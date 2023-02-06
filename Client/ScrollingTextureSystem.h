@@ -26,6 +26,9 @@
 
 #include "Engine/ISystem.h"
 
+/**
+ * @brief System that scrolls the background texture
+ */
 class ScrollingTextureSystem : public ISystem {
 public:
     void update(std::unique_ptr<Engine> &engine) override;

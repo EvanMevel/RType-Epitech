@@ -20,22 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "TestPacket.h"
+#ifndef R_TYPE_SERVER_PINGPACKETCONSUMER_H
+#define R_TYPE_SERVER_PINGPACKETCONSUMER_H
 
-void TestPacket::read(ByteArray &buffer) {
-    buffer.read(_value);
-}
+#include "Server/RTypeServer.h"
+#include "Engine/Network/Packets/PingPacket.h"
 
-void TestPacket::write(ByteArray &buffer) const {
-    buffer.write(_value);
-}
+class PingPacketConsumer : public PacketClientConsumer<PingPacket, std::shared_ptr<ClientData>> {
+public:
+    PingPacketConsumer();
 
-void TestPacket::setValue(int value) {
-    _value = value;
-}
+    void consume(PingPacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) override;
+};
 
-int TestPacket::getValue() const {
-    return _value;
-}
 
-TestPacket::TestPacket(int value) : _value(value) {}
+#endif //R_TYPE_SERVER_PINGPACKETCONSUMER_H

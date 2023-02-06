@@ -27,6 +27,9 @@
 #include "Engine/Component/IComponent.h"
 #include "Engine/Graphic/ITexture.h"
 
+/**
+ * @brief Component that contains a texture
+ */
 class FixTextureComponent : public IComponent {
 protected:
     std::shared_ptr<ITexture> texture;

@@ -26,7 +26,9 @@
 #include "Engine/ISystem.h"
 #include "Client/ClientNetServer.h"
 
-
+/**
+ * @brief System send a ping to the server every seconds
+ */
 class StayAliveSystem : public ISystem {
 private:
     long long lastPing = 0;

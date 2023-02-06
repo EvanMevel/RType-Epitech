@@ -26,6 +26,9 @@
 #include <cstddef>
 #include "IComponent.h"
 
+/**
+ * @brief Component that defines the health of an entity
+ */
 class HealthComponent : public IComponent {
 private:
     size_t health;

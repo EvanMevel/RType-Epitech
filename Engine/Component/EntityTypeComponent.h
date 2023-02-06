@@ -28,6 +28,9 @@
 #include "IComponent.h"
 #include "../EntityType.h"
 
+/**
+ * @brief Component that defines the type of an entity
+ */
 class EntityTypeComponent : public IComponent {
 private:
     EntityType type;

@@ -26,6 +26,9 @@
 #include "Engine/Engine.h"
 #include "Engine/Network/NetworkRemoteServer.h"
 
+/**
+ * @brief ClientNetServer is a NetworkRemoteServer that is used by the client to communicate with the server
+ */
 class ClientNetServer : public NetworkRemoteServer<EnginePtr> {
 public:
     ClientNetServer(EnginePtr engine, const std::string &address, unsigned short port) : NetworkRemoteServer(engine, address, port) {}

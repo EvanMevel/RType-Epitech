@@ -20,20 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYERMOVECONSUMER_H
-#define R_TYPE_SERVER_PLAYERMOVECONSUMER_H
+#ifndef R_TYPE_SERVER_ENEMYINFOCOMPONENT_H
+#define R_TYPE_SERVER_ENEMYINFOCOMPONENT_H
 
+#include "Engine/Component/IComponent.h"
 
-#include "RTypeServer.h"
-#include "Engine/Network/Packets/PlayerMovePacket.h"
+enum class EnemyType {
+    BASIC,
+    FAST
+};
 
-class PlayerMoveConsumer : public RTypePlayerPacketConsumer<PlayerMovePacket> {
+class EnemyInfoComponent : public IComponent {
 public:
-    explicit PlayerMoveConsumer(EnginePtr e);
-
-    void consume(PlayerMovePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data,
-                 std::shared_ptr<Entity> player) override;
+    EnemyType type;
 };
 
 
-#endif //R_TYPE_SERVER_PLAYERMOVECONSUMER_H
+#endif //R_TYPE_SERVER_ENEMYINFOCOMPONENT_H

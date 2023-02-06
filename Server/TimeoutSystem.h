@@ -27,6 +27,9 @@
 
 #include "Engine/ISystem.h"
 
+/**
+ * @brief System that checks if a player has timed out
+ */
 class TimeoutSystem : public ISystem {
 public:
     TimeoutSystem();

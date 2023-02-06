@@ -31,6 +31,9 @@ enum HandshakeResponsePacketType {
     FULL = 2
 };
 
+/**
+ * @brief Handshake response packet sent by the server to the client to confirm the handshake
+ */
 class HandshakeResponsePacket : public IPacket{
 private:
     HandshakeResponsePacketType type;

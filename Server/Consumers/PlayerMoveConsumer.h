@@ -20,17 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_SERVERPROJECTILEHITBOXSYSTEM_H
-#define R_TYPE_SERVER_SERVERPROJECTILEHITBOXSYSTEM_H
+#ifndef R_TYPE_SERVER_PLAYERMOVECONSUMER_H
+#define R_TYPE_SERVER_PLAYERMOVECONSUMER_H
 
-#include "RTypeServer.h"
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/ProjectileHitboxSystem.h"
 
-class ServerProjectileHitboxSystem : public ProjectileHitboxSystem {
+#include "Server/RTypeServer.h"
+#include "Engine/Network/Packets/PlayerMovePacket.h"
+
+/**
+ * @brief Consumer for PlayerMovePacket
+ * @details This consumer is used to move the player
+ */
+class PlayerMoveConsumer : public RTypePlayerPacketConsumer<PlayerMovePacket> {
 public:
-    std::string getName() override;
+    explicit PlayerMoveConsumer(EnginePtr e);
+
+    void consume(PlayerMovePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data,
+                 std::shared_ptr<Entity> player) override;
 };
 
-#endif //R_TYPE_SERVER_SERVERPROJECTILEHITBOXSYSTEM_H
+
+#endif //R_TYPE_SERVER_PLAYERMOVECONSUMER_H

@@ -25,6 +25,9 @@
 
 #include "IPacket.h"
 
+/**
+ * @brief Packet sent by the client to the server to move its player
+ */
 class PlayerMovePacket : public IPacket {
 public:
     static const int ID = 6;

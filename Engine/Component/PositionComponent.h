@@ -27,6 +27,9 @@
 #include "IComponent.h"
 #include "Engine/Vector2i.h"
 
+/**
+ * @brief Component that defines the position of an entity
+ */
 class PositionComponent : public IComponent, public Vector2i {
 };
 

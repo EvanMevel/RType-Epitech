@@ -27,6 +27,10 @@
 #include "Engine/Hitbox.h"
 #include "Engine/Engine.h"
 
+/**
+ * @brief A component that describes a collider
+ * @details A collider is a component that can collide with other entities
+ */
 class ColliderComponent : public IComponent {
 public:
     std::function<void(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,

@@ -31,6 +31,9 @@
 #include "Engine/Component/EntityTypeComponent.h"
 #include "Engine/Component/PositionComponent.h"
 
+/**
+ * @brief Packet sent to the client to inform him of the creation of an entity
+ */
 class EntityInfoPacket : public IPacket {
 public:
     static const int ID = 7;

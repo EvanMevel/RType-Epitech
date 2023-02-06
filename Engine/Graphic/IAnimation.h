@@ -25,6 +25,7 @@
 
 
 #include <any>
+
 /**
  * @brief Interface representing an animation
  */
@@ -36,7 +37,7 @@ public:
     int width;
     int height;
 
-    virtual void setAnimationFrame(int frame){};
+    virtual void setAnimationFrame(int frame) = 0;
 };
 
 

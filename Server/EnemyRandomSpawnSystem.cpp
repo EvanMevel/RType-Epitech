@@ -25,8 +25,9 @@
 #include "RTypeServer.h"
 #include "Engine/Network/Packets/EntityInfoPacket.h"
 #include "CooldownComponent.h"
+#include "EnemyInfoComponent.h"
 
-EnemyRandomSpawnSystem::EnemyRandomSpawnSystem() : gen(rd()), distrx(0, 400), distry(0, 900) {}
+EnemyRandomSpawnSystem::EnemyRandomSpawnSystem() : gen(rd()), distrx(0, 400), distry(0, 750), distrType(0, 1) {}
 
 void EnemyRandomSpawnSystem::update(std::unique_ptr<Engine> &engine) {
     count = (count + 1) % ENGINE_TPS;
@@ -44,13 +45,25 @@ void EnemyRandomSpawnSystem::update(std::unique_ptr<Engine> &engine) {
     };
     engine->getScene()->forEachEntity(countEnemies);
     while (enemies < srv->getClientCount()) {
+
         auto ent = engine->getScene()->createEntity();
         int x = 1300 + distrx(gen);
-        int y = distry(gen);
+        int y = 50 + distry(gen);
         entity::initEnemy(ent, x, y);
 
+        EnemyType type = static_cast<EnemyType>(distrType(gen));
+        auto enemyInfo = ent->addComponent<EnemyInfoComponent>();
+        enemyInfo->type = type;
+
         auto cd = ent->addComponent<CooldownComponent>();
-        cd->cooldown = ENGINE_TPS * 2;
+
+        if (type == EnemyType::BASIC) {
+            cd->cooldown = ENGINE_TPS * 2;
+        } else if (type == EnemyType::FAST) {
+            cd->cooldown = ENGINE_TPS * 1.2;
+            ent->getComponent<HitboxComponent>()->setLengthY(32 * 3);
+        }
+
         enemies++;
 
         EntityInfoPacket newEntityPacket(ent);

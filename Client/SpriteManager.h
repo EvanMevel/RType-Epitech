@@ -27,17 +27,19 @@
 #include "Engine/Graphic/Sprite.h"
 
 enum class SpriteType {
-    ENEMY = 0,
-    PLAYER_1 = 1,
-    PLAYER_2 = 2,
-    PLAYER_3 = 3,
-    PLAYER_4 = 4,
-    PROJECTILE_1 = 5,
-    PROJECTILE_2 = 6,
+    PLAYER_1 = 0,
+    PLAYER_2 = 1,
+    PLAYER_3 = 2,
+    PLAYER_4 = 3,
+    PROJECTILE_1 = 4,
+    PROJECTILE_2 = 5,
+    ENEMY_1 = 6,
+    ENEMY_2 = 7,
 };
 
-
-
+/**
+ * @brief SpriteManager contains all the sprites of the game
+ */
 class SpriteManager {
 private:
     std::unordered_map<SpriteType, std::shared_ptr<Sprite>> _sprites;

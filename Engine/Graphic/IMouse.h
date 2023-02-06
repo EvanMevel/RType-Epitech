@@ -32,6 +32,9 @@ enum class MouseCode {
     MOUSE_BUTTON_MIDDLE
 };
 
+/**
+ * @brief Interface representing a mouse
+ */
 class IMouse {
 public:
     virtual Vector2i getPos() = 0;

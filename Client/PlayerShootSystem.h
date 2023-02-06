@@ -29,6 +29,9 @@
 #include "Engine/ISystem.h"
 #include "ClientNetServer.h"
 
+/**
+ * @brief System that handles the shooting of the player
+ */
 class PlayerShootSystem : public ISystem {
 private:
     std::shared_ptr<Player> player;

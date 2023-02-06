@@ -26,6 +26,9 @@
 #include "Client/ClientNetServer.h"
 #include "Engine/Network/Packets/PingPacket.h"
 
+/**
+ * @brief Listen to server PingPacket
+ */
 class PingPacketConsumer : public ClientPacketConsumer<PingPacket> {
 public:
     void consume(PingPacket &packet, EnginePtr engine, RTypeServer server) override;

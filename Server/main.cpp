@@ -25,18 +25,18 @@
 #include "RTypeServer.h"
 #include "Engine/EntityUtils.h"
 #include "Engine/TickUtil.h"
-#include "PingPacketConsumer.h"
+#include "Server/Consumers/PingPacketConsumer.h"
 #include "TimeoutSystem.h"
-#include "HandshakeConsumer.h"
+#include "Server/Consumers/HandshakeConsumer.h"
 #include "Engine/Component/HitboxComponent.h"
 #include "Engine/Component/TeamComponent.h"
 #include "ServerVelocitySystem.h"
-#include "PlayerMoveConsumer.h"
-#include "PlayerShootConsumer.h"
+#include "Server/Consumers/PlayerMoveConsumer.h"
+#include "Server/Consumers/PlayerShootConsumer.h"
 #include "ProjectileCleanupSystem.h"
 #include "EnemyRandomSpawnSystem.h"
 #include "EnemyShootSystem.h"
-#include "ServerProjectileHitboxSystem.h"
+#include "ServerColliderSystem.h"
 #include "PacketSendingScene.h"
 
 std::atomic<bool> running = true;
@@ -55,7 +55,7 @@ void testSrv(EnginePtr engine) {
     engine->getScene()->addSystem<ProjectileCleanupSystem>();
     engine->getScene()->addSystem<EnemyRandomSpawnSystem>();
     engine->getScene()->addSystem<EnemyShootSystem>();
-    engine->getScene()->addSystem<ServerProjectileHitboxSystem>();
+    engine->getScene()->addSystem<ServerColliderSystem>();
 
     log() << "Server listening" << std::endl;
 
@@ -81,11 +81,11 @@ void stopThread(EnginePtr engine) {
         std::cin >> str;
         if (str == "a") {
             auto ent = engine->getScene()->getEntityById(100);
-            auto physics = ent->getOrCreate<AccelerationPhysicComponent>();
+            auto physics = ent->getOrCreate<PhysicComponent>();
             physics->acceleration.setX(5);
         } else if (str == "z") {
             auto ent = engine->getScene()->getEntityById(100);
-            auto physics = ent->getOrCreate<AccelerationPhysicComponent>();
+            auto physics = ent->getOrCreate<PhysicComponent>();
             physics->acceleration.setX(-5);
 
         }

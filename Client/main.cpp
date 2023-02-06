@@ -25,7 +25,6 @@
 #include "Client/ray/RaylibGraphicLib.h"
 #include "DrawFixTextureSystem.h"
 #include "Engine/Component/PositionComponent.h"
-#include "Engine/Network/Packets/TestPacket.h"
 #include "Engine/Network/Packets/EntityVelocityPacket.h"
 #include "Client/Consumers/PingPacketConsumer.h"
 #include "StayAliveSystem.h"
@@ -147,7 +146,12 @@ void loadSprites(EnginePtr engine) {
     auto enemySpriteSheet = lib->createSpriteSheet("../Client/assets/r-typesheet23.gif");
 
     auto enemySprite = enemySpriteSheet->createSprite(0, 6, 33, 22, 8, 0, 30, 3.0f);
-    spriteManager->addSprite(SpriteType::ENEMY, enemySprite);
+    spriteManager->addSprite(SpriteType::ENEMY_1, enemySprite);
+
+    auto enemySpriteSheet2 = lib->createSpriteSheet("../Client/assets/r-typesheet7.gif");
+    auto enemySprite2 = enemySpriteSheet2->createSprite(1, 34, 33, 32, 3, 0, 30, 3.0f);
+
+    spriteManager->addSprite(SpriteType::ENEMY_2, enemySprite2);
 }
 
 void loadScenes(EnginePtr engine) {

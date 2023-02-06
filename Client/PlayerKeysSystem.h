@@ -27,6 +27,9 @@
 #include "ClientNetServer.h"
 #include "Player.h"
 
+/**
+ * @brief System that handles the player's keys
+ */
 class PlayerKeysSystem : public ISystem {
 private:
     std::shared_ptr<Player> player;

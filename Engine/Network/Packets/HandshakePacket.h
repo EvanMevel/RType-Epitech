@@ -26,6 +26,9 @@
 
 #include "IPacket.h"
 
+/**
+ * @brief Handshake packet sent by the client to the server to identify itself
+ */
 class HandshakePacket : public IPacket {
 public:
     static const int ID = 1;

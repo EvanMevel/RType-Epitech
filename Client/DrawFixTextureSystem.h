@@ -25,6 +25,9 @@
 
 #include "Engine/ISystem.h"
 
+/**
+ * @brief System that draw the texture of the entity
+ */
 class DrawFixTextureSystem : public ISystem {
 public:
     void update(EnginePtr engine) override;

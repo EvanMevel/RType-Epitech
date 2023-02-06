@@ -20,20 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYERSHOOTCONSUMER_H
-#define R_TYPE_SERVER_PLAYERSHOOTCONSUMER_H
+#ifndef R_TYPE_SERVER_PHYSICCOMPONENT_H
+#define R_TYPE_SERVER_PHYSICCOMPONENT_H
 
 
-#include "RTypeServer.h"
-#include "Engine/Network/Packets/PlayerShootPacket.h"
+#include "IComponent.h"
+#include "Engine/Vector2i.h"
 
-class PlayerShootConsumer : public RTypePlayerPacketConsumer<PlayerShootPacket> {
+class PhysicComponent : public IComponent {
 public:
-    explicit PlayerShootConsumer(EnginePtr e);
-
-    void consume(PlayerShootPacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data,
-                 std::shared_ptr<Entity> player) override;
+    Vector2i acceleration;
+    Vector2i velocity;
+    size_t maxVelocity = 0;
+    size_t accelerationSlow = 1;
+    size_t velocitySlow = 1;
 };
 
 
-#endif //R_TYPE_SERVER_PLAYERSHOOTCONSUMER_H
+#endif //R_TYPE_SERVER_PHYSICCOMPONENT_H

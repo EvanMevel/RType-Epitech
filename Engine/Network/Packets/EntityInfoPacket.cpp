@@ -23,6 +23,7 @@
 #include "EntityInfoPacket.h"
 #include "Engine/EntityUtils.h"
 #include "Server/PlayerInfoComponent.h"
+#include "Server/EnemyInfoComponent.h"
 
 EntityInfoPacket::EntityInfoPacket() {}
 
@@ -44,6 +45,11 @@ EntityInfoPacket::EntityInfoPacket(std::shared_ptr<Entity> entity, std::shared_p
             auto playerInfo = entity->getComponent<PlayerInfoComponent>();
             if (playerInfo) {
                 this->entityInfo = (int) playerInfo->playerNumber;
+            }
+        } else if (type->getType() == EntityType::ENEMY) {
+            auto enemyInfo = entity->getComponent<EnemyInfoComponent>();
+            if (enemyInfo) {
+                this->entityInfo = (int) enemyInfo->type;
             }
         }
     }

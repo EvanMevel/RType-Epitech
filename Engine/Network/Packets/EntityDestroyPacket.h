@@ -26,6 +26,9 @@
 
 #include "IPacket.h"
 
+/**
+ * @brief Packet sent by the server to destroy an entity
+ */
 class EntityDestroyPacket : public IPacket {
 public:
     static const int ID = 9;

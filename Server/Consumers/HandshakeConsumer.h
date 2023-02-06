@@ -20,19 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "PlayerMoveConsumer.h"
-#include "Engine/Network/Packets/EntityVelocityPacket.h"
-#include "Engine/TickUtil.h"
+#ifndef R_TYPE_SERVER_HANDSHAKECONSUMER_H
+#define R_TYPE_SERVER_HANDSHAKECONSUMER_H
 
-PlayerMoveConsumer::PlayerMoveConsumer(EnginePtr e) : RTypePlayerPacketConsumer(e) {}
+#include "Server/RTypeServer.h"
+#include "Engine/Network/Packets/HandshakePacket.h"
 
-void PlayerMoveConsumer::consume(PlayerMovePacket &packet, std::shared_ptr<NetClient> client,
-                                 std::shared_ptr<ClientData> data, std::shared_ptr<Entity> player) {
-    auto physics = player->getOrCreate<AccelerationPhysicComponent>();
-    physics->acceleration = packet.acceleration;
+/**
+ * @brief Listens to HandshakePacket and sends a HandshakePacketResponse back to the client
+ */
+class HandshakeConsumer : public RTypePacketConsumer<HandshakePacket> {
+public:
+    explicit HandshakeConsumer(EnginePtr e);
 
-    auto ticker = e->getModule<TickUtil>();
+    void consume(HandshakePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) override;
+};
 
-    EntityVelocityPacket velPacket(player, ticker->getCurrentTick());
-    e->getModule<RTypeServer>()->broadcast(velPacket);
-}
+
+#endif //R_TYPE_SERVER_HANDSHAKECONSUMER_H

@@ -23,6 +23,9 @@
 #ifndef R_TYPE_SERVER_SCENEENUM_H
 #define R_TYPE_SERVER_SCENEENUM_H
 
+/**
+ * @brief Enum of all the scenes
+ */
 enum SceneEnum{
     MAIN_MENU,
     GAME

@@ -27,12 +27,12 @@ void entity::initPlayer(std::shared_ptr<Entity> entity, int x, int y) {
     auto pos = entity->addComponent<PositionComponent>();
     pos->setX(x);
     pos->setY(y);
-    auto physic = entity->addComponent<AccelerationPhysicComponent>();
+    auto physic = entity->addComponent<PhysicComponent>();
     physic->maxVelocity = 10;
 
     auto hitbox = entity->addComponent<HitboxComponent>();
-    hitbox->setLengthX(50);
-    hitbox->setLengthY(50);
+    hitbox->setLengthX(100);
+    hitbox->setLengthY(56);
 
     auto tim = entity->addComponent<TeamComponent>();
     tim->setTeam(0);
@@ -84,7 +84,7 @@ void entity::initProjectile(std::shared_ptr<Entity> entity, int x, int y, int ve
     auto pos = entity->addComponent<PositionComponent>();
     pos->setX(x);
     pos->setY(y);
-    auto physic = entity->addComponent<AccelerationPhysicComponent>();
+    auto physic = entity->addComponent<PhysicComponent>();
     physic->velocity.x = velX;
     physic->velocitySlow = 0;
 
@@ -92,8 +92,8 @@ void entity::initProjectile(std::shared_ptr<Entity> entity, int x, int y, int ve
     collider->_onCollision = projectileHit;
 
     auto hitbox = entity->addComponent<HitboxComponent>();
-    hitbox->setLengthX(50);
-    hitbox->setLengthY(20);
+    hitbox->setLengthX(81);
+    hitbox->setLengthY(16);
 }
 
 void entity::initEnemy(std::shared_ptr<Entity> entity, int x, int y) {
@@ -101,14 +101,14 @@ void entity::initEnemy(std::shared_ptr<Entity> entity, int x, int y) {
     auto pos = entity->addComponent<PositionComponent>();
     pos->setX(x);
     pos->setY(y);
-    auto physic = entity->addComponent<AccelerationPhysicComponent>();
+    auto physic = entity->addComponent<PhysicComponent>();
 
     auto team = entity->addComponent<TeamComponent>();
     team->setTeam(1);
 
     auto hitbox = entity->addComponent<HitboxComponent>();
-    hitbox->setLengthX(50);
-    hitbox->setLengthY(50);
+    hitbox->setLengthX(99);
+    hitbox->setLengthY(66);
 
     auto health = entity->addComponent<HealthComponent>();
     health->setHealth(50);
@@ -117,7 +117,7 @@ void entity::initEnemy(std::shared_ptr<Entity> entity, int x, int y) {
 
 bool entity::applyPhysic(std::shared_ptr<Entity> entity) {
     auto pos = entity->getComponent<PositionComponent>();
-    auto physic = entity->getComponent<AccelerationPhysicComponent>();
+    auto physic = entity->getComponent<PhysicComponent>();
     if (pos != nullptr && physic != nullptr) {
         if (physic->acceleration.lengthSquare() != 0) {
             // Add acceleration to velocity

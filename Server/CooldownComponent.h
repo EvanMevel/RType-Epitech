@@ -27,6 +27,9 @@
 #include <cstddef>
 #include "Engine/Component/IComponent.h"
 
+/**
+ * @brief Component that stores the cooldown of a weapon
+ */
 class CooldownComponent : public IComponent {
 public:
     size_t current = 0;

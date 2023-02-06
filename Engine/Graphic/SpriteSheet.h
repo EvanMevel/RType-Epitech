@@ -27,6 +27,9 @@
 #include "ITexture.h"
 #include "Sprite.h"
 
+/**
+ * @brief A SpriteSheet is a class that contains a texture and can create sprites from it
+ */
 class SpriteSheet {
 private:
     std::shared_ptr<ITexture> texture;

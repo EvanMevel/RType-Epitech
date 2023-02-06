@@ -44,7 +44,7 @@ EntityVelocityPacket::EntityVelocityPacket(std::shared_ptr<Entity> entity, unsig
     if (posComponent) {
         this->pos = posComponent->clone();
     }
-    auto physicsComponent = entity->getComponent<AccelerationPhysicComponent>();
+    auto physicsComponent = entity->getComponent<PhysicComponent>();
     if (physicsComponent) {
         this->velocity = physicsComponent->velocity.clone();
         this->acceleration = physicsComponent->acceleration.clone();
