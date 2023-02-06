@@ -44,8 +44,10 @@
 #include "ScrollingTextureSystem.h"
 #include "DrawSpriteSystem.h"
 #include "SpriteManager.h"
+#include "SoundManager.h"
 #include <mutex>
 #include <condition_variable>
+
 
 std::mutex graphicMutex;
 std::condition_variable cv;
@@ -91,7 +93,8 @@ void loadNetwork(EnginePtr engine) {
 void graphicLoop(EnginePtr engine) {
     auto lib = engine->getModule<IGraphicLib>();
     IWindow &window = lib->getWindow();
-
+    auto music = lib->createMusic("../Client/assets/GameMusic.mp3");
+    lib->playMusic(music);
     while (!window.shouldClose()) {
         auto it = lib->getExecs().begin();
         while (it != lib->getExecs().end()) {
@@ -101,12 +104,21 @@ void graphicLoop(EnginePtr engine) {
         if (window.shouldClose()) {
             break;
         }
+        music->updateMusic();
         window.beginDrawing();
         window.setBackground(ColorCodes::COLOR_BLACK);
         lib->update(engine);
         window.endDrawing();
     }
     windowClosed = true;
+}
+
+void loadSounds(EnginePtr engine) {
+    std::shared_ptr<IGraphicLib> lib = engine->getModule<IGraphicLib>();
+    auto soundManager = engine->registerModule<SoundManager>();
+    auto shootSound = lib->createSound("../Client/assets/basicShoot.ogg");
+
+    soundManager->addSound(SoundType::PROJECTILE,shootSound);
 }
 
 void loadSprites(EnginePtr engine) {
@@ -166,13 +178,15 @@ void loadGraphsAndScenes(EnginePtr engine) {
 
     IWindow &window = lib->createWindow(1820, 1000, "R-type");
     window.setTargetFPS(60);
+    lib->initAudio();
     //window.setFullScreen();
     std::cout << "[Graphic] Window created" << std::endl;
     loadScenes(engine);
     std::cout << "[Graphic] Scenes ready" << std::endl;
     loadSprites(engine);
     std::cout << "[Graphic] Sprites ready" << std::endl;
-
+    loadSounds(engine);
+    std::cout << "[Graphic] Sounds ready" << std::endl;
     graphicReady = true;
     cv.notify_all();
 
