@@ -20,24 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYER_H
-#define R_TYPE_SERVER_PLAYER_H
+#include "ProjectileHitConsumer.h"
+#include "Client/SoundManager.h"
 
-#include "Engine/Entity.h"
+void ProjectileHitConsumer::consume(ProjectileHitPacket &packet, std::unique_ptr<Engine> &engine, RTypeServer server) {
+    auto lib = engine->getModule<IGraphicLib>();
+    auto soundManager = engine->getModule<SoundManager>();
+    auto sound = soundManager->getSound(SoundType::PROJECTILE_HIT);
 
-/**
- * @brief Describes a player and its inputs
- */
-class Player {
-public:
-    bool up = false;
-    bool down = false;
-    bool left = false;
-    bool right = false;
-    bool shoot = false;
-    std::shared_ptr<Entity> entity;
-    bool dead = false;
-};
+    // We need to play the sound on the lib thread because raylib functions can't be used from multiple threads
+    std::function<void(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<ISound> projectileSound)> playSoundFunct = [](std::shared_ptr<IGraphicLib> lib, std::shared_ptr<ISound> projectileSound){
+        lib->playSound(projectileSound);
+    };
+    lib->execOnLibThread(playSoundFunct, lib, sound);
 
-
-#endif //R_TYPE_SERVER_PLAYER_H
+}

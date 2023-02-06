@@ -20,24 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYER_H
-#define R_TYPE_SERVER_PLAYER_H
+#include "ProjectileHitPacket.h"
 
-#include "Engine/Entity.h"
+void ProjectileHitPacket::write(ByteArray &buffer) const {
 
-/**
- * @brief Describes a player and its inputs
- */
-class Player {
-public:
-    bool up = false;
-    bool down = false;
-    bool left = false;
-    bool right = false;
-    bool shoot = false;
-    std::shared_ptr<Entity> entity;
-    bool dead = false;
-};
+}
 
+void ProjectileHitPacket::read(ByteArray &buffer) {
 
-#endif //R_TYPE_SERVER_PLAYER_H
+}

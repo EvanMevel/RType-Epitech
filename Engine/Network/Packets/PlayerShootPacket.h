@@ -33,11 +33,11 @@ class PlayerShootPacket : public IPacket {
 public:
     static const int ID = 8;
 
-    size_t playerId;
-
-    explicit PlayerShootPacket(size_t playerId);
+    EntityId playerId;
 
     PlayerShootPacket();
+
+    explicit PlayerShootPacket(EntityId playerId);
 
     void write(ByteArray &buffer) const override;
 

@@ -28,6 +28,8 @@ PlayerMoveConsumer::PlayerMoveConsumer(EnginePtr e) : RTypePlayerPacketConsumer(
 
 void PlayerMoveConsumer::consume(PlayerMovePacket &packet, std::shared_ptr<NetClient> client,
                                  std::shared_ptr<ClientData> data, std::shared_ptr<Entity> player) {
+    if (player == nullptr)
+        return;
     auto physics = player->getOrCreate<PhysicComponent>();
     physics->acceleration = packet.acceleration;
 

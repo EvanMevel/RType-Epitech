@@ -38,6 +38,16 @@ ByteArray& operator>>(ByteArray &buffer, int &value) {
     return buffer;
 }
 
+ByteArray& operator<<(ByteArray &buffer, const unsigned int &value) {
+    buffer.write(value);
+    return buffer;
+}
+
+ByteArray& operator>>(ByteArray &buffer, unsigned int &value) {
+    buffer.read(value);
+    return buffer;
+}
+
 ByteArray& operator<<(ByteArray &buffer, const long long &value) {
     buffer.write(value);
     return buffer;

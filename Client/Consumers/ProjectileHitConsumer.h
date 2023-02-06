@@ -20,24 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYER_H
-#define R_TYPE_SERVER_PLAYER_H
+#ifndef R_TYPE_SERVER_PROJECTILEHITCONSUMER_H
+#define R_TYPE_SERVER_PROJECTILEHITCONSUMER_H
 
-#include "Engine/Entity.h"
+#include "Engine/Network/Packets/ProjectileHitPacket.h"
+#include "Client/ClientNetServer.h"
 
-/**
- * @brief Describes a player and its inputs
- */
-class Player {
+
+class ProjectileHitConsumer : public ClientPacketConsumer<ProjectileHitPacket> {
 public:
-    bool up = false;
-    bool down = false;
-    bool left = false;
-    bool right = false;
-    bool shoot = false;
-    std::shared_ptr<Entity> entity;
-    bool dead = false;
+    void consume(ProjectileHitPacket &packet, std::unique_ptr<Engine> &engine, RTypeServer server) override;
+
 };
 
 
-#endif //R_TYPE_SERVER_PLAYER_H
+#endif //R_TYPE_SERVER_PROJECTILEHITCONSUMER_H

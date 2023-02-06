@@ -62,11 +62,12 @@ public:
     void addEntity(std::shared_ptr<Entity>);
     std::shared_ptr<Entity> createEntity();
     std::shared_ptr<Entity> unsafeCreateEntity();
-    std::shared_ptr<Entity> getEntityById(size_t id);
+    std::shared_ptr<Entity> getOrCreateEntityById(EntityId id);
+    std::shared_ptr<Entity> getEntityById(EntityId id);
 
     virtual void removeEntity(std::shared_ptr<Entity> entity);
 
-    virtual void removeEntity(size_t entityId);
+    virtual void removeEntity(EntityId entityId);
 
     std::unique_ptr<std::lock_guard<std::mutex>> obtainLock();
 

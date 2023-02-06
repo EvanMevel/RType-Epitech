@@ -20,24 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYER_H
-#define R_TYPE_SERVER_PLAYER_H
+#ifndef R_TYPE_SERVER_ENGINETYPES_H
+#define R_TYPE_SERVER_ENGINETYPES_H
 
-#include "Engine/Entity.h"
+#include <memory>
 
-/**
- * @brief Describes a player and its inputs
- */
-class Player {
-public:
-    bool up = false;
-    bool down = false;
-    bool left = false;
-    bool right = false;
-    bool shoot = false;
-    std::shared_ptr<Entity> entity;
-    bool dead = false;
-};
+class Engine;
 
+using EnginePtr = std::unique_ptr<Engine>&;
 
-#endif //R_TYPE_SERVER_PLAYER_H
+using EntityId = unsigned int;
+
+class Entity;
+
+using EntityPtr = std::shared_ptr<Entity>&;
+
+template<class Component>
+using ComponentPtr = std::shared_ptr<Component>&;
+
+#endif //R_TYPE_SERVER_ENGINETYPES_H

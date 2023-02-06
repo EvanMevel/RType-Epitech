@@ -24,7 +24,6 @@
 #define R_TYPE_SERVER_ENTITYVELOCITYPACKET_H
 
 #include "IPacket.h"
-#include <memory>
 #include "Engine/Entity.h"
 #include "Engine/EntityType.h"
 #include "Engine/Component/EntityTypeComponent.h"
@@ -36,7 +35,7 @@
  */
 class EntityVelocityPacket : public IPacket {
 public:
-    size_t entityId;
+    EntityId entityId;
     Vector2i pos;
     Vector2i velocity;
     Vector2i acceleration;
@@ -46,10 +45,7 @@ public:
 
     EntityVelocityPacket();
 
-    EntityVelocityPacket(size_t entityId, const Vector2i &pos, const Vector2i &velocity, const Vector2i &acceleration,
-                         unsigned long long int tick);
-
-    EntityVelocityPacket(std::shared_ptr<Entity> entity, unsigned long long int tick);
+    EntityVelocityPacket(EntityPtr entity, unsigned long long int tick);
 
     void write(ByteArray &buffer) const override;
 

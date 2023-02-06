@@ -23,11 +23,10 @@
 #include "PlayerInfoPacket.h"
 #include "Server/PlayerInfoComponent.h"
 
-PlayerInfoPacket::PlayerInfoPacket() {
-
+PlayerInfoPacket::PlayerInfoPacket() : playerId(0), x(0), y(0), playerNumber(0) {
 }
 
-PlayerInfoPacket::PlayerInfoPacket(std::shared_ptr<Entity> entity) {
+PlayerInfoPacket::PlayerInfoPacket(EntityPtr entity) {
     playerId = entity->getId();
     auto pos = entity->getComponent<PositionComponent>();
     if (pos) {

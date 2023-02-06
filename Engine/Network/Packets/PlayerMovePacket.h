@@ -24,6 +24,7 @@
 #define R_TYPE_SERVER_PLAYERMOVEPACKET_H
 
 #include "IPacket.h"
+#include "Engine/EngineTypes.h"
 
 /**
  * @brief Packet sent by the client to the server to move its player
@@ -32,12 +33,12 @@ class PlayerMovePacket : public IPacket {
 public:
     static const int ID = 6;
 
-    size_t playerId;
+    EntityId playerId;
     Vector2i acceleration;
 
-    PlayerMovePacket(size_t playerId, const Vector2i &acceleration);
-
     PlayerMovePacket();
+
+    PlayerMovePacket(EntityId playerId, const Vector2i &acceleration);
 
     void write(ByteArray &buffer) const override;
 

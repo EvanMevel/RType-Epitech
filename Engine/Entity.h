@@ -23,11 +23,11 @@
 #ifndef B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ENTITY_H
 #define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ENTITY_H
 
-#include <memory>
 #include <unordered_map>
 #include <typeindex>
 #include <any>
 #include <cstddef>
+#include "Engine/EngineTypes.h"
 #include "Component/IComponent.h"
 
 /**
@@ -37,14 +37,14 @@
 class Entity {
 private:
     std::unordered_map<std::type_index, std::shared_ptr<IComponent>> components;
-    size_t id;
+    EntityId id;
 public:
     Entity();
-    explicit Entity(size_t id);
+    explicit Entity(EntityId id);
 
     virtual ~Entity();
 
-    size_t getId() const;
+    EntityId getId() const;
 
     template<class Type, class ...Args>
     std::shared_ptr<Type> addComponent(Args ...args) {

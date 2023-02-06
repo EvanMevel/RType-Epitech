@@ -20,33 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_ENTITYTESTPACKET_H
-#define R_TYPE_SERVER_ENTITYTESTPACKET_H
+#ifndef R_TYPE_SERVER_PROJECTILEHITPACKET_H
+#define R_TYPE_SERVER_PROJECTILEHITPACKET_H
+
 
 #include "IPacket.h"
 
-/**
- * @brief EntityTestPacket is a packet used to test the Entity class
- */
-class EntityTestPacket : public IPacket {
+class ProjectileHitPacket : public IPacket {
 public:
-    int entityId;
-    int x;
-    int y;
-public:
-    static const int ID = 4;
+    static const int ID = 10;
 
-    EntityTestPacket() {}
+    void write(ByteArray &buffer) const override;
 
-    EntityTestPacket(int entityId, int x, int y) : entityId(entityId), x(x), y(y) {}
-
-    void write(ByteArray &buffer) const override {
-        buffer << entityId << x << y;
-    }
-
-    void read(ByteArray &buffer) override {
-        buffer >> entityId >> x >> y;
-    }
+    void read(ByteArray &buffer) override;
 };
 
-#endif //R_TYPE_SERVER_ENTITYTESTPACKET_H
+
+#endif //R_TYPE_SERVER_PROJECTILEHITPACKET_H

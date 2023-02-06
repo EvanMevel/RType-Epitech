@@ -32,12 +32,12 @@ void PlayerShootSystem::update(EnginePtr engine) {
     if (cooldown > 0) {
         cooldown--;
     }
-    if (player->shoot && cooldown == 0) {
+    if (!player->dead && player->shoot && cooldown == 0) {
         engine->getModule<ClientNetServer>()->sendPacket(PlayerShootPacket(player->entity->getId()));
         cooldown = ENGINE_TPS / 2;
         auto lib = engine->getModule<IGraphicLib>();
         auto soundManager = engine->getModule<SoundManager>();
-        auto projetcileSound = soundManager->getSound(SoundType::PROJECTILE);
+        auto projetcileSound = soundManager->getSound(SoundType::PROJECTILE_SHOOT);
         std::function<void(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<ISound> projectileSound)> playSoundFunct = [](std::shared_ptr<IGraphicLib> lib, std::shared_ptr<ISound> projectileSound){
             lib->playSound(projectileSound);
         };

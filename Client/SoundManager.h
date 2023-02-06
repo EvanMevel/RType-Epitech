@@ -28,7 +28,8 @@
 #include "Engine/Graphic/ISound.h"
 
 enum class SoundType {
-    PROJECTILE = 0,
+    PROJECTILE_SHOOT = 0,
+    PROJECTILE_HIT = 1
 };
 
 class SoundManager {

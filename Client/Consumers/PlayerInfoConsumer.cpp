@@ -34,7 +34,7 @@
 PlayerInfoConsumer::PlayerInfoConsumer() {}
 
 void PlayerInfoConsumer::consume(PlayerInfoPacket &packet, EnginePtr engine, RTypeServer server) {
-    auto player = engine->getScene()->getEntityById(packet.playerId);
+    auto player = engine->getScene()->getOrCreateEntityById(packet.playerId);
     auto spriteManager = engine->getModule<SpriteManager>();
     entity::initPlayer(player, packet.x, packet.y);
 

@@ -22,9 +22,10 @@
 
 #include "PlayerMovePacket.h"
 
-PlayerMovePacket::PlayerMovePacket() {}
+PlayerMovePacket::PlayerMovePacket() : playerId(0), acceleration(0, 0) {
+}
 
-PlayerMovePacket::PlayerMovePacket(size_t playerId, const Vector2i &acceleration) : playerId(playerId),
+PlayerMovePacket::PlayerMovePacket(EntityId playerId, const Vector2i &acceleration) : playerId(playerId),
                                                                                  acceleration(acceleration) {}
 
 void PlayerMovePacket::write(ByteArray &buffer) const {
