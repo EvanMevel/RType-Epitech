@@ -20,27 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "PlayerShootSystem.h"
-#include "Engine/Network/Packets/PlayerShootPacket.h"
-#include "SoundManager.h"
+//
+// Created by audre on 05/02/2023.
+//
 
-PlayerShootSystem::PlayerShootSystem(const std::shared_ptr<Player> &player) : player(player){
+#ifndef R_TYPE_SERVER_ISOUND_H
+#define R_TYPE_SERVER_ISOUND_H
 
-}
+#include <any>
 
-void PlayerShootSystem::update(EnginePtr engine) {
-    if (cooldown > 0) {
-        cooldown--;
-    }
-    if (player->shoot && cooldown == 0) {
-        engine->getModule<ClientNetServer>()->sendPacket(PlayerShootPacket(player->entity->getId()));
-        cooldown = ENGINE_TPS / 2;
-        auto lib = engine->getModule<IGraphicLib>();
-        auto soundManager = engine->getModule<SoundManager>();
-        auto projetcileSound = soundManager->getSound(SoundType::PROJECTILE);
-        std::function<void(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<ISound> projectileSound)> playSoundFunct = [](std::shared_ptr<IGraphicLib> lib, std::shared_ptr<ISound> projectileSound){
-            lib->playSound(projectileSound);
-        };
-        lib->execOnLibThread(playSoundFunct, lib ,projetcileSound);
-    }
-}
+class ISound {
+public:
+    std::any sound;
+};
+
+#endif //R_TYPE_SERVER_ISOUND_H

@@ -36,6 +36,8 @@
 #include "IAnimation.h"
 #include "IMouse.h"
 #include "SpriteSheet.h"
+#include "IMusic.h"
+#include "ISound.h"
 
 class Engine;
 
@@ -73,6 +75,12 @@ public:
 
     virtual IMouse &getMouse() = 0;
 
+    virtual void initAudio() = 0;
+    virtual std::shared_ptr<IMusic> createMusic(const std::string &musicPath) = 0;
+    virtual void playMusic(std::shared_ptr<IMusic>) = 0;
+    virtual std::shared_ptr<ISound> createSound(const std::string &soundPath) = 0;
+    virtual void playSound(std::shared_ptr<ISound>) = 0;
+
     template<class ...Args>
     void execOnLibThread(std::function<void(Args...)> func, Args... args) {
         auto fu = std::bind(func, args...);
@@ -81,7 +89,7 @@ public:
     template<class ...Args>
     void execOnLibThread(void (*func)(Args...), Args... args) {
         std::function<void(Args...)> fu = func;
-        return test(fu, args...);
+        execOnLibThread(fu, args...);
     }
 };
 
