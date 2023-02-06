@@ -22,7 +22,7 @@
 
 #include "EntityInfoPacket.h"
 #include "Engine/EntityUtils.h"
-#include "Server/PlayerInfoComponent.h"
+#include "Engine/Component/PlayerInfoComponent.h"
 #include "Server/EnemyInfoComponent.h"
 
 EntityInfoPacket::EntityInfoPacket() : id(0), type(EntityType::ENEMY), x(0), y(0) {}

@@ -23,13 +23,11 @@
 #ifndef R_TYPE_SERVER_PLAYERINFOCOMPONENT_H
 #define R_TYPE_SERVER_PLAYERINFOCOMPONENT_H
 
-
-#include <cstddef>
 #include "Engine/Component/IComponent.h"
 
 class PlayerInfoComponent : public IComponent {
 public:
-    size_t playerNumber;
+    int playerNumber;
 
     PlayerInfoComponent();
 
