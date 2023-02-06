@@ -36,6 +36,7 @@ public:
     bool right = false;
     bool shoot = false;
     std::shared_ptr<Entity> entity;
+    bool dead = false;
 };
 
 

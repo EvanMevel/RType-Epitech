@@ -21,7 +21,15 @@
 // SOFTWARE.
 
 #include "EntityDestroyConsumer.h"
+#include "Client/Player.h"
 
 void EntityDestroyConsumer::consume(EntityDestroyPacket &packet, EnginePtr engine, RTypeServer server) {
     engine->getScene()->removeEntity(packet.entityId);
+
+    auto player = engine->getModule<Player>();
+    if (player) {
+        if (player->entity->getId() == packet.entityId) {
+            player->dead = true;
+        }
+    }
 }

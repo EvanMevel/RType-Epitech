@@ -53,7 +53,7 @@ Scene::Scene(EntityManager &entityManager) : entityManager(entityManager) {
 
 }
 
-std::shared_ptr<Entity> Scene::getEntityById(size_t id) {
+std::shared_ptr<Entity> Scene::getOrCreateEntityById(size_t id) {
     for (auto &ent: entities) {
         if (ent->getId() == id) {
             return ent;
@@ -62,6 +62,15 @@ std::shared_ptr<Entity> Scene::getEntityById(size_t id) {
     std::shared_ptr<Entity> ent = std::make_shared<Entity>(id);
     entities.push_back(ent);
     return entities.back();
+}
+
+std::shared_ptr<Entity> Scene::getEntityById(size_t id) {
+    for (auto &ent: entities) {
+        if (ent->getId() == id) {
+            return ent;
+        }
+    }
+    return nullptr;
 }
 
 void Scene::removeEntity(std::shared_ptr<Entity> entity) {

@@ -29,7 +29,7 @@ void EntityVelocityPacketConsumer::consume(EntityVelocityPacket &packet, EngineP
 
     //std::cout << "ServerTick: " << packet.tick << " Client tick: " << ticker->getCurrentTick() << std::endl;
 
-    auto entity = engine->getScene()->getEntityById(packet.entityId);
+    auto entity = engine->getScene()->getOrCreateEntityById(packet.entityId);
     auto pos = entity->getOrCreate<PositionComponent>();
     auto physics = entity->getOrCreate<PhysicComponent>();
 

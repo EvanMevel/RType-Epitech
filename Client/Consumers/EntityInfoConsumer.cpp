@@ -27,7 +27,7 @@
 #include "Client/SpriteManager.h"
 
 void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTypeServer server) {
-    auto entity = engine->getScene()->getEntityById(packet.id);
+    auto entity = engine->getScene()->getOrCreateEntityById(packet.id);
     auto spriteManager = engine->getModule<SpriteManager>();
     std::shared_ptr<Sprite> sprite;
     if (packet.type == EntityType::PROJECTILE) {

@@ -80,11 +80,11 @@ void stopThread(EnginePtr engine) {
     do {
         std::cin >> str;
         if (str == "a") {
-            auto ent = engine->getScene()->getEntityById(100);
+            auto ent = engine->getScene()->getOrCreateEntityById(100);
             auto physics = ent->getOrCreate<PhysicComponent>();
             physics->acceleration.setX(5);
         } else if (str == "z") {
-            auto ent = engine->getScene()->getEntityById(100);
+            auto ent = engine->getScene()->getOrCreateEntityById(100);
             auto physics = ent->getOrCreate<PhysicComponent>();
             physics->acceleration.setX(-5);
 

@@ -62,6 +62,7 @@ public:
     void addEntity(std::shared_ptr<Entity>);
     std::shared_ptr<Entity> createEntity();
     std::shared_ptr<Entity> unsafeCreateEntity();
+    std::shared_ptr<Entity> getOrCreateEntityById(size_t id);
     std::shared_ptr<Entity> getEntityById(size_t id);
 
     virtual void removeEntity(std::shared_ptr<Entity> entity);

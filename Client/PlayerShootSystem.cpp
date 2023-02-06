@@ -32,7 +32,7 @@ void PlayerShootSystem::update(EnginePtr engine) {
     if (cooldown > 0) {
         cooldown--;
     }
-    if (player->shoot && cooldown == 0) {
+    if (!player->dead && player->shoot && cooldown == 0) {
         engine->getModule<ClientNetServer>()->sendPacket(PlayerShootPacket(player->entity->getId()));
         cooldown = ENGINE_TPS / 2;
         auto lib = engine->getModule<IGraphicLib>();
