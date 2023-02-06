@@ -38,6 +38,7 @@
 #include "EnemyShootSystem.h"
 #include "ServerColliderSystem.h"
 #include "PacketSendingScene.h"
+#include "Levels.h"
 
 std::atomic<bool> running = true;
 
@@ -97,9 +98,12 @@ void stopThread(EnginePtr engine) {
 }
 
 void createScene(EnginePtr engine) {
+    engine->registerModule<Levels>();
+
     RTypeServerPtr srv = engine->registerModule<RTypeServer>(engine, "127.0.0.1", 4242);
     auto sc = engine->createScene<PacketSendingScene>(srv);
     engine->setScene(sc);
+
 }
 
 int main()

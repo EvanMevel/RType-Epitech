@@ -45,6 +45,7 @@
 #include "DrawSpriteSystem.h"
 #include "SpriteManager.h"
 #include "SoundManager.h"
+#include "Client/Consumers/ProjectileHitConsumer.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -73,6 +74,8 @@ void loadNetwork(EnginePtr engine) {
     server->addConsumer<PlayerInfoConsumer>();
 
     server->addConsumer<EntityInfoConsumer>();
+
+    server->addConsumer<ProjectileHitConsumer>();
 
     server->addSystem<StayAliveSystem>();
 
