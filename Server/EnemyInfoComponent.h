@@ -25,11 +25,17 @@
 
 #include "Engine/Component/IComponent.h"
 
+/**
+ * @brief Component that stores the type of an enemy
+ */
 enum class EnemyType {
     BASIC,
     FAST
 };
 
+/**
+ * @brief Component that stores the type of an enemy
+ */
 class EnemyInfoComponent : public IComponent {
 public:
     EnemyType type;

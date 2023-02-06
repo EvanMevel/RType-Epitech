@@ -26,6 +26,9 @@
 #include "Server/RTypeServer.h"
 #include "Engine/Network/Packets/PingPacket.h"
 
+/**
+ * @brief A consumer for the PingPacket
+ */
 class PingPacketConsumer : public PacketClientConsumer<PingPacket, std::shared_ptr<ClientData>> {
 public:
     PingPacketConsumer();

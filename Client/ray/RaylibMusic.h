@@ -30,6 +30,9 @@ namespace ray {
 #include "raylib.h"
 }
 
+/**
+ * @brief Raylib implementation of IMusic
+ */
 class RaylibMusic : public IMusic {
 public:
     RaylibMusic(const std::string &musicPath);

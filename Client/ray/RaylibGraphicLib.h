@@ -28,6 +28,9 @@
 #include "Engine/Graphic/ColorCodes.h"
 #include "RaylibMouse.h"
 
+/**
+ * @brief Raylib implementation of IGraphicLib
+ */
 class RaylibGraphicLib : public IGraphicLib {
 private:
     std::unordered_map<ColorCodes, ray::Color> colors;

@@ -29,6 +29,14 @@
 #include "ScrollingTextureComponent.h"
 #include "Engine/Component/PositionComponent.h"
 
+/**
+ * @brief Create a scrolling texture component
+ * @param lib Graphic library
+ * @param sc Scene
+ * @param texturePath Path to the texture
+ * @param speed Speed of the scrolling
+ * @return The entity with the scrolling texture component
+ */
 std::shared_ptr<Entity> createScrollingTextureComponent(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Scene> sc, const std::string &texturePath, int speed);
 
 

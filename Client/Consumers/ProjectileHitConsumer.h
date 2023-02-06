@@ -26,7 +26,9 @@
 #include "Engine/Network/Packets/ProjectileHitPacket.h"
 #include "Client/ClientNetServer.h"
 
-
+/**
+ * @brief Listen to ProjectileHitPacket and destroy the entity
+ */
 class ProjectileHitConsumer : public ClientPacketConsumer<ProjectileHitPacket> {
 public:
     void consume(ProjectileHitPacket &packet, std::unique_ptr<Engine> &engine, RTypeServer server) override;

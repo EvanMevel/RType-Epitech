@@ -26,6 +26,9 @@
 #include <exception>
 #include <string>
 
+/**
+ * @brief Exception thrown when a packet consumer fails to consume a packet
+ */
 class PacketConsumerException : public std::exception {
 private:
     const std::string _message;

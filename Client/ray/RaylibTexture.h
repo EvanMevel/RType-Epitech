@@ -28,6 +28,9 @@ namespace ray {
 #include "raylib.h"
 }
 
+/**
+ * @brief Raylib implementation of ITexture
+ */
 class RaylibTexture : public ITexture {
 public:
     RaylibTexture(const std::string &path);

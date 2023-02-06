@@ -30,6 +30,9 @@ namespace ray {
 #include "raylib.h"
 }
 
+/**
+ *  @brief Raylib implementation of IAnimation
+ */
 class RaylibAnimation : public IAnimation{
 public:
     RaylibAnimation(const std::string &texturePath);

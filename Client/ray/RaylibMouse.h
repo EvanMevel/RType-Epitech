@@ -30,6 +30,9 @@ namespace ray {
 #include "raylib.h"
 }
 
+/**
+ * @brief Raylib implementation of IMouse
+ */
 class RaylibMouse : public IMouse{
 private:
     std::unordered_map<MouseCode, ray::MouseButton> button;

@@ -27,6 +27,9 @@
 #include "IComponent.h"
 #include "Engine/Vector2i.h"
 
+/**
+ * @brief Component that contains all the physic data
+ */
 class PhysicComponent : public IComponent {
 public:
     Vector2i acceleration;

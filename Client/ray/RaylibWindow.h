@@ -29,6 +29,9 @@ namespace ray {
 #include "raylib.h"
 }
 
+/**
+ * @brief Raylib implementation of IWindow
+ */
 class RaylibWindow : public IWindow {
 private:
     std::unordered_map<ColorCodes, ray::Color> colors;
