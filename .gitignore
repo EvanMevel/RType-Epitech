@@ -4,3 +4,6 @@ cmake-build-wsl-valgrind
 out
 html
 latex
+build
+release
+*.exe

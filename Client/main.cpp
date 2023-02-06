@@ -93,7 +93,7 @@ void loadNetwork(EnginePtr engine) {
 void graphicLoop(EnginePtr engine) {
     auto lib = engine->getModule<IGraphicLib>();
     IWindow &window = lib->getWindow();
-    auto music = lib->createMusic("../Client/assets/GameMusic.mp3");
+    auto music = lib->createMusic("assets/GameMusic.mp3");
     lib->playMusic(music);
     while (!window.shouldClose()) {
         auto it = lib->getExecs().begin();
@@ -116,17 +116,17 @@ void graphicLoop(EnginePtr engine) {
 void loadSounds(EnginePtr engine) {
     std::shared_ptr<IGraphicLib> lib = engine->getModule<IGraphicLib>();
     auto soundManager = engine->registerModule<SoundManager>();
-    auto shootSound = lib->createSound("../Client/assets/basicShoot.ogg");
+    auto shootSound = lib->createSound("assets/basicShoot.ogg");
 
     soundManager->addSound(SoundType::PROJECTILE_SHOOT, shootSound);
     soundManager->addSound(SoundType::PROJECTILE_HIT,
-                           lib->createSound("../Client/assets/projectile-hit.ogg"));
+                           lib->createSound("assets/projectile-hit.ogg"));
 }
 
 void loadSprites(EnginePtr engine) {
     std::shared_ptr<IGraphicLib> lib = engine->getModule<IGraphicLib>();
     auto spriteManager = engine->registerModule<SpriteManager>();
-    auto playerSpriteSheet = lib->createSpriteSheet("../Client/assets/r-typesheet42.gif");
+    auto playerSpriteSheet = lib->createSpriteSheet("assets/r-typesheet42.gif");
 
     spriteManager->addSprite(SpriteType::PLAYER_1,
                              playerSpriteSheet->createSprite(0, 3, 33, 14, 5, 0, 30, 4.0f));
@@ -137,7 +137,7 @@ void loadSprites(EnginePtr engine) {
     spriteManager->addSprite(SpriteType::PLAYER_4,
                              playerSpriteSheet->createSprite(0, 54, 33, 14, 5, 0, 30, 4.0f));
 
-    auto projSpriteSheet = lib->createSpriteSheet("../Client/assets/r-typesheet1.gif");
+    auto projSpriteSheet = lib->createSpriteSheet("assets/r-typesheet1.gif");
 
     auto projSprite = projSpriteSheet->createSprite(103, 170, 81, 16, 2, 0, 30);
     auto projSprite2 = projSpriteSheet->createSprite(267, 170, 81, 16, 2, 0, 30);
@@ -145,12 +145,12 @@ void loadSprites(EnginePtr engine) {
     spriteManager->addSprite(SpriteType::PROJECTILE_2, projSprite2);
 
 
-    auto enemySpriteSheet = lib->createSpriteSheet("../Client/assets/r-typesheet23.gif");
+    auto enemySpriteSheet = lib->createSpriteSheet("assets/r-typesheet23.gif");
 
     auto enemySprite = enemySpriteSheet->createSprite(0, 6, 33, 22, 8, 0, 30, 3.0f);
     spriteManager->addSprite(SpriteType::ENEMY_1, enemySprite);
 
-    auto enemySpriteSheet2 = lib->createSpriteSheet("../Client/assets/r-typesheet7.gif");
+    auto enemySpriteSheet2 = lib->createSpriteSheet("assets/r-typesheet7.gif");
     auto enemySprite2 = enemySpriteSheet2->createSprite(1, 34, 33, 32, 3, 0, 30, 3.0f);
 
     spriteManager->addSprite(SpriteType::ENEMY_2, enemySprite2);
