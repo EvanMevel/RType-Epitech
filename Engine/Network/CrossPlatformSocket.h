@@ -48,6 +48,7 @@ public:
     ~CrossPlatformSocket();
 
     bool create();
+    void closeSocket();
     bool bind(const std::string& address, unsigned short port);
     bool sendTo(const char* message, int len, const std::string& address, unsigned short port);
     int recvFrom(char* message, int len, std::string& address, unsigned short& port);
@@ -56,6 +57,8 @@ public:
     unsigned short lastPort;
 
     bool isClosed() const;
+
+    int getSocket() const;
 
 private:
     bool closed = false;

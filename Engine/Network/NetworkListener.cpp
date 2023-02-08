@@ -29,14 +29,36 @@ void NetworkListener::startListening() {
 }
 
 void NetworkListener::listen() {
+    fd_set rfds;
+
+    char buffer[4096];
+    std::string address;
+    unsigned short port;
+
+    int recVal;
+
+    struct timeval tv;
+    tv.tv_sec = 0;
+    tv.tv_usec = 25;
+
     while (running.load()) {
-        char buffer[4096];
-        std::string address;
-        unsigned short port;
-        int recv_len = getSocket().recvFrom(buffer, 4096, address, port);
+
+        FD_ZERO(&rfds);
+        FD_SET(getSocket().getSocket(), &rfds);
+
+        recVal = select(getSocket().getSocket() + 1, &rfds, nullptr, nullptr, &tv);
+
         if (getSocket().isClosed() || !running.load()) {
             return;
         }
+        if (recVal == -1) {
+            std::cout << "Error in select()" << std::endl;
+            return;
+        }
+        if (recVal == 0) {
+            continue;
+        }
+        int recv_len = getSocket().recvFrom(buffer, 4096, address, port);
         if (recv_len > 0) {
             //std::cout << "Received message from " << address << ":" << port << ": " << buffer << std::endl;
             messageReceived(address, port, buffer, recv_len);

@@ -33,8 +33,6 @@ class ClientNetServer : public NetworkRemoteServer<EnginePtr> {
 public:
     ClientNetServer(EnginePtr engine, const std::string &address, unsigned short port) : NetworkRemoteServer(engine, address, port) {}
 
-    ClientNetServer(const ClientNetServer &other) : NetworkRemoteServer(other) {}
-
     ~ClientNetServer() override {
 
     }
