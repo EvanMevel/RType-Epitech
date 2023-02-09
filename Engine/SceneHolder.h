@@ -24,6 +24,7 @@
 #define R_TYPE_SERVER_SCENEHOLDER_H
 
 #include "Scene.h"
+#include "Registry.h"
 
 /**
  * @brief SceneHolder is a class that holds all the scenes of the game
