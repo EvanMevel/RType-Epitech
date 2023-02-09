@@ -54,6 +54,7 @@ private:
     std::unordered_map<std::type_index, std::any> modules;
     std::vector<std::function<void()>> execs;
     std::unique_ptr<Registry<ITexture>> _textures = std::make_unique<Registry<ITexture>>();
+    std::unique_ptr<Registry<Sprite>> _sprites = std::make_unique<Registry<Sprite>>();
 public:
     virtual ~IGraphicLib();
 
@@ -103,6 +104,8 @@ public:
     }
 
     const std::unique_ptr<Registry<ITexture>> &getTextures();
+
+    const std::unique_ptr<Registry<Sprite>> &getSprites();
 };
 
 #endif //R_TYPE_SERVER_IGRAPHICLIB_H

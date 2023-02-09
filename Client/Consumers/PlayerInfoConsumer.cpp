@@ -23,25 +23,21 @@
 #include <iostream>
 #include "PlayerInfoConsumer.h"
 #include "Engine/EntityUtils.h"
-#include "Client/FixTextureComponent.h"
 #include "Client/Player.h"
 #include "Client/PlayerKeysSystem.h"
 #include "Client/PlayerMoveSystem.h"
 #include "Client/PlayerShootSystem.h"
 #include "Client/SpriteComponent.h"
-#include "Client/SpriteManager.h"
 
 PlayerInfoConsumer::PlayerInfoConsumer() {}
 
 void PlayerInfoConsumer::consume(PlayerInfoPacket &packet, EnginePtr engine, RTypeServer server) {
     auto player = engine->getScene()->getOrCreateEntityById(packet.playerId);
-    auto spriteManager = engine->getModule<SpriteManager>();
     entity::initPlayer(player, packet.x, packet.y);
 
     auto spriteComponent = player->getOrCreate<SpriteComponent>();
-    SpriteType type = static_cast<SpriteType>(((int) SpriteType::PLAYER_1) + packet.playerNumber - 1);
-    auto sprite = spriteManager->getSprite(type);
-    spriteComponent->setSprite(sprite);
+    Sprites spriteId = static_cast<Sprites>(((int) Sprites::PLAYER_1) + packet.playerNumber - 1);
+    spriteComponent->setSpriteId(spriteId);
 
     std::cout << ">> We are player " << packet.playerId << " (" << packet.playerNumber << ")" << std::endl;
 

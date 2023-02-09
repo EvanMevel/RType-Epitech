@@ -43,10 +43,10 @@
 #include "SceneEnum.h"
 #include "ScrollingTextureSystem.h"
 #include "DrawSpriteSystem.h"
-#include "SpriteManager.h"
 #include "SoundManager.h"
 #include "Client/Consumers/ProjectileHitConsumer.h"
 #include "Textures.h"
+#include "Sprites.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -147,35 +147,35 @@ void loadSounds(EnginePtr engine) {
 
 void loadSprites(EnginePtr engine) {
     std::shared_ptr<IGraphicLib> lib = engine->getModule<IGraphicLib>();
-    auto spriteManager = engine->registerModule<SpriteManager>();
+    const std::unique_ptr<Registry<Sprite>> &spriteRegistry = lib->getSprites();
     auto playerSpriteSheet = lib->createSpriteSheet("assets/r-typesheet42.gif");
 
-    spriteManager->addSprite(SpriteType::PLAYER_1,
+    spriteRegistry->registerValue(Sprites::PLAYER_1,
                              playerSpriteSheet->createSprite(0, 3, 33, 14, 5, 0, 30, 4.0f));
-    spriteManager->addSprite(SpriteType::PLAYER_2,
+    spriteRegistry->registerValue(Sprites::PLAYER_2,
                              playerSpriteSheet->createSprite(0, 20, 33, 14, 5, 0, 30, 4.0f));
-    spriteManager->addSprite(SpriteType::PLAYER_3,
+    spriteRegistry->registerValue(Sprites::PLAYER_3,
                              playerSpriteSheet->createSprite(0, 37, 33, 14, 5, 0, 30, 4.0f));
-    spriteManager->addSprite(SpriteType::PLAYER_4,
+    spriteRegistry->registerValue(Sprites::PLAYER_4,
                              playerSpriteSheet->createSprite(0, 54, 33, 14, 5, 0, 30, 4.0f));
 
     auto projSpriteSheet = lib->createSpriteSheet("assets/r-typesheet1.gif");
 
     auto projSprite = projSpriteSheet->createSprite(103, 170, 81, 16, 2, 0, 30);
     auto projSprite2 = projSpriteSheet->createSprite(267, 170, 81, 16, 2, 0, 30);
-    spriteManager->addSprite(SpriteType::PROJECTILE_1, projSprite);
-    spriteManager->addSprite(SpriteType::PROJECTILE_2, projSprite2);
+    spriteRegistry->registerValue(Sprites::PROJECTILE_1, projSprite);
+    spriteRegistry->registerValue(Sprites::PROJECTILE_2, projSprite2);
 
 
     auto enemySpriteSheet = lib->createSpriteSheet("assets/r-typesheet23.gif");
 
     auto enemySprite = enemySpriteSheet->createSprite(0, 6, 33, 22, 8, 0, 30, 3.0f);
-    spriteManager->addSprite(SpriteType::ENEMY_1, enemySprite);
+    spriteRegistry->registerValue(Sprites::ENEMY_1, enemySprite);
 
     auto enemySpriteSheet2 = lib->createSpriteSheet("assets/r-typesheet7.gif");
     auto enemySprite2 = enemySpriteSheet2->createSprite(1, 34, 33, 32, 3, 0, 30, 3.0f);
 
-    spriteManager->addSprite(SpriteType::ENEMY_2, enemySprite2);
+    spriteRegistry->registerValue(Sprites::ENEMY_2, enemySprite2);
 }
 
 void loadScenes(EnginePtr engine) {

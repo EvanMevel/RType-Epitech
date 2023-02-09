@@ -20,16 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "SpriteManager.h"
+#ifndef R_TYPE_SERVER_SPRITES_H
+#define R_TYPE_SERVER_SPRITES_H
 
-SpriteManager::SpriteManager() {
+enum class Sprites {
+    SPRITE_ERROR = -1,
+    PLAYER_1 = 0,
+    PLAYER_2 = 1,
+    PLAYER_3 = 2,
+    PLAYER_4 = 3,
+    PROJECTILE_1 = 4,
+    PROJECTILE_2 = 5,
+    ENEMY_1 = 6,
+    ENEMY_2 = 7,
+};
 
-}
-
-std::shared_ptr<Sprite> SpriteManager::getSprite(SpriteType type) {
-    return _sprites[type];
-}
-
-void SpriteManager::addSprite(SpriteType type, std::shared_ptr<Sprite> sprite) {
-    _sprites[type] = sprite;
-}
+#endif //R_TYPE_SERVER_SPRITES_H

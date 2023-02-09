@@ -24,10 +24,10 @@
 
 SpriteComponent::SpriteComponent() {}
 
-const std::shared_ptr<Sprite> &SpriteComponent::getSprite() const {
-    return sprite;
+Sprites SpriteComponent::getSpriteId() const {
+    return spriteId;
 }
 
-void SpriteComponent::setSprite(const std::shared_ptr<Sprite> &sprite) {
-    SpriteComponent::sprite = sprite;
+void SpriteComponent::setSpriteId(Sprites spriteId) {
+    SpriteComponent::spriteId = spriteId;
 }

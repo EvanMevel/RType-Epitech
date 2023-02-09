@@ -39,3 +39,7 @@ std::shared_ptr<SpriteSheet> IGraphicLib::createSpriteSheet(const std::string &t
 const std::unique_ptr<Registry<ITexture>> &IGraphicLib::getTextures() {
     return _textures;
 }
+
+const std::unique_ptr<Registry<Sprite>> &IGraphicLib::getSprites() {
+    return _sprites;
+}
