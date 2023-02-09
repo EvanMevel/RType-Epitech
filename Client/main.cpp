@@ -46,6 +46,7 @@
 #include "SpriteManager.h"
 #include "SoundManager.h"
 #include "Client/Consumers/ProjectileHitConsumer.h"
+#include "Textures.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -122,6 +123,18 @@ void graphicLoop(EnginePtr engine) {
     windowClosed = true;
 }
 
+void loadTextures(EnginePtr engine) {
+    std::shared_ptr<IGraphicLib> lib = engine->getModule<IGraphicLib>();
+    lib->registerTexture(Textures::TITLE, "assets/rtype.png");
+    lib->registerTexture(Textures::PLAY_BUTTON, "assets/play-button.png");
+
+    lib->registerTexture(Textures::BACKGROUND_1, "assets/Starry background  - Layer 01 - Solid colour.png");
+    lib->registerTexture(Textures::BACKGROUND_2, "assets/Starry background  - Layer 02 - Shadows.png");
+    lib->registerTexture(Textures::BACKGROUND_3, "assets/Starry background  - Layer 02 - Shadows 2.png");
+    lib->registerTexture(Textures::BACKGROUND_4, "assets/Starry background  - Layer 03 - Stars.png");
+    lib->registerTexture(Textures::BACKGROUND_5, "assets/Starry background  - Layer 03 - Stars 2.png");
+}
+
 void loadSounds(EnginePtr engine) {
     std::shared_ptr<IGraphicLib> lib = engine->getModule<IGraphicLib>();
     auto soundManager = engine->registerModule<SoundManager>();
@@ -180,6 +193,21 @@ void loadGraphsAndScenes(EnginePtr engine) {
 
     std::shared_ptr<IGraphicLib> lib = engine->registerIModule<IGraphicLib, RaylibGraphicLib>();
 
+    IWindow &window = lib->createWindow(1820, 1000, "R-type");
+    window.setTargetFPS(60);
+    lib->initAudio();
+    //window.setFullScreen();
+    std::cout << "[Graphic] Window created" << std::endl;
+    loadTextures(engine);
+    std::cout << "[Graphic] Textures ready" << std::endl;
+    loadSprites(engine);
+    std::cout << "[Graphic] Sprites ready" << std::endl;
+    loadSounds(engine);
+    std::cout << "[Graphic] Sounds ready" << std::endl;
+    loadScenes(engine);
+    std::cout << "[Graphic] Scenes ready" << std::endl;
+
+
     lib->addSystem<ScrollingTextureSystem>();
     lib->addSystem<DrawFixTextureSystem>();
     lib->addSystem<DrawSpriteSystem>();
@@ -187,20 +215,8 @@ void loadGraphsAndScenes(EnginePtr engine) {
     lib->addSystem<MouseSystem>();
 
 
-    IWindow &window = lib->createWindow(1820, 1000, "R-type");
-    window.setTargetFPS(60);
-    lib->initAudio();
-    //window.setFullScreen();
-    std::cout << "[Graphic] Window created" << std::endl;
-    loadScenes(engine);
-    std::cout << "[Graphic] Scenes ready" << std::endl;
-    loadSprites(engine);
-    std::cout << "[Graphic] Sprites ready" << std::endl;
-    loadSounds(engine);
-    std::cout << "[Graphic] Sounds ready" << std::endl;
     graphicReady = true;
     cv.notify_all();
-
     std::cout << "[Graphic] Finished loading" << std::endl;
 
     lck.unlock();

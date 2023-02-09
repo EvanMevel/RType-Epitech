@@ -20,16 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "FixTextureComponent.h"
+#ifndef R_TYPE_SERVER_REGISTRY_H
+#define R_TYPE_SERVER_REGISTRY_H
 
-FixTextureComponent::FixTextureComponent() {
+#include <unordered_map>
+#include <memory>
 
-}
+template<typename Type>
+class Registry {
+private:
+    std::unordered_map<int, std::shared_ptr<Type>> _data;
 
-Textures FixTextureComponent::getTextureId() const {
-    return textureId;
-}
+public:
+    template<typename EnumType>
+    void registerValue(EnumType key, std::shared_ptr<Type> value) {
+        _data[static_cast<int>(key)] = std::move(value);
+    }
 
-void FixTextureComponent::setTextureId(Textures textureId) {
-    FixTextureComponent::textureId = textureId;
-}
+    template<class EnumType>
+    std::shared_ptr<Type> &getValue(EnumType key) {
+        return _data[static_cast<int>(key)];
+    }
+};
+
+
+#endif //R_TYPE_SERVER_REGISTRY_H

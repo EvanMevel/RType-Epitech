@@ -26,21 +26,22 @@
 #include <memory>
 #include "Engine/Component/IComponent.h"
 #include "Engine/Graphic/ITexture.h"
+#include "Textures.h"
 
 /**
  * @brief Component that contains a texture
  */
 class FixTextureComponent : public IComponent {
 protected:
-    std::shared_ptr<ITexture> texture;
+    Textures textureId;
 public:
     explicit FixTextureComponent();
 
     ~FixTextureComponent() override = default;
 
-    const std::shared_ptr<ITexture> &getTexture() const;
+    Textures getTextureId() const;
 
-    void setTexture(const std::shared_ptr<ITexture> &texture);
+    void setTextureId(Textures textureId);
 };
 
 

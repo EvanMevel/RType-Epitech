@@ -20,16 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "FixTextureComponent.h"
+#ifndef R_TYPE_SERVER_TEXTURES_H
+#define R_TYPE_SERVER_TEXTURES_H
 
-FixTextureComponent::FixTextureComponent() {
 
-}
+enum class Textures {
+    TITLE = 0,
+    PLAY_BUTTON = 1,
+    BACKGROUND_1 = 2,
+    BACKGROUND_2 = 3,
+    BACKGROUND_3 = 4,
+    BACKGROUND_4 = 5,
+    BACKGROUND_5 = 6,
+};
 
-Textures FixTextureComponent::getTextureId() const {
-    return textureId;
-}
 
-void FixTextureComponent::setTextureId(Textures textureId) {
-    FixTextureComponent::textureId = textureId;
-}
+#endif //R_TYPE_SERVER_TEXTURES_H

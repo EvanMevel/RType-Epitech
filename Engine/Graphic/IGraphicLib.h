@@ -38,8 +38,11 @@
 #include "SpriteSheet.h"
 #include "IMusic.h"
 #include "ISound.h"
+#include "Engine/Registry.h"
 
 class Engine;
+
+using Texture = std::shared_ptr<ITexture>;
 
 /**
  * @brief Interface representing a graphic library
@@ -50,6 +53,7 @@ class IGraphicLib : public SystemHolder {
 private:
     std::unordered_map<std::type_index, std::any> modules;
     std::vector<std::function<void()>> execs;
+    std::unique_ptr<Registry<ITexture>> _textures = std::make_unique<Registry<ITexture>>();
 public:
     virtual ~IGraphicLib();
 
@@ -59,9 +63,15 @@ public:
     virtual IWindow& getWindow() = 0;
     virtual void closeWindow() = 0;
 
-    virtual std::shared_ptr<ITexture> createTexture(const std::string &texturePath) = 0;
-    virtual void drawTexture(std::shared_ptr<ITexture>, int x, int y, ColorCodes) = 0;
-    virtual void drawTextureEx(std::shared_ptr<ITexture>, int x, int y, float rotation, float scale, ColorCodes) = 0;
+    virtual Texture createTexture(const std::string &texturePath) = 0;
+
+    template<class EnumType>
+    void registerTexture(EnumType key, const std::string &texturePath) {
+        _textures->registerValue(key, createTexture(texturePath));
+    }
+
+    virtual void drawTexture(Texture &texture, int x, int y, ColorCodes) = 0;
+    virtual void drawTextureEx(Texture &texture, int x, int y, float rotation, float scale, ColorCodes) = 0;
 
     std::shared_ptr<SpriteSheet> createSpriteSheet(const std::string &texturePath);
     virtual void drawSprite(std::shared_ptr<Sprite> sprite, int x, int y, ColorCodes codes) = 0;
@@ -91,6 +101,8 @@ public:
         std::function<void(Args...)> fu = func;
         execOnLibThread(fu, args...);
     }
+
+    const std::unique_ptr<Registry<ITexture>> &getTextures();
 };
 
 #endif //R_TYPE_SERVER_IGRAPHICLIB_H

@@ -40,7 +40,7 @@ void ScrollingTextureComponent::setScrollingSpeed(int scrollingSpeed) {
 
 void ScrollingTextureComponent::applySpeed() {
     scroll += scrollingSpeed;
-    scroll %= texture->getWidth();
+    scroll %= width;
 }
 
 float ScrollingTextureComponent::getScale() const {
@@ -49,4 +49,8 @@ float ScrollingTextureComponent::getScale() const {
 
 void ScrollingTextureComponent::setScale(float scale) {
     ScrollingTextureComponent::scale = scale;
+}
+
+void ScrollingTextureComponent::setWidth(int width) {
+    ScrollingTextureComponent::width = width;
 }

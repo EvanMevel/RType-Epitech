@@ -59,7 +59,7 @@ void RaylibGraphicLib::closeWindow() {
     ray::CloseWindow();
 }
 
-std::shared_ptr<ITexture> RaylibGraphicLib::createTexture(const std::string &texturePath) {
+Texture RaylibGraphicLib::createTexture(const std::string &texturePath) {
     char *rtypeAssetsPath = std::getenv("RTYPE_ASSETS_PATH");
     std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "";
     return std::make_shared<RaylibTexture>(assetsPath + texturePath);
@@ -69,12 +69,12 @@ void RaylibGraphicLib::drawText(std::string string, int x, int y, int size, Colo
     ray::DrawText(string.c_str(), x, y, size, colors[color]);
 }
 
-void RaylibGraphicLib::drawTextureEx(std::shared_ptr<ITexture> texture, int x, int y, float rotation, float scale,ColorCodes code) {
+void RaylibGraphicLib::drawTextureEx(Texture &texture, int x, int y, float rotation, float scale,ColorCodes code) {
     auto texture2D = any_cast<ray::Texture2D>(texture->handle);
     ray::DrawTextureEx(texture2D, (ray::Vector2) {(float) x, (float) y}, rotation,scale, colors[code]);
 }
 
-void RaylibGraphicLib::drawTexture(std::shared_ptr<ITexture> texture, int x, int y, ColorCodes code) {
+void RaylibGraphicLib::drawTexture(Texture &texture, int x, int y, ColorCodes code) {
     auto texture2D = any_cast<ray::Texture2D>(texture->handle);
     ray::DrawTexture(texture2D, x, y, colors[code]);
 }

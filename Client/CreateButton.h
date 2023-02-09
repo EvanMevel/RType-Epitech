@@ -29,6 +29,7 @@
 #include "Engine/Component/PositionComponent.h"
 #include "Engine/Component/EntityTypeComponent.h"
 #include "FixTextureComponent.h"
+#include "Textures.h"
 
 /**
  * @brief Create a button entity
@@ -39,6 +40,6 @@
  * @param y Y position
  * @return The button entity
  */
-std::shared_ptr<Entity> createButton(EnginePtr e, std::shared_ptr<Scene> sc, const std::string &texturePath, int x, int y);
+std::shared_ptr<Entity> createButton(EnginePtr e, std::shared_ptr<Scene> sc, Textures texture, int x, int y);
 
 #endif //R_TYPE_SERVER_CREATEBUTTON_H

@@ -35,3 +35,7 @@ std::vector<std::function<void()>> &IGraphicLib::getExecs() {
 std::shared_ptr<SpriteSheet> IGraphicLib::createSpriteSheet(const std::string &texturePath) {
     return std::make_shared<SpriteSheet>(createTexture(texturePath));
 }
+
+const std::unique_ptr<Registry<ITexture>> &IGraphicLib::getTextures() {
+    return _textures;
+}

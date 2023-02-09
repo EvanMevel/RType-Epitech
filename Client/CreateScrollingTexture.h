@@ -37,7 +37,7 @@
  * @param speed Speed of the scrolling
  * @return The entity with the scrolling texture component
  */
-std::shared_ptr<Entity> createScrollingTextureComponent(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Scene> sc, const std::string &texturePath, int speed);
+std::shared_ptr<Entity> createScrollingTextureComponent(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Scene> sc, Textures texture, int speed);
 
 
 #endif //R_TYPE_SERVER_CREATESCROLLINGTEXTURE_H

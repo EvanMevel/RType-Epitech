@@ -20,16 +20,4 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "FixTextureComponent.h"
-
-FixTextureComponent::FixTextureComponent() {
-
-}
-
-Textures FixTextureComponent::getTextureId() const {
-    return textureId;
-}
-
-void FixTextureComponent::setTextureId(Textures textureId) {
-    FixTextureComponent::textureId = textureId;
-}
+#include "Textures.h"
