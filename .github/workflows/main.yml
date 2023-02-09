@@ -8,4 +8,4 @@ jobs:
 
     steps:
       - name: Compile code
-        run: start ../../build.bat
+        run: pwd
