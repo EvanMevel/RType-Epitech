@@ -41,7 +41,7 @@
  * @param onClick The function to call when the button is clicked
  * @return The button entity
  */
-std::shared_ptr<Entity> createButton(const std::shared_ptr<IGraphicLib> &lib, std::shared_ptr<Scene> sc,
+std::shared_ptr<Entity> createButton(const std::shared_ptr<IGraphicLib> &lib, const std::shared_ptr<Scene> &sc,
                                      int x, int y, Textures texture, const std::function<void(EnginePtr)> &onClick);
 
 #endif //R_TYPE_SERVER_CREATEBUTTON_H

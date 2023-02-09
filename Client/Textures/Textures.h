@@ -27,6 +27,7 @@
 #include "Engine/Graphic/IGraphicLib.h"
 
 enum class Textures {
+    TEXTURE_ERROR = -1,
     TITLE = 0,
     PLAY_BUTTON = 1,
     BACKGROUND_1 = 2,

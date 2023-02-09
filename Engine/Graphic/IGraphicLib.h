@@ -117,4 +117,9 @@ public:
     const std::unique_ptr<Registry<ISound>> &getSounds();
 };
 
+template<class SoundType>
+void playSound(std::shared_ptr<IGraphicLib> lib, SoundType sound) {
+    lib->playSound(lib->getSounds()->getValue(sound));
+}
+
 #endif //R_TYPE_SERVER_IGRAPHICLIB_H

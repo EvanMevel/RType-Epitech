@@ -24,7 +24,7 @@
 #include "Engine/Component/HitboxComponent.h"
 #include "Client/ButtonComponent.h"
 
-std::shared_ptr<Entity> createButton(const std::shared_ptr<IGraphicLib> &lib, std::shared_ptr<Scene> sc, int x, int y,
+std::shared_ptr<Entity> createButton(const std::shared_ptr<IGraphicLib> &lib, const std::shared_ptr<Scene> &sc, int x, int y,
                                      Textures texture, const std::function<void(EnginePtr)> &onClick)
 {
     auto button = sc->createEntity();

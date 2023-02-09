@@ -22,12 +22,14 @@
 
 #include "SpriteComponent.h"
 
-SpriteComponent::SpriteComponent() {}
+SpriteComponent::SpriteComponent() : spriteId(Sprites::SPRITE_ERROR) {
+
+}
 
 Sprites SpriteComponent::getSpriteId() const {
     return spriteId;
 }
 
-void SpriteComponent::setSpriteId(Sprites spriteId) {
-    SpriteComponent::spriteId = spriteId;
+void SpriteComponent::setSpriteId(Sprites id) {
+    SpriteComponent::spriteId = id;
 }

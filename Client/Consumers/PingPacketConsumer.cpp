@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
 #include "PingPacketConsumer.h"
 
 void PingPacketConsumer::consume(PingPacket &packet, EnginePtr engine, RTypeServer server) {

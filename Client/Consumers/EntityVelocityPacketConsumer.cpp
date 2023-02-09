@@ -21,11 +21,9 @@
 // SOFTWARE.
 
 #include "EntityVelocityPacketConsumer.h"
-#include "Engine/TickUtil.h"
 
 void EntityVelocityPacketConsumer::consume(EntityVelocityPacket &packet, EnginePtr engine,
                                            RTypeServer server) {
-    auto ticker = engine->getModule<TickUtil>();
 
     auto entity = engine->getScene()->getOrCreateEntityById(packet.entityId);
     auto pos = entity->getOrCreate<PositionComponent>();

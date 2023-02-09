@@ -22,6 +22,8 @@
 
 #include "PlayerKeysSystem.h"
 
+PlayerKeysSystem::PlayerKeysSystem(const std::shared_ptr<Player> &player) : player(player) {}
+
 void PlayerKeysSystem::update(EnginePtr engine) {
     auto lib = engine->getModule<IGraphicLib>();
     player->up = lib->isKeyDown(KeyCodes::KEY_UP);
@@ -30,8 +32,6 @@ void PlayerKeysSystem::update(EnginePtr engine) {
     player->right = lib->isKeyDown(KeyCodes::KEY_RIGHT);
     player->shoot = lib->isKeyDown(KeyCodes::KEY_SPACE);
 }
-
-PlayerKeysSystem::PlayerKeysSystem(const std::shared_ptr<Player> &player) : player(player) {}
 
 std::string PlayerKeysSystem::getName() {
     return "PlayerKeysSystem";

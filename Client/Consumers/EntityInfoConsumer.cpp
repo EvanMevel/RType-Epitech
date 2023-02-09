@@ -24,6 +24,7 @@
 #include "Engine/EntityUtils.h"
 #include "Client/Textures/FixTextureComponent.h"
 #include "Client/Sprites/SpriteComponent.h"
+#include "Client/Sounds.h"
 
 void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTypeServer server) {
     auto entity = engine->getScene()->getOrCreateEntityById(packet.id);
@@ -33,6 +34,8 @@ void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTy
         entity::initProjectile(entity, packet.x, packet.y, 0);
         if (packet.entityInfo == 0) {
             spriteId = Sprites::PROJECTILE_1;
+            auto lib = engine->getModule<IGraphicLib>();
+            lib->execOnLibThread(playSound, lib, Sounds::PROJECTILE_SHOOT);
         } else {
             spriteId = Sprites::PROJECTILE_2;
         }

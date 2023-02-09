@@ -22,7 +22,7 @@
 
 #include "FixTextureComponent.h"
 
-FixTextureComponent::FixTextureComponent() {
+FixTextureComponent::FixTextureComponent() : textureId(Textures::TEXTURE_ERROR) {
 
 }
 
@@ -30,6 +30,6 @@ Textures FixTextureComponent::getTextureId() const {
     return textureId;
 }
 
-void FixTextureComponent::setTextureId(Textures textureId) {
-    FixTextureComponent::textureId = textureId;
+void FixTextureComponent::setTextureId(Textures id) {
+    FixTextureComponent::textureId = id;
 }

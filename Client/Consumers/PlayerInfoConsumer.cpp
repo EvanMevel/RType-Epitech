@@ -29,14 +29,14 @@
 #include "Client/Player/PlayerShootSystem.h"
 #include "Client/Sprites/SpriteComponent.h"
 
-PlayerInfoConsumer::PlayerInfoConsumer() {}
+PlayerInfoConsumer::PlayerInfoConsumer() = default;
 
 void PlayerInfoConsumer::consume(PlayerInfoPacket &packet, EnginePtr engine, RTypeServer server) {
     auto player = engine->getScene()->getOrCreateEntityById(packet.playerId);
     entity::initPlayer(player, packet.x, packet.y);
 
     auto spriteComponent = player->getOrCreate<SpriteComponent>();
-    Sprites spriteId = static_cast<Sprites>(((int) Sprites::PLAYER_1) + packet.playerNumber - 1);
+    auto spriteId = static_cast<Sprites>(((int) Sprites::PLAYER_1) + packet.playerNumber - 1);
     spriteComponent->setSpriteId(spriteId);
 
     std::cout << ">> We are player " << packet.playerId << " (" << packet.playerNumber << ")" << std::endl;

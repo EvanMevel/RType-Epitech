@@ -22,7 +22,8 @@
 
 #include "CreateScrollingTexture.h"
 
-std::shared_ptr<Entity> createScrollingTextureComponent(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Scene> sc, Textures texture, int speed) {
+std::shared_ptr<Entity> createScrollingTextureComponent(const std::shared_ptr<IGraphicLib> &lib, const std::shared_ptr<Scene> &sc,
+                                                        Textures texture, int speed) {
     auto scrollingEntity = sc->createEntity();
     auto scrollingComponent = scrollingEntity->addComponent<ScrollingTextureComponent>();
     auto pos = scrollingEntity->addComponent<PositionComponent>();

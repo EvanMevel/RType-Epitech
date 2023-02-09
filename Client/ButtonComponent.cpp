@@ -22,16 +22,14 @@
 
 #include "ButtonComponent.h"
 
-ButtonComponent::ButtonComponent() {
-
-}
+ButtonComponent::ButtonComponent() = default;
 
 const Hitbox &ButtonComponent::getHitbox() const {
     return hitbox;
 }
 
-void ButtonComponent::setHitbox(const Hitbox &hitbox) {
-    this->hitbox = hitbox;
+void ButtonComponent::setHitbox(const Hitbox &box) {
+    this->hitbox = box;
 }
 
 void ButtonComponent::setOnClick(const std::function<void(EnginePtr)> &onClick) {

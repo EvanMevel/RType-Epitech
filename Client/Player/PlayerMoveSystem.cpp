@@ -24,7 +24,8 @@
 #include "Engine/Network/Packets/PlayerMovePacket.h"
 #include "Engine/Component/PhysicComponent.h"
 
-PlayerMoveSystem::PlayerMoveSystem(const std::shared_ptr<Player> &player) : player(player) {}
+PlayerMoveSystem::PlayerMoveSystem(const std::shared_ptr<Player> &player) : player(player) {
+}
 
 void PlayerMoveSystem::update(EnginePtr engine) {
     if (player->dead) {

@@ -24,7 +24,7 @@
 #include "Engine/Network/Packets/PlayerShootPacket.h"
 #include "Client/Sounds.h"
 
-PlayerShootSystem::PlayerShootSystem(const std::shared_ptr<Player> &player) : player(player){
+PlayerShootSystem::PlayerShootSystem(const std::shared_ptr<Player> &player) : player(player) {
 
 }
 
@@ -35,13 +35,5 @@ void PlayerShootSystem::update(EnginePtr engine) {
     if (!player->dead && player->shoot && cooldown == 0) {
         engine->getModule<ClientNetServer>()->sendPacket(PlayerShootPacket(player->entity->getId()));
         cooldown = ENGINE_TPS / 2;
-        auto lib = engine->getModule<IGraphicLib>();
-
-        std::function<void(std::shared_ptr<IGraphicLib> lib)> playSoundFunct = [](std::shared_ptr<IGraphicLib> lib){
-            auto shootSound = lib->getSounds()->getValue(Sounds::PROJECTILE_SHOOT);
-
-            lib->playSound(shootSound);
-        };
-        lib->execOnLibThread(playSoundFunct, lib);
     }
 }

@@ -26,16 +26,16 @@ int ScrollingTextureComponent::getScroll() const {
     return scroll;
 }
 
-void ScrollingTextureComponent::setScroll(int scroll) {
-    ScrollingTextureComponent::scroll = scroll;
+void ScrollingTextureComponent::setScroll(int sc) {
+    ScrollingTextureComponent::scroll = sc;
 }
 
 int ScrollingTextureComponent::getScrollingSpeed() const {
     return scrollingSpeed;
 }
 
-void ScrollingTextureComponent::setScrollingSpeed(int scrollingSpeed) {
-    ScrollingTextureComponent::scrollingSpeed = scrollingSpeed;
+void ScrollingTextureComponent::setScrollingSpeed(int speed) {
+    ScrollingTextureComponent::scrollingSpeed = speed;
 }
 
 void ScrollingTextureComponent::applySpeed() {
@@ -47,10 +47,10 @@ float ScrollingTextureComponent::getScale() const {
     return scale;
 }
 
-void ScrollingTextureComponent::setScale(float scale) {
-    ScrollingTextureComponent::scale = scale;
+void ScrollingTextureComponent::setScale(float sca) {
+    ScrollingTextureComponent::scale = sca;
 }
 
-void ScrollingTextureComponent::setWidth(int width) {
-    ScrollingTextureComponent::width = width;
+void ScrollingTextureComponent::setWidth(int w) {
+    ScrollingTextureComponent::width = w;
 }
