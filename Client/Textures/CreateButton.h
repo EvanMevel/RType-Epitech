@@ -33,13 +33,15 @@
 
 /**
  * @brief Create a button entity
- * @param e Engine
- * @param sc Scene
- * @param texturePath Path to the texture
- * @param x X position
- * @param y Y position
+ * @param lib The graphic library
+ * @param sc The scene
+ * @param x The x position
+ * @param y The y position
+ * @param texture The texture of the button
+ * @param onClick The function to call when the button is clicked
  * @return The button entity
  */
-std::shared_ptr<Entity> createButton(const std::shared_ptr<IGraphicLib> &lib, std::shared_ptr<Scene> sc, Textures texture, int x, int y);
+std::shared_ptr<Entity> createButton(const std::shared_ptr<IGraphicLib> &lib, std::shared_ptr<Scene> sc,
+                                     int x, int y, Textures texture, const std::function<void(EnginePtr)> &onClick);
 
 #endif //R_TYPE_SERVER_CREATEBUTTON_H

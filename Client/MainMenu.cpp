@@ -21,7 +21,21 @@
 // SOFTWARE.
 
 #include "MainMenu.h"
-#include "Engine/Component/HitboxComponent.h"
+#include "Engine/SceneHolder.h"
+#include "Scenes.h"
+#include "ClientNetServer.h"
+#include "Engine/Network/Packets/HandshakePacket.h"
+
+static void playButtonClick(EnginePtr engine) {
+    auto sceneHolder = engine->getModule<SceneHolder>();
+    auto sc = sceneHolder->getValue(Scenes::GAME);
+    engine->setScene(sc);
+
+    auto server = engine->getModule<ClientNetServer>();
+    std::cout << "Sending handshake" << std::endl;
+    server->startListening();
+    server->sendPacket(HandshakePacket());
+}
 
 std::shared_ptr<Scene> mainMenu(EnginePtr engine)
 {
@@ -37,9 +51,16 @@ std::shared_ptr<Scene> mainMenu(EnginePtr engine)
     auto height = lib->getWindow().getHeight();
     auto width = lib->getWindow().getWidth();
 
-    auto title = createButton(lib, sc,Textures::TITLE, width/2-(800/2), height/3-(400/2));
-    auto playButton = createButton(lib, sc,Textures::PLAY_BUTTON, width/2-(400/2), height*0.45-(100/2));
-    auto hitboxPlaybutton = playButton->addComponent<HitboxComponent>();
+    auto title = sc->createEntity();
+    auto titlePos = title->addComponent<PositionComponent>();
+    titlePos->setX((width / 2) - (800 / 2));
+    titlePos->setY((height / 3) - (400 / 2));
+    title->addComponent<FixTextureComponent>()->setTextureId(Textures::TITLE);
+
+    createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.45) - (100 / 2),
+                 Textures::PLAY_BUTTON, playButtonClick);
+
+
     //auto optionButton = createButton(engine,sc,"assets/img_3.png",width/2-(400/2),height*0.65-(100/2));
     //auto quitButton = createButton(engine,sc,"img.png",width/2-(400/2),height*0.85-(100/2));
 

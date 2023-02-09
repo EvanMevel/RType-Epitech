@@ -20,27 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_HITBOXFIXCOMPONENT_H
-#define R_TYPE_SERVER_HITBOXFIXCOMPONENT_H
+#include "ButtonComponent.h"
 
+ButtonComponent::ButtonComponent() {
 
-#include "Engine/Component/IComponent.h"
-#include "Engine/Hitbox.h"
+}
 
-/**
- * @brief Component that contains a FIX hitbox, it does not move
- * @details This component is used to create hitboxes that do not move. It is used for buttons
- */
-class HitboxFixComponent  : public IComponent {
-private:
-    Hitbox hitbox;
-public:
-    HitboxFixComponent();
+const Hitbox &ButtonComponent::getHitbox() const {
+    return hitbox;
+}
 
-    const Hitbox &getHitbox() const;
+void ButtonComponent::setHitbox(const Hitbox &hitbox) {
+    this->hitbox = hitbox;
+}
 
-    void setHitbox(const Hitbox &hitbox);
-};
+void ButtonComponent::setOnClick(const std::function<void(EnginePtr)> &onClick) {
+    _onClick = onClick;
+}
 
-
-#endif //R_TYPE_SERVER_HITBOXFIXCOMPONENT_H
+void ButtonComponent::clicked(std::unique_ptr<Engine> &engine) {
+    if (_onClick) {
+        _onClick(engine);
+    }
+}

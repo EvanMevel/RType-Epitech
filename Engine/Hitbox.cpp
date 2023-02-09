@@ -22,6 +22,9 @@
 
 #include "Hitbox.h"
 
+Hitbox::Hitbox() : x(0), y(0), width(0), height(0){
+
+}
 
 Hitbox::Hitbox(int x, int y, size_t width, size_t height) : x(x), y(y), width(width), height(height) {}
 
@@ -54,6 +57,6 @@ bool Hitbox::contains(int x, int y) const{
     return (x >= this->x && x <= this->x + this->width && y >= this->y && y <= this->y + this->height);
 }
 
-Hitbox::Hitbox() : x(0), y(0), width(0), height(0){
-
+bool Hitbox::contains(Vector2i pos) const {
+    return contains(pos.x, pos.y);
 }

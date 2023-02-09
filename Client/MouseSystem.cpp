@@ -23,12 +23,7 @@
 #include "MouseSystem.h"
 #include "Engine/Engine.h"
 #include "Engine/Component/EntityTypeComponent.h"
-#include "HitboxFixComponent.h"
-#include "GameScene.h"
-#include "Engine/SceneHolder.h"
-#include "Scenes.h"
-#include "Engine/Network/Packets/HandshakePacket.h"
-#include "ClientNetServer.h"
+#include "ButtonComponent.h"
 
 void MouseSystem::update(EnginePtr engine) {
     auto lib = engine->getModule<IGraphicLib>();
@@ -36,24 +31,17 @@ void MouseSystem::update(EnginePtr engine) {
         return;
     if(engine->getScene() == nullptr)
         return;
-    if (lib->getMouse().isClicked(MouseCode::MOUSE_BUTTON_LEFT)){
-        auto testMousePos = lib->getMouse().getPos();
-        for (auto &entity: engine->getScene()->getEntities()) {
-            auto typeComponent = entity->getComponent<EntityTypeComponent>();
-            auto hitboxfixComponent= entity->getComponent<HitboxFixComponent>();
-            if (typeComponent != nullptr && typeComponent->getType() == EntityType::BUTTON && hitboxfixComponent != nullptr) {
-                if (hitboxfixComponent->getHitbox().contains(testMousePos.x,testMousePos.y)) {
+    if (!lib->getMouse().isClicked(MouseCode::MOUSE_BUTTON_LEFT)) {
+        return;
+    }
+    auto mousePos = lib->getMouse().getPos();
+    for (auto &entity: engine->getScene()->getEntities()) {
+        auto typeComponent = entity->getComponent<EntityTypeComponent>();
+        auto buttonComponent= entity->getComponent<ButtonComponent>();
+        if (typeComponent != nullptr && typeComponent->getType() == EntityType::BUTTON &&
+                buttonComponent != nullptr && buttonComponent->getHitbox().contains(mousePos)) {
 
-                    auto sceneHolder = engine->getModule<SceneHolder>();
-                    auto sc = sceneHolder->getValue(Scenes::GAME);
-                    engine->setScene(sc);
-
-                    auto server = engine->getModule<ClientNetServer>();
-                    std::cout << "Sending handshake" << std::endl;
-                    server->startListening();
-                    server->sendPacket(HandshakePacket());
-                }
-            }
+            buttonComponent->clicked(engine);
         }
     }
 }

@@ -20,16 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "HitboxFixComponent.h"
+#ifndef R_TYPE_SERVER_BUTTONCOMPONENT_H
+#define R_TYPE_SERVER_BUTTONCOMPONENT_H
 
-const Hitbox &HitboxFixComponent::getHitbox() const {
-    return hitbox;
-}
 
-void HitboxFixComponent::setHitbox(const Hitbox &hitbox) {
-    this->hitbox = hitbox;
-}
+#include <functional>
+#include "Engine/Component/IComponent.h"
+#include "Engine/Hitbox.h"
 
-HitboxFixComponent::HitboxFixComponent() {
+/**
+ * @brief Component that contains a FIX hitbox, it does not move, and can be clicked
+ * @details This component is used to create buttons
+ */
+class ButtonComponent : public IComponent {
+private:
+    Hitbox hitbox;
+    std::function<void(EnginePtr)> _onClick;
+public:
+    ButtonComponent();
 
-}
+    const Hitbox &getHitbox() const;
+
+    void setHitbox(const Hitbox &hitbox);
+
+    void setOnClick(const std::function<void(EnginePtr)> &onClick);
+
+    void clicked(EnginePtr engine);
+};
+
+
+#endif //R_TYPE_SERVER_BUTTONCOMPONENT_H

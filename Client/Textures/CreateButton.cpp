@@ -22,9 +22,10 @@
 
 #include "CreateButton.h"
 #include "Engine/Component/HitboxComponent.h"
-#include "Client/HitboxFixComponent.h"
+#include "Client/ButtonComponent.h"
 
-std::shared_ptr<Entity> createButton(const std::shared_ptr<IGraphicLib> &lib, std::shared_ptr<Scene> sc, Textures texture, int x, int y)
+std::shared_ptr<Entity> createButton(const std::shared_ptr<IGraphicLib> &lib, std::shared_ptr<Scene> sc, int x, int y,
+                                     Textures texture, const std::function<void(EnginePtr)> &onClick)
 {
     auto button = sc->createEntity();
 
@@ -36,13 +37,13 @@ std::shared_ptr<Entity> createButton(const std::shared_ptr<IGraphicLib> &lib, st
     pos->setY(y);
 
     const Texture& buttonTexture = lib->getTextures()->getValue(texture);
-    auto hitboxPlaybutton = button->addComponent<HitboxComponent>();
-    hitboxPlaybutton->setLengthX(buttonTexture->getWidth());
-    hitboxPlaybutton->setLengthY(buttonTexture->getHeight());
+    auto hitboxComponent = button->addComponent<HitboxComponent>();
+    hitboxComponent->setLengthX(buttonTexture->getWidth());
+    hitboxComponent->setLengthY(buttonTexture->getHeight());
 
-    auto hitboxFixComponent = button->addComponent<HitboxFixComponent>();
-
-    hitboxFixComponent->setHitbox(Hitbox(pos,hitboxPlaybutton));
+    auto buttonComponent = button->addComponent<ButtonComponent>();
+    buttonComponent->setHitbox(Hitbox(pos, hitboxComponent));
+    buttonComponent->setOnClick(onClick);
 
     return button;
 }
