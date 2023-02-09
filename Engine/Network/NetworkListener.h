@@ -33,7 +33,7 @@
  * @details Override the messageReceived method to handle the received data
  */
 class NetworkListener {
-private:
+protected:
     std::unique_ptr<std::thread> listeningThread;
     std::atomic<bool> running = false;
 

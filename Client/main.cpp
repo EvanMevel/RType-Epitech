@@ -160,11 +160,11 @@ void startGraph(EnginePtr engine) {
 void loadAll() {
     std::unique_ptr<Engine> engine = std::make_unique<Engine>();
 
-    std::thread net(startGraph, std::ref(engine));
+    std::thread graphThread(startGraph, std::ref(engine));
 
     loadNetwork(engine);
 
-    net.join();
+    graphThread.join();
 }
 
 int main()

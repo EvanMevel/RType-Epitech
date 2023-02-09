@@ -20,24 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_STAYALIVESYSTEM_H
-#define R_TYPE_SERVER_STAYALIVESYSTEM_H
+#include "ClientNetServer.h"
 
-#include "Engine/ISystem.h"
-#include "Client/ClientNetServer.h"
+ClientNetServer::ClientNetServer(EnginePtr engine, const std::string &address, unsigned short port)
+    : NetworkRemoteServer(engine, address, port) {
 
-/**
- * @brief System send a ping to the server every seconds
- */
-class StayAliveSystem : public ISystem {
-private:
-    long long lastPing = 0;
+}
 
-public:
-    void update(EnginePtr engine) override;
+void closeWindow(std::shared_ptr<IGraphicLib> lib) {
+    if (lib->getWindow().shouldClose()) {
+        return;
+    }
+    lib->closeWindow();
+}
 
-    std::string getName() override;
-};
-
-
-#endif //R_TYPE_SERVER_STAYALIVESYSTEM_H
+void ClientNetServer::errorReceived(std::string address, int port, int err) {
+    auto lib = this->data->getModule<IGraphicLib>();
+    lib->execOnLibThread(closeWindow, lib);
+    running.store(false);
+}
