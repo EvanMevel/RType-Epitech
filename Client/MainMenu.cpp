@@ -37,8 +37,8 @@ std::shared_ptr<Scene> mainMenu(EnginePtr engine)
     auto height = lib->getWindow().getHeight();
     auto width = lib->getWindow().getWidth();
 
-    auto title = createButton(engine,sc,Textures::TITLE,width/2-(800/2),height/3-(400/2));
-    auto playButton = createButton(engine,sc,Textures::PLAY_BUTTON,width/2-(400/2),height*0.45-(100/2));
+    auto title = createButton(lib, sc,Textures::TITLE, width/2-(800/2), height/3-(400/2));
+    auto playButton = createButton(lib, sc,Textures::PLAY_BUTTON, width/2-(400/2), height*0.45-(100/2));
     auto hitboxPlaybutton = playButton->addComponent<HitboxComponent>();
     //auto optionButton = createButton(engine,sc,"assets/img_3.png",width/2-(400/2),height*0.65-(100/2));
     //auto quitButton = createButton(engine,sc,"img.png",width/2-(400/2),height*0.85-(100/2));

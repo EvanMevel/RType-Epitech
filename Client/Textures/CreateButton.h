@@ -40,6 +40,6 @@
  * @param y Y position
  * @return The button entity
  */
-std::shared_ptr<Entity> createButton(EnginePtr e, std::shared_ptr<Scene> sc, Textures texture, int x, int y);
+std::shared_ptr<Entity> createButton(const std::shared_ptr<IGraphicLib> &lib, std::shared_ptr<Scene> sc, Textures texture, int x, int y);
 
 #endif //R_TYPE_SERVER_CREATEBUTTON_H

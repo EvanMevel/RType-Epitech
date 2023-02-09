@@ -23,27 +23,23 @@
 #include <iostream>
 #include "ClientNetServer.h"
 #include "Client/ray/RaylibGraphicLib.h"
+#include "Client/Scenes.h"
+#include "Client/Textures/Textures.h"
 #include "Client/Textures/DrawFixTextureSystem.h"
-#include "Engine/Component/PositionComponent.h"
-#include "Engine/Network/Packets/EntityVelocityPacket.h"
-#include "Client/Consumers/PingPacketConsumer.h"
-#include "StayAliveSystem.h"
-#include "Client/Consumers/HandshakeResponseConsumer.h"
-#include "Consumers/PlayerInfoConsumer.h"
-#include "MainMenu.h"
-#include "Engine/VelocitySystem.h"
-#include "Engine/TickUtil.h"
+#include "Client/Textures/ScrollingTextureSystem.h"
+#include "Client/Sounds.h"
+#include "Client/Sprites/DrawSpriteSystem.h"
+#include "Client/Consumers/PlayerInfoConsumer.h"
 #include "Client/Consumers/EntityInfoConsumer.h"
 #include "Client/Consumers/EntityDestroyConsumer.h"
 #include "Client/Consumers/EntityVelocityPacketConsumer.h"
+#include "Client/Consumers/ProjectileHitConsumer.h"
+#include "Client/Consumers/HandshakeResponseConsumer.h"
+#include "Client/Consumers/PingPacketConsumer.h"
 #include "AnimationSystem.h"
 #include "MouseSystem.h"
-#include "Engine/SceneHolder.h"
-#include "SceneEnum.h"
-#include "Client/Textures/ScrollingTextureSystem.h"
-#include "Client/Sprites/DrawSpriteSystem.h"
-#include "Client/Consumers/ProjectileHitConsumer.h"
-#include "Sounds.h"
+#include "Engine/TickUtil.h"
+#include "StayAliveSystem.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -118,14 +114,6 @@ void graphicLoop(EnginePtr engine) {
         window.endDrawing();
     }
     windowClosed = true;
-}
-
-void loadScenes(EnginePtr engine) {
-    auto sceneHolder = engine->registerModule<SceneHolder>();
-    auto sc = mainMenu(engine);
-    engine->setScene(sc);
-    sceneHolder->addScene(SceneEnum::MAIN_MENU,sc);
-    sc->addSystem<VelocitySystem>();
 }
 
 void loadGraphsAndScenes(EnginePtr engine) {

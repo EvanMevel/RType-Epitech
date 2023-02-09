@@ -20,29 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "CreateButton.h"
-#include "Engine/Component/HitboxComponent.h"
-#include "Client/HitboxFixComponent.h"
+#include "Scenes.h"
+#include "Engine/SceneHolder.h"
+#include "MainMenu.h"
+#include "GameScene.h"
 
-std::shared_ptr<Entity> createButton(const std::shared_ptr<IGraphicLib> &lib, std::shared_ptr<Scene> sc, Textures texture, int x, int y)
-{
-    auto button = sc->createEntity();
-
-    button->addComponent<EntityTypeComponent>()->setType(EntityType::BUTTON);
-    button->addComponent<FixTextureComponent>()->setTextureId(texture);
-
-    auto pos = button->addComponent<PositionComponent>();
-    pos->setX(x);
-    pos->setY(y);
-
-    const Texture& buttonTexture = lib->getTextures()->getValue(texture);
-    auto hitboxPlaybutton = button->addComponent<HitboxComponent>();
-    hitboxPlaybutton->setLengthX(buttonTexture->getWidth());
-    hitboxPlaybutton->setLengthY(buttonTexture->getHeight());
-
-    auto hitboxFixComponent = button->addComponent<HitboxFixComponent>();
-
-    hitboxFixComponent->setHitbox(Hitbox(pos,hitboxPlaybutton));
-
-    return button;
+void loadScenes(EnginePtr engine) {
+    auto sceneHolder = engine->registerModule<SceneHolder>();
+    auto sc = mainMenu(engine);
+    engine->setScene(sc);
+    sceneHolder->registerValue(Scenes::MAIN_MENU, sc);
+    sceneHolder->registerValue(Scenes::GAME, gameScene(engine));
 }

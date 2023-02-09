@@ -23,6 +23,7 @@
 #include "GameScene.h"
 #include "Client/Textures/ScrollingTextureComponent.h"
 #include "Client/Textures/CreateScrollingTexture.h"
+#include "Engine/VelocitySystem.h"
 
 
 std::shared_ptr<Scene> gameScene(EnginePtr engine){
@@ -35,5 +36,6 @@ std::shared_ptr<Scene> gameScene(EnginePtr engine){
     auto secondground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_4,-3);
     auto firstground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_5,-4);
 
+    sc->addSystem<VelocitySystem>();
     return sc;
 }

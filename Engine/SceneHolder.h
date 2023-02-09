@@ -23,20 +23,12 @@
 #ifndef R_TYPE_SERVER_SCENEHOLDER_H
 #define R_TYPE_SERVER_SCENEHOLDER_H
 
-
 #include "Scene.h"
 
 /**
  * @brief SceneHolder is a class that holds all the scenes of the game
  */
-class SceneHolder {
-private:
-    std::unordered_map<int,std::shared_ptr<Scene>> scenes;
-
-public:
-    void addScene(int index, std::shared_ptr<Scene> scene);
-    std::shared_ptr<Scene> getScene(int index);
-
+class SceneHolder : public Registry<Scene> {
 };
 
 

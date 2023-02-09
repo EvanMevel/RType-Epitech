@@ -26,7 +26,7 @@
 #include "HitboxFixComponent.h"
 #include "GameScene.h"
 #include "Engine/SceneHolder.h"
-#include "SceneEnum.h"
+#include "Scenes.h"
 #include "Engine/Network/Packets/HandshakePacket.h"
 #include "ClientNetServer.h"
 
@@ -43,10 +43,11 @@ void MouseSystem::update(EnginePtr engine) {
             auto hitboxfixComponent= entity->getComponent<HitboxFixComponent>();
             if (typeComponent != nullptr && typeComponent->getType() == EntityType::BUTTON && hitboxfixComponent != nullptr) {
                 if (hitboxfixComponent->getHitbox().contains(testMousePos.x,testMousePos.y)) {
-                    auto sceneHolder = engine->registerModule<SceneHolder>();
-                    auto sc = gameScene(engine);
+
+                    auto sceneHolder = engine->getModule<SceneHolder>();
+                    auto sc = sceneHolder->getValue(Scenes::GAME);
                     engine->setScene(sc);
-                    sceneHolder->addScene(SceneEnum::GAME,sc);
+
                     auto server = engine->getModule<ClientNetServer>();
                     std::cout << "Sending handshake" << std::endl;
                     server->startListening();

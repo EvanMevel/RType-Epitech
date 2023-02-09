@@ -20,15 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_SCENEENUM_H
-#define R_TYPE_SERVER_SCENEENUM_H
+#ifndef R_TYPE_SERVER_SCENES_H
+#define R_TYPE_SERVER_SCENES_H
+
+#include "Engine/Engine.h"
 
 /**
  * @brief Enum of all the scenes
  */
-enum SceneEnum{
-    MAIN_MENU,
-    GAME
+enum class Scenes {
+    MAIN_MENU = 0,
+    GAME = 1
 };
 
-#endif //R_TYPE_SERVER_SCENEENUM_H
+void loadScenes(EnginePtr engine);
+
+#endif //R_TYPE_SERVER_SCENES_H
