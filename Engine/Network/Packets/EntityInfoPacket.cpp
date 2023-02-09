@@ -44,7 +44,7 @@ EntityInfoPacket::EntityInfoPacket(EntityPtr entity, std::shared_ptr<EntityTypeC
         } else if (type->getType() == EntityType::PLAYER) {
             auto playerInfo = entity->getComponent<PlayerInfoComponent>();
             if (playerInfo) {
-                this->entityInfo = (int) playerInfo->playerNumber;
+                this->entityInfo = playerInfo->getPlayerNumber();
             }
         } else if (type->getType() == EntityType::ENEMY) {
             auto enemyInfo = entity->getComponent<EnemyInfoComponent>();
@@ -60,7 +60,7 @@ EntityInfoPacket::EntityInfoPacket(EntityPtr entity, std::shared_ptr<EntityTypeC
 }
 
 void EntityInfoPacket::write(ByteArray &buffer) const {
-    buffer << id << type << x << y << entityInfo;
+    buffer << id << static_cast<int>(type) << x << y << entityInfo;
 }
 
 void EntityInfoPacket::read(ByteArray &buffer) {

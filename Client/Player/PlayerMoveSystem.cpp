@@ -31,7 +31,7 @@ void PlayerMoveSystem::update(EnginePtr engine) {
     if (player->dead) {
         return;
     }
-    Vector2i acceleration = {0, 0};
+    Vector2i acceleration(0, 0);
     if (player->up) {
         acceleration.y -= PLAYER_SPEED;
     }

@@ -31,8 +31,8 @@ Hitbox::Hitbox(int x, int y, size_t width, size_t height) : x(x), y(y), width(wi
 Hitbox::Hitbox(std::shared_ptr<PositionComponent> pos, std::shared_ptr<HitboxComponent> hitbox) {
     this->x = pos->getX();
     this->y = pos->getY();
-    this->width = hitbox->getLengthX();
-    this->height = hitbox->getLengthY();
+    this->width = hitbox->getWidth();
+    this->height = hitbox->getHeight();
 }
 
 Hitbox::Hitbox(std::shared_ptr<Entity> entity) {
@@ -42,8 +42,8 @@ Hitbox::Hitbox(std::shared_ptr<Entity> entity) {
         throw std::runtime_error("Entity does not have a position or hitbox component");
     this->x = pos->getX();
     this->y = pos->getY();
-    this->width = hitbox->getLengthX();
-    this->height = hitbox->getLengthY();
+    this->width = hitbox->getWidth();
+    this->height = hitbox->getHeight();
 }
 
 bool Hitbox::isColliding(Hitbox &other) {

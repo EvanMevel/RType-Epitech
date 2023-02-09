@@ -29,17 +29,13 @@ std::shared_ptr<Entity> createButton(const std::shared_ptr<IGraphicLib> &lib, co
 {
     auto button = sc->createEntity();
 
-    button->addComponent<EntityTypeComponent>()->setType(EntityType::BUTTON);
+    button->addComponent<EntityTypeComponent>(EntityType::BUTTON);
     button->addComponent<FixTextureComponent>()->setTextureId(texture);
 
-    auto pos = button->addComponent<PositionComponent>();
-    pos->setX(x);
-    pos->setY(y);
+    auto pos = button->addComponent<PositionComponent>(x, y);
 
     const Texture& buttonTexture = lib->getTextures()->getValue(texture);
-    auto hitboxComponent = button->addComponent<HitboxComponent>();
-    hitboxComponent->setLengthX(buttonTexture->getWidth());
-    hitboxComponent->setLengthY(buttonTexture->getHeight());
+    auto hitboxComponent = button->addComponent<HitboxComponent>(buttonTexture->getWidth(), buttonTexture->getHeight());
 
     auto buttonComponent = button->addComponent<ButtonComponent>();
     buttonComponent->setHitbox(Hitbox(pos, hitboxComponent));

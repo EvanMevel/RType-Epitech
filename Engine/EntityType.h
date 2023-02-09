@@ -28,12 +28,13 @@
 /**
  * @brief Enum that contains all the types of entities
  */
-enum EntityType {
-    PLAYER,
-    ENEMY,
-    PROJECTILE,
-    BUTTON,
-    OBSTACLE
+enum class EntityType {
+    NONE = -1,
+    PLAYER = 0,
+    ENEMY = 1,
+    PROJECTILE = 2,
+    BUTTON = 3,
+    OBSTACLE = 4
 };
 
 

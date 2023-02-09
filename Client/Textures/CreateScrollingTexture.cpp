@@ -25,11 +25,12 @@
 std::shared_ptr<Entity> createScrollingTextureComponent(const std::shared_ptr<IGraphicLib> &lib, const std::shared_ptr<Scene> &sc,
                                                         Textures texture, int speed) {
     auto scrollingEntity = sc->createEntity();
-    auto scrollingComponent = scrollingEntity->addComponent<ScrollingTextureComponent>();
-    auto pos = scrollingEntity->addComponent<PositionComponent>();
-    pos->setX(0);
-    pos->setY(0);
+
+    scrollingEntity->addComponent<PositionComponent>(0, 0);
+
     const Texture &scrollingTexture = lib->getTextures()->getValue(texture);
+
+    auto scrollingComponent = scrollingEntity->addComponent<ScrollingTextureComponent>();
     scrollingComponent->setTextureId(texture);
     scrollingComponent->setScrollingSpeed(speed);
     scrollingComponent->setWidth(scrollingTexture->getWidth());

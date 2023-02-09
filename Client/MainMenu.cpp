@@ -52,9 +52,7 @@ std::shared_ptr<Scene> mainMenu(EnginePtr engine)
     auto width = lib->getWindow().getWidth();
 
     auto title = sc->createEntity();
-    auto titlePos = title->addComponent<PositionComponent>();
-    titlePos->setX((width / 2) - (800 / 2));
-    titlePos->setY((height / 3) - (400 / 2));
+    auto titlePos = title->addComponent<PositionComponent>((width / 2) - (800 / 2), (height / 3) - (400 / 2));
     title->addComponent<FixTextureComponent>()->setTextureId(Textures::TITLE);
 
     createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.45) - (100 / 2),

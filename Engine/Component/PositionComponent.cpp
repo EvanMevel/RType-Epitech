@@ -20,38 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_HEALTHCOMPONENT_H
-#define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_HEALTHCOMPONENT_H
+#include "PositionComponent.h"
 
-#include <cstddef>
-#include "IComponent.h"
+PositionComponent::PositionComponent() : Vector2i(0, 0) {
+}
 
-/**
- * @brief Component that defines the health of an entity
- */
-class HealthComponent : public IComponent {
-private:
-    size_t _health;
-    size_t _invincibilityTime = 0;
-    unsigned long long _lastDamageTime = 0;
-public:
-
-    HealthComponent();
-
-    explicit HealthComponent(size_t health);
-
-    HealthComponent(size_t health, size_t invincibilityTime);
-
-    [[maybe_unused]] void setHealth(size_t health);
-
-    void damage(size_t damage);
-
-    bool isAlive() const;
-
-    [[maybe_unused]] void setInvincibilityTime(size_t invincibilityTime);
-
-    bool isInvincible() const;
-};
-
-
-#endif //B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_HEALTHCOMPONENT_H
+PositionComponent::PositionComponent(int x, int y) : Vector2i(x, y) {
+}

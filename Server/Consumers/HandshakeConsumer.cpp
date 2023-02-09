@@ -57,8 +57,8 @@ void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClie
     auto player = e->getScene()->createEntity();
     entity::initPlayer(player, 100, 100);
     data->playerId = player->getId();
-    auto playerInfoComponent = player->addComponent<PlayerInfoComponent>();
-    playerInfoComponent->playerNumber = server->getClientCount();
+    //TODO fix this, if for example player 1 quit while there is 2 players, the new player will be player 2 and not 3 or 1
+    player->addComponent<PlayerInfoComponent>((int) server->getClientCount());
 
     // Send player info to client then send all entities to client
     PlayerInfoPacket playerInfo(player);

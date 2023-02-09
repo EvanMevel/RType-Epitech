@@ -22,10 +22,16 @@
 
 #include "TeamComponent.h"
 
-size_t TeamComponent::getTeam() const {
-    return team;
+TeamComponent::TeamComponent() : _team(0) {
 }
 
-void TeamComponent::setTeam(size_t team) {
-    TeamComponent::team = team;
+TeamComponent::TeamComponent(size_t team) : _team(team) {
+}
+
+size_t TeamComponent::getTeam() const {
+    return _team;
+}
+
+[[maybe_unused]] void TeamComponent::setTeam(size_t team) {
+    _team = team;
 }
