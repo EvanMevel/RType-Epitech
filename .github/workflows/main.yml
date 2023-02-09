@@ -4,8 +4,8 @@ on: [push]
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Compile code
-        run: start build.bat
+        run: bash ./build.sh
