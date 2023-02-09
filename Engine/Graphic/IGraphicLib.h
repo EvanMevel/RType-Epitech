@@ -55,6 +55,7 @@ private:
     std::vector<std::function<void()>> execs;
     std::unique_ptr<Registry<ITexture>> _textures = std::make_unique<Registry<ITexture>>();
     std::unique_ptr<Registry<Sprite>> _sprites = std::make_unique<Registry<Sprite>>();
+    std::unique_ptr<Registry<ISound>> _sounds = std::make_unique<Registry<ISound>>();
 public:
     virtual ~IGraphicLib();
 
@@ -89,7 +90,13 @@ public:
     virtual void initAudio() = 0;
     virtual std::shared_ptr<IMusic> createMusic(const std::string &musicPath) = 0;
     virtual void playMusic(std::shared_ptr<IMusic>) = 0;
+
     virtual std::shared_ptr<ISound> createSound(const std::string &soundPath) = 0;
+
+    template<class EnumType>
+    void registerSound(EnumType key, const std::string &soundPath) {
+        _sounds->registerValue(key, createSound(soundPath));
+    }
     virtual void playSound(std::shared_ptr<ISound>) = 0;
 
     template<class ...Args>
@@ -106,6 +113,8 @@ public:
     const std::unique_ptr<Registry<ITexture>> &getTextures();
 
     const std::unique_ptr<Registry<Sprite>> &getSprites();
+
+    const std::unique_ptr<Registry<ISound>> &getSounds();
 };
 
 #endif //R_TYPE_SERVER_IGRAPHICLIB_H

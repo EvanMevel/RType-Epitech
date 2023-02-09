@@ -28,7 +28,6 @@
 #include "Engine/Network/Packets/EntityVelocityPacket.h"
 #include "Client/Consumers/PingPacketConsumer.h"
 #include "StayAliveSystem.h"
-#include "Engine/Network/Packets/HandshakePacket.h"
 #include "Client/Consumers/HandshakeResponseConsumer.h"
 #include "Consumers/PlayerInfoConsumer.h"
 #include "MainMenu.h"
@@ -43,10 +42,10 @@
 #include "SceneEnum.h"
 #include "ScrollingTextureSystem.h"
 #include "DrawSpriteSystem.h"
-#include "SoundManager.h"
 #include "Client/Consumers/ProjectileHitConsumer.h"
 #include "Textures.h"
 #include "Sprites.h"
+#include "Sounds.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -137,12 +136,9 @@ void loadTextures(EnginePtr engine) {
 
 void loadSounds(EnginePtr engine) {
     std::shared_ptr<IGraphicLib> lib = engine->getModule<IGraphicLib>();
-    auto soundManager = engine->registerModule<SoundManager>();
-    auto shootSound = lib->createSound("assets/basicShoot.ogg");
 
-    soundManager->addSound(SoundType::PROJECTILE_SHOOT, shootSound);
-    soundManager->addSound(SoundType::PROJECTILE_HIT,
-                           lib->createSound("assets/projectile-hit.ogg"));
+    lib->registerSound(Sounds::PROJECTILE_SHOOT, "assets/basicShoot.ogg");
+    lib->registerSound(Sounds::PROJECTILE_HIT, "assets/projectile-hit.ogg");
 }
 
 void loadSprites(EnginePtr engine) {

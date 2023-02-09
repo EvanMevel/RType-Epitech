@@ -20,17 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "SoundManager.h"
+#ifndef R_TYPE_SERVER_SOUNDS_H
+#define R_TYPE_SERVER_SOUNDS_H
 
-SoundManager::SoundManager() {
+enum class Sounds {
+    PROJECTILE_SHOOT = 0,
+    PROJECTILE_HIT = 1
+};
 
-}
-std::shared_ptr<ISound> SoundManager::getSound(SoundType type) {
-    return _sound[type];
-}
-
-void SoundManager::addSound(SoundType type, std::shared_ptr<ISound> sound) {
-    _sound[type] = sound;
-}
-
-
+#endif //R_TYPE_SERVER_SOUNDS_H

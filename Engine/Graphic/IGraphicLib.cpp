@@ -43,3 +43,7 @@ const std::unique_ptr<Registry<ITexture>> &IGraphicLib::getTextures() {
 const std::unique_ptr<Registry<Sprite>> &IGraphicLib::getSprites() {
     return _sprites;
 }
+
+const std::unique_ptr<Registry<ISound>> &IGraphicLib::getSounds() {
+    return _sounds;
+}
