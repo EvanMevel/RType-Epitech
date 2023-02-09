@@ -8,4 +8,4 @@ jobs:
 
     steps:
       - name: Compile code
-        run: sh ./build.sh
+        run: ./build.sh
