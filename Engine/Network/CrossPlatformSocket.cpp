@@ -134,3 +134,7 @@ int CrossPlatformSocket::recvFrom(char* buffer, int len, std::string& address, u
 bool CrossPlatformSocket::isClosed() const {
     return closed;
 }
+
+int CrossPlatformSocket::getSocket() const {
+    return m_socket;
+}

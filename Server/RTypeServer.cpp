@@ -22,7 +22,6 @@
 
 #include "RTypeServer.h"
 #include "Engine/Network/Packets/HandshakeResponsePacket.h"
-#include "Engine/Network/Packets/EntityDestroyPacket.h"
 
 RTypeServer::RTypeServer(EnginePtr engine, const std::string &address, unsigned short port) : NetServer(address, port), engine(engine) {
 

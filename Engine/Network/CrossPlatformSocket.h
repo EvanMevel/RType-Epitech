@@ -57,6 +57,8 @@ public:
 
     bool isClosed() const;
 
+    int getSocket() const;
+
 private:
     bool closed = false;
     int m_socket;

@@ -39,24 +39,22 @@ template<class Data>
 class NetworkRemoteServer : public NetworkListener, public PacketReceiver, public PacketSender<Data>, public SystemHolder {
 protected:
     Data data;
-    CrossPlatformSocket socket;
+    std::shared_ptr<CrossPlatformSocket> socket;
     std::string _address;
     unsigned short _port;
 public:
-    NetworkRemoteServer(Data dat, const std::string &address, unsigned short port)  : data(dat), _address(address), _port(port) {
-        if (!socket.create()) {
+    NetworkRemoteServer(Data dat, const std::string &address, unsigned short port) : socket(std::make_shared<CrossPlatformSocket>()),
+        data(dat), _address(address), _port(port) {
+        if (!socket->create()) {
             throw std::runtime_error("Cannot create socket");
         }
     }
 
-    NetworkRemoteServer(const NetworkRemoteServer &other) : data(other.data), socket(other.socket), _address(other._address), _port(other._port) {}
-
     ~NetworkRemoteServer() override {
-
     }
 
     void send(const char *message, int length) override {
-        socket.sendTo(message, length, _address, _port);
+        socket->sendTo(message, length, _address, _port);
     }
 
     bool messageReceived(std::string address, int port, char *message, int length) override {
@@ -68,7 +66,7 @@ public:
     }
 
     CrossPlatformSocket &getSocket() override {
-        return socket;
+        return *socket;
     }
 };
 
