@@ -23,6 +23,8 @@
 #ifndef R_TYPE_SERVER_SPRITES_H
 #define R_TYPE_SERVER_SPRITES_H
 
+#include "Engine/Graphic/IGraphicLib.h"
+
 enum class Sprites {
     SPRITE_ERROR = -1,
     PLAYER_1 = 0,
@@ -34,5 +36,7 @@ enum class Sprites {
     ENEMY_1 = 6,
     ENEMY_2 = 7,
 };
+
+void loadSprites(const std::shared_ptr<IGraphicLib> &lib);
 
 #endif //R_TYPE_SERVER_SPRITES_H

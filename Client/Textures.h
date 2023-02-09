@@ -24,6 +24,8 @@
 #define R_TYPE_SERVER_TEXTURES_H
 
 
+#include "Engine/Graphic/IGraphicLib.h"
+
 enum class Textures {
     TITLE = 0,
     PLAY_BUTTON = 1,
@@ -34,5 +36,6 @@ enum class Textures {
     BACKGROUND_5 = 6,
 };
 
+void loadTextures(const std::shared_ptr<IGraphicLib> &lib);
 
 #endif //R_TYPE_SERVER_TEXTURES_H

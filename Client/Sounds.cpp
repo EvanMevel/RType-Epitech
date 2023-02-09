@@ -20,16 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_SOUNDS_H
-#define R_TYPE_SERVER_SOUNDS_H
+#include "Sounds.h"
 
-#include "Engine/Graphic/IGraphicLib.h"
-
-enum class Sounds {
-    PROJECTILE_SHOOT = 0,
-    PROJECTILE_HIT = 1
-};
-
-void loadSounds(const std::shared_ptr<IGraphicLib> &lib);
-
-#endif //R_TYPE_SERVER_SOUNDS_H
+void loadSounds(const std::shared_ptr<IGraphicLib> &lib) {
+    lib->registerSound(Sounds::PROJECTILE_SHOOT, "assets/basicShoot.ogg");
+    lib->registerSound(Sounds::PROJECTILE_HIT, "assets/projectile-hit.ogg");
+}

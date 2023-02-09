@@ -122,58 +122,6 @@ void graphicLoop(EnginePtr engine) {
     windowClosed = true;
 }
 
-void loadTextures(EnginePtr engine) {
-    std::shared_ptr<IGraphicLib> lib = engine->getModule<IGraphicLib>();
-    lib->registerTexture(Textures::TITLE, "assets/rtype.png");
-    lib->registerTexture(Textures::PLAY_BUTTON, "assets/play-button.png");
-
-    lib->registerTexture(Textures::BACKGROUND_1, "assets/Starry background  - Layer 01 - Solid colour.png");
-    lib->registerTexture(Textures::BACKGROUND_2, "assets/Starry background  - Layer 02 - Shadows.png");
-    lib->registerTexture(Textures::BACKGROUND_3, "assets/Starry background  - Layer 02 - Shadows 2.png");
-    lib->registerTexture(Textures::BACKGROUND_4, "assets/Starry background  - Layer 03 - Stars.png");
-    lib->registerTexture(Textures::BACKGROUND_5, "assets/Starry background  - Layer 03 - Stars 2.png");
-}
-
-void loadSounds(EnginePtr engine) {
-    std::shared_ptr<IGraphicLib> lib = engine->getModule<IGraphicLib>();
-
-    lib->registerSound(Sounds::PROJECTILE_SHOOT, "assets/basicShoot.ogg");
-    lib->registerSound(Sounds::PROJECTILE_HIT, "assets/projectile-hit.ogg");
-}
-
-void loadSprites(EnginePtr engine) {
-    std::shared_ptr<IGraphicLib> lib = engine->getModule<IGraphicLib>();
-    const std::unique_ptr<Registry<Sprite>> &spriteRegistry = lib->getSprites();
-    auto playerSpriteSheet = lib->createSpriteSheet("assets/r-typesheet42.gif");
-
-    spriteRegistry->registerValue(Sprites::PLAYER_1,
-                             playerSpriteSheet->createSprite(0, 3, 33, 14, 5, 0, 30, 4.0f));
-    spriteRegistry->registerValue(Sprites::PLAYER_2,
-                             playerSpriteSheet->createSprite(0, 20, 33, 14, 5, 0, 30, 4.0f));
-    spriteRegistry->registerValue(Sprites::PLAYER_3,
-                             playerSpriteSheet->createSprite(0, 37, 33, 14, 5, 0, 30, 4.0f));
-    spriteRegistry->registerValue(Sprites::PLAYER_4,
-                             playerSpriteSheet->createSprite(0, 54, 33, 14, 5, 0, 30, 4.0f));
-
-    auto projSpriteSheet = lib->createSpriteSheet("assets/r-typesheet1.gif");
-
-    auto projSprite = projSpriteSheet->createSprite(103, 170, 81, 16, 2, 0, 30);
-    auto projSprite2 = projSpriteSheet->createSprite(267, 170, 81, 16, 2, 0, 30);
-    spriteRegistry->registerValue(Sprites::PROJECTILE_1, projSprite);
-    spriteRegistry->registerValue(Sprites::PROJECTILE_2, projSprite2);
-
-
-    auto enemySpriteSheet = lib->createSpriteSheet("assets/r-typesheet23.gif");
-
-    auto enemySprite = enemySpriteSheet->createSprite(0, 6, 33, 22, 8, 0, 30, 3.0f);
-    spriteRegistry->registerValue(Sprites::ENEMY_1, enemySprite);
-
-    auto enemySpriteSheet2 = lib->createSpriteSheet("assets/r-typesheet7.gif");
-    auto enemySprite2 = enemySpriteSheet2->createSprite(1, 34, 33, 32, 3, 0, 30, 3.0f);
-
-    spriteRegistry->registerValue(Sprites::ENEMY_2, enemySprite2);
-}
-
 void loadScenes(EnginePtr engine) {
     auto sceneHolder = engine->registerModule<SceneHolder>();
     auto sc = mainMenu(engine);
@@ -194,11 +142,11 @@ void loadGraphsAndScenes(EnginePtr engine) {
     lib->initAudio();
     //window.setFullScreen();
     std::cout << "[Graphic] Window created" << std::endl;
-    loadTextures(engine);
+    loadTextures(lib);
     std::cout << "[Graphic] Textures ready" << std::endl;
-    loadSprites(engine);
+    loadSprites(lib);
     std::cout << "[Graphic] Sprites ready" << std::endl;
-    loadSounds(engine);
+    loadSounds(lib);
     std::cout << "[Graphic] Sounds ready" << std::endl;
     loadScenes(engine);
     std::cout << "[Graphic] Scenes ready" << std::endl;
