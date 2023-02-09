@@ -106,12 +106,12 @@ void graphicLoop(EnginePtr engine) {
     lib->playMusic(music);
     while (!window.shouldClose()) {
         auto it = lib->getExecs().begin();
-        while (it != lib->getExecs().end()) {
+        while (!window.shouldClose() && it != lib->getExecs().end()) {
             (*it)();
             it = lib->getExecs().erase(it);
-            if (window.shouldClose()) {
-                break;
-            }
+        }
+        if (window.shouldClose()) {
+            break;
         }
         music->updateMusic();
         window.beginDrawing();
