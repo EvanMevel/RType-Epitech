@@ -22,8 +22,8 @@
 
 #include "EntityInfoConsumer.h"
 #include "Engine/EntityUtils.h"
-#include "Client/FixTextureComponent.h"
-#include "Client/SpriteComponent.h"
+#include "Client/Textures/FixTextureComponent.h"
+#include "Client/Sprites/SpriteComponent.h"
 
 void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTypeServer server) {
     auto entity = engine->getScene()->getOrCreateEntityById(packet.id);

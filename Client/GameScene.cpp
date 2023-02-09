@@ -21,8 +21,8 @@
 // SOFTWARE.
 
 #include "GameScene.h"
-#include "ScrollingTextureComponent.h"
-#include "CreateScrollingTexture.h"
+#include "Client/Textures/ScrollingTextureComponent.h"
+#include "Client/Textures/CreateScrollingTexture.h"
 
 
 std::shared_ptr<Scene> gameScene(EnginePtr engine){

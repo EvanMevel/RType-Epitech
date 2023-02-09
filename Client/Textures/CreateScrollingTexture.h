@@ -20,26 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYERKEYSSYSTEM_H
-#define R_TYPE_SERVER_PLAYERKEYSSYSTEM_H
+#ifndef R_TYPE_SERVER_CREATESCROLLINGTEXTURE_H
+#define R_TYPE_SERVER_CREATESCROLLINGTEXTURE_H
 
-#include "Engine/ISystem.h"
-#include "ClientNetServer.h"
-#include "Player.h"
+#include "Engine/Entity.h"
+#include "Engine/Graphic/IGraphicLib.h"
+#include "Engine/Scene.h"
+#include "Client/Textures/ScrollingTextureComponent.h"
+#include "Engine/Component/PositionComponent.h"
 
 /**
- * @brief System that handles the player's keys
+ * @brief Create a scrolling texture component
+ * @param lib Graphic library
+ * @param sc Scene
+ * @param texturePath Path to the texture
+ * @param speed Speed of the scrolling
+ * @return The entity with the scrolling texture component
  */
-class PlayerKeysSystem : public ISystem {
-private:
-    std::shared_ptr<Player> player;
-public:
-    void update(EnginePtr engine) override;
-
-    std::string getName() override;
-
-    explicit PlayerKeysSystem(const std::shared_ptr<Player> &player);
-};
+std::shared_ptr<Entity> createScrollingTextureComponent(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Scene> sc, Textures texture, int speed);
 
 
-#endif //R_TYPE_SERVER_PLAYERKEYSSYSTEM_H
+#endif //R_TYPE_SERVER_CREATESCROLLINGTEXTURE_H

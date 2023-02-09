@@ -23,11 +23,11 @@
 #include <iostream>
 #include "PlayerInfoConsumer.h"
 #include "Engine/EntityUtils.h"
-#include "Client/Player.h"
-#include "Client/PlayerKeysSystem.h"
-#include "Client/PlayerMoveSystem.h"
-#include "Client/PlayerShootSystem.h"
-#include "Client/SpriteComponent.h"
+#include "Client/Player/Player.h"
+#include "Client/Player/PlayerKeysSystem.h"
+#include "Client/Player/PlayerMoveSystem.h"
+#include "Client/Player/PlayerShootSystem.h"
+#include "Client/Sprites/SpriteComponent.h"
 
 PlayerInfoConsumer::PlayerInfoConsumer() {}
 

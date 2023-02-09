@@ -20,27 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYERMOVESYSTEM_H
-#define R_TYPE_SERVER_PLAYERMOVESYSTEM_H
+#ifndef R_TYPE_SERVER_CREATEBUTTON_H
+#define R_TYPE_SERVER_CREATEBUTTON_H
 
-#include "Player.h"
+#include <string>
+#include "Engine/Entity.h"
 #include "Engine/Engine.h"
-#include "Engine/ISystem.h"
-#include "ClientNetServer.h"
-
-#define PLAYER_SPEED 2
+#include "Engine/Component/PositionComponent.h"
+#include "Engine/Component/EntityTypeComponent.h"
+#include "Client/Textures/FixTextureComponent.h"
+#include "Client/Textures/Textures.h"
 
 /**
- * @brief System that moves the player
+ * @brief Create a button entity
+ * @param e Engine
+ * @param sc Scene
+ * @param texturePath Path to the texture
+ * @param x X position
+ * @param y Y position
+ * @return The button entity
  */
-class PlayerMoveSystem : public ISystem {
-private:
-    std::shared_ptr<Player> player;
-public:
-    PlayerMoveSystem(const std::shared_ptr<Player> &player);
+std::shared_ptr<Entity> createButton(EnginePtr e, std::shared_ptr<Scene> sc, Textures texture, int x, int y);
 
-    void update(EnginePtr engine) override;
-};
-
-
-#endif //R_TYPE_SERVER_PLAYERMOVESYSTEM_H
+#endif //R_TYPE_SERVER_CREATEBUTTON_H

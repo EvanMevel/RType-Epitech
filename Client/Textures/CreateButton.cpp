@@ -22,7 +22,7 @@
 
 #include "CreateButton.h"
 #include "Engine/Component/HitboxComponent.h"
-#include "HitboxFixComponent.h"
+#include "Client/HitboxFixComponent.h"
 
 std::shared_ptr<Entity> createButton(EnginePtr engine, std::shared_ptr<Scene> sc, Textures texture, int x, int y)
 {

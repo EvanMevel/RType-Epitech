@@ -23,7 +23,7 @@
 #include <iostream>
 #include "ClientNetServer.h"
 #include "Client/ray/RaylibGraphicLib.h"
-#include "DrawFixTextureSystem.h"
+#include "Client/Textures/DrawFixTextureSystem.h"
 #include "Engine/Component/PositionComponent.h"
 #include "Engine/Network/Packets/EntityVelocityPacket.h"
 #include "Client/Consumers/PingPacketConsumer.h"
@@ -40,11 +40,9 @@
 #include "MouseSystem.h"
 #include "Engine/SceneHolder.h"
 #include "SceneEnum.h"
-#include "ScrollingTextureSystem.h"
-#include "DrawSpriteSystem.h"
+#include "Client/Textures/ScrollingTextureSystem.h"
+#include "Client/Sprites/DrawSpriteSystem.h"
 #include "Client/Consumers/ProjectileHitConsumer.h"
-#include "Textures.h"
-#include "Sprites.h"
 #include "Sounds.h"
 #include <mutex>
 #include <condition_variable>

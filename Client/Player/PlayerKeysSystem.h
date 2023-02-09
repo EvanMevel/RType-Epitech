@@ -20,28 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "PlayerShootSystem.h"
-#include "Engine/Network/Packets/PlayerShootPacket.h"
-#include "Sounds.h"
+#ifndef R_TYPE_SERVER_PLAYERKEYSSYSTEM_H
+#define R_TYPE_SERVER_PLAYERKEYSSYSTEM_H
 
-PlayerShootSystem::PlayerShootSystem(const std::shared_ptr<Player> &player) : player(player){
+#include "Engine/ISystem.h"
+#include "Client/ClientNetServer.h"
+#include "Player.h"
 
-}
+/**
+ * @brief System that handles the player's keys
+ */
+class PlayerKeysSystem : public ISystem {
+private:
+    std::shared_ptr<Player> player;
+public:
+    void update(EnginePtr engine) override;
 
-void PlayerShootSystem::update(EnginePtr engine) {
-    if (cooldown > 0) {
-        cooldown--;
-    }
-    if (!player->dead && player->shoot && cooldown == 0) {
-        engine->getModule<ClientNetServer>()->sendPacket(PlayerShootPacket(player->entity->getId()));
-        cooldown = ENGINE_TPS / 2;
-        auto lib = engine->getModule<IGraphicLib>();
+    std::string getName() override;
 
-        std::function<void(std::shared_ptr<IGraphicLib> lib)> playSoundFunct = [](std::shared_ptr<IGraphicLib> lib){
-            auto shootSound = lib->getSounds()->getValue(Sounds::PROJECTILE_SHOOT);
+    explicit PlayerKeysSystem(const std::shared_ptr<Player> &player);
+};
 
-            lib->playSound(shootSound);
-        };
-        lib->execOnLibThread(playSoundFunct, lib);
-    }
-}
+
+#endif //R_TYPE_SERVER_PLAYERKEYSSYSTEM_H

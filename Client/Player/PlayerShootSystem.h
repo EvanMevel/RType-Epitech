@@ -20,24 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_CREATESCROLLINGTEXTURE_H
-#define R_TYPE_SERVER_CREATESCROLLINGTEXTURE_H
+#ifndef R_TYPE_SERVER_PLAYERSHOOTSYSTEM_H
+#define R_TYPE_SERVER_PLAYERSHOOTSYSTEM_H
 
-#include "Engine/Entity.h"
-#include "Engine/Graphic/IGraphicLib.h"
-#include "Engine/Scene.h"
-#include "ScrollingTextureComponent.h"
-#include "Engine/Component/PositionComponent.h"
+
+#include "Player.h"
+#include "Engine/Engine.h"
+#include "Engine/ISystem.h"
+#include "Client/ClientNetServer.h"
 
 /**
- * @brief Create a scrolling texture component
- * @param lib Graphic library
- * @param sc Scene
- * @param texturePath Path to the texture
- * @param speed Speed of the scrolling
- * @return The entity with the scrolling texture component
+ * @brief System that handles the shooting of the player
  */
-std::shared_ptr<Entity> createScrollingTextureComponent(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Scene> sc, Textures texture, int speed);
+class PlayerShootSystem : public ISystem {
+private:
+    std::shared_ptr<Player> player;
+    size_t cooldown = 0;
+public:
+    PlayerShootSystem(const std::shared_ptr<Player> &player);
+
+    void update(EnginePtr engine) override;
+};
 
 
-#endif //R_TYPE_SERVER_CREATESCROLLINGTEXTURE_H
+#endif //R_TYPE_SERVER_PLAYERSHOOTSYSTEM_H
