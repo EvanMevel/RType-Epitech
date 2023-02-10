@@ -12,4 +12,4 @@ steps:
 premake:
   steps:
     - working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: ./premake.bat
+      run: ./build.bat
