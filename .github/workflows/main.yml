@@ -3,13 +3,10 @@ name: Compilation check
 on: [push]
 
 jobs:
-checkout:
-runs-on: windows-latest
-steps:
-  - uses: actions/checkout@v3
-
-
-premake:
-  steps:
-    - working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: ./build.bat
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run build script
+        working-directory: ${{env.GITHUB_WORKSPACE}}
+        run: ./build.bat
