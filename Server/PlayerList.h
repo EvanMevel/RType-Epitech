@@ -20,33 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_CLIENTDATA_H
-#define R_TYPE_SERVER_CLIENTDATA_H
+#ifndef R_TYPE_SERVER_PLAYERLIST_H
+#define R_TYPE_SERVER_PLAYERLIST_H
 
+#include <vector>
 
-#include <memory>
-
-/**
- * @brief Data of a client
- */
-class ClientData {
+class PlayerList {
 private:
-    long long lastPing;
+    std::vector<int> availableIds;
+
 public:
-    ClientData();
-    virtual ~ClientData() = default;
 
-    bool handshake = false;
+    explicit PlayerList(int number);
 
-    size_t playerId;
-    int playerNumber;
+    int getAvailable();
 
-    long long int getLastPing() const;
-
-    void setLastPing(long long int lastPing);
-
-    void hasShakeHands();
+    void playerDisconnect(int id);
 };
 
 
-#endif //R_TYPE_SERVER_CLIENTDATA_H
+#endif //R_TYPE_SERVER_PLAYERLIST_H

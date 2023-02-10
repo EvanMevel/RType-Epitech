@@ -33,6 +33,7 @@ void AnimationSystem::update(EnginePtr engine) {
         return;
     if(engine->getScene() == nullptr)
         return;
+    auto lock = engine->getScene()->obtainLock();
     for (auto &entity: engine->getScene()->getEntities()) {
         auto animationComponent = entity->getComponent<AnimationComponent>();
         auto posComponent = entity->getComponent<PositionComponent>();
