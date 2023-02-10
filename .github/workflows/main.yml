@@ -3,9 +3,13 @@ name: Compilation check
 on: [push]
 
 jobs:
-  build:
-    runs-on: windows-latest
+checkout:
+runs-on: windows-latest
+steps:
+  - uses: actions/checkout@v3
 
-    steps:
-      - name: Compile code
-        run: "build.bat"
+
+premake:
+  steps:
+    - working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: ./premake.bat
