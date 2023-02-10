@@ -20,16 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "SpriteManager.h"
+#include "PlayerKeysSystem.h"
 
-SpriteManager::SpriteManager() {
+PlayerKeysSystem::PlayerKeysSystem(const std::shared_ptr<Player> &player) : player(player) {}
 
+void PlayerKeysSystem::update(EnginePtr engine) {
+    auto lib = engine->getModule<IGraphicLib>();
+    player->up = lib->isKeyDown(KeyCodes::KEY_UP);
+    player->down = lib->isKeyDown(KeyCodes::KEY_DOWN);
+    player->left = lib->isKeyDown(KeyCodes::KEY_LEFT);
+    player->right = lib->isKeyDown(KeyCodes::KEY_RIGHT);
+    player->shoot = lib->isKeyDown(KeyCodes::KEY_SPACE);
 }
 
-std::shared_ptr<Sprite> SpriteManager::getSprite(SpriteType type) {
-    return _sprites[type];
-}
-
-void SpriteManager::addSprite(SpriteType type, std::shared_ptr<Sprite> sprite) {
-    _sprites[type] = sprite;
+std::string PlayerKeysSystem::getName() {
+    return "PlayerKeysSystem";
 }

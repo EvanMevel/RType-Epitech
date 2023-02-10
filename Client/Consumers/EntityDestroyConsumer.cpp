@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 #include "EntityDestroyConsumer.h"
-#include "Client/Player.h"
+#include "Client/Player/Player.h"
 
 void EntityDestroyConsumer::consume(EntityDestroyPacket &packet, EnginePtr engine, RTypeServer server) {
     engine->getScene()->removeEntity(packet.entityId);

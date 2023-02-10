@@ -29,87 +29,32 @@
  * @brief A 2D vector
  */
 class Vector2i {
-private:
-    static void absoluteVarTo0(int &var, size_t i) {
-        if (var < 0) {
-            var = (int) (var + i);
-            if (var > 0) {
-                var = 0;
-            }
-        } else {
-            var = (int) (var - i);
-            if (var < 0) {
-                var = 0;
-            }
-        }
-    }
-
-    static void ensureNotGreater(int &var, int max) {
-        if (var > max) {
-            var = max;
-        }
-        if (var < -max) {
-            var = -max;
-        }
-    }
-
 public:
     int x;
     int y;
 
-    Vector2i(int x = 0, int y = 0) : x(x), y(y) {}
+    explicit Vector2i();
+    explicit Vector2i(int x, int y);
 
-    int getX() const {
-        return x;
-    }
+    int getX() const;
+    void setX(int x);
 
-    void setX(int x) {
-        Vector2i::x = x;
-    }
+    int getY() const;
+    void setY(int y);
 
-    int getY() const {
-        return y;
-    }
+    void decrementTo0(size_t decr);
 
-    void setY(int y) {
-        Vector2i::y = y;
-    }
+    Vector2i clone() const;
 
-    void operator+=(const Vector2i &other) {
-        x += other.x;
-        y += other.y;
-    }
+    size_t lengthSquare() const;
 
-    void decrementTo0(size_t decr) {
-        absoluteVarTo0(x, decr);
-        absoluteVarTo0(y, decr);
-    }
+    size_t length() const;
 
-    Vector2i clone() const {
-        return {x, y};
-    }
+    [[maybe_unused]] void normalize();
 
-    size_t lengthSquare() const {
-        return x * x + y * y;
-    }
+    void ensureNotGreater(int max);
 
-    size_t length() const {
-        return (size_t) std::sqrt(lengthSquare());
-    }
-
-    void normalize() {
-        size_t len = length();
-        if (len == 0) {
-            return;
-        }
-        x /= (int) len;
-        y /= (int) len;
-    }
-
-    void ensureNotGreater(int max) {
-        ensureNotGreater(x, max);
-        ensureNotGreater(y, max);
-    }
+    void operator+=(const Vector2i &other);
 };
 
 

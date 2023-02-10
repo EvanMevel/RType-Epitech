@@ -37,7 +37,7 @@ PlayerInfoPacket::PlayerInfoPacket(EntityPtr entity) {
     }
     auto player = entity->getComponent<PlayerInfoComponent>();
     if (player) {
-        playerNumber = (int) player->playerNumber;
+        playerNumber = player->getPlayerNumber();
     } else {
         throw std::runtime_error("Player has no player info component");
     }

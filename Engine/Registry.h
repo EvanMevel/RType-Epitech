@@ -20,28 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_FIXTEXTURECOMPONENT_H
-#define R_TYPE_SERVER_FIXTEXTURECOMPONENT_H
+#ifndef R_TYPE_SERVER_REGISTRY_H
+#define R_TYPE_SERVER_REGISTRY_H
 
+#include <unordered_map>
 #include <memory>
-#include "Engine/Component/IComponent.h"
-#include "Engine/Graphic/ITexture.h"
 
-/**
- * @brief Component that contains a texture
- */
-class FixTextureComponent : public IComponent {
-protected:
-    std::shared_ptr<ITexture> texture;
+template<typename Type>
+class Registry {
+private:
+    std::unordered_map<int, std::shared_ptr<Type>> _data;
+
 public:
-    explicit FixTextureComponent();
+    template<typename EnumType>
+    void registerValue(EnumType key, std::shared_ptr<Type> value) {
+        _data[static_cast<int>(key)] = std::move(value);
+    }
 
-    ~FixTextureComponent() override = default;
-
-    const std::shared_ptr<ITexture> &getTexture() const;
-
-    void setTexture(const std::shared_ptr<ITexture> &texture);
+    template<class EnumType>
+    std::shared_ptr<Type> &getValue(EnumType key) {
+        return _data[static_cast<int>(key)];
+    }
 };
 
 
-#endif //R_TYPE_SERVER_FIXTEXTURECOMPONENT_H
+#endif //R_TYPE_SERVER_REGISTRY_H

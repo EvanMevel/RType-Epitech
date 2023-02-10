@@ -20,14 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "SpriteComponent.h"
+#include "PlayerShootSystem.h"
+#include "Engine/Network/Packets/PlayerShootPacket.h"
+#include "Client/Sounds.h"
 
-SpriteComponent::SpriteComponent() {}
+PlayerShootSystem::PlayerShootSystem(const std::shared_ptr<Player> &player) : player(player) {
 
-const std::shared_ptr<Sprite> &SpriteComponent::getSprite() const {
-    return sprite;
 }
 
-void SpriteComponent::setSprite(const std::shared_ptr<Sprite> &sprite) {
-    SpriteComponent::sprite = sprite;
+void PlayerShootSystem::update(EnginePtr engine) {
+    if (cooldown > 0) {
+        cooldown--;
+    }
+    if (!player->dead && player->shoot && cooldown == 0) {
+        engine->getModule<ClientNetServer>()->sendPacket(PlayerShootPacket(player->entity->getId()));
+        cooldown = ENGINE_TPS / 2;
+    }
 }

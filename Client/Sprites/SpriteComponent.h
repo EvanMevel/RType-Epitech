@@ -20,16 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "SpriteSheet.h"
+#ifndef R_TYPE_SERVER_SPRITECOMPONENT_H
+#define R_TYPE_SERVER_SPRITECOMPONENT_H
 
-SpriteSheet::SpriteSheet(const std::shared_ptr<ITexture> &texture) : texture(texture) {}
+#include "Engine/Component/IComponent.h"
+#include "Engine/Graphic/Sprite.h"
+#include "Sprites.h"
 
-std::shared_ptr<Sprite> SpriteSheet::createSprite(int startX, int startY, int lengthX, int lengthY, int repeatX, int repeatY,
-        size_t frameSpeed) {
-    return std::make_shared<Sprite>(texture, startX, startY, lengthX, lengthY, repeatX, repeatY, frameSpeed);
-}
+/**
+ * @brief Component that contains a sprite
+ */
+class SpriteComponent : public IComponent {
+private:
+    Sprites spriteId;
+public:
+    SpriteComponent();
 
-std::shared_ptr<Sprite> SpriteSheet::createSprite(int startX, int startY, int lengthX, int lengthY, int repeatX, int repeatY,
-        size_t frameSpeed, float scale) {
-    return std::make_shared<Sprite>(texture, startX, startY, lengthX, lengthY, repeatX, repeatY, frameSpeed, scale);
-}
+    Sprites getSpriteId() const;
+
+    void setSpriteId(Sprites spriteId);
+};
+
+
+#endif //R_TYPE_SERVER_SPRITECOMPONENT_H

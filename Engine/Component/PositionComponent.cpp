@@ -20,16 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "SpriteSheet.h"
+#include "PositionComponent.h"
 
-SpriteSheet::SpriteSheet(const std::shared_ptr<ITexture> &texture) : texture(texture) {}
-
-std::shared_ptr<Sprite> SpriteSheet::createSprite(int startX, int startY, int lengthX, int lengthY, int repeatX, int repeatY,
-        size_t frameSpeed) {
-    return std::make_shared<Sprite>(texture, startX, startY, lengthX, lengthY, repeatX, repeatY, frameSpeed);
+PositionComponent::PositionComponent() : Vector2i(0, 0) {
 }
 
-std::shared_ptr<Sprite> SpriteSheet::createSprite(int startX, int startY, int lengthX, int lengthY, int repeatX, int repeatY,
-        size_t frameSpeed, float scale) {
-    return std::make_shared<Sprite>(texture, startX, startY, lengthX, lengthY, repeatX, repeatY, frameSpeed, scale);
+PositionComponent::PositionComponent(int x, int y) : Vector2i(x, y) {
 }

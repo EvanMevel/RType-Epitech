@@ -33,13 +33,15 @@
  */
 class EntityTypeComponent : public IComponent {
 private:
-    EntityType type;
+    EntityType _type;
 public:
-    explicit EntityTypeComponent() = default;
+    EntityTypeComponent();
+
+    explicit EntityTypeComponent(EntityType type);
 
     EntityType getType() const;
 
-    void setType(EntityType type);
+    [[maybe_unused]] void setType(EntityType type);
 };
 
 

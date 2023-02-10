@@ -20,13 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "SceneHolder.h"
+#ifndef R_TYPE_SERVER_SOUNDS_H
+#define R_TYPE_SERVER_SOUNDS_H
 
-void SceneHolder::addScene(int index, std::shared_ptr<Scene> scene) {
-    scenes[index] = scene;
-}
+#include "Engine/Graphic/IGraphicLib.h"
 
-std::shared_ptr<Scene> SceneHolder::getScene(int index) {
-    return scenes[index];
-}
+enum class Sounds {
+    PROJECTILE_SHOOT = 0,
+    PROJECTILE_HIT = 1
+};
 
+void loadSounds(const std::shared_ptr<IGraphicLib> &lib);
+
+#endif //R_TYPE_SERVER_SOUNDS_H

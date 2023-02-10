@@ -20,16 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "FixTextureComponent.h"
+#include "SpriteComponent.h"
 
-FixTextureComponent::FixTextureComponent() {
+SpriteComponent::SpriteComponent() : spriteId(Sprites::SPRITE_ERROR) {
 
 }
 
-const std::shared_ptr<ITexture> &FixTextureComponent::getTexture() const {
-    return texture;
+Sprites SpriteComponent::getSpriteId() const {
+    return spriteId;
 }
 
-void FixTextureComponent::setTexture(const std::shared_ptr<ITexture> &texture) {
-    FixTextureComponent::texture = texture;
+void SpriteComponent::setSpriteId(Sprites id) {
+    SpriteComponent::spriteId = id;
 }

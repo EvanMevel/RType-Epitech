@@ -20,27 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "PlayerShootSystem.h"
-#include "Engine/Network/Packets/PlayerShootPacket.h"
-#include "SoundManager.h"
+#include "ClientNetServer.h"
 
-PlayerShootSystem::PlayerShootSystem(const std::shared_ptr<Player> &player) : player(player){
+ClientNetServer::ClientNetServer(EnginePtr engine, const std::string &address, unsigned short port)
+    : NetworkRemoteServer(engine, address, port) {
 
 }
 
-void PlayerShootSystem::update(EnginePtr engine) {
-    if (cooldown > 0) {
-        cooldown--;
+void closeWindow(std::shared_ptr<IGraphicLib> lib) {
+    if (lib->getWindow().shouldClose()) {
+        return;
     }
-    if (!player->dead && player->shoot && cooldown == 0) {
-        engine->getModule<ClientNetServer>()->sendPacket(PlayerShootPacket(player->entity->getId()));
-        cooldown = ENGINE_TPS / 2;
-        auto lib = engine->getModule<IGraphicLib>();
-        auto soundManager = engine->getModule<SoundManager>();
-        auto projetcileSound = soundManager->getSound(SoundType::PROJECTILE_SHOOT);
-        std::function<void(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<ISound> projectileSound)> playSoundFunct = [](std::shared_ptr<IGraphicLib> lib, std::shared_ptr<ISound> projectileSound){
-            lib->playSound(projectileSound);
-        };
-        lib->execOnLibThread(playSoundFunct, lib ,projetcileSound);
-    }
+    lib->closeWindow();
+}
+
+void ClientNetServer::errorReceived(std::string address, int port, int err) {
+    auto lib = this->data->getModule<IGraphicLib>();
+    lib->execOnLibThread(closeWindow, lib);
+    running.store(false);
 }

@@ -20,26 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYERKEYSSYSTEM_H
-#define R_TYPE_SERVER_PLAYERKEYSSYSTEM_H
+#ifndef R_TYPE_SERVER_CREATEBUTTON_H
+#define R_TYPE_SERVER_CREATEBUTTON_H
 
-#include "Engine/ISystem.h"
-#include "ClientNetServer.h"
-#include "Player.h"
+#include <string>
+#include "Engine/Entity.h"
+#include "Engine/Engine.h"
+#include "Engine/Component/PositionComponent.h"
+#include "Engine/Component/EntityTypeComponent.h"
+#include "Client/Textures/FixTextureComponent.h"
+#include "Client/Textures/Textures.h"
 
 /**
- * @brief System that handles the player's keys
+ * @brief Create a button entity
+ * @param lib The graphic library
+ * @param sc The scene
+ * @param x The x position
+ * @param y The y position
+ * @param texture The texture of the button
+ * @param onClick The function to call when the button is clicked
+ * @return The button entity
  */
-class PlayerKeysSystem : public ISystem {
-private:
-    std::shared_ptr<Player> player;
-public:
-    void update(EnginePtr engine) override;
+std::shared_ptr<Entity> createButton(const std::shared_ptr<IGraphicLib> &lib, const std::shared_ptr<Scene> &sc,
+                                     int x, int y, Textures texture, const std::function<void(EnginePtr)> &onClick);
 
-    std::string getName() override;
-
-    explicit PlayerKeysSystem(const std::shared_ptr<Player> &player);
-};
-
-
-#endif //R_TYPE_SERVER_PLAYERKEYSSYSTEM_H
+#endif //R_TYPE_SERVER_CREATEBUTTON_H

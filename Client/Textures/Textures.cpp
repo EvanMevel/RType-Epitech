@@ -20,25 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_SPRITECOMPONENT_H
-#define R_TYPE_SERVER_SPRITECOMPONENT_H
+#include "Textures.h"
 
-#include "Engine/Component/IComponent.h"
-#include "Engine/Graphic/Sprite.h"
+void loadTextures(const std::shared_ptr<IGraphicLib> &lib) {
+    lib->registerTexture(Textures::TITLE, "assets/rtype.png");
+    lib->registerTexture(Textures::PLAY_BUTTON, "assets/play-button.png");
 
-/**
- * @brief Component that contains a sprite
- */
-class SpriteComponent : public IComponent {
-private:
-    std::shared_ptr<Sprite> sprite;
-public:
-    SpriteComponent();
-
-    const std::shared_ptr<Sprite> &getSprite() const;
-
-    void setSprite(const std::shared_ptr<Sprite> &sprite);
-};
-
-
-#endif //R_TYPE_SERVER_SPRITECOMPONENT_H
+    lib->registerTexture(Textures::BACKGROUND_1, "assets/Starry background  - Layer 01 - Solid colour.png");
+    lib->registerTexture(Textures::BACKGROUND_2, "assets/Starry background  - Layer 02 - Shadows.png");
+    lib->registerTexture(Textures::BACKGROUND_3, "assets/Starry background  - Layer 02 - Shadows 2.png");
+    lib->registerTexture(Textures::BACKGROUND_4, "assets/Starry background  - Layer 03 - Stars.png");
+    lib->registerTexture(Textures::BACKGROUND_5, "assets/Starry background  - Layer 03 - Stars 2.png");
+}

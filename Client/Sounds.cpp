@@ -20,19 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "PlayerKeysSystem.h"
+#include "Sounds.h"
 
-void PlayerKeysSystem::update(EnginePtr engine) {
-    auto lib = engine->getModule<IGraphicLib>();
-    player->up = lib->isKeyDown(KeyCodes::KEY_UP);
-    player->down = lib->isKeyDown(KeyCodes::KEY_DOWN);
-    player->left = lib->isKeyDown(KeyCodes::KEY_LEFT);
-    player->right = lib->isKeyDown(KeyCodes::KEY_RIGHT);
-    player->shoot = lib->isKeyDown(KeyCodes::KEY_SPACE);
-}
-
-PlayerKeysSystem::PlayerKeysSystem(const std::shared_ptr<Player> &player) : player(player) {}
-
-std::string PlayerKeysSystem::getName() {
-    return "PlayerKeysSystem";
+void loadSounds(const std::shared_ptr<IGraphicLib> &lib) {
+    lib->registerSound(Sounds::PROJECTILE_SHOOT, "assets/basicShoot.ogg");
+    lib->registerSound(Sounds::PROJECTILE_HIT, "assets/projectile-hit.ogg");
 }

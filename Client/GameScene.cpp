@@ -21,19 +21,21 @@
 // SOFTWARE.
 
 #include "GameScene.h"
-#include "ScrollingTextureComponent.h"
-#include "CreateScrollingTexture.h"
+#include "Client/Textures/ScrollingTextureComponent.h"
+#include "Client/Textures/CreateScrollingTexture.h"
+#include "Engine/VelocitySystem.h"
 
 
 std::shared_ptr<Scene> gameScene(EnginePtr engine){
     auto sc = engine->createScene<Scene>();
     auto lib = engine->getModule<IGraphicLib>();
 
-    auto background = createScrollingTextureComponent(lib, sc, "assets/Starry background  - Layer 01 - Solid colour.png",-1);
-    auto fourthground = createScrollingTextureComponent(lib, sc, "assets/Starry background  - Layer 02 - Shadows.png",-2);
-    auto thirdground = createScrollingTextureComponent(lib, sc, "assets/Starry background  - Layer 02 - Shadows 2.png",-2);
-    auto secondground = createScrollingTextureComponent(lib, sc, "assets/Starry background  - Layer 03 - Stars.png",-3);
-    auto firstground = createScrollingTextureComponent(lib, sc, "assets/Starry background  - Layer 03 - Stars 2.png",-4);
+    auto background = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_1,-1);
+    auto fourthground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_2,-2);
+    auto thirdground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_3,-2);
+    auto secondground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_4,-3);
+    auto firstground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_5,-4);
 
+    sc->addSystem<VelocitySystem>();
     return sc;
 }

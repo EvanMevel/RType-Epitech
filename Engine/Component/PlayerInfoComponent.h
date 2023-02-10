@@ -29,12 +29,18 @@
  * @brief Component that contains all the player data
  */
 class PlayerInfoComponent : public IComponent {
+private:
+    int _playerNumber;
 public:
-    int playerNumber;
-
     PlayerInfoComponent();
 
+    explicit PlayerInfoComponent(int playerNumber);
+
     ~PlayerInfoComponent() override;
+
+    int getPlayerNumber() const;
+
+    [[maybe_unused]] void setPlayerNumber(int playerNumber);
 };
 
 

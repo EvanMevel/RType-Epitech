@@ -21,25 +21,44 @@
 // SOFTWARE.
 
 #include "MainMenu.h"
-#include "Engine/Component/HitboxComponent.h"
+#include "Engine/SceneHolder.h"
+#include "Scenes.h"
+#include "ClientNetServer.h"
+#include "Engine/Network/Packets/HandshakePacket.h"
+
+static void playButtonClick(EnginePtr engine) {
+    auto sceneHolder = engine->getModule<SceneHolder>();
+    auto sc = sceneHolder->getValue(Scenes::GAME);
+    engine->setScene(sc);
+
+    auto server = engine->getModule<ClientNetServer>();
+    std::cout << "Sending handshake" << std::endl;
+    server->startListening();
+    server->sendPacket(HandshakePacket());
+}
 
 std::shared_ptr<Scene> mainMenu(EnginePtr engine)
 {
     auto sc = engine->createScene<Scene>();
-    auto graph = engine->getModule<IGraphicLib>();
+    auto lib = engine->getModule<IGraphicLib>();
 
-    auto background = createScrollingTextureComponent(graph, sc, "assets/Starry background  - Layer 01 - Solid colour.png",-1);
-    auto fourthground = createScrollingTextureComponent(graph, sc, "assets/Starry background  - Layer 02 - Shadows.png",-2);
-    auto thirdground = createScrollingTextureComponent(graph, sc, "assets/Starry background  - Layer 02 - Shadows 2.png",-2);
-    auto secondground = createScrollingTextureComponent(graph, sc, "assets/Starry background  - Layer 03 - Stars.png",-3);
-    auto firstground = createScrollingTextureComponent(graph, sc, "assets/Starry background  - Layer 03 - Stars 2.png",-4);
+    auto background = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_1,-1);
+    auto fourthground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_2,-2);
+    auto thirdground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_3,-2);
+    auto secondground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_4,-3);
+    auto firstground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_5,-4);
 
-    auto height = graph->getWindow().getHeight();
-    auto width = graph->getWindow().getWidth();
+    auto height = lib->getWindow().getHeight();
+    auto width = lib->getWindow().getWidth();
 
-    auto title = createButton(engine,sc,"assets/rtype.png",width/2-(800/2),height/3-(400/2));
-    auto playButton = createButton(engine,sc,"assets/play-button.png",width/2-(400/2),height*0.45-(100/2));
-    auto hitboxPlaybutton = playButton->addComponent<HitboxComponent>();
+    auto title = sc->createEntity();
+    auto titlePos = title->addComponent<PositionComponent>((width / 2) - (800 / 2), (height / 3) - (400 / 2));
+    title->addComponent<FixTextureComponent>()->setTextureId(Textures::TITLE);
+
+    createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.45) - (100 / 2),
+                 Textures::PLAY_BUTTON, playButtonClick);
+
+
     //auto optionButton = createButton(engine,sc,"assets/img_3.png",width/2-(400/2),height*0.65-(100/2));
     //auto quitButton = createButton(engine,sc,"img.png",width/2-(400/2),height*0.85-(100/2));
 

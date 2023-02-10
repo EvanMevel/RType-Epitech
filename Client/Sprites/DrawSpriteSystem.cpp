@@ -20,15 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_SCENEENUM_H
-#define R_TYPE_SERVER_SCENEENUM_H
+#include "DrawSpriteSystem.h"
+#include "Engine/Engine.h"
+#include "Engine/Component/PositionComponent.h"
 
-/**
- * @brief Enum of all the scenes
- */
-enum SceneEnum{
-    MAIN_MENU,
-    GAME
-};
+void drawEntitySprite(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entity) {
+    auto spriteComponent = entity->getComponent<SpriteComponent>();
+    auto positionComponent = entity->getComponent<PositionComponent>();
+    if (spriteComponent && positionComponent) {
+        auto sprite = lib->getSprites()->getValue(spriteComponent->getSpriteId());
+        sprite->updateRect();
+        lib->drawSprite(sprite, positionComponent->getX(), positionComponent->getY(), ColorCodes::COLOR_WHITE);
+    }
+}
 
-#endif //R_TYPE_SERVER_SCENEENUM_H
+void DrawSpriteSystem::update(std::unique_ptr<Engine> &engine) {
+    auto lib = engine->getModule<IGraphicLib>();
+    if (lib == nullptr)
+        return;
+    if(engine->getScene() == nullptr)
+        return;
+    std::function<void(std::shared_ptr<Entity>)> draw = [&lib](std::shared_ptr<Entity> entity) {
+        drawEntitySprite(lib, entity);
+    };
+    engine->getScene()->forEachEntity(draw);
+}

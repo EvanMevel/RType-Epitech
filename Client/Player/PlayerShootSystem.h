@@ -20,25 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_CREATEBUTTON_H
-#define R_TYPE_SERVER_CREATEBUTTON_H
+#ifndef R_TYPE_SERVER_PLAYERSHOOTSYSTEM_H
+#define R_TYPE_SERVER_PLAYERSHOOTSYSTEM_H
 
-#include <string>
-#include "Engine/Entity.h"
+
+#include "Player.h"
 #include "Engine/Engine.h"
-#include "Engine/Component/PositionComponent.h"
-#include "Engine/Component/EntityTypeComponent.h"
-#include "FixTextureComponent.h"
+#include "Engine/ISystem.h"
+#include "Client/ClientNetServer.h"
 
 /**
- * @brief Create a button entity
- * @param e Engine
- * @param sc Scene
- * @param texturePath Path to the texture
- * @param x X position
- * @param y Y position
- * @return The button entity
+ * @brief System that handles the shooting of the player
  */
-std::shared_ptr<Entity> createButton(EnginePtr e, std::shared_ptr<Scene> sc, const std::string &texturePath, int x, int y);
+class PlayerShootSystem : public ISystem {
+private:
+    std::shared_ptr<Player> player;
+    size_t cooldown = 0;
+public:
+    PlayerShootSystem(const std::shared_ptr<Player> &player);
 
-#endif //R_TYPE_SERVER_CREATEBUTTON_H
+    void update(EnginePtr engine) override;
+};
+
+
+#endif //R_TYPE_SERVER_PLAYERSHOOTSYSTEM_H

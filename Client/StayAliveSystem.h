@@ -32,6 +32,8 @@
 class StayAliveSystem : public ISystem {
 private:
     long long lastPing = 0;
+
+public:
     void update(EnginePtr engine) override;
 
     std::string getName() override;

@@ -20,33 +20,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "ScrollingTextureComponent.h"
+#ifndef R_TYPE_SERVER_FIXTEXTURECOMPONENT_H
+#define R_TYPE_SERVER_FIXTEXTURECOMPONENT_H
 
-int ScrollingTextureComponent::getScroll() const {
-    return scroll;
-}
+#include <memory>
+#include "Engine/Component/IComponent.h"
+#include "Engine/Graphic/ITexture.h"
+#include "Textures.h"
 
-void ScrollingTextureComponent::setScroll(int scroll) {
-    ScrollingTextureComponent::scroll = scroll;
-}
+/**
+ * @brief Component that contains a texture
+ */
+class FixTextureComponent : public IComponent {
+protected:
+    Textures textureId;
+public:
+    explicit FixTextureComponent();
 
-int ScrollingTextureComponent::getScrollingSpeed() const {
-    return scrollingSpeed;
-}
+    ~FixTextureComponent() override = default;
 
-void ScrollingTextureComponent::setScrollingSpeed(int scrollingSpeed) {
-    ScrollingTextureComponent::scrollingSpeed = scrollingSpeed;
-}
+    Textures getTextureId() const;
 
-void ScrollingTextureComponent::applySpeed() {
-    scroll += scrollingSpeed;
-    scroll %= texture->getWidth();
-}
+    void setTextureId(Textures textureId);
+};
 
-float ScrollingTextureComponent::getScale() const {
-    return scale;
-}
 
-void ScrollingTextureComponent::setScale(float scale) {
-    ScrollingTextureComponent::scale = scale;
-}
+#endif //R_TYPE_SERVER_FIXTEXTURECOMPONENT_H

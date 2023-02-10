@@ -20,24 +20,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_CREATESCROLLINGTEXTURE_H
-#define R_TYPE_SERVER_CREATESCROLLINGTEXTURE_H
+#ifndef R_TYPE_SERVER_SCROLLINGTEXTURECOMPONENT_H
+#define R_TYPE_SERVER_SCROLLINGTEXTURECOMPONENT_H
 
-#include "Engine/Entity.h"
-#include "Engine/Graphic/IGraphicLib.h"
-#include "Engine/Scene.h"
-#include "ScrollingTextureComponent.h"
-#include "Engine/Component/PositionComponent.h"
+#include "Engine/Component/IComponent.h"
+#include "FixTextureComponent.h"
 
 /**
- * @brief Create a scrolling texture component
- * @param lib Graphic library
- * @param sc Scene
- * @param texturePath Path to the texture
- * @param speed Speed of the scrolling
- * @return The entity with the scrolling texture component
+ * @brief Component that allows to scroll a texture
  */
-std::shared_ptr<Entity> createScrollingTextureComponent(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Scene> sc, const std::string &texturePath, int speed);
+class ScrollingTextureComponent : public FixTextureComponent{
+private:
+    int scroll = 0;
+    int scrollingSpeed = 0;
+    float scale = 1.0;
+    int width = 0;
+public:
+    int getScroll() const;
+
+    void setScroll(int scroll);
+
+    int getScrollingSpeed() const;
+
+    void setScrollingSpeed(int scrollingSpeed);
+
+    void applySpeed();
+
+    float getScale() const;
+
+    void setScale(float scale);
+
+    void setWidth(int width);
+};
 
 
-#endif //R_TYPE_SERVER_CREATESCROLLINGTEXTURE_H
+#endif //R_TYPE_SERVER_SCROLLINGTEXTURECOMPONENT_H

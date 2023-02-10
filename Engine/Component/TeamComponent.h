@@ -31,12 +31,16 @@
  * @brief Component that defines the team of an entity
  */
 class TeamComponent : public IComponent{
-    size_t team;
+private:
+    size_t _team;
 public:
-    void setTeam(size_t team);
+    TeamComponent();
 
-public:
+    explicit TeamComponent(size_t team);
+
     size_t getTeam() const;
+
+    [[maybe_unused]] void setTeam(size_t team);
 };
 
 

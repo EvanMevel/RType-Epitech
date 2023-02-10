@@ -32,13 +32,21 @@
  * @details A collider is a component that can collide with other entities
  */
 class ColliderComponent : public IComponent {
-public:
+private:
     std::function<void(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
             std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams)> _onCollision;
 
+public:
+    ColliderComponent();
+
+    explicit ColliderComponent(const std::function<void(EnginePtr, std::shared_ptr<Entity>, std::shared_ptr<Entity>,
+                                                        std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &)> &onCollision);
 
     void onCollision(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
-                     std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams);
+                     std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams) const;
+
+    [[maybe_unused]] void setOnCollision(const std::function<void(EnginePtr, std::shared_ptr<Entity>, std::shared_ptr<Entity>,
+                                                 std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &)> &onCollision);
 };
 
 

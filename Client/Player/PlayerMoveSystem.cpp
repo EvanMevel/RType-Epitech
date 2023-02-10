@@ -20,27 +20,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_HITBOXFIXCOMPONENT_H
-#define R_TYPE_SERVER_HITBOXFIXCOMPONENT_H
+#include "PlayerMoveSystem.h"
+#include "Engine/Network/Packets/PlayerMovePacket.h"
+#include "Engine/Component/PhysicComponent.h"
 
+PlayerMoveSystem::PlayerMoveSystem(const std::shared_ptr<Player> &player) : player(player) {
+}
 
-#include "Engine/Component/IComponent.h"
-#include "Engine/Hitbox.h"
+void PlayerMoveSystem::update(EnginePtr engine) {
+    if (player->dead) {
+        return;
+    }
+    Vector2i acceleration(0, 0);
+    if (player->up) {
+        acceleration.y -= PLAYER_SPEED;
+    }
+    if (player->down) {
+        acceleration.y += PLAYER_SPEED;
+    }
+    if (player->left) {
+        acceleration.x -= PLAYER_SPEED;
+    }
+    if (player->right) {
+        acceleration.x += PLAYER_SPEED;
+    }
+    if (acceleration.lengthSquare() == 0) {
+        return;
+    }
+    auto physic = player->entity->getOrCreate<PhysicComponent>();
+    physic->acceleration = acceleration;
 
-/**
- * @brief Component that contains a FIX hitbox, it does not move
- * @details This component is used to create hitboxes that do not move. It is used for buttons
- */
-class HitboxFixComponent  : public IComponent {
-private:
-    Hitbox hitbox;
-public:
-    HitboxFixComponent();
-
-    const Hitbox &getHitbox() const;
-
-    void setHitbox(const Hitbox &hitbox);
-};
-
-
-#endif //R_TYPE_SERVER_HITBOXFIXCOMPONENT_H
+    PlayerMovePacket packet(player->entity->getId(), acceleration);
+    engine->getModule<ClientNetServer>()->sendPacket(packet);
+}

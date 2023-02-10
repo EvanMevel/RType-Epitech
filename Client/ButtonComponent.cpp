@@ -20,27 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYERMOVESYSTEM_H
-#define R_TYPE_SERVER_PLAYERMOVESYSTEM_H
+#include "ButtonComponent.h"
 
-#include "Player.h"
-#include "Engine/Engine.h"
-#include "Engine/ISystem.h"
-#include "ClientNetServer.h"
+ButtonComponent::ButtonComponent() = default;
 
-#define PLAYER_SPEED 2
+const Hitbox &ButtonComponent::getHitbox() const {
+    return hitbox;
+}
 
-/**
- * @brief System that moves the player
- */
-class PlayerMoveSystem : public ISystem {
-private:
-    std::shared_ptr<Player> player;
-public:
-    PlayerMoveSystem(const std::shared_ptr<Player> &player);
+void ButtonComponent::setHitbox(const Hitbox &box) {
+    this->hitbox = box;
+}
 
-    void update(EnginePtr engine) override;
-};
+void ButtonComponent::setOnClick(const std::function<void(EnginePtr)> &onClick) {
+    _onClick = onClick;
+}
 
-
-#endif //R_TYPE_SERVER_PLAYERMOVESYSTEM_H
+void ButtonComponent::clicked(std::unique_ptr<Engine> &engine) {
+    if (_onClick) {
+        _onClick(engine);
+    }
+}

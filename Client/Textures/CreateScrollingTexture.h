@@ -20,28 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "DrawSpriteSystem.h"
-#include "Engine/Engine.h"
+#ifndef R_TYPE_SERVER_CREATESCROLLINGTEXTURE_H
+#define R_TYPE_SERVER_CREATESCROLLINGTEXTURE_H
+
+#include "Engine/Entity.h"
+#include "Engine/Graphic/IGraphicLib.h"
+#include "Engine/Scene.h"
+#include "Client/Textures/ScrollingTextureComponent.h"
 #include "Engine/Component/PositionComponent.h"
 
-void drawEntitySprite(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entity) {
-    auto spriteComponent = entity->getComponent<SpriteComponent>();
-    auto positionComponent = entity->getComponent<PositionComponent>();
-    if (spriteComponent && positionComponent) {
-        auto sprite = spriteComponent->getSprite();
-        sprite->updateRect();
-        lib->drawSprite(sprite, positionComponent->getX(), positionComponent->getY(), ColorCodes::COLOR_WHITE);
-    }
-}
+/**
+ * @brief Create a scrolling texture component
+ * @param lib Graphic library
+ * @param sc Scene
+ * @param texturePath Path to the texture
+ * @param speed Speed of the scrolling
+ * @return The entity with the scrolling texture component
+ */
+std::shared_ptr<Entity> createScrollingTextureComponent(const std::shared_ptr<IGraphicLib> &lib, const std::shared_ptr<Scene> &sc,
+                                                        Textures texture, int speed);
 
-void DrawSpriteSystem::update(std::unique_ptr<Engine> &engine) {
-    auto lib = engine->getModule<IGraphicLib>();
-    if (lib == nullptr)
-        return;
-    if(engine->getScene() == nullptr)
-        return;
-    std::function<void(std::shared_ptr<Entity>)> draw = [&lib](std::shared_ptr<Entity> entity) {
-        drawEntitySprite(lib, entity);
-    };
-    engine->getScene()->forEachEntity(draw);
-}
+
+#endif //R_TYPE_SERVER_CREATESCROLLINGTEXTURE_H

@@ -20,16 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "SpriteSheet.h"
+#ifndef R_TYPE_SERVER_PLAYERKEYSSYSTEM_H
+#define R_TYPE_SERVER_PLAYERKEYSSYSTEM_H
 
-SpriteSheet::SpriteSheet(const std::shared_ptr<ITexture> &texture) : texture(texture) {}
+#include "Engine/ISystem.h"
+#include "Client/ClientNetServer.h"
+#include "Player.h"
 
-std::shared_ptr<Sprite> SpriteSheet::createSprite(int startX, int startY, int lengthX, int lengthY, int repeatX, int repeatY,
-        size_t frameSpeed) {
-    return std::make_shared<Sprite>(texture, startX, startY, lengthX, lengthY, repeatX, repeatY, frameSpeed);
-}
+/**
+ * @brief System that handles the player's keys
+ */
+class PlayerKeysSystem : public ISystem {
+private:
+    std::shared_ptr<Player> player;
+public:
+    void update(EnginePtr engine) override;
 
-std::shared_ptr<Sprite> SpriteSheet::createSprite(int startX, int startY, int lengthX, int lengthY, int repeatX, int repeatY,
-        size_t frameSpeed, float scale) {
-    return std::make_shared<Sprite>(texture, startX, startY, lengthX, lengthY, repeatX, repeatY, frameSpeed, scale);
-}
+    std::string getName() override;
+
+    explicit PlayerKeysSystem(const std::shared_ptr<Player> &player);
+};
+
+
+#endif //R_TYPE_SERVER_PLAYERKEYSSYSTEM_H

@@ -72,7 +72,7 @@ void EnemyRandomSpawnSystem::update(std::unique_ptr<Engine> &engine) {
             cd->cooldown = ENGINE_TPS * 2;
         } else if (type == EnemyType::FAST) {
             cd->cooldown = ENGINE_TPS * 1.2;
-            ent->getComponent<HitboxComponent>()->setLengthY(32 * 3);
+            ent->getComponent<HitboxComponent>()->setHeight(32 * 3);
         }
 
         enemies++;

@@ -31,9 +31,19 @@ void drawScrollingTexture(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Enti
     auto posComponent = entity->getComponent<PositionComponent>();
     if (scrollingComponent != nullptr && posComponent != nullptr) {
         scrollingComponent->applySpeed();
-        auto texture =  scrollingComponent->getTexture();
-        lib->drawTextureEx(texture, posComponent->getX() + scrollingComponent->getScroll(), posComponent->getY(),0.0,scrollingComponent->getScale(), ColorCodes::COLOR_WHITE);
-        lib->drawTextureEx(texture, posComponent->getX() + texture->getWidth() + scrollingComponent->getScroll(), posComponent->getY(),0.0,scrollingComponent->getScale(), ColorCodes::COLOR_WHITE);
+        Texture &texture = lib->getTextures()->getValue(scrollingComponent->getTextureId());
+        int x = posComponent->getX() + scrollingComponent->getScroll();
+
+        lib->drawTextureEx(texture, x, posComponent->getY(),0.0,scrollingComponent->getScale(), ColorCodes::COLOR_WHITE);
+
+        // If the texture is going backward, we draw it AFTER the first one
+        // If the texture is going forward, we draw it BEFORE the first one
+        if (scrollingComponent->getScrollingSpeed() < 0) {
+            x += texture->getWidth();
+        } else {
+            x -= texture->getWidth();
+        }
+        lib->drawTextureEx(texture, x, posComponent->getY(),0.0,scrollingComponent->getScale(), ColorCodes::COLOR_WHITE);
     }
 }
 

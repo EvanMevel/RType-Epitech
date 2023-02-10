@@ -20,27 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYERSHOOTSYSTEM_H
-#define R_TYPE_SERVER_PLAYERSHOOTSYSTEM_H
+#include "CreateButton.h"
+#include "Engine/Component/HitboxComponent.h"
+#include "Client/ButtonComponent.h"
 
+std::shared_ptr<Entity> createButton(const std::shared_ptr<IGraphicLib> &lib, const std::shared_ptr<Scene> &sc, int x, int y,
+                                     Textures texture, const std::function<void(EnginePtr)> &onClick)
+{
+    auto button = sc->createEntity();
 
-#include "Player.h"
-#include "Engine/Engine.h"
-#include "Engine/ISystem.h"
-#include "ClientNetServer.h"
+    button->addComponent<EntityTypeComponent>(EntityType::BUTTON);
+    button->addComponent<FixTextureComponent>()->setTextureId(texture);
 
-/**
- * @brief System that handles the shooting of the player
- */
-class PlayerShootSystem : public ISystem {
-private:
-    std::shared_ptr<Player> player;
-    size_t cooldown = 0;
-public:
-    PlayerShootSystem(const std::shared_ptr<Player> &player);
+    auto pos = button->addComponent<PositionComponent>(x, y);
 
-    void update(EnginePtr engine) override;
-};
+    const Texture& buttonTexture = lib->getTextures()->getValue(texture);
+    auto hitboxComponent = button->addComponent<HitboxComponent>(buttonTexture->getWidth(), buttonTexture->getHeight());
 
+    auto buttonComponent = button->addComponent<ButtonComponent>();
+    buttonComponent->setHitbox(Hitbox(pos, hitboxComponent));
+    buttonComponent->setOnClick(onClick);
 
-#endif //R_TYPE_SERVER_PLAYERSHOOTSYSTEM_H
+    return button;
+}

@@ -1,4 +1,4 @@
-// MIT License
+/// MIT License
 //
 // Copyright (c) 2023 Audrey Amar, Théo Guguen, Evan Mevel
 //
@@ -20,17 +20,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "SoundManager.h"
+#include <iostream>
+#include "DrawFixTextureSystem.h"
+#include "Engine/Engine.h"
+#include "FixTextureComponent.h"
+#include "Engine/Component/PositionComponent.h"
 
-SoundManager::SoundManager() {
-
+void drawEntity(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entity) {
+    auto textureComponent = entity->getComponent<FixTextureComponent>();
+    auto posComponent = entity->getComponent<PositionComponent>();
+    if (textureComponent != nullptr && posComponent != nullptr) {
+        lib->drawTexture(lib->getTextures()->getValue(textureComponent->getTextureId()), posComponent->getX(), posComponent->getY(), ColorCodes::COLOR_WHITE);
+    }
 }
-std::shared_ptr<ISound> SoundManager::getSound(SoundType type) {
-    return _sound[type];
+
+void DrawFixTextureSystem::update(EnginePtr engine) {
+    auto lib = engine->getModule<IGraphicLib>();
+    if (lib == nullptr)
+        return;
+    if(engine->getScene() == nullptr)
+        return;
+    std::function<void(std::shared_ptr<Entity>)> draw = [&lib](std::shared_ptr<Entity> entity) {
+        drawEntity(lib, entity);
+    };
+    engine->getScene()->forEachEntity(draw);
 }
 
-void SoundManager::addSound(SoundType type, std::shared_ptr<ISound> sound) {
-    _sound[type] = sound;
+std::string DrawFixTextureSystem::getName() {
+    return "DrawFixTextureSystem";
 }
-
-

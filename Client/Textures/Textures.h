@@ -20,35 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "PlayerMoveSystem.h"
-#include "Engine/Network/Packets/PlayerMovePacket.h"
-#include "Engine/Component/PhysicComponent.h"
+#ifndef R_TYPE_SERVER_TEXTURES_H
+#define R_TYPE_SERVER_TEXTURES_H
 
-PlayerMoveSystem::PlayerMoveSystem(const std::shared_ptr<Player> &player) : player(player) {}
 
-void PlayerMoveSystem::update(EnginePtr engine) {
-    if (player->dead) {
-        return;
-    }
-    Vector2i acceleration = {0, 0};
-    if (player->up) {
-        acceleration.y -= PLAYER_SPEED;
-    }
-    if (player->down) {
-        acceleration.y += PLAYER_SPEED;
-    }
-    if (player->left) {
-        acceleration.x -= PLAYER_SPEED;
-    }
-    if (player->right) {
-        acceleration.x += PLAYER_SPEED;
-    }
-    if (acceleration.lengthSquare() == 0) {
-        return;
-    }
-    auto physic = player->entity->getOrCreate<PhysicComponent>();
-    physic->acceleration = acceleration;
+#include "Engine/Graphic/IGraphicLib.h"
 
-    PlayerMovePacket packet(player->entity->getId(), acceleration);
-    engine->getModule<ClientNetServer>()->sendPacket(packet);
-}
+enum class Textures {
+    TEXTURE_ERROR = -1,
+    TITLE = 0,
+    PLAY_BUTTON = 1,
+    BACKGROUND_1 = 2,
+    BACKGROUND_2 = 3,
+    BACKGROUND_3 = 4,
+    BACKGROUND_4 = 5,
+    BACKGROUND_5 = 6,
+};
+
+void loadTextures(const std::shared_ptr<IGraphicLib> &lib);
+
+#endif //R_TYPE_SERVER_TEXTURES_H

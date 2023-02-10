@@ -22,18 +22,14 @@
 
 #include "AnimationComponent.h"
 
-AnimationComponent::AnimationComponent() {
+AnimationComponent::AnimationComponent() = default;
 
-}
-
-AnimationComponent::~AnimationComponent() {
-
-}
+AnimationComponent::~AnimationComponent() = default;
 
 const std::shared_ptr<IAnimation> &AnimationComponent::getAnimation() const {
     return animation;
 }
 
-void AnimationComponent::setAnimation(const std::shared_ptr<IAnimation> &animation) {
-    AnimationComponent::animation = animation;
+void AnimationComponent::setAnimation(const std::shared_ptr<IAnimation> &anim) {
+    AnimationComponent::animation = anim;
 }

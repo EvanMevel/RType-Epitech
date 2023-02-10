@@ -20,34 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_SOUNDMANAGER_H
-#define R_TYPE_SERVER_SOUNDMANAGER_H
+#include "CreateScrollingTexture.h"
 
-#include <unordered_map>
-#include <memory>
-#include "Engine/Graphic/ISound.h"
+std::shared_ptr<Entity> createScrollingTextureComponent(const std::shared_ptr<IGraphicLib> &lib, const std::shared_ptr<Scene> &sc,
+                                                        Textures texture, int speed) {
+    auto scrollingEntity = sc->createEntity();
 
-/**
- * @brief Enum of all the sounds
- */
-enum class SoundType {
-    PROJECTILE_SHOOT = 0,
-    PROJECTILE_HIT = 1
-};
+    scrollingEntity->addComponent<PositionComponent>(0, 0);
 
-/**
- * @brief Class that manages the sounds
- */
-class SoundManager {
-private:
-    std::unordered_map<SoundType, std::shared_ptr<ISound>> _sound;
+    const Texture &scrollingTexture = lib->getTextures()->getValue(texture);
 
-public:
-    SoundManager();
-    std::shared_ptr<ISound> getSound(SoundType type);
-
-    void addSound(SoundType type, std::shared_ptr<ISound> sound);
-};
-
-
-#endif //R_TYPE_SERVER_SOUNDMANAGER_H
+    auto scrollingComponent = scrollingEntity->addComponent<ScrollingTextureComponent>();
+    scrollingComponent->setTextureId(texture);
+    scrollingComponent->setScrollingSpeed(speed);
+    scrollingComponent->setWidth(scrollingTexture->getWidth());
+    auto scale = (float)lib->getWindow().getHeight() / (float)scrollingTexture->getHeight();
+    scrollingComponent->setScale(scale);
+    return scrollingEntity;
+}

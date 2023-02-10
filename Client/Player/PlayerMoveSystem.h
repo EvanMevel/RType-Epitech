@@ -20,16 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "SpriteSheet.h"
+#ifndef R_TYPE_SERVER_PLAYERMOVESYSTEM_H
+#define R_TYPE_SERVER_PLAYERMOVESYSTEM_H
 
-SpriteSheet::SpriteSheet(const std::shared_ptr<ITexture> &texture) : texture(texture) {}
+#include "Player.h"
+#include "Engine/Engine.h"
+#include "Engine/ISystem.h"
+#include "Client/ClientNetServer.h"
 
-std::shared_ptr<Sprite> SpriteSheet::createSprite(int startX, int startY, int lengthX, int lengthY, int repeatX, int repeatY,
-        size_t frameSpeed) {
-    return std::make_shared<Sprite>(texture, startX, startY, lengthX, lengthY, repeatX, repeatY, frameSpeed);
-}
+#define PLAYER_SPEED 2
 
-std::shared_ptr<Sprite> SpriteSheet::createSprite(int startX, int startY, int lengthX, int lengthY, int repeatX, int repeatY,
-        size_t frameSpeed, float scale) {
-    return std::make_shared<Sprite>(texture, startX, startY, lengthX, lengthY, repeatX, repeatY, frameSpeed, scale);
-}
+/**
+ * @brief System that moves the player
+ */
+class PlayerMoveSystem : public ISystem {
+private:
+    std::shared_ptr<Player> player;
+public:
+    PlayerMoveSystem(const std::shared_ptr<Player> &player);
+
+    void update(EnginePtr engine) override;
+};
+
+
+#endif //R_TYPE_SERVER_PLAYERMOVESYSTEM_H

@@ -22,32 +22,31 @@
 
 #include "EntityInfoConsumer.h"
 #include "Engine/EntityUtils.h"
-#include "Client/FixTextureComponent.h"
-#include "Client/SpriteComponent.h"
-#include "Client/SpriteManager.h"
+#include "Client/Textures/FixTextureComponent.h"
+#include "Client/Sprites/SpriteComponent.h"
+#include "Client/Sounds.h"
 
 void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTypeServer server) {
     auto entity = engine->getScene()->getOrCreateEntityById(packet.id);
-    auto spriteManager = engine->getModule<SpriteManager>();
+    Sprites spriteId = Sprites::SPRITE_ERROR;
     std::shared_ptr<Sprite> sprite;
     if (packet.type == EntityType::PROJECTILE) {
         entity::initProjectile(entity, packet.x, packet.y, 0);
         if (packet.entityInfo == 0) {
-            sprite = spriteManager->getSprite(SpriteType::PROJECTILE_1);
+            spriteId = Sprites::PROJECTILE_1;
+            auto lib = engine->getModule<IGraphicLib>();
+            lib->execOnLibThread(playSound, lib, Sounds::PROJECTILE_SHOOT);
         } else {
-            sprite = spriteManager->getSprite(SpriteType::PROJECTILE_2);
+            spriteId = Sprites::PROJECTILE_2;
         }
     } else if (packet.type == EntityType::ENEMY) {
         entity::initEnemy(entity, packet.x, packet.y);
-        SpriteType type = static_cast<SpriteType>(((int) SpriteType::ENEMY_1) + packet.entityInfo);
-        sprite = spriteManager->getSprite(type);
+        spriteId = static_cast<Sprites>(((int) Sprites::ENEMY_1) + packet.entityInfo);
     } else if (packet.type == EntityType::PLAYER) {
         entity::initPlayer(entity, packet.x, packet.y);
-        SpriteType type = static_cast<SpriteType>(((int) SpriteType::PLAYER_1) + packet.entityInfo - 1);
-        sprite = spriteManager->getSprite(type);
+        spriteId = static_cast<Sprites>(((int) Sprites::PLAYER_1) + packet.entityInfo - 1);
     }
-    if (sprite) {
-        auto spriteComponent = entity->getOrCreate<SpriteComponent>();
-        spriteComponent->setSprite(sprite);
+    if (spriteId != Sprites::SPRITE_ERROR) {
+        entity->getOrCreate<SpriteComponent>()->setSpriteId(spriteId);
     }
 }

@@ -20,18 +20,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "CreateScrollingTexture.h"
+#include "ScrollingTextureComponent.h"
 
-std::shared_ptr<Entity> createScrollingTextureComponent(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Scene> sc, const std::string &texturePath, int speed) {
-    auto scrollingEntity = sc->createEntity();
-    auto scrollingComponent = scrollingEntity->addComponent<ScrollingTextureComponent>();
-    auto pos = scrollingEntity->addComponent<PositionComponent>();
-    pos->setX(0);
-    pos->setY(0);
-    auto scrollingTexture =  lib->createTexture(texturePath);
-    scrollingComponent->setTexture(scrollingTexture);
-    scrollingComponent->setScrollingSpeed(speed);
-    auto scale = (float)lib->getWindow().getHeight() / (float)scrollingTexture->getHeight();
-    scrollingComponent->setScale(scale);
-    return scrollingEntity;
+int ScrollingTextureComponent::getScroll() const {
+    return scroll;
+}
+
+void ScrollingTextureComponent::setScroll(int sc) {
+    ScrollingTextureComponent::scroll = sc;
+}
+
+int ScrollingTextureComponent::getScrollingSpeed() const {
+    return scrollingSpeed;
+}
+
+void ScrollingTextureComponent::setScrollingSpeed(int speed) {
+    ScrollingTextureComponent::scrollingSpeed = speed;
+}
+
+void ScrollingTextureComponent::applySpeed() {
+    scroll += scrollingSpeed;
+    scroll %= width;
+}
+
+float ScrollingTextureComponent::getScale() const {
+    return scale;
+}
+
+void ScrollingTextureComponent::setScale(float sca) {
+    ScrollingTextureComponent::scale = sca;
+}
+
+void ScrollingTextureComponent::setWidth(int w) {
+    ScrollingTextureComponent::width = w;
 }

@@ -20,13 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_SPRITEMANAGER_H
-#define R_TYPE_SERVER_SPRITEMANAGER_H
+#ifndef R_TYPE_SERVER_SPRITES_H
+#define R_TYPE_SERVER_SPRITES_H
 
-#include <unordered_map>
-#include "Engine/Graphic/Sprite.h"
+#include "Engine/Graphic/IGraphicLib.h"
 
-enum class SpriteType {
+enum class Sprites {
+    SPRITE_ERROR = -1,
     PLAYER_1 = 0,
     PLAYER_2 = 1,
     PLAYER_3 = 2,
@@ -37,19 +37,6 @@ enum class SpriteType {
     ENEMY_2 = 7,
 };
 
-/**
- * @brief SpriteManager contains all the sprites of the game
- */
-class SpriteManager {
-private:
-    std::unordered_map<SpriteType, std::shared_ptr<Sprite>> _sprites;
+void loadSprites(const std::shared_ptr<IGraphicLib> &lib);
 
-public:
-    SpriteManager();
-    std::shared_ptr<Sprite> getSprite(SpriteType type);
-
-    void addSprite(SpriteType type, std::shared_ptr<Sprite> sprite);
-};
-
-
-#endif //R_TYPE_SERVER_SPRITEMANAGER_H
+#endif //R_TYPE_SERVER_SPRITES_H

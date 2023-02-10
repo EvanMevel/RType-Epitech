@@ -20,29 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "CreateButton.h"
-#include "Engine/Component/HitboxComponent.h"
-#include "HitboxFixComponent.h"
+#ifndef R_TYPE_SERVER_SCENES_H
+#define R_TYPE_SERVER_SCENES_H
 
-std::shared_ptr<Entity> createButton(EnginePtr engine, std::shared_ptr<Scene> sc, const std::string &texturePath, int x, int y)
-{
-    auto button = sc->createEntity();
+#include "Engine/Engine.h"
 
-    auto buttonTexture = engine->getModule<IGraphicLib>()->createTexture(texturePath);
-    button->addComponent<EntityTypeComponent>()->setType(EntityType::BUTTON);
-    button->addComponent<FixTextureComponent>()->setTexture(buttonTexture);
+/**
+ * @brief Enum of all the scenes
+ */
+enum class Scenes {
+    MAIN_MENU = 0,
+    GAME = 1
+};
 
-    auto pos = button->addComponent<PositionComponent>();
-    pos->setX(x);
-    pos->setY(y);
+void loadScenes(EnginePtr engine);
 
-    auto hitboxPlaybutton = button->addComponent<HitboxComponent>();
-    hitboxPlaybutton->setLengthX(buttonTexture->getWidth());
-    hitboxPlaybutton->setLengthY(buttonTexture->getHeight());
-
-    auto hitboxFixComponent = button->addComponent<HitboxFixComponent>();
-
-    hitboxFixComponent->setHitbox(Hitbox(pos,hitboxPlaybutton));
-
-    return button;
-}
+#endif //R_TYPE_SERVER_SCENES_H
