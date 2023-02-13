@@ -39,10 +39,12 @@
 #include "ServerColliderSystem.h"
 #include "PacketSendingScene.h"
 #include "Levels.h"
+#include "PlayerList.h"
 
 std::atomic<bool> running = true;
 
-void testSrv(EnginePtr engine) {
+void runServer(EnginePtr engine) {
+    engine->registerModule<PlayerList>(MAX_CLIENTS);
     RTypeServerPtr srv = engine->getModule<RTypeServer>();
 
     srv->addConsumer<PingPacketConsumer>();
@@ -117,7 +119,7 @@ int main()
     createScene(e);
     std::thread t = std::thread(stopThread, std::ref(e));
 
-    testSrv(e);
+    runServer(e);
 
     t.join();
 

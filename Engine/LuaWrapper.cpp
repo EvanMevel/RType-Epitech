@@ -20,34 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "RTypeServer.h"
-#include "Engine/Network/Packets/HandshakeResponsePacket.h"
-#include "PlayerList.h"
+#include "LuaWrapper.h"
 
-RTypeServer::RTypeServer(EnginePtr engine, const std::string &address, unsigned short port) : NetServer(address, port), engine(engine) {
-
+LuaWrapper::LuaWrapper() {
+    L = luaL_newstate();
+    luaL_openlibs(L);
 }
 
-RTypeServer::~RTypeServer() {
-
+LuaWrapper::~LuaWrapper() {
+    lua_close(L);
 }
 
-bool RTypeServer::clientConnected(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> data) {
-    if (clients.size() >= MAX_CLIENTS) {
-        log() << client->addressPort() << " kicked. Cause: too many clients already connected" << std::endl;
-        client->sendPacket(HandshakeResponsePacket(HandshakeResponsePacketType::FULL, 0, 0));
-        return false;
-    }
-    log() << "Client " << client->addressPort() << " connected" << std::endl;
-    return true;
+int LuaWrapper::doFile(const std::string &filename) {
+    return luaL_dofile(L, filename.c_str());
 }
 
-std::shared_ptr<ClientData> RTypeServer::createData(std::shared_ptr<NetClient> &client) {
-    return std::make_shared<ClientData>();
-}
-
-void RTypeServer::clientDisconnected(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> data) {
-    engine->getScene()->removeEntity(data->playerId);
-    auto playerList = engine->getModule<PlayerList>();
-    playerList->playerDisconnect(data->playerNumber);
+void LuaWrapper::registerFunction(std::string name, lua_CFunction func) {
+    lua_register(L, name.c_str(), func);
 }

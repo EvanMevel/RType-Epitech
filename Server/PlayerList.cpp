@@ -20,34 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "RTypeServer.h"
-#include "Engine/Network/Packets/HandshakeResponsePacket.h"
+#include <stdexcept>
 #include "PlayerList.h"
 
-RTypeServer::RTypeServer(EnginePtr engine, const std::string &address, unsigned short port) : NetServer(address, port), engine(engine) {
-
-}
-
-RTypeServer::~RTypeServer() {
-
-}
-
-bool RTypeServer::clientConnected(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> data) {
-    if (clients.size() >= MAX_CLIENTS) {
-        log() << client->addressPort() << " kicked. Cause: too many clients already connected" << std::endl;
-        client->sendPacket(HandshakeResponsePacket(HandshakeResponsePacketType::FULL, 0, 0));
-        return false;
+PlayerList::PlayerList(int number) {
+    for (int i = 0; i < number; i++) {
+        availableIds.push_back(i);
     }
-    log() << "Client " << client->addressPort() << " connected" << std::endl;
-    return true;
 }
 
-std::shared_ptr<ClientData> RTypeServer::createData(std::shared_ptr<NetClient> &client) {
-    return std::make_shared<ClientData>();
+int PlayerList::getAvailable() {
+    if (availableIds.empty()) {
+        throw std::runtime_error("No available ids");
+    }
+    auto it = availableIds.begin();
+    int id = *it;
+    availableIds.erase(it);
+    return id;
 }
 
-void RTypeServer::clientDisconnected(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> data) {
-    engine->getScene()->removeEntity(data->playerId);
-    auto playerList = engine->getModule<PlayerList>();
-    playerList->playerDisconnect(data->playerNumber);
+void PlayerList::playerDisconnect(int id) {
+    availableIds.push_back(id);
 }

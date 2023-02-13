@@ -44,7 +44,7 @@ void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTy
         spriteId = static_cast<Sprites>(((int) Sprites::ENEMY_1) + packet.entityInfo);
     } else if (packet.type == EntityType::PLAYER) {
         entity::initPlayer(entity, packet.x, packet.y);
-        spriteId = static_cast<Sprites>(((int) Sprites::PLAYER_1) + packet.entityInfo - 1);
+        spriteId = static_cast<Sprites>(((int) Sprites::PLAYER_1) + packet.entityInfo);
     }
     if (spriteId != Sprites::SPRITE_ERROR) {
         entity->getOrCreate<SpriteComponent>()->setSpriteId(spriteId);

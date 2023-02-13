@@ -36,7 +36,7 @@ void PlayerInfoConsumer::consume(PlayerInfoPacket &packet, EnginePtr engine, RTy
     entity::initPlayer(player, packet.x, packet.y);
 
     auto spriteComponent = player->getOrCreate<SpriteComponent>();
-    auto spriteId = static_cast<Sprites>(((int) Sprites::PLAYER_1) + packet.playerNumber - 1);
+    auto spriteId = static_cast<Sprites>(((int) Sprites::PLAYER_1) + packet.playerNumber);
     spriteComponent->setSpriteId(spriteId);
 
     std::cout << ">> We are player " << packet.playerId << " (" << packet.playerNumber << ")" << std::endl;

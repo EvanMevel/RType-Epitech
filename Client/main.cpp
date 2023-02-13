@@ -40,6 +40,7 @@
 #include "MouseSystem.h"
 #include "Engine/TickUtil.h"
 #include "StayAliveSystem.h"
+#include "Engine/LuaWrapper.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -167,8 +168,37 @@ void loadAll() {
     graphThread.join();
 }
 
+int cAdd(lua_State *L)
+{
+    double n1 = lua_tonumber(L, 1);
+    double n2 = lua_tonumber(L, 2);
+
+    double sum = n1 + n2;
+
+    lua_pushnumber(L,sum);
+
+    return 1;
+}
+
 int main()
 {
+
+    LuaWrapper lua;
+
+    lua.registerFunction("cAdd", cAdd);
+
+    int fi = lua.doFile("../Client/main.lua");
+
+    std::cout << "File returned: " << fi << std::endl;
+
+    auto func = lua.getFunction<VoidType, int, std::string>("MyLuaFunction");
+    func.call(42, "Hello World");
+
+    auto test2 = lua.getFunction<int, int>("TestLua");
+    int res = test2.call(42);
+
+    std::cout << "Res: " << res << std::endl;
+
     loadAll();
 
     return 0;
