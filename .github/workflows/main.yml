@@ -12,7 +12,7 @@ jobs:
         run: ./build.bat
 
   build-linux:
-    runs-on: linux-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Run build script linux
