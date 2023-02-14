@@ -24,6 +24,7 @@
 #define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_SCENE_H
 
 #include <functional>
+#include <mutex>
 #include "SystemHolder.h"
 #include "Entity.h"
 #include "EntityManager.h"
