@@ -16,12 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install CMake and ninja
-        run:  |
-          sudo apt-get update
-          sudo apt-get install -y ninja-build
-          wget -q https://github.com/Kitware/CMake/releases/download/v3.24.0/cmake-3.24.0-linux-x86_64.tar.gz
-          tar xf cmake-3.24.0-linux-x86_64.tar.gz
-          export PATH=$PWD/cmake-3.24.0-linux-x86_64/bin:$PATH
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y cmake ninja-build
       - name: Run build script linux
         working-directory: ${{env.GITHUB_WORKSPACE}}
         run: ./build.sh
