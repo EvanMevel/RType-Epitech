@@ -20,21 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
 #include "HandshakeResponseConsumer.h"
 #include "Engine/TickUtil.h"
+
+static void closeWin(std::shared_ptr<IGraphicLib> lib) {
+    if (lib->getWindow().shouldClose()) {
+        return;
+    }
+    lib->closeWindow();
+}
 
 void HandshakeResponseConsumer::consume(HandshakeResponsePacket &packet, EnginePtr engine,
                                         RTypeServer server) {
     if (packet.getType() != HandshakeResponsePacketType::OK) {
-        std::function<void(std::shared_ptr<IGraphicLib>)> func = [](std::shared_ptr<IGraphicLib> lib) {
-            if (lib->getWindow().shouldClose()) {
-                return;
-            }
-            lib->closeWindow();
-        };
+        auto lib = engine->getModule<IGraphicLib>();
 
-        engine->getModule<IGraphicLib>()->execOnLibThread(func, engine->getModule<IGraphicLib>());
+        lib->execOnLibThread(closeWin, lib);
     } else {
         auto ticker = engine->getModule<TickUtil>();
 

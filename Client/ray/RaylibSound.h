@@ -35,7 +35,7 @@ namespace ray {
  */
 class RaylibSound : public ISound{
 public:
-    RaylibSound(const std::string &soundPath);
+    explicit RaylibSound(const std::string &soundPath);
 };
 
 

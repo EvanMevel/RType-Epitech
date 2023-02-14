@@ -22,8 +22,20 @@
 
 #include "PlayerInfoComponent.h"
 
-PlayerInfoComponent::PlayerInfoComponent() {}
+PlayerInfoComponent::PlayerInfoComponent() : _playerNumber(0) {
 
-PlayerInfoComponent::~PlayerInfoComponent() {
+}
 
+PlayerInfoComponent::PlayerInfoComponent(int playerNumber) : _playerNumber(playerNumber) {
+
+}
+
+PlayerInfoComponent::~PlayerInfoComponent() = default;
+
+int PlayerInfoComponent::getPlayerNumber() const {
+    return _playerNumber;
+}
+
+[[maybe_unused]] void PlayerInfoComponent::setPlayerNumber(int playerNumber) {
+    _playerNumber = playerNumber;
 }

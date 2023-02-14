@@ -22,14 +22,17 @@
 
 #include "Hitbox.h"
 
+Hitbox::Hitbox() : x(0), y(0), width(0), height(0){
+
+}
 
 Hitbox::Hitbox(int x, int y, size_t width, size_t height) : x(x), y(y), width(width), height(height) {}
 
 Hitbox::Hitbox(std::shared_ptr<PositionComponent> pos, std::shared_ptr<HitboxComponent> hitbox) {
     this->x = pos->getX();
     this->y = pos->getY();
-    this->width = hitbox->getLengthX();
-    this->height = hitbox->getLengthY();
+    this->width = hitbox->getWidth();
+    this->height = hitbox->getHeight();
 }
 
 Hitbox::Hitbox(std::shared_ptr<Entity> entity) {
@@ -39,8 +42,8 @@ Hitbox::Hitbox(std::shared_ptr<Entity> entity) {
         throw std::runtime_error("Entity does not have a position or hitbox component");
     this->x = pos->getX();
     this->y = pos->getY();
-    this->width = hitbox->getLengthX();
-    this->height = hitbox->getLengthY();
+    this->width = hitbox->getWidth();
+    this->height = hitbox->getHeight();
 }
 
 bool Hitbox::isColliding(Hitbox &other) {
@@ -54,6 +57,6 @@ bool Hitbox::contains(int x, int y) const{
     return (x >= this->x && x <= this->x + this->width && y >= this->y && y <= this->y + this->height);
 }
 
-Hitbox::Hitbox() : x(0), y(0), width(0), height(0){
-
+bool Hitbox::contains(Vector2i pos) const {
+    return contains(pos.x, pos.y);
 }

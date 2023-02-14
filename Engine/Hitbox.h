@@ -49,6 +49,8 @@ public:
 
     bool contains(int x, int y) const;
 
+    bool contains(Vector2i pos) const;
+
 };
 
 

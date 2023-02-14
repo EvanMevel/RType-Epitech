@@ -49,9 +49,11 @@ public:
 
     void closeWindow() override;
 
-    std::shared_ptr<ITexture> createTexture(const std::string &texturePath) override;
+    Texture createTexture(const std::string &texturePath) override;
 
-    void drawTexture(std::shared_ptr<ITexture> texture, int x, int y, ColorCodes codes) override;
+    void drawTexture(Texture &texture, int x, int y, ColorCodes codes) override;
+
+    void drawTextureEx(Texture &texture, int x, int y, float rotation, float scale, ColorCodes codes) override;
 
     bool isKeyDown(KeyCodes codes) override;
 
@@ -60,8 +62,6 @@ public:
     void drawAnimation(std::shared_ptr<IAnimation> animation, int x, int y, ColorCodes codes) override;
 
     IMouse &getMouse() override;
-
-    void drawTextureEx(std::shared_ptr<ITexture> ptr, int x, int y, float rotation, float scale, ColorCodes codes) override;
 
     void drawSprite(std::shared_ptr<Sprite> sprite, int x, int y, ColorCodes codes) override;
 

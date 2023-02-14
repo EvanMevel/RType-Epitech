@@ -28,6 +28,6 @@ RaylibMusic::RaylibMusic(const std::string &musicPath) {
 }
 
 void RaylibMusic::updateMusic() {
-    ray::Music  raylibMusic = std::any_cast<ray::Music>(this->music);
+    auto raylibMusic = std::any_cast<ray::Music>(this->music);
     ray::UpdateMusicStream(raylibMusic);
 }

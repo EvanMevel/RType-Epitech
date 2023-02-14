@@ -31,22 +31,11 @@
  */
 class ClientNetServer : public NetworkRemoteServer<EnginePtr> {
 public:
-    ClientNetServer(EnginePtr engine, const std::string &address, unsigned short port) : NetworkRemoteServer(engine, address, port) {}
+    ClientNetServer(EnginePtr engine, const std::string &address, unsigned short port);
 
-    ~ClientNetServer() override {
+    ~ClientNetServer() override = default;
 
-    }
-
-    void errorReceived(std::string address, int port, int err) override {
-        std::function<void(std::shared_ptr<IGraphicLib>)> func = [](std::shared_ptr<IGraphicLib> lib) {
-            if (lib->getWindow().shouldClose()) {
-                return;
-            }
-            lib->closeWindow();
-        };
-
-        this->data->getModule<IGraphicLib>()->execOnLibThread(func, this->data->getModule<IGraphicLib>());
-    }
+    void errorReceived(std::string address, int port, int err) override;
 };
 
 using RTypeServer = std::shared_ptr<ClientNetServer>;

@@ -35,7 +35,7 @@ namespace ray {
  */
 class RaylibAnimation : public IAnimation{
 public:
-    RaylibAnimation(const std::string &texturePath);
+    explicit RaylibAnimation(const std::string &texturePath);
 
     void setAnimationFrame(int frame) override;
 };

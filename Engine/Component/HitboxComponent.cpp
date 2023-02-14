@@ -22,18 +22,26 @@
 
 #include "HitboxComponent.h"
 
-size_t HitboxComponent::getLengthX() const {
-    return length_x;
+HitboxComponent::HitboxComponent() : _width(0), _height(0) {
+
 }
 
-size_t HitboxComponent::getLengthY() const {
-    return length_y;
+HitboxComponent::HitboxComponent(size_t width, size_t height) : _width(width), _height(height) {
+
 }
 
-void HitboxComponent::setLengthY(size_t lengthY) {
-    length_y = lengthY;
+size_t HitboxComponent::getWidth() const {
+    return _width;
 }
 
-void HitboxComponent::setLengthX(size_t lengthX) {
-    length_x = lengthX;
+[[maybe_unused]] void HitboxComponent::setWidth(size_t width) {
+    _width = width;
+}
+
+size_t HitboxComponent::getHeight() const {
+    return _height;
+}
+
+void HitboxComponent::setHeight(size_t height) {
+    _height = height;
 }

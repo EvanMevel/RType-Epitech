@@ -42,8 +42,8 @@ void RaylibWindow::setBackground(ColorCodes code) {
     ClearBackground(colors[code]);
 }
 
-void RaylibWindow::setColors(const std::unordered_map<ColorCodes, ray::Color> &colors) {
-    RaylibWindow::colors = colors;
+void RaylibWindow::setColors(const std::unordered_map<ColorCodes, ray::Color> &color) {
+    RaylibWindow::colors = color;
 }
 
 int RaylibWindow::getWidth() {

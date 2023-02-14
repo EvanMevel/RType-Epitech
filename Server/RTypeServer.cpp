@@ -22,6 +22,7 @@
 
 #include "RTypeServer.h"
 #include "Engine/Network/Packets/HandshakeResponsePacket.h"
+#include "PlayerList.h"
 
 RTypeServer::RTypeServer(EnginePtr engine, const std::string &address, unsigned short port) : NetServer(address, port), engine(engine) {
 
@@ -47,4 +48,6 @@ std::shared_ptr<ClientData> RTypeServer::createData(std::shared_ptr<NetClient> &
 
 void RTypeServer::clientDisconnected(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> data) {
     engine->getScene()->removeEntity(data->playerId);
+    auto playerList = engine->getModule<PlayerList>();
+    playerList->playerDisconnect(data->playerNumber);
 }

@@ -22,10 +22,18 @@
 
 #include "EntityTypeComponent.h"
 
-EntityType EntityTypeComponent::getType() const {
-    return type;
+EntityTypeComponent::EntityTypeComponent() : _type(EntityType::NONE) {
+
 }
 
-void EntityTypeComponent::setType(EntityType type) {
-    EntityTypeComponent::type = type;
+EntityTypeComponent::EntityTypeComponent(EntityType type) : _type(type) {
+
+}
+
+EntityType EntityTypeComponent::getType() const {
+    return _type;
+}
+
+[[maybe_unused]] void EntityTypeComponent::setType(EntityType type) {
+    _type = type;
 }

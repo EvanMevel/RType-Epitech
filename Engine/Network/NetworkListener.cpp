@@ -73,8 +73,8 @@ void NetworkListener::listen() {
 }
 
 NetworkListener::~NetworkListener() {
-    if (running.load() && listeningThread != nullptr && listeningThread->joinable()) {
-        running.store(false);
+    running.store(false);
+    if (listeningThread != nullptr && listeningThread->joinable()) {
         listeningThread->join();
     }
 }

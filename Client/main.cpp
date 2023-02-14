@@ -23,29 +23,24 @@
 #include <iostream>
 #include "ClientNetServer.h"
 #include "Client/ray/RaylibGraphicLib.h"
-#include "DrawFixTextureSystem.h"
-#include "Engine/Component/PositionComponent.h"
-#include "Engine/Network/Packets/EntityVelocityPacket.h"
-#include "Client/Consumers/PingPacketConsumer.h"
-#include "StayAliveSystem.h"
-#include "Engine/Network/Packets/HandshakePacket.h"
-#include "Client/Consumers/HandshakeResponseConsumer.h"
-#include "Consumers/PlayerInfoConsumer.h"
-#include "MainMenu.h"
-#include "Engine/VelocitySystem.h"
-#include "Engine/TickUtil.h"
+#include "Client/Scenes.h"
+#include "Client/Textures/Textures.h"
+#include "Client/Textures/DrawFixTextureSystem.h"
+#include "Client/Textures/ScrollingTextureSystem.h"
+#include "Client/Sounds.h"
+#include "Client/Sprites/DrawSpriteSystem.h"
+#include "Client/Consumers/PlayerInfoConsumer.h"
 #include "Client/Consumers/EntityInfoConsumer.h"
 #include "Client/Consumers/EntityDestroyConsumer.h"
 #include "Client/Consumers/EntityVelocityPacketConsumer.h"
+#include "Client/Consumers/ProjectileHitConsumer.h"
+#include "Client/Consumers/HandshakeResponseConsumer.h"
+#include "Client/Consumers/PingPacketConsumer.h"
 #include "AnimationSystem.h"
 #include "MouseSystem.h"
-#include "Engine/SceneHolder.h"
-#include "SceneEnum.h"
-#include "ScrollingTextureSystem.h"
-#include "DrawSpriteSystem.h"
-#include "SpriteManager.h"
-#include "SoundManager.h"
-#include "Client/Consumers/ProjectileHitConsumer.h"
+#include "Engine/TickUtil.h"
+#include "StayAliveSystem.h"
+#include "Engine/LuaWrapper.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -122,63 +117,27 @@ void graphicLoop(EnginePtr engine) {
     windowClosed = true;
 }
 
-void loadSounds(EnginePtr engine) {
-    std::shared_ptr<IGraphicLib> lib = engine->getModule<IGraphicLib>();
-    auto soundManager = engine->registerModule<SoundManager>();
-    auto shootSound = lib->createSound("assets/basicShoot.ogg");
-
-    soundManager->addSound(SoundType::PROJECTILE_SHOOT, shootSound);
-    soundManager->addSound(SoundType::PROJECTILE_HIT,
-                           lib->createSound("assets/projectile-hit.ogg"));
-}
-
-void loadSprites(EnginePtr engine) {
-    std::shared_ptr<IGraphicLib> lib = engine->getModule<IGraphicLib>();
-    auto spriteManager = engine->registerModule<SpriteManager>();
-    auto playerSpriteSheet = lib->createSpriteSheet("assets/r-typesheet42.gif");
-
-    spriteManager->addSprite(SpriteType::PLAYER_1,
-                             playerSpriteSheet->createSprite(0, 3, 33, 14, 5, 0, 30, 4.0f));
-    spriteManager->addSprite(SpriteType::PLAYER_2,
-                             playerSpriteSheet->createSprite(0, 20, 33, 14, 5, 0, 30, 4.0f));
-    spriteManager->addSprite(SpriteType::PLAYER_3,
-                             playerSpriteSheet->createSprite(0, 37, 33, 14, 5, 0, 30, 4.0f));
-    spriteManager->addSprite(SpriteType::PLAYER_4,
-                             playerSpriteSheet->createSprite(0, 54, 33, 14, 5, 0, 30, 4.0f));
-
-    auto projSpriteSheet = lib->createSpriteSheet("assets/r-typesheet1.gif");
-
-    auto projSprite = projSpriteSheet->createSprite(103, 170, 81, 16, 2, 0, 30);
-    auto projSprite2 = projSpriteSheet->createSprite(267, 170, 81, 16, 2, 0, 30);
-    spriteManager->addSprite(SpriteType::PROJECTILE_1, projSprite);
-    spriteManager->addSprite(SpriteType::PROJECTILE_2, projSprite2);
-
-
-    auto enemySpriteSheet = lib->createSpriteSheet("assets/r-typesheet23.gif");
-
-    auto enemySprite = enemySpriteSheet->createSprite(0, 6, 33, 22, 8, 0, 30, 3.0f);
-    spriteManager->addSprite(SpriteType::ENEMY_1, enemySprite);
-
-    auto enemySpriteSheet2 = lib->createSpriteSheet("assets/r-typesheet7.gif");
-    auto enemySprite2 = enemySpriteSheet2->createSprite(1, 34, 33, 32, 3, 0, 30, 3.0f);
-
-    spriteManager->addSprite(SpriteType::ENEMY_2, enemySprite2);
-}
-
-void loadScenes(EnginePtr engine) {
-    auto sceneHolder = engine->registerModule<SceneHolder>();
-    auto sc = mainMenu(engine);
-    engine->setScene(sc);
-    sceneHolder->addScene(SceneEnum::MAIN_MENU,sc);
-    sc->addSystem<VelocitySystem>();
-}
-
 void loadGraphsAndScenes(EnginePtr engine) {
     std::unique_lock<std::mutex> lck(graphicMutex);
 
     std::cout << "[Graphic] Starting..." << std::endl;
 
     std::shared_ptr<IGraphicLib> lib = engine->registerIModule<IGraphicLib, RaylibGraphicLib>();
+
+    IWindow &window = lib->createWindow(1820, 1000, "R-type");
+    window.setTargetFPS(60);
+    lib->initAudio();
+    //window.setFullScreen();
+    std::cout << "[Graphic] Window created" << std::endl;
+    loadTextures(lib);
+    std::cout << "[Graphic] Textures ready" << std::endl;
+    loadSprites(lib);
+    std::cout << "[Graphic] Sprites ready" << std::endl;
+    loadSounds(lib);
+    std::cout << "[Graphic] Sounds ready" << std::endl;
+    loadScenes(engine);
+    std::cout << "[Graphic] Scenes ready" << std::endl;
+
 
     lib->addSystem<ScrollingTextureSystem>();
     lib->addSystem<DrawFixTextureSystem>();
@@ -187,20 +146,8 @@ void loadGraphsAndScenes(EnginePtr engine) {
     lib->addSystem<MouseSystem>();
 
 
-    IWindow &window = lib->createWindow(1820, 1000, "R-type");
-    window.setTargetFPS(60);
-    lib->initAudio();
-    //window.setFullScreen();
-    std::cout << "[Graphic] Window created" << std::endl;
-    loadScenes(engine);
-    std::cout << "[Graphic] Scenes ready" << std::endl;
-    loadSprites(engine);
-    std::cout << "[Graphic] Sprites ready" << std::endl;
-    loadSounds(engine);
-    std::cout << "[Graphic] Sounds ready" << std::endl;
     graphicReady = true;
     cv.notify_all();
-
     std::cout << "[Graphic] Finished loading" << std::endl;
 
     lck.unlock();
@@ -214,15 +161,44 @@ void startGraph(EnginePtr engine) {
 void loadAll() {
     std::unique_ptr<Engine> engine = std::make_unique<Engine>();
 
-    std::thread net(startGraph, std::ref(engine));
+    std::thread graphThread(startGraph, std::ref(engine));
 
     loadNetwork(engine);
 
-    net.join();
+    graphThread.join();
+}
+
+int cAdd(lua_State *L)
+{
+    double n1 = lua_tonumber(L, 1);
+    double n2 = lua_tonumber(L, 2);
+
+    double sum = n1 + n2;
+
+    lua_pushnumber(L,sum);
+
+    return 1;
 }
 
 int main()
 {
+
+    LuaWrapper lua;
+
+    lua.registerFunction("cAdd", cAdd);
+
+    int fi = lua.doFile("../Client/main.lua");
+
+    std::cout << "File returned: " << fi << std::endl;
+
+    auto func = lua.getFunction<VoidType, int, std::string>("MyLuaFunction");
+    func.call(42, "Hello World");
+
+    auto test2 = lua.getFunction<int, int>("TestLua");
+    int res = test2.call(42);
+
+    std::cout << "Res: " << res << std::endl;
+
     loadAll();
 
     return 0;

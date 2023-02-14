@@ -31,6 +31,10 @@
  * @brief Component that defines the position of an entity
  */
 class PositionComponent : public IComponent, public Vector2i {
+public:
+    PositionComponent();
+
+    PositionComponent(int x, int y);
 };
 
 

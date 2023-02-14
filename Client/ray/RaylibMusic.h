@@ -35,7 +35,7 @@ namespace ray {
  */
 class RaylibMusic : public IMusic {
 public:
-    RaylibMusic(const std::string &musicPath);
+    explicit RaylibMusic(const std::string &musicPath);
     void updateMusic() override;
 };
 

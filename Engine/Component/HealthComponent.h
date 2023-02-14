@@ -31,17 +31,24 @@
  */
 class HealthComponent : public IComponent {
 private:
-    size_t health;
-    unsigned long long lastDamageTime = 0;
-    size_t invincibilityTime = 0;
+    size_t _health;
+    size_t _invincibilityTime = 0;
+    unsigned long long _lastDamageTime = 0;
 public:
-    void setHealth(size_t health);
+
+    HealthComponent();
+
+    explicit HealthComponent(size_t health);
+
+    HealthComponent(size_t health, size_t invincibilityTime);
+
+    [[maybe_unused]] void setHealth(size_t health);
 
     void damage(size_t damage);
 
     bool isAlive() const;
 
-    void setInvincibilityTime(size_t invincibilityTime);
+    [[maybe_unused]] void setInvincibilityTime(size_t invincibilityTime);
 
     bool isInvincible() const;
 };

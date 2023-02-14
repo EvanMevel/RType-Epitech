@@ -23,23 +23,16 @@
 #include "EntityUtils.h"
 
 void entity::initPlayer(std::shared_ptr<Entity> entity, int x, int y) {
-    entity->addComponent<EntityTypeComponent>()->setType(EntityType::PLAYER);
-    auto pos = entity->addComponent<PositionComponent>();
-    pos->setX(x);
-    pos->setY(y);
+    entity->addComponent<EntityTypeComponent>(EntityType::PLAYER);
+    entity->addComponent<PositionComponent>(x, y);
     auto physic = entity->addComponent<PhysicComponent>();
     physic->maxVelocity = 10;
 
-    auto hitbox = entity->addComponent<HitboxComponent>();
-    hitbox->setLengthX(100);
-    hitbox->setLengthY(56);
+    entity->addComponent<HitboxComponent>(100, 56);
 
-    auto tim = entity->addComponent<TeamComponent>();
-    tim->setTeam(0);
+    entity->addComponent<TeamComponent>(0);
 
-    auto health = entity->addComponent<HealthComponent>();
-    health->setHealth(100);
-    health->setInvincibilityTime(1000);
+    auto health = entity->addComponent<HealthComponent>(100, 1000);
 }
 
 void entityDied(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<Entity> cause) {
@@ -80,36 +73,25 @@ void entity::projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::
 }
 
 void entity::initProjectile(std::shared_ptr<Entity> entity, int x, int y, int velX) {
-    entity->addComponent<EntityTypeComponent>()->setType(EntityType::PROJECTILE);
-    auto pos = entity->addComponent<PositionComponent>();
-    pos->setX(x);
-    pos->setY(y);
+    entity->addComponent<EntityTypeComponent>(EntityType::PROJECTILE);
+    entity->addComponent<PositionComponent>(x, y);
     auto physic = entity->addComponent<PhysicComponent>();
     physic->velocity.x = velX;
     physic->velocitySlow = 0;
 
-    auto hitbox = entity->addComponent<HitboxComponent>();
-    hitbox->setLengthX(81);
-    hitbox->setLengthY(16);
+    entity->addComponent<HitboxComponent>(81, 16);
 }
 
 void entity::initEnemy(std::shared_ptr<Entity> entity, int x, int y) {
-    entity->addComponent<EntityTypeComponent>()->setType(EntityType::ENEMY);
-    auto pos = entity->addComponent<PositionComponent>();
-    pos->setX(x);
-    pos->setY(y);
+    entity->addComponent<EntityTypeComponent>(EntityType::ENEMY);
+    entity->addComponent<PositionComponent>(x, y);
     auto physic = entity->addComponent<PhysicComponent>();
 
-    auto team = entity->addComponent<TeamComponent>();
-    team->setTeam(1);
+    entity->addComponent<TeamComponent>(1);
 
-    auto hitbox = entity->addComponent<HitboxComponent>();
-    hitbox->setLengthX(99);
-    hitbox->setLengthY(66);
+    entity->addComponent<HitboxComponent>(99, 66);
 
-    auto health = entity->addComponent<HealthComponent>();
-    health->setHealth(50);
-    health->setInvincibilityTime(400);
+    auto health = entity->addComponent<HealthComponent>(50, 400);
 }
 
 bool entity::applyPhysic(std::shared_ptr<Entity> entity) {

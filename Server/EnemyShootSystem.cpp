@@ -57,11 +57,9 @@ void EnemyShootSystem::update(std::unique_ptr<Engine> &engine) {
                 auto projectile = engine->getScene()->unsafeCreateEntity();
                 entity::initProjectile(projectile, pos->x, pos->y + 20, -10);
 
-                auto collider = projectile->addComponent<ColliderComponent>();
-                collider->_onCollision = projectileHit;
+                projectile->addComponent<ColliderComponent>(projectileHit);
 
-                auto team = projectile->addComponent<TeamComponent>();
-                team->setTeam(1);
+                projectile->addComponent<TeamComponent>(1);
 
                 EntityInfoPacket newEntityPacket(projectile);
                 engine->getModule<RTypeServer>()->broadcast(newEntityPacket);

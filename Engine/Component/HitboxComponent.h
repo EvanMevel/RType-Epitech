@@ -30,20 +30,23 @@
 /**
  * @brief Component that defines the hitbox of an entity
  */
-class HitboxComponent : public IComponent{
-    size_t length_x;
-public:
-    void setLengthX(size_t lengthX);
-
+class HitboxComponent : public IComponent {
 private:
-    size_t length_y;
+    size_t _width;
+    size_t _height;
 public:
-    void setLengthY(size_t lengthY);
+    HitboxComponent();
 
-public:
-    size_t getLengthX() const;
+    HitboxComponent(size_t width, size_t height);
 
-    size_t getLengthY() const;
+    size_t getWidth() const;
+
+    [[maybe_unused]] void setWidth(size_t width);
+
+    size_t getHeight() const;
+
+    void setHeight(size_t height);
+
 };
 
 

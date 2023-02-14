@@ -25,11 +25,11 @@
 
 
 #include <iostream>
-#include "FixTextureComponent.h"
+#include "Client/Textures/FixTextureComponent.h"
 #include "AnimationComponent.h"
 #include "Engine/EntityType.h"
-#include "CreateButton.h"
-#include "CreateScrollingTexture.h"
+#include "Client/Textures/CreateButton.h"
+#include "Client/Textures/CreateScrollingTexture.h"
 
 /**
  * @brief function that return mainMenu Scene
