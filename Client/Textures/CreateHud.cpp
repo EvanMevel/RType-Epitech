@@ -20,47 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_HEALTHCOMPONENT_H
-#define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_HEALTHCOMPONENT_H
+#include "CreateHud.h"
 
-#include <cstddef>
-#include "IComponent.h"
+std::shared_ptr<Entity> createHud(const std::shared_ptr<IGraphicLib> &lib, const std::shared_ptr<Scene> &sc,
+                                  Textures texture)
+{
+    auto lifeEntity = sc->createEntity();
+    const Texture &lifeTexture = lib->getTextures()->getValue(texture);
 
-/**
- * @brief Component that defines the health of an entity
- */
-class HealthComponent : public IComponent {
-private:
-    size_t _health;
-public:
-    size_t getHealth() const;
+    auto lifeComponent = lifeEntity->addComponent<LifeComponent>();
+    auto x = (lib->getWindow().getWidth() / 2) - ((lifeTexture->getWidth() * 10) / 4);
 
-private:
-    size_t _maxHealth;
-public:
-    size_t getMaxHealth() const;
+    lifeEntity->addComponent<PositionComponent>(x, lib->getWindow().getHeight() - (lifeTexture->getHeight() / 2));
 
-private:
-    size_t _invincibilityTime = 0;
-    unsigned long long _lastDamageTime = 0;
-public:
-
-    HealthComponent();
-
-    explicit HealthComponent(size_t health);
-
-    HealthComponent(size_t health, size_t invincibilityTime);
-
-    [[maybe_unused]] void setHealth(size_t health);
-
-    void damage(size_t damage);
-
-    bool isAlive() const;
-
-    [[maybe_unused]] void setInvincibilityTime(size_t invincibilityTime);
-
-    bool isInvincible() const;
-};
-
-
-#endif //B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_HEALTHCOMPONENT_H
+    lifeComponent->setTextureId(texture);
+    lifeComponent->setWidth(lifeTexture->getWidth());
+    auto scale = (float)lib->getWindow().getHeight() / (float)lifeTexture->getHeight();
+    lifeComponent->setScale(scale);
+    return lifeEntity;
+}

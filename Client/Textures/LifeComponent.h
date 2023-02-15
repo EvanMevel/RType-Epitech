@@ -20,47 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_HEALTHCOMPONENT_H
-#define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_HEALTHCOMPONENT_H
+#ifndef R_TYPE_SERVER_LIFECOMPONENT_H
+#define R_TYPE_SERVER_LIFECOMPONENT_H
 
+#include "Client/Textures/FixTextureComponent.h"
 #include <cstddef>
-#include "IComponent.h"
 
-/**
- * @brief Component that defines the health of an entity
- */
-class HealthComponent : public IComponent {
+class LifeComponent : public FixTextureComponent{
 private:
-    size_t _health;
+    float scale = 1;
+    int width = 0;
 public:
-    size_t getHealth() const;
+    float getScale() const;
 
-private:
-    size_t _maxHealth;
-public:
-    size_t getMaxHealth() const;
+    void setScale(float scale);
 
-private:
-    size_t _invincibilityTime = 0;
-    unsigned long long _lastDamageTime = 0;
-public:
-
-    HealthComponent();
-
-    explicit HealthComponent(size_t health);
-
-    HealthComponent(size_t health, size_t invincibilityTime);
-
-    [[maybe_unused]] void setHealth(size_t health);
-
-    void damage(size_t damage);
-
-    bool isAlive() const;
-
-    [[maybe_unused]] void setInvincibilityTime(size_t invincibilityTime);
-
-    bool isInvincible() const;
+    void setWidth(int width);
 };
 
 
-#endif //B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_HEALTHCOMPONENT_H
+#endif //R_TYPE_SERVER_LIFECOMPONENT_H

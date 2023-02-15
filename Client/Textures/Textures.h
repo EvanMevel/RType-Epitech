@@ -35,6 +35,8 @@ enum class Textures {
     BACKGROUND_3 = 4,
     BACKGROUND_4 = 5,
     BACKGROUND_5 = 6,
+    HEART = 7,
+    EMPTY_HEART = 8,
 };
 
 void loadTextures(const std::shared_ptr<IGraphicLib> &lib);

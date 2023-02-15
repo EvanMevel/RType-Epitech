@@ -27,6 +27,7 @@
 #include "Client/Textures/Textures.h"
 #include "Client/Textures/DrawFixTextureSystem.h"
 #include "Client/Textures/ScrollingTextureSystem.h"
+#include "Client/Textures/LifeSystem.h"
 #include "Client/Sounds.h"
 #include "Client/Sprites/DrawSpriteSystem.h"
 #include "Client/Consumers/PlayerInfoConsumer.h"
@@ -144,6 +145,7 @@ void loadGraphsAndScenes(EnginePtr engine) {
     lib->addSystem<DrawSpriteSystem>();
     lib->addSystem<AnimationSystem>();
     lib->addSystem<MouseSystem>();
+    lib->addSystem<LifeSystem>();
 
 
     graphicReady = true;

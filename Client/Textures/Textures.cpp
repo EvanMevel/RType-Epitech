@@ -31,4 +31,6 @@ void loadTextures(const std::shared_ptr<IGraphicLib> &lib) {
     lib->registerTexture(Textures::BACKGROUND_3, "assets/Starry background  - Layer 02 - Shadows 2.png");
     lib->registerTexture(Textures::BACKGROUND_4, "assets/Starry background  - Layer 03 - Stars.png");
     lib->registerTexture(Textures::BACKGROUND_5, "assets/Starry background  - Layer 03 - Stars 2.png");
+    lib->registerTexture(Textures::HEART, "assets/heart.png");
+    lib->registerTexture(Textures::EMPTY_HEART, "assets/empty_heart.png");
 }

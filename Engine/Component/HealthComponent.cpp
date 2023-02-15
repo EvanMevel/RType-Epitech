@@ -23,16 +23,19 @@
 #include "HealthComponent.h"
 #include "TimeUtil.h"
 
-HealthComponent::HealthComponent() : _health(0) {
+HealthComponent::HealthComponent() : _health(0),
+                                     _maxHealth(0) {
 
 }
 
-HealthComponent::HealthComponent(size_t health) : _health(health) {
+HealthComponent::HealthComponent(size_t health) : _health(health),
+                                                  _maxHealth(health) {
 
 }
 
 HealthComponent::HealthComponent(size_t health, size_t invincibilityTime) : _health(health),
-                                                                            _invincibilityTime(invincibilityTime) {
+                                                                            _invincibilityTime(invincibilityTime),
+                                                                            _maxHealth(health) {
 
 }
 
@@ -59,4 +62,12 @@ bool HealthComponent::isInvincible() const {
 
 [[maybe_unused]] void HealthComponent::setHealth(size_t health) {
     _health = health;
+}
+
+size_t HealthComponent::getMaxHealth() const {
+    return _maxHealth;
+}
+
+size_t HealthComponent::getHealth() const {
+    return _health;
 }

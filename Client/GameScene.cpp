@@ -24,7 +24,7 @@
 #include "Client/Textures/ScrollingTextureComponent.h"
 #include "Client/Textures/CreateScrollingTexture.h"
 #include "Engine/VelocitySystem.h"
-
+#include "Client/Textures/CreateHud.h"
 
 std::shared_ptr<Scene> gameScene(EnginePtr engine){
     auto sc = engine->createScene<Scene>();
@@ -36,6 +36,7 @@ std::shared_ptr<Scene> gameScene(EnginePtr engine){
     auto secondground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_4,-3);
     auto firstground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_5,-4);
 
+    auto lifeHud = createHud(lib, sc,Textures::HEART);
     sc->addSystem<VelocitySystem>();
     return sc;
 }
