@@ -24,12 +24,12 @@
 
 SpriteSheet::SpriteSheet(const std::shared_ptr<ITexture> &texture) : texture(texture) {}
 
-std::shared_ptr<Sprite> SpriteSheet::createSprite(int startX, int startY, int lengthX, int lengthY, int repeatX, int repeatY,
-        size_t frameSpeed) {
-    return std::make_shared<Sprite>(texture, startX, startY, lengthX, lengthY, repeatX, repeatY, frameSpeed);
+std::shared_ptr<SpriteProperty> SpriteSheet::createSprite(int startX, int startY, int lengthX, int lengthY, int repeatX, int repeatY,
+                                                          size_t frameSpeed) {
+    return std::make_shared<SpriteProperty>(texture, startX, startY, lengthX, lengthY, repeatX, repeatY, frameSpeed);
 }
 
-std::shared_ptr<Sprite> SpriteSheet::createSprite(int startX, int startY, int lengthX, int lengthY, int repeatX, int repeatY,
-        size_t frameSpeed, float scale) {
-    return std::make_shared<Sprite>(texture, startX, startY, lengthX, lengthY, repeatX, repeatY, frameSpeed, scale);
+std::shared_ptr<SpriteProperty> SpriteSheet::createSprite(int startX, int startY, int lengthX, int lengthY, int repeatX, int repeatY,
+                                                          size_t frameSpeed, float scale) {
+    return std::make_shared<SpriteProperty>(texture, startX, startY, lengthX, lengthY, repeatX, repeatY, frameSpeed, scale);
 }

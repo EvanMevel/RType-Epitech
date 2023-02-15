@@ -20,38 +20,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "IGraphicLib.h"
-#include "Engine.h"
+#ifndef R_TYPE_SERVER_COUNTREGISTRY_H
+#define R_TYPE_SERVER_COUNTREGISTRY_H
 
 
-IGraphicLib::~IGraphicLib() {
+#include <unordered_map>
+#include <memory>
 
-}
+template<typename Type>
+class CountRegistry {
+private:
+    std::unordered_map<int, std::shared_ptr<Type>> _data;
+    int currentId = 0;
 
-std::vector<std::function<void()>> &IGraphicLib::getExecs() {
-    return execs;
-}
+public:
+    int add(std::shared_ptr<Type> value) {
+        int id = currentId;
+        currentId++;
+        _data[id] = std::move(value);
+        return id;
+    }
 
-std::shared_ptr<SpriteSheet> IGraphicLib::createSpriteSheet(const std::string &texturePath) {
-    return std::make_shared<SpriteSheet>(createTexture(texturePath));
-}
+    std::shared_ptr<Type> &get(int id) {
+        return _data[id];
+    }
 
-const std::unique_ptr<Registry<ITexture>> &IGraphicLib::getTextures() {
-    return _textures;
-}
+};
 
-const std::unique_ptr<StringRegistry<SpriteProperty>> &IGraphicLib::getSpriteProperties() {
-    return _spriteProperties;
-}
 
-const std::unique_ptr<Registry<ISound>> &IGraphicLib::getSounds() {
-    return _sounds;
-}
-
-std::vector<std::shared_ptr<SpriteSheet>> &IGraphicLib::getSpriteSheets() {
-    return spriteSheets;
-}
-
-const std::unique_ptr<CountRegistry<Sprite>> &IGraphicLib::getSprites() const {
-    return _sprites;
-}
+#endif //R_TYPE_SERVER_COUNTREGISTRY_H

@@ -20,38 +20,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "IGraphicLib.h"
-#include "Engine.h"
+#ifndef R_TYPE_SERVER_LUAENTITYTYPE_H
+#define R_TYPE_SERVER_LUAENTITYTYPE_H
+
+#include "LuaWrapper.h"
+
+class LuaEntityType {
+private:
+    std::string _id;
+    std::size_t _hitboxWidth;
+    std::size_t _hitboxHeight;
+    std::size_t _maxHealth;
+    std::size_t _invincibilityTime;
+public:
+    LuaEntityType(const std::string &id, size_t hitboxWidth, size_t hitboxHeight, size_t maxHealth,
+                  size_t invincibilityTime);
+
+    const std::string &getId() const;
+
+    size_t getHitboxWidth() const;
+
+    size_t getHitboxHeight() const;
+
+    size_t getMaxHealth() const;
+
+    size_t getInvincibilityTime() const;
+};
 
 
-IGraphicLib::~IGraphicLib() {
-
-}
-
-std::vector<std::function<void()>> &IGraphicLib::getExecs() {
-    return execs;
-}
-
-std::shared_ptr<SpriteSheet> IGraphicLib::createSpriteSheet(const std::string &texturePath) {
-    return std::make_shared<SpriteSheet>(createTexture(texturePath));
-}
-
-const std::unique_ptr<Registry<ITexture>> &IGraphicLib::getTextures() {
-    return _textures;
-}
-
-const std::unique_ptr<StringRegistry<SpriteProperty>> &IGraphicLib::getSpriteProperties() {
-    return _spriteProperties;
-}
-
-const std::unique_ptr<Registry<ISound>> &IGraphicLib::getSounds() {
-    return _sounds;
-}
-
-std::vector<std::shared_ptr<SpriteSheet>> &IGraphicLib::getSpriteSheets() {
-    return spriteSheets;
-}
-
-const std::unique_ptr<CountRegistry<Sprite>> &IGraphicLib::getSprites() const {
-    return _sprites;
-}
+#endif //R_TYPE_SERVER_LUAENTITYTYPE_H

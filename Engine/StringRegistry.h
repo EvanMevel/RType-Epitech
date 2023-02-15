@@ -20,38 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "IGraphicLib.h"
-#include "Engine.h"
+#ifndef R_TYPE_SERVER_STRINGREGISTRY_H
+#define R_TYPE_SERVER_STRINGREGISTRY_H
+
+#include <string>
+#include <unordered_map>
+#include <memory>
+
+template<typename Type>
+class StringRegistry {
+private:
+    std::unordered_map<std::string, std::shared_ptr<Type>> _data;
+
+public:
+    void registerValue(const std::string &key, std::shared_ptr<Type> value) {
+        _data[key] = std::move(value);
+    }
+
+    std::shared_ptr<Type> &getValue(const std::string &key) {
+        return _data[key];
+    }
+};
 
 
-IGraphicLib::~IGraphicLib() {
-
-}
-
-std::vector<std::function<void()>> &IGraphicLib::getExecs() {
-    return execs;
-}
-
-std::shared_ptr<SpriteSheet> IGraphicLib::createSpriteSheet(const std::string &texturePath) {
-    return std::make_shared<SpriteSheet>(createTexture(texturePath));
-}
-
-const std::unique_ptr<Registry<ITexture>> &IGraphicLib::getTextures() {
-    return _textures;
-}
-
-const std::unique_ptr<StringRegistry<SpriteProperty>> &IGraphicLib::getSpriteProperties() {
-    return _spriteProperties;
-}
-
-const std::unique_ptr<Registry<ISound>> &IGraphicLib::getSounds() {
-    return _sounds;
-}
-
-std::vector<std::shared_ptr<SpriteSheet>> &IGraphicLib::getSpriteSheets() {
-    return spriteSheets;
-}
-
-const std::unique_ptr<CountRegistry<Sprite>> &IGraphicLib::getSprites() const {
-    return _sprites;
-}
+#endif //R_TYPE_SERVER_STRINGREGISTRY_H

@@ -20,38 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "IGraphicLib.h"
-#include "Engine.h"
+#ifndef R_TYPE_SERVER_LUALOADER_H
+#define R_TYPE_SERVER_LUALOADER_H
+
+#include "LuaEntityTypeFactory.h"
+
+class IGraphicLib;
+
+class LuaLoader {
+private:
+    LuaWrapper _lua;
+
+public:
+    void loadFolder(const std::string &folderPath);
+
+    std::shared_ptr<LuaEntityTypeFactory> loadEntityTypes();
+
+    void loadEntitySprites(std::shared_ptr<IGraphicLib> graphicLib);
+};
 
 
-IGraphicLib::~IGraphicLib() {
-
-}
-
-std::vector<std::function<void()>> &IGraphicLib::getExecs() {
-    return execs;
-}
-
-std::shared_ptr<SpriteSheet> IGraphicLib::createSpriteSheet(const std::string &texturePath) {
-    return std::make_shared<SpriteSheet>(createTexture(texturePath));
-}
-
-const std::unique_ptr<Registry<ITexture>> &IGraphicLib::getTextures() {
-    return _textures;
-}
-
-const std::unique_ptr<StringRegistry<SpriteProperty>> &IGraphicLib::getSpriteProperties() {
-    return _spriteProperties;
-}
-
-const std::unique_ptr<Registry<ISound>> &IGraphicLib::getSounds() {
-    return _sounds;
-}
-
-std::vector<std::shared_ptr<SpriteSheet>> &IGraphicLib::getSpriteSheets() {
-    return spriteSheets;
-}
-
-const std::unique_ptr<CountRegistry<Sprite>> &IGraphicLib::getSprites() const {
-    return _sprites;
-}
+#endif //R_TYPE_SERVER_LUALOADER_H

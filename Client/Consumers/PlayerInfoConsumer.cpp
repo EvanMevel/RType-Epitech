@@ -33,11 +33,15 @@ PlayerInfoConsumer::PlayerInfoConsumer() = default;
 
 void PlayerInfoConsumer::consume(PlayerInfoPacket &packet, EnginePtr engine, RTypeServer server) {
     auto player = engine->getScene()->getOrCreateEntityById(packet.playerId);
+    auto lib = engine->getModule<IGraphicLib>();
     entity::initPlayer(player, packet.x, packet.y);
 
-    auto spriteComponent = player->getOrCreate<SpriteComponent>();
-    auto spriteId = static_cast<Sprites>(((int) Sprites::PLAYER_1) + packet.playerNumber);
-    spriteComponent->setSpriteId(spriteId);
+    std::string spriteName = "player" + std::to_string(packet.playerNumber);
+    auto spriteProp = lib->getSpriteProperties()->getValue(spriteName);
+    auto sprite = spriteProp->createSprite(spriteProp);
+    int spriteId = lib->getSprites()->add(sprite);
+
+    player->getOrCreate<SpriteComponent>(spriteId);
 
     std::cout << ">> We are player " << packet.playerId << " (" << packet.playerNumber << ")" << std::endl;
 

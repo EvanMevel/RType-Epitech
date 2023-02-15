@@ -20,38 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "IGraphicLib.h"
-#include "Engine.h"
+#include "EntityTypeComponent2.h"
 
+EntityTypeComponent2::EntityTypeComponent2() {}
 
-IGraphicLib::~IGraphicLib() {
+EntityTypeComponent2::EntityTypeComponent2(const std::string &entityType) : _entityType(entityType) {}
 
+const std::string &EntityTypeComponent2::getEntityType() const {
+    return _entityType;
 }
 
-std::vector<std::function<void()>> &IGraphicLib::getExecs() {
-    return execs;
-}
-
-std::shared_ptr<SpriteSheet> IGraphicLib::createSpriteSheet(const std::string &texturePath) {
-    return std::make_shared<SpriteSheet>(createTexture(texturePath));
-}
-
-const std::unique_ptr<Registry<ITexture>> &IGraphicLib::getTextures() {
-    return _textures;
-}
-
-const std::unique_ptr<StringRegistry<SpriteProperty>> &IGraphicLib::getSpriteProperties() {
-    return _spriteProperties;
-}
-
-const std::unique_ptr<Registry<ISound>> &IGraphicLib::getSounds() {
-    return _sounds;
-}
-
-std::vector<std::shared_ptr<SpriteSheet>> &IGraphicLib::getSpriteSheets() {
-    return spriteSheets;
-}
-
-const std::unique_ptr<CountRegistry<Sprite>> &IGraphicLib::getSprites() const {
-    return _sprites;
+void EntityTypeComponent2::setEntityType(const std::string &entityType) {
+    _entityType = entityType;
 }

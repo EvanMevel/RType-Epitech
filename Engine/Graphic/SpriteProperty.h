@@ -20,38 +20,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "IGraphicLib.h"
-#include "Engine.h"
+#ifndef R_TYPE_SERVER_SPRITEPROPERTY_H
+#define R_TYPE_SERVER_SPRITEPROPERTY_H
+
+#include <memory>
+#include "Engine/Rectangle.h"
+#include "ITexture.h"
+
+class Sprite;
+
+/**
+ * @brief Sprite class
+ */
+class SpriteProperty {
+public:
+    std::shared_ptr<ITexture> texture;
+    int startX;
+    int startY;
+
+    int lengthX;
+    int lengthY;
+
+    int repeatX;
+    int repeatY;
+
+    std::size_t frameSpeed;
+
+    float scale = 1.0f;
+
+    SpriteProperty(const std::shared_ptr<ITexture> &texture, int startX, int startY, int lengthX, int lengthY, int repeatX,
+                   int repeatY, std::size_t frameSpeed);
+
+    SpriteProperty(const std::shared_ptr<ITexture> &texture, int startX, int startY, int lengthX, int lengthY, int repeatX,
+                   int repeatY, std::size_t frameSpeed, float scale);
+
+    std::shared_ptr<Sprite> createSprite(std::shared_ptr<SpriteProperty> spriteProperty);
+
+    void updateRect(std::size_t &currentFrame, Rectangle &rect);
+};
 
 
-IGraphicLib::~IGraphicLib() {
-
-}
-
-std::vector<std::function<void()>> &IGraphicLib::getExecs() {
-    return execs;
-}
-
-std::shared_ptr<SpriteSheet> IGraphicLib::createSpriteSheet(const std::string &texturePath) {
-    return std::make_shared<SpriteSheet>(createTexture(texturePath));
-}
-
-const std::unique_ptr<Registry<ITexture>> &IGraphicLib::getTextures() {
-    return _textures;
-}
-
-const std::unique_ptr<StringRegistry<SpriteProperty>> &IGraphicLib::getSpriteProperties() {
-    return _spriteProperties;
-}
-
-const std::unique_ptr<Registry<ISound>> &IGraphicLib::getSounds() {
-    return _sounds;
-}
-
-std::vector<std::shared_ptr<SpriteSheet>> &IGraphicLib::getSpriteSheets() {
-    return spriteSheets;
-}
-
-const std::unique_ptr<CountRegistry<Sprite>> &IGraphicLib::getSprites() const {
-    return _sprites;
-}
+#endif //R_TYPE_SERVER_SPRITEPROPERTY_H
