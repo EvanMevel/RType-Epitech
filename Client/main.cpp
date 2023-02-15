@@ -42,6 +42,7 @@
 #include "Engine/TickUtil.h"
 #include "StayAliveSystem.h"
 #include "Engine/LuaWrapper.h"
+#include "Client/Textures/CooldownSystem.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -146,6 +147,7 @@ void loadGraphsAndScenes(EnginePtr engine) {
     lib->addSystem<AnimationSystem>();
     lib->addSystem<MouseSystem>();
     lib->addSystem<LifeSystem>();
+    lib->addSystem<CooldownSystem>();
 
 
     graphicReady = true;

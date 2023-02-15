@@ -20,49 +20,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "LifeSystem.h"
-#include "Engine/Engine.h"
-#include "Client/Textures/LifeComponent.h"
-#include "Client/Player/Player.h"
-#include "Engine/Component/HealthComponent.h"
-#include "Engine/Component/PositionComponent.h"
+//
+// Created by gugue on 15/02/2023.
+//
 
-void drawHearts(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entity, EnginePtr engine) {
-    auto life = entity->getComponent<LifeComponent>();
+#include "CooldownSystem.h"
+#include "CooldownComponent.h"
+#include "Engine/Component/PositionComponent.h"
+#include "Client/Player/Player.h"
+
+void drawCooldown(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entity, EnginePtr engine) {
+    auto cooldown = entity->getComponent<CooldownComponent>();
     auto pos = entity->getComponent<PositionComponent>();
 
-    if (life != nullptr && pos != nullptr) {
-        Texture &fullHeartTexture = lib->getTextures()->getValue(Textures::HEART);
-        Texture &emptyHeartTexture = lib->getTextures()->getValue(Textures::EMPTY_HEART);
+    if (cooldown != nullptr && pos != nullptr) {
+        Texture &canShootTexture = lib->getTextures()->getValue(Textures::CAN_SHOOT);
+        Texture &cantShootTexture = lib->getTextures()->getValue(Textures::CANT_SHOOT);
 
-        int width = fullHeartTexture->getWidth() / 4;
         auto player = engine->getModule<Player>();
 
         if (player == nullptr)
             return;
-
-        auto playerLife = player->entity->getComponent<HealthComponent>();
-        int ten = static_cast<int>(playerLife->getHealth()) / 10;
-        int maxten = static_cast<int>((playerLife->getMaxHealth()) / 10);
-
-        int i = 0;
-        for (; i != ten; i++) {
-            lib->drawTextureEx(fullHeartTexture, pos->getX() + i * width, pos->getY(), 0.0, 0.25, ColorCodes::COLOR_WHITE);
-        }
-        for (; i != maxten; i++) {
-            lib->drawTextureEx(emptyHeartTexture, pos->getX() + i * width, pos->getY(), 0.0, 0.25, ColorCodes::COLOR_WHITE);
-        }
+        if (player->cooldown > 0)
+            lib->drawTexture(cantShootTexture, pos->getX() - canShootTexture->getWidth(), pos->getY(), ColorCodes::COLOR_WHITE);
+        else
+            lib->drawTexture(canShootTexture, pos->getX() - canShootTexture->getWidth(), pos->getY(), ColorCodes::COLOR_WHITE);
     }
 }
 
-void LifeSystem::update(std::unique_ptr<Engine> &engine) {
+void CooldownSystem::update(std::unique_ptr<Engine> &engine) {
     auto lib = engine->getModule<IGraphicLib>();
     if (lib == nullptr)
         return;
     if(engine->getScene() == nullptr)
         return;
     std::function<void(std::shared_ptr<Entity>)> draw = [&lib, &engine](std::shared_ptr<Entity> entity) {
-        drawHearts(lib, entity, engine);
+        drawCooldown(lib, entity, engine);
     };
     engine->getScene()->forEachEntity(draw);
 

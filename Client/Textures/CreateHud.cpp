@@ -21,21 +21,28 @@
 // SOFTWARE.
 
 #include "CreateHud.h"
+#include "CooldownComponent.h"
 
 std::shared_ptr<Entity> createHud(const std::shared_ptr<IGraphicLib> &lib, const std::shared_ptr<Scene> &sc,
-                                  Textures texture)
+                                  Textures heartTexture, Textures shootTexture)
 {
-    auto lifeEntity = sc->createEntity();
-    const Texture &lifeTexture = lib->getTextures()->getValue(texture);
+    auto hudEntity = sc->createEntity();
 
-    auto lifeComponent = lifeEntity->addComponent<LifeComponent>();
-    auto x = (lib->getWindow().getWidth() / 2) - ((lifeTexture->getWidth() * 10) / 4);
+    const Texture &lifeTexture = lib->getTextures()->getValue(heartTexture);
+    const Texture &cooldownTexture = lib->getTextures()->getValue(shootTexture);
 
-    lifeEntity->addComponent<PositionComponent>(x, lib->getWindow().getHeight() - (lifeTexture->getHeight() / 2));
+    auto lifeComponent = hudEntity->addComponent<LifeComponent>();
+    auto cooldownComponent = hudEntity->addComponent<CooldownComponent>();
 
-    lifeComponent->setTextureId(texture);
+    auto x = cooldownTexture->getWidth();
+
+    hudEntity->addComponent<PositionComponent>(x, lib->getWindow().getHeight() - (lifeTexture->getHeight() / 2));
+
+    lifeComponent->setTextureId(heartTexture);
     lifeComponent->setWidth(lifeTexture->getWidth());
-    auto scale = (float)lib->getWindow().getHeight() / (float)lifeTexture->getHeight();
-    lifeComponent->setScale(scale);
-    return lifeEntity;
+
+    cooldownComponent->setTextureId(heartTexture);
+    cooldownComponent->setWidth(cooldownTexture->getWidth());
+
+    return hudEntity;
 }

@@ -20,21 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_CREATEHUD_H
-#define R_TYPE_SERVER_CREATEHUD_H
+//
+// Created by gugue on 15/02/2023.
+//
 
-#include <string>
-#include "Engine/Entity.h"
+#ifndef R_TYPE_SERVER_COOLDOWNSYSTEM_H
+#define R_TYPE_SERVER_COOLDOWNSYSTEM_H
+
+
 #include "Engine/Engine.h"
-#include "Engine/Component/PositionComponent.h"
-#include "Engine/Component/EntityTypeComponent.h"
-#include "Client/Textures/FixTextureComponent.h"
-#include "Client/Textures/Textures.h"
-#include "Client/Textures/LifeComponent.h"
 
-std::shared_ptr<Entity> createHud(const std::shared_ptr<IGraphicLib> &lib, const std::shared_ptr<Scene> &sc,
-                                     Textures lifeTexture, Textures cooldownTexture);
-
-#endif //R_TYPE_SERVER_CREATEHUD_H
+class CooldownSystem : public ISystem {
+public:
+    void update(EnginePtr engine) override;
+};
 
 
+#endif //R_TYPE_SERVER_COOLDOWNSYSTEM_H
