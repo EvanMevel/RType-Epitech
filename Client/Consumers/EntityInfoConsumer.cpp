@@ -25,27 +25,30 @@
 #include "Client/Textures/FixTextureComponent.h"
 #include "Client/Sprites/SpriteComponent.h"
 #include "Client/Sounds.h"
+#include "Engine/engineLua/LuaEntityTypeFactory.h"
 
 void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTypeServer server) {
     auto entity = engine->getScene()->getOrCreateEntityById(packet.id);
+    entity->addComponent<PositionComponent>(packet.x, packet.y);
+
     auto lib = engine->getModule<IGraphicLib>();
     std::shared_ptr<SpriteProperty> spriteProp = nullptr;
-    if (packet.type == EntityType::PROJECTILE) {
-        entity::initProjectile(entity, packet.x, packet.y, 0);
+
+    auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
+    typeFactory->initEntity(entity, packet.type);
+
+    if (packet.type == "projectile") {
         if (packet.entityInfo == 0) {
             spriteProp = lib->getSpriteProperties()->getValue("projectile1");
             lib->execOnLibThread(playSound, lib, Sounds::PROJECTILE_SHOOT);
         } else {
             spriteProp = lib->getSpriteProperties()->getValue("projectile2");
         }
-    } else if (packet.type == EntityType::ENEMY) {
-        entity::initEnemy(entity, packet.x, packet.y);
-        std::string spriteName = "enemy" + std::to_string(packet.entityInfo + 1);
-        spriteProp = lib->getSpriteProperties()->getValue(spriteName);
-    } else if (packet.type == EntityType::PLAYER) {
-        entity::initPlayer(entity, packet.x, packet.y);
+    } else if (packet.type == "player") {
         std::string spriteName = "player" + std::to_string(packet.entityInfo + 1);
         spriteProp = lib->getSpriteProperties()->getValue(spriteName);
+    } else if (packet.type.find("enemy") != std::string::npos) {
+        spriteProp = lib->getSpriteProperties()->getValue(packet.type);
     }
     if (spriteProp != nullptr) {
         auto sprite = spriteProp->createSprite(spriteProp);

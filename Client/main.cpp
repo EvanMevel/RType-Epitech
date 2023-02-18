@@ -164,10 +164,10 @@ void loadAll() {
     std::unique_ptr<Engine> engine = std::make_unique<Engine>();
 
     auto luaLoad = engine->registerModule<LuaLoader>();
+    auto typeFactory = engine->registerModule<LuaEntityTypeFactory>();
 
     luaLoad->loadFolder("../config");
-
-    //auto types = loader.loadEntityTypes();
+    luaLoad->loadEntityTypes(typeFactory);
 
     std::thread graphThread(startGraph, std::ref(engine));
 

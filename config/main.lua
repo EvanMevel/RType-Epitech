@@ -23,6 +23,26 @@ function loadEntitySprites(graphicLib)
 end
 
 function loadEntityTypes(factory)
-    registerEntityType(factory, "player", 100, 56, 100, 1000)
-    registerEntityType(factory, "projectile", 81, 16, 1, 0)
+    registerEntityType(factory, "player", 100, 56)
+    addComponentToType(factory, "player", "TeamComponent", 0)
+    addComponentToType(factory, "player", "HealthComponent", 100, 1000)
+    addComponentToType(factory, "player", "PhysicComponent", 10)
+
+    registerEntityType(factory, "projectile", 81, 16)
+    addComponentToType(factory, "projectile", "PhysicComponent", 0, 1, 0)
+
+    registerEntityType(factory, "enemy1", 99, 66)
+    addComponentToType(factory, "enemy1", "TeamComponent", 1)
+    addComponentToType(factory, "enemy1", "HealthComponent", 50, 400)
+    addComponentToType(factory, "enemy1", "CooldownComponent", math.floor(ENGINE_TPS * 2))
+    addComponentToType(factory, "enemy1", "PhysicComponent")
+    addComponentToType(factory, "enemy1", "IAComponent")
+
+
+    registerEntityType(factory, "enemy2", 99, 96)
+    addComponentToType(factory, "enemy2", "TeamComponent", 1)
+    addComponentToType(factory, "enemy2", "HealthComponent", 50, 400)
+    addComponentToType(factory, "enemy2", "CooldownComponent", math.floor(ENGINE_TPS * 1.2))
+    addComponentToType(factory, "enemy2", "PhysicComponent")
+    addComponentToType(factory, "enemy2", "IAComponent")
 end

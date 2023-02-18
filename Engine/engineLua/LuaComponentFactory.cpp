@@ -20,21 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_COOLDOWNCOMPONENT_H
-#define R_TYPE_SERVER_COOLDOWNCOMPONENT_H
+#include "LuaComponentFactory.h"
 
+void LuaComponentFactory::addComponent(const std::string &componentName,
+                                       std::function<void(std::shared_ptr<Entity>, std::vector<int>)> component) {
+    _componentFactory[componentName] = component;
+}
 
-#include <cstddef>
-#include "Engine/Component/IComponent.h"
-
-/**
- * @brief Component that stores the cooldown of a weapon
- */
-class CooldownComponent : public IComponent {
-public:
-    size_t current = 0;
-    size_t cooldown;
-};
-
-
-#endif //R_TYPE_SERVER_COOLDOWNCOMPONENT_H
+void LuaComponentFactory::initComponent(const std::string &componentName, std::shared_ptr<Entity> entity,
+                                        std::vector<int> args) {
+    auto it = _componentFactory.find(componentName);
+    if (it != _componentFactory.end()) {
+        it->second(entity, args);
+    }
+}

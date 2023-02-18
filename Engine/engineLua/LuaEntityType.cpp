@@ -22,10 +22,10 @@
 
 #include "LuaEntityType.h"
 
-LuaEntityType::LuaEntityType(const std::string &id, size_t hitboxWidth, size_t hitboxHeight, size_t maxHealth,
-                             size_t invincibilityTime) : _id(id), _hitboxWidth(hitboxWidth),
-                                                         _hitboxHeight(hitboxHeight), _maxHealth(maxHealth),
-                                                         _invincibilityTime(invincibilityTime) {}
+LuaEntityType::LuaEntityType(const std::string &id, size_t hitboxWidth, size_t hitboxHeight) :
+        _id(id), _hitboxWidth(hitboxWidth), _hitboxHeight(hitboxHeight) {
+
+}
 
 const std::string &LuaEntityType::getId() const {
     return _id;
@@ -39,10 +39,10 @@ size_t LuaEntityType::getHitboxHeight() const {
     return _hitboxHeight;
 }
 
-size_t LuaEntityType::getMaxHealth() const {
-    return _maxHealth;
+void LuaEntityType::addComponent(const std::string &name, const std::vector<int> &args) {
+    _components.emplace_back(name, args);
 }
 
-size_t LuaEntityType::getInvincibilityTime() const {
-    return _invincibilityTime;
+const std::vector<std::pair<std::string, std::vector<int>>> &LuaEntityType::getComponents() const {
+    return _components;
 }

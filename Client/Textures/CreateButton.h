@@ -26,10 +26,8 @@
 #include <string>
 #include "Engine/Entity.h"
 #include "Engine/Engine.h"
-#include "Engine/Component/PositionComponent.h"
-#include "Engine/Component/EntityTypeComponent.h"
 #include "Client/Textures/FixTextureComponent.h"
-#include "Client/Textures/Textures.h"
+
 
 /**
  * @brief Create a button entity

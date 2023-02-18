@@ -26,10 +26,12 @@
 #include <iostream>
 #include "LuaEntityType.h"
 #include "Engine/Entity.h"
+#include "LuaComponentFactory.h"
 
 class LuaEntityTypeFactory {
 private:
     std::vector<LuaEntityType> _entityTypes;
+    LuaComponentFactory _componentFactory;
 
 public:
     LuaEntityTypeFactory() = default;
@@ -37,8 +39,14 @@ public:
     void addEntityType(const LuaEntityType &entityType);
 
     void initEntity(std::shared_ptr<Entity> entity, const std::string &entityType);
+
+    LuaComponentFactory &getComponentFactory();
+
+    LuaEntityType &getEntityType(const std::string &entityType);
 };
 
 [[maybe_unused]] int luaRegisterEntityType(lua_State *L);
+
+[[maybe_unused]] int luaAddComponentToType(lua_State *L);
 
 #endif //R_TYPE_SERVER_LUAENTITYTYPEFACTORY_H

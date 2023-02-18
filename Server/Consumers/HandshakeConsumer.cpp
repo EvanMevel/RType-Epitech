@@ -28,13 +28,14 @@
 #include "Engine/Network/Packets/EntityInfoPacket.h"
 #include "Engine/Component/PlayerInfoComponent.h"
 #include "Server/PlayerList.h"
+#include "Engine/engineLua/LuaEntityTypeFactory.h"
 
 HandshakeConsumer::HandshakeConsumer(EnginePtr e) : RTypePacketConsumer(e) {}
 
 static void sendEntitiesInfo(const std::shared_ptr<NetClient>& client, std::shared_ptr<Scene> scene) {
     std::function<void(std::shared_ptr<Entity>)> sendEntityInfo = [&client](std::shared_ptr<Entity> entity) {
         auto pos = entity->getComponent<PositionComponent>();
-        auto type = entity->getComponent<EntityTypeComponent>();
+        auto type = entity->getComponent<EntityTypeComponent2>();
         if (pos && type) {
             EntityInfoPacket packet(entity, type, pos);
             client->sendPacket(packet);
@@ -55,8 +56,10 @@ void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClie
     client->sendPacket(responsePacket);
 
     // Init player
+    auto typeFactory = e->getModule<LuaEntityTypeFactory>();
     auto player = e->getScene()->createEntity();
-    entity::initPlayer(player, 100, 100);
+    typeFactory->initEntity(player, "player");
+    player->addComponent<PositionComponent>(100, 100);
     data->playerId = player->getId();
     auto playerList = e->getModule<PlayerList>();
     int playerNumber = playerList->getAvailable();

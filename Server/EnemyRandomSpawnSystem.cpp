@@ -22,13 +22,35 @@
 
 #include "EnemyRandomSpawnSystem.h"
 #include "Engine/EntityUtils.h"
-#include "RTypeServer.h"
 #include "Engine/Network/Packets/EntityInfoPacket.h"
-#include "CooldownComponent.h"
-#include "EnemyInfoComponent.h"
+#include "Engine/Component/CooldownComponent.h"
 #include "Levels.h"
+#include "Engine/engineLua/LuaEntityTypeFactory.h"
+#include "Engine/Component/IAComponent.h"
 
-EnemyRandomSpawnSystem::EnemyRandomSpawnSystem() : gen(rd()), distrx(0, 400), distry(0, 750), distrType(0, 1) {}
+const std::string enemies[] = {
+    "enemy1",
+    "enemy2"
+};
+
+EnemyRandomSpawnSystem::EnemyRandomSpawnSystem() : gen(rd()), distrx(0, 400), distry(0, 750) {
+    int enemyCount = sizeof(enemies) / sizeof(enemies[0]);
+    distrType = std::uniform_int_distribution<int>(0, enemyCount - 1);
+}
+
+void EnemyRandomSpawnSystem::spawnRandomEntity(std::unique_ptr<Engine> &engine, RTypeServerPtr srv) {
+    auto ent = engine->getScene()->createEntity();
+    int x = 1300 + distrx(gen);
+    int y = 50 + distry(gen);
+    ent->addComponent<PositionComponent>(x, y);
+
+    std::string enemy = enemies[distrType(gen)];
+    auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
+    typeFactory->initEntity(ent, enemy);
+
+    EntityInfoPacket newEntityPacket(ent);
+    srv->broadcast(newEntityPacket);
+}
 
 void EnemyRandomSpawnSystem::update(std::unique_ptr<Engine> &engine) {
     auto levels = engine->getModule<Levels>();
@@ -40,44 +62,23 @@ void EnemyRandomSpawnSystem::update(std::unique_ptr<Engine> &engine) {
         return;
     }
     RTypeServerPtr srv = engine->getModule<RTypeServer>();
-    size_t enemies = 0;
+    size_t enemyCount = 0;
 
-    std::function<void(std::shared_ptr<Entity>)> countEnemies = [&enemies](std::shared_ptr<Entity> ent) {
-        auto type = ent->getComponent<EntityTypeComponent>();
-        if (type && type->getType() == EntityType::ENEMY) {
-            enemies++;
+    std::function<void(std::shared_ptr<Entity>)> countEnemies = [&enemyCount](std::shared_ptr<Entity> ent) {
+        auto ia = ent->getComponent<IAComponent>();
+        if (ia) {
+            enemyCount++;
         }
     };
     engine->getScene()->forEachEntity(countEnemies);
-    if (enemies < levels->enemyCount) {
+    if (enemyCount < levels->enemyCount) {
         levels->enemyDead++;
         levels->enemyCount = 1 + (levels->enemyDead / 2);
     } else {
         return;
     }
-    while (enemies < levels->enemyCount) {
-
-        auto ent = engine->getScene()->createEntity();
-        int x = 1300 + distrx(gen);
-        int y = 50 + distry(gen);
-        entity::initEnemy(ent, x, y);
-
-        EnemyType type = static_cast<EnemyType>(distrType(gen));
-        auto enemyInfo = ent->addComponent<EnemyInfoComponent>();
-        enemyInfo->type = type;
-
-        auto cd = ent->addComponent<CooldownComponent>();
-
-        if (type == EnemyType::BASIC) {
-            cd->cooldown = ENGINE_TPS * 2;
-        } else if (type == EnemyType::FAST) {
-            cd->cooldown = ENGINE_TPS * 1.2;
-            ent->getComponent<HitboxComponent>()->setHeight(32 * 3);
-        }
-
-        enemies++;
-
-        EntityInfoPacket newEntityPacket(ent);
-        srv->broadcast(newEntityPacket);
+    while (enemyCount < levels->enemyCount) {
+        spawnRandomEntity(engine, srv);
+        enemyCount++;
     }
 }

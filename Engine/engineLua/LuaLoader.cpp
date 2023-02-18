@@ -25,6 +25,15 @@
 #include <iostream>
 #include <filesystem>
 #include "Engine/Graphic/IGraphicLib.h"
+#include "Engine/Component/TeamComponent.h"
+#include "Engine/Component/HealthComponent.h"
+#include "Engine/Component/CooldownComponent.h"
+#include "PhysicComponent.h"
+#include "IAComponent.h"
+
+LuaLoader::LuaLoader() {
+    _lua.defineGlobal("ENGINE_TPS", ENGINE_TPS);
+}
 
 static void luaLoadFolder(LuaWrapper &lua, const std::filesystem::directory_entry &folder) {
     for (const auto & entry : std::filesystem::directory_iterator(folder)) {
@@ -43,17 +52,49 @@ void LuaLoader::loadFolder(const std::string &folderPath) {
     luaLoadFolder(_lua, folderEntry);
 }
 
-std::shared_ptr<LuaEntityTypeFactory> LuaLoader::loadEntityTypes() {
-    std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory = std::make_shared<LuaEntityTypeFactory>();
+void addComponentConstructors(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory) {
+    luaEntityTypeFactory->getComponentFactory().addComponent("TeamComponent", [](std::shared_ptr<Entity> entity, std::vector<int> args) {
+        entity->addComponent<TeamComponent>((std::size_t) args[0]);
+    });
+
+    luaEntityTypeFactory->getComponentFactory().addComponent("HealthComponent", [](std::shared_ptr<Entity> entity, std::vector<int> args) {
+        entity->addComponent<HealthComponent>((std::size_t) args[0], (std::size_t) args[1]);
+    });
+
+    luaEntityTypeFactory->getComponentFactory().addComponent("CooldownComponent", [](std::shared_ptr<Entity> entity, std::vector<int> args) {
+        entity->addComponent<CooldownComponent>((std::size_t) args[0]);
+    });
+
+    luaEntityTypeFactory->getComponentFactory().addComponent("PhysicComponent", [](std::shared_ptr<Entity> entity, std::vector<int> args) {
+        auto physicComponent = entity->addComponent<PhysicComponent>();
+        if (args.empty()) {
+            return;
+        }
+
+        physicComponent->maxVelocity = (std::size_t) args[0];
+        if (args.size() > 1) {
+            physicComponent->accelerationSlow = (std::size_t) args[1];
+        }
+        if (args.size() > 2) {
+            physicComponent->velocitySlow = (std::size_t) args[2];
+        }
+    });
+
+    luaEntityTypeFactory->getComponentFactory().addComponent("IAComponent", [](std::shared_ptr<Entity> entity, std::vector<int> args) {
+        entity->addComponent<IAComponent>();
+    });
+}
+
+void LuaLoader::loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory) {
     void *luaEntityTypeFactoryPtr = luaEntityTypeFactory.get();
 
     _lua.registerFunction("registerEntityType", luaRegisterEntityType);
+    _lua.registerFunction("addComponentToType", luaAddComponentToType);
 
     auto func = _lua.getFunction<VoidType, void*>("loadEntityTypes");
-
     func.call(luaEntityTypeFactoryPtr);
 
-    return luaEntityTypeFactory;
+    addComponentConstructors(luaEntityTypeFactory);
 }
 
 int luaRegisterSprite(lua_State *L) {

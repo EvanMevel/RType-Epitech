@@ -20,29 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ENTITYTYPECOMPONENT_H
-#define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ENTITYTYPECOMPONENT_H
+#ifndef R_TYPE_SERVER_LUACOMPONENTFACTORY_H
+#define R_TYPE_SERVER_LUACOMPONENTFACTORY_H
 
 
-#include <cstddef>
-#include "IComponent.h"
-#include "../EntityType.h"
+#include "Engine/Entity.h"
+#include "LuaWrapper.h"
+#include <functional>
 
-/**
- * @brief Component that defines the type of an entity
- */
-class EntityTypeComponent : public IComponent {
+class LuaComponentFactory {
 private:
-    EntityType _type;
+    std::unordered_map<std::string, std::function<void(std::shared_ptr<Entity> entity, std::vector<int>)>> _componentFactory;
+
 public:
-    EntityTypeComponent();
+    LuaComponentFactory() = default;
 
-    explicit EntityTypeComponent(EntityType type);
+    void addComponent(const std::string &componentName, std::function<void(std::shared_ptr<Entity> entity, std::vector<int>)> component);
 
-    EntityType getType() const;
-
-    [[maybe_unused]] void setType(EntityType type);
+    void initComponent(const std::string &componentName, std::shared_ptr<Entity> entity, std::vector<int> args);
 };
 
-
-#endif //B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ENTITYTYPECOMPONENT_H
+#endif //R_TYPE_SERVER_LUACOMPONENTFACTORY_H

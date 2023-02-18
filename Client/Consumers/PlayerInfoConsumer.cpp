@@ -28,15 +28,18 @@
 #include "Client/Player/PlayerMoveSystem.h"
 #include "Client/Player/PlayerShootSystem.h"
 #include "Client/Sprites/SpriteComponent.h"
+#include "Engine/engineLua/LuaEntityTypeFactory.h"
 
 PlayerInfoConsumer::PlayerInfoConsumer() = default;
 
 void PlayerInfoConsumer::consume(PlayerInfoPacket &packet, EnginePtr engine, RTypeServer server) {
-    auto player = engine->getScene()->getOrCreateEntityById(packet.playerId);
+    auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
     auto lib = engine->getModule<IGraphicLib>();
-    entity::initPlayer(player, packet.x, packet.y);
 
-    std::string spriteName = "player" + std::to_string(packet.playerNumber);
+    auto player = engine->getScene()->getOrCreateEntityById(packet.playerId);
+    typeFactory->initEntity(player, "player");
+
+    std::string spriteName = "player" + std::to_string(packet.playerNumber + 1);
     auto spriteProp = lib->getSpriteProperties()->getValue(spriteName);
     auto sprite = spriteProp->createSprite(spriteProp);
     int spriteId = lib->getSprites()->add(sprite);

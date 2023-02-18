@@ -21,3 +21,7 @@
 // SOFTWARE.
 
 #include "CooldownComponent.h"
+
+CooldownComponent::CooldownComponent() {}
+
+CooldownComponent::CooldownComponent(size_t cooldown) : cooldown(cooldown) {}

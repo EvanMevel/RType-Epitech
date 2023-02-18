@@ -105,6 +105,8 @@ public:
 
     void registerFunction(std::string name, lua_CFunction func);
 
+    void defineGlobal(std::string name, int value);
+
 };
 
 #endif //R_TYPE_SERVER_LUAWRAPPER_H

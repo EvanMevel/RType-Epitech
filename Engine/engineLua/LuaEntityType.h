@@ -30,11 +30,9 @@ private:
     std::string _id;
     std::size_t _hitboxWidth;
     std::size_t _hitboxHeight;
-    std::size_t _maxHealth;
-    std::size_t _invincibilityTime;
+    std::vector<std::pair<std::string, std::vector<int>>> _components;
 public:
-    LuaEntityType(const std::string &id, size_t hitboxWidth, size_t hitboxHeight, size_t maxHealth,
-                  size_t invincibilityTime);
+    LuaEntityType(const std::string &id, size_t hitboxWidth, size_t hitboxHeight);
 
     const std::string &getId() const;
 
@@ -42,9 +40,9 @@ public:
 
     size_t getHitboxHeight() const;
 
-    size_t getMaxHealth() const;
+    void addComponent(const std::string &name, const std::vector<int> &args);
 
-    size_t getInvincibilityTime() const;
+    const std::vector<std::pair<std::string, std::vector<int>>> &getComponents() const;
 };
 
 

@@ -20,20 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "EntityTypeComponent.h"
+#ifndef R_TYPE_SERVER_IACOMPONENT_H
+#define R_TYPE_SERVER_IACOMPONENT_H
 
-EntityTypeComponent::EntityTypeComponent() : _type(EntityType::NONE) {
+#include "IComponent.h"
 
-}
+class IAComponent : public IComponent {
 
-EntityTypeComponent::EntityTypeComponent(EntityType type) : _type(type) {
+};
 
-}
-
-EntityType EntityTypeComponent::getType() const {
-    return _type;
-}
-
-[[maybe_unused]] void EntityTypeComponent::setType(EntityType type) {
-    _type = type;
-}
+#endif //R_TYPE_SERVER_IACOMPONENT_H

@@ -32,9 +32,12 @@ private:
     LuaWrapper _lua;
 
 public:
+
+    LuaLoader();
+
     void loadFolder(const std::string &folderPath);
 
-    std::shared_ptr<LuaEntityTypeFactory> loadEntityTypes();
+    void loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory);
 
     void loadEntitySprites(std::shared_ptr<IGraphicLib> graphicLib);
 };

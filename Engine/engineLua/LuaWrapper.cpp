@@ -38,3 +38,8 @@ int LuaWrapper::doFile(const std::string &filename) {
 void LuaWrapper::registerFunction(std::string name, lua_CFunction func) {
     lua_register(L, name.c_str(), func);
 }
+
+void LuaWrapper::defineGlobal(std::string name, int value) {
+    lua_pushinteger(L, value);
+    lua_setglobal(L, name.c_str());
+}
