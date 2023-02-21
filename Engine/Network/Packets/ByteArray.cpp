@@ -24,7 +24,19 @@
 
 
 ByteArray& operator<<(ByteArray &buffer, const std::string &value) {
+    unsigned int size = (unsigned int) value.length();
+    buffer.write(size);
     buffer.write(value.c_str(), value.length());
+    return buffer;
+}
+
+ByteArray& operator>>(ByteArray &buffer, std::string &value) {
+    unsigned int size = 0;
+    buffer.read(size);
+    char buff[size + 1];
+    buffer.read(buff, size);
+    buff[size] = '\0';
+    value = buff;
     return buffer;
 }
 

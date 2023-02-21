@@ -23,13 +23,10 @@
 #include <iostream>
 #include "Engine/Engine.h"
 #include "RTypeServer.h"
-#include "Engine/EntityUtils.h"
 #include "Engine/TickUtil.h"
 #include "Server/Consumers/PingPacketConsumer.h"
 #include "TimeoutSystem.h"
 #include "Server/Consumers/HandshakeConsumer.h"
-#include "Engine/Component/HitboxComponent.h"
-#include "Engine/Component/TeamComponent.h"
 #include "ServerVelocitySystem.h"
 #include "Server/Consumers/PlayerMoveConsumer.h"
 #include "Server/Consumers/PlayerShootConsumer.h"
@@ -40,6 +37,7 @@
 #include "PacketSendingScene.h"
 #include "Levels.h"
 #include "PlayerList.h"
+#include "Engine/engineLua/LuaLoader.h"
 
 std::atomic<bool> running = true;
 
@@ -82,16 +80,6 @@ void stopThread(EnginePtr engine) {
 
     do {
         std::cin >> str;
-        if (str == "a") {
-            auto ent = engine->getScene()->getOrCreateEntityById(100);
-            auto physics = ent->getOrCreate<PhysicComponent>();
-            physics->acceleration.setX(5);
-        } else if (str == "z") {
-            auto ent = engine->getScene()->getOrCreateEntityById(100);
-            auto physics = ent->getOrCreate<PhysicComponent>();
-            physics->acceleration.setX(-5);
-
-        }
     } while (str != "q");
 
     log() << "Closing..." << std::endl;
@@ -110,16 +98,22 @@ void createScene(EnginePtr engine) {
     RTypeServerPtr srv = engine->registerModule<RTypeServer>(engine, serverIp, serverport);
     auto sc = engine->createScene<PacketSendingScene>(srv);
     engine->setScene(sc);
-
 }
 
 int main()
 {
-    std::unique_ptr<Engine> e = std::make_unique<Engine>(100);
-    createScene(e);
-    std::thread t = std::thread(stopThread, std::ref(e));
+    std::unique_ptr<Engine> engine = std::make_unique<Engine>(100);
 
-    runServer(e);
+    auto luaLoad = engine->registerModule<LuaLoader>();
+    auto typeFactory = engine->registerModule<LuaEntityTypeFactory>();
+
+    luaLoad->loadFolder("config");
+    luaLoad->loadEntityTypes(typeFactory);
+
+    createScene(engine);
+    std::thread t = std::thread(stopThread, std::ref(engine));
+
+    runServer(engine);
 
     t.join();
 

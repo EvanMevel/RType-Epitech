@@ -67,6 +67,8 @@ std::shared_ptr<Scene> mainMenu(EnginePtr engine)
 
     createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.85) - (100 / 2),
                  Textures::IP_BUTTON, ipButtonClick);
+
+    //auto optionButton = createButton(engine,sc,"img_3.png",width/2-(400/2),height*0.65-(100/2));
     //auto quitButton = createButton(engine,sc,"img.png",width/2-(400/2),height*0.85-(100/2));
 
     return sc;

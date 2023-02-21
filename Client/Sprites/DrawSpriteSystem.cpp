@@ -28,7 +28,10 @@ void drawEntitySprite(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> 
     auto spriteComponent = entity->getComponent<SpriteComponent>();
     auto positionComponent = entity->getComponent<PositionComponent>();
     if (spriteComponent && positionComponent) {
-        auto sprite = lib->getSprites()->getValue(spriteComponent->getSpriteId());
+        int spriteId = spriteComponent->getSpriteId();
+        auto sprite = lib->getSprites()->get(spriteId);
+        if (sprite == nullptr)
+            return;
         sprite->updateRect();
         lib->drawSprite(sprite, positionComponent->getX(), positionComponent->getY(), ColorCodes::COLOR_WHITE);
     }

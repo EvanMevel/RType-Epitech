@@ -39,6 +39,9 @@
 #include "IMusic.h"
 #include "ISound.h"
 #include "Engine/Registry.h"
+#include "Engine/StringRegistry.h"
+#include "Sprite.h"
+#include "Engine/CountRegistry.h"
 
 class Engine;
 
@@ -54,8 +57,10 @@ private:
     std::unordered_map<std::type_index, std::any> modules;
     std::vector<std::function<void()>> execs;
     std::unique_ptr<Registry<ITexture>> _textures = std::make_unique<Registry<ITexture>>();
-    std::unique_ptr<Registry<Sprite>> _sprites = std::make_unique<Registry<Sprite>>();
     std::unique_ptr<Registry<ISound>> _sounds = std::make_unique<Registry<ISound>>();
+    std::vector<std::shared_ptr<SpriteSheet>> spriteSheets;
+    std::unique_ptr<StringRegistry<SpriteProperty>> _spriteProperties = std::make_unique<StringRegistry<SpriteProperty>>();
+    std::unique_ptr<CountRegistry<Sprite>> _sprites = std::make_unique<CountRegistry<Sprite>>();
 public:
     virtual ~IGraphicLib();
 
@@ -114,9 +119,14 @@ public:
 
     const std::unique_ptr<Registry<ITexture>> &getTextures();
 
-    const std::unique_ptr<Registry<Sprite>> &getSprites();
+    const std::unique_ptr<StringRegistry<SpriteProperty>> &getSpriteProperties();
 
     const std::unique_ptr<Registry<ISound>> &getSounds();
+
+    std::vector<std::shared_ptr<SpriteSheet>> &getSpriteSheets();
+
+    const std::unique_ptr<CountRegistry<Sprite>> &getSprites() const;
+
 };
 
 template<class SoundType>

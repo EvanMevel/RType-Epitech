@@ -20,20 +20,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "EntityTypeComponent.h"
+#ifndef R_TYPE_SERVER_SPRITEPROPERTY_H
+#define R_TYPE_SERVER_SPRITEPROPERTY_H
 
-EntityTypeComponent::EntityTypeComponent() : _type(EntityType::NONE) {
+#include <memory>
+#include "Engine/Rectangle.h"
+#include "ITexture.h"
 
-}
+class Sprite;
 
-EntityTypeComponent::EntityTypeComponent(EntityType type) : _type(type) {
+/**
+ * @brief Sprite class
+ */
+class SpriteProperty {
+public:
+    std::shared_ptr<ITexture> texture;
+    int startX;
+    int startY;
 
-}
+    int lengthX;
+    int lengthY;
 
-EntityType EntityTypeComponent::getType() const {
-    return _type;
-}
+    int repeatX;
+    int repeatY;
 
-[[maybe_unused]] void EntityTypeComponent::setType(EntityType type) {
-    _type = type;
-}
+    std::size_t frameSpeed;
+
+    float scale = 1.0f;
+
+    SpriteProperty(const std::shared_ptr<ITexture> &texture, int startX, int startY, int lengthX, int lengthY, int repeatX,
+                   int repeatY, std::size_t frameSpeed);
+
+    SpriteProperty(const std::shared_ptr<ITexture> &texture, int startX, int startY, int lengthX, int lengthY, int repeatX,
+                   int repeatY, std::size_t frameSpeed, float scale);
+
+    std::shared_ptr<Sprite> createSprite(std::shared_ptr<SpriteProperty> spriteProperty);
+
+    void updateRect(std::size_t &currentFrame, Rectangle &rect);
+};
+
+
+#endif //R_TYPE_SERVER_SPRITEPROPERTY_H

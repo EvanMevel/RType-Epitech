@@ -25,10 +25,6 @@
 
 #include "IPacket.h"
 #include "Engine/Entity.h"
-#include "Engine/EntityType.h"
-#include "Engine/Component/EntityTypeComponent.h"
-#include "Engine/Component/PositionComponent.h"
-#include "Engine/Component/PhysicComponent.h"
 
 /**
  * @brief EntityVelocityPacket is a packet used to send position, acceleration and velocity of the Entity

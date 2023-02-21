@@ -23,33 +23,28 @@
 #include "EntityInfoPacket.h"
 #include "Engine/EntityUtils.h"
 #include "Engine/Component/PlayerInfoComponent.h"
-#include "Server/EnemyInfoComponent.h"
+#include "TeamComponent.h"
 
-EntityInfoPacket::EntityInfoPacket() : id(0), type(EntityType::ENEMY), x(0), y(0) {}
+EntityInfoPacket::EntityInfoPacket() : id(0), type("none"), x(0), y(0) {}
 
 EntityInfoPacket::EntityInfoPacket(EntityPtr entity) :
-    EntityInfoPacket(entity, entity->getComponent<EntityTypeComponent>(), entity->getComponent<PositionComponent>()) {
+    EntityInfoPacket(entity, entity->getComponent<EntityTypeComponent2>(), entity->getComponent<PositionComponent>()) {
 }
 
-EntityInfoPacket::EntityInfoPacket(EntityPtr entity, std::shared_ptr<EntityTypeComponent> type,
+EntityInfoPacket::EntityInfoPacket(EntityPtr entity, std::shared_ptr<EntityTypeComponent2> type,
                                    std::shared_ptr<PositionComponent> pos) {
     this->id = entity->getId();
     if (type) {
-        this->type = type->getType();
-        if (type->getType() == EntityType::PROJECTILE) {
+        this->type = type->getEntityType();
+        if (this->type == "projectile") {
             auto team = entity->getComponent<TeamComponent>();
             if (team) {
                 this->entityInfo = (int) team->getTeam();
             }
-        } else if (type->getType() == EntityType::PLAYER) {
+        } else if (this->type == "player") {
             auto playerInfo = entity->getComponent<PlayerInfoComponent>();
             if (playerInfo) {
                 this->entityInfo = playerInfo->getPlayerNumber();
-            }
-        } else if (type->getType() == EntityType::ENEMY) {
-            auto enemyInfo = entity->getComponent<EnemyInfoComponent>();
-            if (enemyInfo) {
-                this->entityInfo = (int) enemyInfo->type;
             }
         }
     }
@@ -60,13 +55,9 @@ EntityInfoPacket::EntityInfoPacket(EntityPtr entity, std::shared_ptr<EntityTypeC
 }
 
 void EntityInfoPacket::write(ByteArray &buffer) const {
-    buffer << id << static_cast<int>(type) << x << y << entityInfo;
+    buffer << id << type << x << y << entityInfo;
 }
 
 void EntityInfoPacket::read(ByteArray &buffer) {
-    buffer >> id;
-    int ptype;
-    buffer >> ptype;
-    this->type = static_cast<EntityType>(ptype);
-    buffer >> x >> y >> entityInfo;
+    buffer >> id >> type >> x >> y >> entityInfo;
 }

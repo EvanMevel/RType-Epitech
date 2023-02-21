@@ -21,6 +21,8 @@
 // SOFTWARE.
 
 #include "EntityVelocityPacketConsumer.h"
+#include "Engine/Component/PositionComponent.h"
+#include "Engine/Component/PhysicComponent.h"
 
 void EntityVelocityPacketConsumer::consume(EntityVelocityPacket &packet, EnginePtr engine,
                                            RTypeServer server) {
