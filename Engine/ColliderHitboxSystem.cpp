@@ -28,14 +28,19 @@
 #include "ColliderComponent.h"
 #include "Network/Packets/DamagePacket.h"
 #include "Server/RTypeServer.h"
+#include "EntityTypeComponent2.h"
 
 
 static void onDamage(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)
 {
     auto server = engine->getModule<RTypeServer>();
+    auto entityType = touched->getComponent<EntityTypeComponent2>();
 
-    DamagePacket packet(touched, damages);
-    server->broadcast(packet);
+    if (entityType != nullptr && entityType->getEntityType() == "player") {
+        std::cout << "Damages dealed : " << damages << std::endl;
+        DamagePacket packet(touched, damages);
+        server->broadcast(packet);
+    }
 }
 
 void ColliderHitboxSystem::update(EnginePtr engine) {

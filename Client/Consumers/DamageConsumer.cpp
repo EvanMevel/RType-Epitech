@@ -27,9 +27,5 @@ void DamageConsumer::consume(DamagePacket &packet, std::unique_ptr<Engine> &engi
     auto entity = engine->getScene()->getOrCreateEntityById(packet.playerId);
     auto health = entity->getOrCreate<HealthComponent>();
 
-    std::cout << "life before hit : " << health->getHealth() << std::endl;
-
-    health->setHealth(packet.health - packet.damage);
-
-    std::cout << "life after hit : " << health->getHealth() << std::endl;
+    health->setHealth(packet.health);
 }
