@@ -23,8 +23,6 @@
 #include <iostream>
 #include "Scene.h"
 #include "Engine.h"
-#include "EntityTypeComponent.h"
-#include "TimeUtil.h"
 
 Scene::~Scene() {
 }

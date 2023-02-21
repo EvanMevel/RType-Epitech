@@ -59,7 +59,7 @@ std::shared_ptr<Scene> mainMenu(EnginePtr engine)
                  Textures::PLAY_BUTTON, playButtonClick);
 
 
-    //auto optionButton = createButton(engine,sc,"assets/img_3.png",width/2-(400/2),height*0.65-(100/2));
+    //auto optionButton = createButton(engine,sc,"img_3.png",width/2-(400/2),height*0.65-(100/2));
     //auto quitButton = createButton(engine,sc,"img.png",width/2-(400/2),height*0.85-(100/2));
 
     return sc;

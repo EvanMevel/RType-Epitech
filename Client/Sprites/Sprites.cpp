@@ -23,8 +23,8 @@
 #include "Sprites.h"
 
 void loadSprites(const std::shared_ptr<IGraphicLib> &lib) {
-    const std::unique_ptr<Registry<Sprite>> &spriteRegistry = lib->getSprites();
-    auto playerSpriteSheet = lib->createSpriteSheet("assets/r-typesheet42.gif");
+    /*const std::unique_ptr<Registry<Sprite>> &spriteRegistry = lib->getSprites();
+    auto playerSpriteSheet = lib->createSpriteSheet("r-typesheet42.gif");
 
     spriteRegistry->registerValue(Sprites::PLAYER_1,
                                   playerSpriteSheet->createSprite(0, 3, 33, 14, 5, 0, 30, 4.0f));
@@ -35,7 +35,7 @@ void loadSprites(const std::shared_ptr<IGraphicLib> &lib) {
     spriteRegistry->registerValue(Sprites::PLAYER_4,
                                   playerSpriteSheet->createSprite(0, 54, 33, 14, 5, 0, 30, 4.0f));
 
-    auto projSpriteSheet = lib->createSpriteSheet("assets/r-typesheet1.gif");
+    auto projSpriteSheet = lib->createSpriteSheet("r-typesheet1.gif");
 
     auto projSprite = projSpriteSheet->createSprite(103, 170, 81, 16, 2, 0, 30);
     auto projSprite2 = projSpriteSheet->createSprite(267, 170, 81, 16, 2, 0, 30);
@@ -43,13 +43,13 @@ void loadSprites(const std::shared_ptr<IGraphicLib> &lib) {
     spriteRegistry->registerValue(Sprites::PROJECTILE_2, projSprite2);
 
 
-    auto enemySpriteSheet = lib->createSpriteSheet("assets/r-typesheet23.gif");
+    auto enemySpriteSheet = lib->createSpriteSheet("r-typesheet23.gif");
 
     auto enemySprite = enemySpriteSheet->createSprite(0, 6, 33, 22, 8, 0, 30, 3.0f);
     spriteRegistry->registerValue(Sprites::ENEMY_1, enemySprite);
 
-    auto enemySpriteSheet2 = lib->createSpriteSheet("assets/r-typesheet7.gif");
+    auto enemySpriteSheet2 = lib->createSpriteSheet("r-typesheet7.gif");
     auto enemySprite2 = enemySpriteSheet2->createSprite(1, 34, 33, 32, 3, 0, 30, 3.0f);
 
-    spriteRegistry->registerValue(Sprites::ENEMY_2, enemySprite2);
+    spriteRegistry->registerValue(Sprites::ENEMY_2, enemySprite2);*/
 }

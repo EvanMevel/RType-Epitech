@@ -41,7 +41,7 @@
 #include "MouseSystem.h"
 #include "Engine/TickUtil.h"
 #include "StayAliveSystem.h"
-#include "Engine/LuaWrapper.h"
+#include "Engine/engineLua/LuaLoader.h"
 #include "Client/Textures/CooldownSystem.h"
 #include <mutex>
 #include <condition_variable>
@@ -99,7 +99,7 @@ void loadNetwork(EnginePtr engine) {
 void graphicLoop(EnginePtr engine) {
     auto lib = engine->getModule<IGraphicLib>();
     IWindow &window = lib->getWindow();
-    auto music = lib->createMusic("assets/GameMusic.mp3");
+    auto music = lib->createMusic("GameMusic.mp3");
     lib->playMusic(music);
     while (!window.shouldClose()) {
         auto it = lib->getExecs().begin();
@@ -133,7 +133,9 @@ void loadGraphsAndScenes(EnginePtr engine) {
     std::cout << "[Graphic] Window created" << std::endl;
     loadTextures(lib);
     std::cout << "[Graphic] Textures ready" << std::endl;
-    loadSprites(lib);
+
+    engine->getModule<LuaLoader>()->loadEntitySprites(lib);
+
     std::cout << "[Graphic] Sprites ready" << std::endl;
     loadSounds(lib);
     std::cout << "[Graphic] Sounds ready" << std::endl;
@@ -165,6 +167,12 @@ void startGraph(EnginePtr engine) {
 void loadAll() {
     std::unique_ptr<Engine> engine = std::make_unique<Engine>();
 
+    auto luaLoad = engine->registerModule<LuaLoader>();
+    auto typeFactory = engine->registerModule<LuaEntityTypeFactory>();
+
+    luaLoad->loadFolder("config");
+    luaLoad->loadEntityTypes(typeFactory);
+
     std::thread graphThread(startGraph, std::ref(engine));
 
     loadNetwork(engine);
@@ -172,37 +180,8 @@ void loadAll() {
     graphThread.join();
 }
 
-int cAdd(lua_State *L)
-{
-    double n1 = lua_tonumber(L, 1);
-    double n2 = lua_tonumber(L, 2);
-
-    double sum = n1 + n2;
-
-    lua_pushnumber(L,sum);
-
-    return 1;
-}
-
 int main()
 {
-
-    LuaWrapper lua;
-
-    lua.registerFunction("cAdd", cAdd);
-
-    int fi = lua.doFile("../Client/main.lua");
-
-    std::cout << "File returned: " << fi << std::endl;
-
-    auto func = lua.getFunction<VoidType, int, std::string>("MyLuaFunction");
-    func.call(42, "Hello World");
-
-    auto test2 = lua.getFunction<int, int>("TestLua");
-    int res = test2.call(42);
-
-    std::cout << "Res: " << res << std::endl;
-
     loadAll();
 
     return 0;

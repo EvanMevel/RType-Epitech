@@ -23,6 +23,6 @@
 #include "Sounds.h"
 
 void loadSounds(const std::shared_ptr<IGraphicLib> &lib) {
-    lib->registerSound(Sounds::PROJECTILE_SHOOT, "assets/basicShoot.ogg");
-    lib->registerSound(Sounds::PROJECTILE_HIT, "assets/projectile-hit.ogg");
+    lib->registerSound(Sounds::PROJECTILE_SHOOT, "basicShoot.ogg");
+    lib->registerSound(Sounds::PROJECTILE_HIT, "projectile-hit.ogg");
 }

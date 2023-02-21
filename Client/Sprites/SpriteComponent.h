@@ -24,7 +24,7 @@
 #define R_TYPE_SERVER_SPRITECOMPONENT_H
 
 #include "Engine/Component/IComponent.h"
-#include "Engine/Graphic/Sprite.h"
+#include "Engine/Graphic/SpriteProperty.h"
 #include "Sprites.h"
 
 /**
@@ -32,13 +32,15 @@
  */
 class SpriteComponent : public IComponent {
 private:
-    Sprites spriteId;
+    int spriteId;
 public:
     SpriteComponent();
 
-    Sprites getSpriteId() const;
+    explicit SpriteComponent(int spriteId);
 
-    void setSpriteId(Sprites spriteId);
+    int getSpriteId() const;
+
+    void setSpriteId(int spriteId);
 };
 
 

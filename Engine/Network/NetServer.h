@@ -27,6 +27,7 @@
 #include <utility>
 #include <ostream>
 #include <functional>
+#include <mutex>
 #include "CrossPlatformSocket.h"
 #include "PacketReceiver.h"
 #include "PacketSender.h"

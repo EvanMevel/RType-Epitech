@@ -27,7 +27,7 @@
 #include "IPacket.h"
 #include "Engine/Entity.h"
 #include "Engine/EntityType.h"
-#include "Engine/Component/EntityTypeComponent.h"
+#include "Engine/Component/EntityTypeComponent2.h"
 #include "Engine/Component/PositionComponent.h"
 
 /**
@@ -37,7 +37,7 @@ class EntityInfoPacket : public IPacket {
 public:
     static const int ID = 7;
     EntityId id;
-    EntityType type;
+    std::string type;
     int x;
     int y;
     int entityInfo = 0;
@@ -46,7 +46,7 @@ public:
 
     explicit EntityInfoPacket(EntityPtr entity);
 
-    EntityInfoPacket(EntityPtr entity, std::shared_ptr<EntityTypeComponent> type, std::shared_ptr<PositionComponent> pos);
+    EntityInfoPacket(EntityPtr entity, std::shared_ptr<EntityTypeComponent2> type, std::shared_ptr<PositionComponent> pos);
 
     void write(ByteArray &buffer) const override;
 

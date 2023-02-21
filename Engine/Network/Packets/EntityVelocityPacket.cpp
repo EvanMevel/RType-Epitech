@@ -21,6 +21,8 @@
 // SOFTWARE.
 
 #include "EntityVelocityPacket.h"
+#include "Engine/Component/PositionComponent.h"
+#include "Engine/Component/PhysicComponent.h"
 
 
 EntityVelocityPacket::EntityVelocityPacket() : entityId(0), pos(0, 0),

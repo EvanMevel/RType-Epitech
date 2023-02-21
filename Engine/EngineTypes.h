@@ -25,6 +25,8 @@
 
 #include <memory>
 
+#define ENGINE_TPS 60
+
 class Engine;
 
 using EnginePtr = std::unique_ptr<Engine>&;

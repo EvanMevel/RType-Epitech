@@ -23,16 +23,17 @@
 #include "Textures.h"
 
 void loadTextures(const std::shared_ptr<IGraphicLib> &lib) {
-    lib->registerTexture(Textures::TITLE, "assets/rtype.png");
-    lib->registerTexture(Textures::PLAY_BUTTON, "assets/play-button.png");
+    lib->registerTexture(Textures::TITLE, "rtype.png");
+    lib->registerTexture(Textures::PLAY_BUTTON, "play-button.png");
 
-    lib->registerTexture(Textures::BACKGROUND_1, "assets/Starry background  - Layer 01 - Solid colour.png");
-    lib->registerTexture(Textures::BACKGROUND_2, "assets/Starry background  - Layer 02 - Shadows.png");
-    lib->registerTexture(Textures::BACKGROUND_3, "assets/Starry background  - Layer 02 - Shadows 2.png");
-    lib->registerTexture(Textures::BACKGROUND_4, "assets/Starry background  - Layer 03 - Stars.png");
-    lib->registerTexture(Textures::BACKGROUND_5, "assets/Starry background  - Layer 03 - Stars 2.png");
-    lib->registerTexture(Textures::HEART, "assets/heart.png");
-    lib->registerTexture(Textures::EMPTY_HEART, "assets/empty_heart.png");
-    lib->registerTexture(Textures::CAN_SHOOT, "assets/can_shoot.png");
-    lib->registerTexture(Textures::CANT_SHOOT, "assets/cant_shoot.png");
+    lib->registerTexture(Textures::BACKGROUND_1, "Starry background  - Layer 01 - Solid colour.png");
+    lib->registerTexture(Textures::BACKGROUND_2, "Starry background  - Layer 02 - Shadows.png");
+    lib->registerTexture(Textures::BACKGROUND_3, "Starry background  - Layer 02 - Shadows 2.png");
+    lib->registerTexture(Textures::BACKGROUND_4, "Starry background  - Layer 03 - Stars.png");
+    lib->registerTexture(Textures::BACKGROUND_5, "Starry background  - Layer 03 - Stars 2.png");
+
+    lib->registerTexture(Textures::HEART, "heart.png");
+    lib->registerTexture(Textures::EMPTY_HEART, "empty_heart.png");
+    lib->registerTexture(Textures::CAN_SHOOT, "can_shoot.png");
+    lib->registerTexture(Textures::CANT_SHOOT, "cant_shoot.png");
 }
