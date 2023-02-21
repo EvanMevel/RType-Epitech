@@ -107,7 +107,7 @@ int main()
     auto luaLoad = engine->registerModule<LuaLoader>();
     auto typeFactory = engine->registerModule<LuaEntityTypeFactory>();
 
-    luaLoad->loadFolder("../config");
+    luaLoad->loadFolder("config");
     luaLoad->loadEntityTypes(typeFactory);
 
     createScene(engine);

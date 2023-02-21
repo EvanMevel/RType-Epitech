@@ -166,7 +166,7 @@ void loadAll() {
     auto luaLoad = engine->registerModule<LuaLoader>();
     auto typeFactory = engine->registerModule<LuaEntityTypeFactory>();
 
-    luaLoad->loadFolder("../config");
+    luaLoad->loadFolder("config");
     luaLoad->loadEntityTypes(typeFactory);
 
     std::thread graphThread(startGraph, std::ref(engine));

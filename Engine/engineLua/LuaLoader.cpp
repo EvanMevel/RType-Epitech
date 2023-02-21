@@ -47,7 +47,13 @@ static void luaLoadFolder(LuaWrapper &lua, const std::filesystem::directory_entr
 }
 
 void LuaLoader::loadFolder(const std::string &folderPath) {
-    std::filesystem::directory_entry folderEntry(folderPath);
+    char *rtypeLuaPath = std::getenv("RTYPE_LUA_PATH");
+    std::string luaPath = rtypeLuaPath ? rtypeLuaPath : "";
+    std::string path = luaPath + folderPath;
+    if (!std::filesystem::exists(path)) {
+        throw std::runtime_error("Folder " + path + " does not exist");
+    }
+    std::filesystem::directory_entry folderEntry(path);
 
     luaLoadFolder(_lua, folderEntry);
 }
