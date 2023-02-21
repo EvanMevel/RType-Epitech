@@ -32,7 +32,7 @@ std::shared_ptr<Entity> createHud(const std::shared_ptr<IGraphicLib> &lib, const
     const Texture &cooldownTexture = lib->getTextures()->getValue(shootTexture);
 
     auto lifeComponent = hudEntity->addComponent<LifeComponent>();
-    auto cooldownComponent = hudEntity->addComponent<CooldownComponent>();
+    auto cooldownComponent = hudEntity->addComponent<CooldownComponent2>();
 
     auto x = cooldownTexture->getWidth();
 

@@ -26,14 +26,14 @@
 
 #include "CooldownComponent.h"
 
-float CooldownComponent::getScale() const {
+float CooldownComponent2::getScale() const {
     return scale;
 }
 
-void CooldownComponent::setScale(float scale) {
-    CooldownComponent::scale = scale;
+void CooldownComponent2::setScale(float scale) {
+    CooldownComponent2::scale = scale;
 }
 
-void CooldownComponent::setWidth(int width) {
-    CooldownComponent::width = width;
+void CooldownComponent2::setWidth(int width) {
+    CooldownComponent2::width = width;
 }

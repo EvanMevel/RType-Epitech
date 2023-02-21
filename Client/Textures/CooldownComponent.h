@@ -30,7 +30,7 @@
 
 #include "FixTextureComponent.h"
 
-class CooldownComponent : public FixTextureComponent{
+class CooldownComponent2 : public FixTextureComponent{
 private:
     float scale = 1;
     int width = 0;

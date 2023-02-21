@@ -30,7 +30,7 @@
 #include "Client/Player/Player.h"
 
 void drawCooldown(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entity, EnginePtr engine) {
-    auto cooldown = entity->getComponent<CooldownComponent>();
+    auto cooldown = entity->getComponent<CooldownComponent2>();
     auto pos = entity->getComponent<PositionComponent>();
 
     if (cooldown != nullptr && pos != nullptr) {
