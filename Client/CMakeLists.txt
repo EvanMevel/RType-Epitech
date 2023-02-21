@@ -27,6 +27,7 @@ add_executable(r-type-client
         Consumers/EntityDestroyConsumer.cpp
         Consumers/EntityVelocityPacketConsumer.cpp
         Consumers/ProjectileHitConsumer.cpp
+        Consumers/DamageConsumer.cpp
 
         Sprites/SpriteComponent.cpp
         Sprites/DrawSpriteSystem.cpp
