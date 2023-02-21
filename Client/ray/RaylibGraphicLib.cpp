@@ -37,6 +37,18 @@ RaylibGraphicLib::RaylibGraphicLib() {
     keys[KeyCodes::KEY_A] = ray::KEY_A;
     keys[KeyCodes::KEY_B] = ray::KEY_B;
     keys[KeyCodes::KEY_C] = ray::KEY_C;
+
+    keys[KeyCodes::KEY_KP_0] = ray::KEY_KP_0;
+    keys[KeyCodes::KEY_KP_1] = ray::KEY_KP_1;
+    keys[KeyCodes::KEY_KP_2] = ray::KEY_KP_2;
+    keys[KeyCodes::KEY_KP_3] = ray::KEY_KP_3;
+    keys[KeyCodes::KEY_KP_4] = ray::KEY_KP_4;
+    keys[KeyCodes::KEY_KP_5] = ray::KEY_KP_5;
+    keys[KeyCodes::KEY_KP_6] = ray::KEY_KP_6;
+    keys[KeyCodes::KEY_KP_7] = ray::KEY_KP_7;
+    keys[KeyCodes::KEY_KP_8] = ray::KEY_KP_8;
+    keys[KeyCodes::KEY_KP_9] = ray::KEY_KP_9;
+
     keys[KeyCodes::KEY_UP] = ray::KEY_UP;
     keys[KeyCodes::KEY_DOWN] = ray::KEY_DOWN;
     keys[KeyCodes::KEY_LEFT] = ray::KEY_LEFT;
@@ -142,4 +154,9 @@ std::shared_ptr<ISound> RaylibGraphicLib::createSound(const std::string &soundPa
 void RaylibGraphicLib::playSound(std::shared_ptr<ISound> sound) {
     ray::Sound raylibSound = std::any_cast<ray::Sound>(sound->sound);
     ray::PlaySound(raylibSound);
+}
+
+void RaylibGraphicLib::drawRectangle(int posX, int posY, int width, int height, ColorCodes color) {
+    ray::Color rayColor = std::any_cast<ray::Color>(color);
+    ray::DrawRectangle(posX, posY, width ,height, rayColor);
 }

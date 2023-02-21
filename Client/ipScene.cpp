@@ -20,15 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Textures.h"
+#include "ipScene.h"
 
-void loadTextures(const std::shared_ptr<IGraphicLib> &lib) {
-    lib->registerTexture(Textures::TITLE, "assets/rtype.png");
-    lib->registerTexture(Textures::PLAY_BUTTON, "assets/play-button.png");
-    lib->registerTexture(Textures::IP_BUTTON, "assets/play-button.png");
-    lib->registerTexture(Textures::BACKGROUND_1, "assets/Starry background  - Layer 01 - Solid colour.png");
-    lib->registerTexture(Textures::BACKGROUND_2, "assets/Starry background  - Layer 02 - Shadows.png");
-    lib->registerTexture(Textures::BACKGROUND_3, "assets/Starry background  - Layer 02 - Shadows 2.png");
-    lib->registerTexture(Textures::BACKGROUND_4, "assets/Starry background  - Layer 03 - Stars.png");
-    lib->registerTexture(Textures::BACKGROUND_5, "assets/Starry background  - Layer 03 - Stars 2.png");
+std::shared_ptr<Scene> ipScene(EnginePtr engine){
+    auto sc = engine->createScene<Scene>();
+    auto lib = engine->getModule<IGraphicLib>();
+
+    auto background = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_1,-1);
+    auto fourthground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_2,-2);
+    auto thirdground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_3,-2);
+    auto secondground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_4,-3);
+    auto firstground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_5,-4);
+
+
+    sc->addSystem<VelocitySystem>();
+    return sc;
 }

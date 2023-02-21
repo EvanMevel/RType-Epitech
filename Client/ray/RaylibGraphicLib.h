@@ -45,6 +45,8 @@ public:
 
     void drawText(std::string string, int x, int y, int size, ColorCodes color) override;
 
+    void drawRectangle(int posX, int posY, int width, int height, ColorCodes color) override;
+
     IWindow &getWindow() override;
 
     void closeWindow() override;

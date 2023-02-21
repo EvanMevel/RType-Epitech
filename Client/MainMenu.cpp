@@ -26,6 +26,12 @@
 #include "ClientNetServer.h"
 #include "Engine/Network/Packets/HandshakePacket.h"
 
+static void ipButtonClick(EnginePtr engine) {
+    auto sceneHolder = engine->getModule<SceneHolder>();
+    auto sc = sceneHolder->getValue(Scenes::IP_MENU);
+    engine->setScene(sc);
+}
+
 static void playButtonClick(EnginePtr engine) {
     auto sceneHolder = engine->getModule<SceneHolder>();
     auto sc = sceneHolder->getValue(Scenes::GAME);
@@ -59,7 +65,8 @@ std::shared_ptr<Scene> mainMenu(EnginePtr engine)
                  Textures::PLAY_BUTTON, playButtonClick);
 
 
-    //auto optionButton = createButton(engine,sc,"assets/img_3.png",width/2-(400/2),height*0.65-(100/2));
+    createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.85) - (100 / 2),
+                 Textures::IP_BUTTON, ipButtonClick);
     //auto quitButton = createButton(engine,sc,"img.png",width/2-(400/2),height*0.85-(100/2));
 
     return sc;

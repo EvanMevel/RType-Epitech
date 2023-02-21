@@ -35,6 +35,7 @@ enum class Textures {
     BACKGROUND_3 = 4,
     BACKGROUND_4 = 5,
     BACKGROUND_5 = 6,
+    IP_BUTTON = 7,
 };
 
 void loadTextures(const std::shared_ptr<IGraphicLib> &lib);
