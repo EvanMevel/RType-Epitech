@@ -41,7 +41,7 @@ void drawCooldown(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> enti
 
         if (player == nullptr)
             return;
-        if (player->cooldown > 0)
+        if (player->cooldown > 0 || player->dead)
             lib->drawTexture(cantShootTexture, pos->getX() - canShootTexture->getWidth(), pos->getY(), ColorCodes::COLOR_WHITE);
         else
             lib->drawTexture(canShootTexture, pos->getX() - canShootTexture->getWidth(), pos->getY(), ColorCodes::COLOR_WHITE);

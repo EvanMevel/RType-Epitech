@@ -43,6 +43,7 @@
 #include "Engine/engineLua/LuaLoader.h"
 #include "Client/Consumers/DamageConsumer.h"
 #include "Client/Textures/CooldownSystem.h"
+#include "Client/Textures/LifeSystem.h"
 #include <mutex>
 #include <condition_variable>
 
