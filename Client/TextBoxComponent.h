@@ -26,11 +26,13 @@
 
 #include <string>
 #include <any>
+#include "Engine/Component/IComponent.h"
+#include "Engine/Rectangle.h"
 
-class TextBoxComponent {
+class TextBoxComponent : public IComponent{
 private:
     std::string text;
-    std::any rectangle;
+    Rectangle rectangle;
 public:
     TextBoxComponent();
 
@@ -40,9 +42,9 @@ public:
 
     void setText(const std::string &text);
 
-    const std::any &getRectangle() const;
+    const Rectangle &getRectangle() const;
 
-    void setRectangle(const std::any &rectangle);
+    void setRectangle(const Rectangle &rectangle);
 };
 
 

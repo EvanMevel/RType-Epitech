@@ -112,7 +112,9 @@ enum class KeyCodes {
     KEY_RIGHT_CONTROL,
     KEY_RIGHT_ALT,
     KEY_RIGHT_SUPER,
-    KEY_MENU
+    KEY_MENU,
+    KEY_DOT,
+    KEY_COLON
 };
 
 #endif //R_TYPE_SERVER_KEYCODES_H

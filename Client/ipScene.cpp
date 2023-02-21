@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #include "ipScene.h"
+#include "CreateTextBox.h"
 
 std::shared_ptr<Scene> ipScene(EnginePtr engine){
     auto sc = engine->createScene<Scene>();
@@ -32,6 +33,7 @@ std::shared_ptr<Scene> ipScene(EnginePtr engine){
     auto secondground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_4,-3);
     auto firstground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_5,-4);
 
+    auto textBox = createTextBox(lib,sc,(lib->getWindow().getWidth() / 2) - (800 / 2), (int) (lib->getWindow().getHeight() * 0.45) - (100 / 2));
 
     sc->addSystem<VelocitySystem>();
     return sc;

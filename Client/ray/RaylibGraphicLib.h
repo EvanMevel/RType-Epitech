@@ -34,7 +34,7 @@
 class RaylibGraphicLib : public IGraphicLib {
 private:
     std::unordered_map<ColorCodes, ray::Color> colors;
-    std::unordered_map<KeyCodes, ray::KeyboardKey> keys;
+    std::unordered_map<KeyCodes, int> keys;
     RaylibWindow window;
     RaylibMouse mouse;
 

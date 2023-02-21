@@ -41,6 +41,7 @@
 #include "Engine/TickUtil.h"
 #include "StayAliveSystem.h"
 #include "Engine/engineLua/LuaLoader.h"
+#include "TextBoxSystem.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -146,6 +147,7 @@ void loadGraphsAndScenes(EnginePtr engine) {
     lib->addSystem<DrawSpriteSystem>();
     lib->addSystem<AnimationSystem>();
     lib->addSystem<MouseSystem>();
+    lib->addSystem<TextBoxSystem>();
 
 
     graphicReady = true;

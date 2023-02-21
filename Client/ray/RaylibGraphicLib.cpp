@@ -49,6 +49,9 @@ RaylibGraphicLib::RaylibGraphicLib() {
     keys[KeyCodes::KEY_KP_8] = ray::KEY_KP_8;
     keys[KeyCodes::KEY_KP_9] = ray::KEY_KP_9;
 
+    keys[KeyCodes::KEY_DOT] = ray::KEY_PERIOD;
+    keys[KeyCodes::KEY_COLON] = 58;
+
     keys[KeyCodes::KEY_UP] = ray::KEY_UP;
     keys[KeyCodes::KEY_DOWN] = ray::KEY_DOWN;
     keys[KeyCodes::KEY_LEFT] = ray::KEY_LEFT;
@@ -127,7 +130,7 @@ IMouse &RaylibGraphicLib::getMouse() {
 }
 
 bool RaylibGraphicLib::isKeyDown(KeyCodes code) {
-    ray::KeyboardKey key = keys[code];
+    int key = keys[code];
     return ray::IsKeyDown(key);
 }
 
@@ -158,6 +161,5 @@ void RaylibGraphicLib::playSound(std::shared_ptr<ISound> sound) {
 }
 
 void RaylibGraphicLib::drawRectangle(int posX, int posY, int width, int height, ColorCodes color) {
-    ray::Color rayColor = std::any_cast<ray::Color>(color);
-    ray::DrawRectangle(posX, posY, width ,height, rayColor);
+    ray::DrawRectangle(posX, posY, width ,height, colors[color]);
 }

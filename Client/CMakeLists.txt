@@ -49,4 +49,4 @@ add_executable(r-type-client
         ClientNetServer.cpp
 
         ipScene.cpp
-        TextBoxComponent.cpp)
+        TextBoxComponent.cpp TextBoxSystem.cpp TextBoxSystem.h CreateTextBox.cpp CreateTextBox.h)

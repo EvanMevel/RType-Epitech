@@ -32,11 +32,11 @@ void TextBoxComponent::setText(const std::string &text) {
     TextBoxComponent::text = text;
 }
 
-const std::any &TextBoxComponent::getRectangle() const {
+const Rectangle &TextBoxComponent::getRectangle() const {
     return rectangle;
 }
 
-void TextBoxComponent::setRectangle(const std::any &rectangle) {
+void TextBoxComponent::setRectangle(const Rectangle &rectangle) {
     TextBoxComponent::rectangle = rectangle;
 }
 
