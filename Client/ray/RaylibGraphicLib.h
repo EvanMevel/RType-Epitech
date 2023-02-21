@@ -34,7 +34,6 @@
 class RaylibGraphicLib : public IGraphicLib {
 private:
     std::unordered_map<ColorCodes, ray::Color> colors;
-    std::unordered_map<KeyCodes, int> keys;
     RaylibWindow window;
     RaylibMouse mouse;
 
@@ -58,6 +57,8 @@ public:
     void drawTextureEx(Texture &texture, int x, int y, float rotation, float scale, ColorCodes codes) override;
 
     bool isKeyDown(KeyCodes codes) override;
+
+    int getCharPressed() override;
 
     std::shared_ptr<IAnimation> createAnimation(const std::string &texturePath) override;
 

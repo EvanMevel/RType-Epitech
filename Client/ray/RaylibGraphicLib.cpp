@@ -33,31 +33,6 @@ RaylibGraphicLib::RaylibGraphicLib() {
     colors[ColorCodes::COLOR_GREEN] = ray::GREEN;
     colors[ColorCodes::COLOR_BLUE] = ray::BLUE;
     colors[ColorCodes::COLOR_YELLOW] = ray::YELLOW;
-
-    keys[KeyCodes::KEY_A] = ray::KEY_A;
-    keys[KeyCodes::KEY_B] = ray::KEY_B;
-    keys[KeyCodes::KEY_C] = ray::KEY_C;
-
-    keys[KeyCodes::KEY_KP_0] = ray::KEY_KP_0;
-    keys[KeyCodes::KEY_KP_1] = ray::KEY_KP_1;
-    keys[KeyCodes::KEY_KP_2] = ray::KEY_KP_2;
-    keys[KeyCodes::KEY_KP_3] = ray::KEY_KP_3;
-    keys[KeyCodes::KEY_KP_4] = ray::KEY_KP_4;
-    keys[KeyCodes::KEY_KP_5] = ray::KEY_KP_5;
-    keys[KeyCodes::KEY_KP_6] = ray::KEY_KP_6;
-    keys[KeyCodes::KEY_KP_7] = ray::KEY_KP_7;
-    keys[KeyCodes::KEY_KP_8] = ray::KEY_KP_8;
-    keys[KeyCodes::KEY_KP_9] = ray::KEY_KP_9;
-
-    keys[KeyCodes::KEY_DOT] = ray::KEY_PERIOD;
-    keys[KeyCodes::KEY_COLON] = 58;
-
-    keys[KeyCodes::KEY_UP] = ray::KEY_UP;
-    keys[KeyCodes::KEY_DOWN] = ray::KEY_DOWN;
-    keys[KeyCodes::KEY_LEFT] = ray::KEY_LEFT;
-    keys[KeyCodes::KEY_RIGHT] = ray::KEY_RIGHT;
-    keys[KeyCodes::KEY_SPACE] = ray::KEY_SPACE;
-
 }
 
 IWindow &RaylibGraphicLib::createWindow(int width, int height, std::string title) {
@@ -130,8 +105,7 @@ IMouse &RaylibGraphicLib::getMouse() {
 }
 
 bool RaylibGraphicLib::isKeyDown(KeyCodes code) {
-    int key = keys[code];
-    return ray::IsKeyDown(key);
+    return ray::IsKeyDown(code);
 }
 
 void RaylibGraphicLib::initAudio() {
@@ -162,4 +136,8 @@ void RaylibGraphicLib::playSound(std::shared_ptr<ISound> sound) {
 
 void RaylibGraphicLib::drawRectangle(int posX, int posY, int width, int height, ColorCodes color) {
     ray::DrawRectangle(posX, posY, width ,height, colors[color]);
+}
+
+int RaylibGraphicLib::getCharPressed() {
+    return ray::GetCharPressed();
 }

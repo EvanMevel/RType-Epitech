@@ -92,6 +92,8 @@ public:
 
     virtual bool isKeyDown(KeyCodes) = 0;
 
+    virtual int getCharPressed() = 0;
+
     virtual IMouse &getMouse() = 0;
 
     virtual void initAudio() = 0;

@@ -12,7 +12,13 @@ void drawTextBox(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entit
     if (textBoxComponent != nullptr) {
         auto rect = textBoxComponent->getRectangle();
         lib->drawRectangle(rect.x,rect.y, rect.width, rect.height, ColorCodes::COLOR_WHITE);
+        int key = lib->getCharPressed();
+        while(key > 0) {
+            textBoxComponent->setText(textBoxComponent->getText() + (char) key);
+            key = lib->getCharPressed();
+        }std::cout<<textBoxComponent->getText()<<std::endl;
     }
+
 }
 
 void TextBoxSystem::update(std::unique_ptr<Engine> &engine) {
