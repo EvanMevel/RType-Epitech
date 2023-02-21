@@ -20,29 +20,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ENTITYTYPECOMPONENT_H
-#define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ENTITYTYPECOMPONENT_H
+#ifndef R_TYPE_SERVER_COUNTREGISTRY_H
+#define R_TYPE_SERVER_COUNTREGISTRY_H
 
 
-#include <cstddef>
-#include "IComponent.h"
-#include "../EntityType.h"
+#include <unordered_map>
+#include <memory>
 
-/**
- * @brief Component that defines the type of an entity
- */
-class EntityTypeComponent : public IComponent {
+template<typename Type>
+class CountRegistry {
 private:
-    EntityType _type;
+    std::unordered_map<int, std::shared_ptr<Type>> _data;
+    int currentId = 0;
+
 public:
-    EntityTypeComponent();
+    int add(std::shared_ptr<Type> value) {
+        int id = currentId;
+        currentId++;
+        _data[id] = std::move(value);
+        return id;
+    }
 
-    explicit EntityTypeComponent(EntityType type);
+    std::shared_ptr<Type> &get(int id) {
+        return _data[id];
+    }
 
-    EntityType getType() const;
-
-    [[maybe_unused]] void setType(EntityType type);
 };
 
 
-#endif //B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ENTITYTYPECOMPONENT_H
+#endif //R_TYPE_SERVER_COUNTREGISTRY_H

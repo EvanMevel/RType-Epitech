@@ -20,31 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
-#define R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+#include "LuaComponentFactory.h"
 
-#include "Engine/ISystem.h"
-#include "RTypeServer.h"
-#include <random>
+void LuaComponentFactory::addComponent(const std::string &componentName,
+                                       std::function<void(std::shared_ptr<Entity>, std::vector<int>)> component) {
+    _componentFactory[componentName] = component;
+}
 
-/**
- * @brief System that spawns enemies randomly
- */
-class EnemyRandomSpawnSystem : public ISystem {
-private:
-    size_t count = 0;
-    std::random_device rd;
-    std::mt19937 gen;
-    std::uniform_int_distribution<> distrx;
-    std::uniform_int_distribution<> distry;;
-    std::uniform_int_distribution<> distrType;
-public:
-    EnemyRandomSpawnSystem();
-
-    void spawnRandomEntity(std::unique_ptr<Engine> &engine, RTypeServerPtr srv);
-
-    void update(std::unique_ptr<Engine> &engine) override;
-};
-
-
-#endif //R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+void LuaComponentFactory::initComponent(const std::string &componentName, std::shared_ptr<Entity> entity,
+                                        std::vector<int> args) {
+    auto it = _componentFactory.find(componentName);
+    if (it != _componentFactory.end()) {
+        it->second(entity, args);
+    }
+}

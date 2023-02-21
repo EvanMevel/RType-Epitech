@@ -25,28 +25,34 @@
 #include "Client/Textures/FixTextureComponent.h"
 #include "Client/Sprites/SpriteComponent.h"
 #include "Client/Sounds.h"
+#include "Engine/engineLua/LuaEntityTypeFactory.h"
 
 void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTypeServer server) {
     auto entity = engine->getScene()->getOrCreateEntityById(packet.id);
-    Sprites spriteId = Sprites::SPRITE_ERROR;
-    std::shared_ptr<Sprite> sprite;
-    if (packet.type == EntityType::PROJECTILE) {
-        entity::initProjectile(entity, packet.x, packet.y, 0);
+    entity->addComponent<PositionComponent>(packet.x, packet.y);
+
+    auto lib = engine->getModule<IGraphicLib>();
+    std::shared_ptr<SpriteProperty> spriteProp = nullptr;
+
+    auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
+    typeFactory->initEntity(entity, packet.type);
+
+    if (packet.type == "projectile") {
         if (packet.entityInfo == 0) {
-            spriteId = Sprites::PROJECTILE_1;
-            auto lib = engine->getModule<IGraphicLib>();
+            spriteProp = lib->getSpriteProperties()->getValue("projectile1");
             lib->execOnLibThread(playSound, lib, Sounds::PROJECTILE_SHOOT);
         } else {
-            spriteId = Sprites::PROJECTILE_2;
+            spriteProp = lib->getSpriteProperties()->getValue("projectile2");
         }
-    } else if (packet.type == EntityType::ENEMY) {
-        entity::initEnemy(entity, packet.x, packet.y);
-        spriteId = static_cast<Sprites>(((int) Sprites::ENEMY_1) + packet.entityInfo);
-    } else if (packet.type == EntityType::PLAYER) {
-        entity::initPlayer(entity, packet.x, packet.y);
-        spriteId = static_cast<Sprites>(((int) Sprites::PLAYER_1) + packet.entityInfo);
+    } else if (packet.type == "player") {
+        std::string spriteName = "player" + std::to_string(packet.entityInfo + 1);
+        spriteProp = lib->getSpriteProperties()->getValue(spriteName);
+    } else if (packet.type.find("enemy") != std::string::npos) {
+        spriteProp = lib->getSpriteProperties()->getValue(packet.type);
     }
-    if (spriteId != Sprites::SPRITE_ERROR) {
+    if (spriteProp != nullptr) {
+        auto sprite = spriteProp->createSprite(spriteProp);
+        int spriteId = lib->getSprites()->add(sprite);
         entity->getOrCreate<SpriteComponent>()->setSpriteId(spriteId);
     }
 }

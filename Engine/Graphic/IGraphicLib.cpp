@@ -40,10 +40,18 @@ const std::unique_ptr<Registry<ITexture>> &IGraphicLib::getTextures() {
     return _textures;
 }
 
-const std::unique_ptr<Registry<Sprite>> &IGraphicLib::getSprites() {
-    return _sprites;
+const std::unique_ptr<StringRegistry<SpriteProperty>> &IGraphicLib::getSpriteProperties() {
+    return _spriteProperties;
 }
 
 const std::unique_ptr<Registry<ISound>> &IGraphicLib::getSounds() {
     return _sounds;
+}
+
+std::vector<std::shared_ptr<SpriteSheet>> &IGraphicLib::getSpriteSheets() {
+    return spriteSheets;
+}
+
+const std::unique_ptr<CountRegistry<Sprite>> &IGraphicLib::getSprites() const {
+    return _sprites;
 }

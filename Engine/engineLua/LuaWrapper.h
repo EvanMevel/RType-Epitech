@@ -32,9 +32,9 @@
 #include <any>
 
 extern "C" {
-    #include <lua.h>
-    #include <lualib.h>
-    #include <lauxlib.h>
+    #include "Engine/lua/lua-5.4.4/include/lua.h"
+    #include "Engine/lua/lua-5.4.4/include/lualib.h"
+    #include "Engine/lua/lua-5.4.4/include/lauxlib.h"
 }
 
 class VoidType {};
@@ -60,6 +60,8 @@ public:
                 lua_pushstring(L, std::any_cast<std::string>(vec[i]).c_str());
             } else if (vec[i].type() == typeid(bool)) {
                 lua_pushboolean(L, std::any_cast<bool>(vec[i]));
+            } else if (vec[i].type() == typeid(void*)) {
+                lua_pushlightuserdata(L, std::any_cast<void*>(vec[i]));
             }
         }
         std::any value;
@@ -76,6 +78,8 @@ public:
                 value = std::string(lua_tostring(L, -1));
             } else if (typeid(Ret) == typeid(bool)) {
                 value = (bool) lua_toboolean(L, -1);
+            } else if (typeid(Ret) == typeid(void*)) {
+                value = lua_touserdata(L, -1);
             }
             lua_pop(L, 1);
         }
@@ -100,6 +104,8 @@ public:
     }
 
     void registerFunction(std::string name, lua_CFunction func);
+
+    void defineGlobal(std::string name, int value);
 
 };
 

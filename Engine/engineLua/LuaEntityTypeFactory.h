@@ -20,31 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
-#define R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+#ifndef R_TYPE_SERVER_LUAENTITYTYPEFACTORY_H
+#define R_TYPE_SERVER_LUAENTITYTYPEFACTORY_H
 
-#include "Engine/ISystem.h"
-#include "RTypeServer.h"
-#include <random>
+#include <iostream>
+#include "LuaEntityType.h"
+#include "Engine/Entity.h"
+#include "LuaComponentFactory.h"
 
-/**
- * @brief System that spawns enemies randomly
- */
-class EnemyRandomSpawnSystem : public ISystem {
+class LuaEntityTypeFactory {
 private:
-    size_t count = 0;
-    std::random_device rd;
-    std::mt19937 gen;
-    std::uniform_int_distribution<> distrx;
-    std::uniform_int_distribution<> distry;;
-    std::uniform_int_distribution<> distrType;
+    std::vector<LuaEntityType> _entityTypes;
+    LuaComponentFactory _componentFactory;
+
 public:
-    EnemyRandomSpawnSystem();
+    LuaEntityTypeFactory() = default;
 
-    void spawnRandomEntity(std::unique_ptr<Engine> &engine, RTypeServerPtr srv);
+    void addEntityType(const LuaEntityType &entityType);
 
-    void update(std::unique_ptr<Engine> &engine) override;
+    void initEntity(std::shared_ptr<Entity> entity, const std::string &entityType);
+
+    LuaComponentFactory &getComponentFactory();
+
+    LuaEntityType &getEntityType(const std::string &entityType);
 };
 
+[[maybe_unused]] int luaRegisterEntityType(lua_State *L);
 
-#endif //R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+[[maybe_unused]] int luaAddComponentToType(lua_State *L);
+
+#endif //R_TYPE_SERVER_LUAENTITYTYPEFACTORY_H

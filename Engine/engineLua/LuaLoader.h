@@ -20,31 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
-#define R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+#ifndef R_TYPE_SERVER_LUALOADER_H
+#define R_TYPE_SERVER_LUALOADER_H
 
-#include "Engine/ISystem.h"
-#include "RTypeServer.h"
-#include <random>
+#include "LuaEntityTypeFactory.h"
 
-/**
- * @brief System that spawns enemies randomly
- */
-class EnemyRandomSpawnSystem : public ISystem {
+class IGraphicLib;
+
+class LuaLoader {
 private:
-    size_t count = 0;
-    std::random_device rd;
-    std::mt19937 gen;
-    std::uniform_int_distribution<> distrx;
-    std::uniform_int_distribution<> distry;;
-    std::uniform_int_distribution<> distrType;
+    LuaWrapper _lua;
+
 public:
-    EnemyRandomSpawnSystem();
 
-    void spawnRandomEntity(std::unique_ptr<Engine> &engine, RTypeServerPtr srv);
+    LuaLoader();
 
-    void update(std::unique_ptr<Engine> &engine) override;
+    void loadFolder(const std::string &folderPath);
+
+    void loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory);
+
+    void loadEntitySprites(std::shared_ptr<IGraphicLib> graphicLib);
 };
 
 
-#endif //R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+#endif //R_TYPE_SERVER_LUALOADER_H

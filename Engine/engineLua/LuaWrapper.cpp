@@ -20,31 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
-#define R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+#include "LuaWrapper.h"
 
-#include "Engine/ISystem.h"
-#include "RTypeServer.h"
-#include <random>
+LuaWrapper::LuaWrapper() {
+    L = luaL_newstate();
+    luaL_openlibs(L);
+}
 
-/**
- * @brief System that spawns enemies randomly
- */
-class EnemyRandomSpawnSystem : public ISystem {
-private:
-    size_t count = 0;
-    std::random_device rd;
-    std::mt19937 gen;
-    std::uniform_int_distribution<> distrx;
-    std::uniform_int_distribution<> distry;;
-    std::uniform_int_distribution<> distrType;
-public:
-    EnemyRandomSpawnSystem();
+LuaWrapper::~LuaWrapper() {
+    lua_close(L);
+}
 
-    void spawnRandomEntity(std::unique_ptr<Engine> &engine, RTypeServerPtr srv);
+int LuaWrapper::doFile(const std::string &filename) {
+    return luaL_dofile(L, filename.c_str());
+}
 
-    void update(std::unique_ptr<Engine> &engine) override;
-};
+void LuaWrapper::registerFunction(std::string name, lua_CFunction func) {
+    lua_register(L, name.c_str(), func);
+}
 
-
-#endif //R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+void LuaWrapper::defineGlobal(std::string name, int value) {
+    lua_pushinteger(L, value);
+    lua_setglobal(L, name.c_str());
+}

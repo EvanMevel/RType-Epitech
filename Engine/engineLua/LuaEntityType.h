@@ -20,31 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
-#define R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+#ifndef R_TYPE_SERVER_LUAENTITYTYPE_H
+#define R_TYPE_SERVER_LUAENTITYTYPE_H
 
-#include "Engine/ISystem.h"
-#include "RTypeServer.h"
-#include <random>
+#include "LuaWrapper.h"
 
-/**
- * @brief System that spawns enemies randomly
- */
-class EnemyRandomSpawnSystem : public ISystem {
+class LuaEntityType {
 private:
-    size_t count = 0;
-    std::random_device rd;
-    std::mt19937 gen;
-    std::uniform_int_distribution<> distrx;
-    std::uniform_int_distribution<> distry;;
-    std::uniform_int_distribution<> distrType;
+    std::string _id;
+    std::size_t _hitboxWidth;
+    std::size_t _hitboxHeight;
+    std::vector<std::pair<std::string, std::vector<int>>> _components;
 public:
-    EnemyRandomSpawnSystem();
+    LuaEntityType(const std::string &id, size_t hitboxWidth, size_t hitboxHeight);
 
-    void spawnRandomEntity(std::unique_ptr<Engine> &engine, RTypeServerPtr srv);
+    const std::string &getId() const;
 
-    void update(std::unique_ptr<Engine> &engine) override;
+    size_t getHitboxWidth() const;
+
+    size_t getHitboxHeight() const;
+
+    void addComponent(const std::string &name, const std::vector<int> &args);
+
+    const std::vector<std::pair<std::string, std::vector<int>>> &getComponents() const;
 };
 
 
-#endif //R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+#endif //R_TYPE_SERVER_LUAENTITYTYPE_H

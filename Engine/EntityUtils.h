@@ -24,22 +24,10 @@
 #define R_TYPE_SERVER_ENTITYUTILS_H
 
 #include "Engine/Entity.h"
-#include "Engine/EntityType.h"
-#include "Engine/Component/EntityTypeComponent.h"
-#include "Engine/Component/PositionComponent.h"
-#include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/HitboxComponent.h"
-#include "Engine/Component/TeamComponent.h"
-#include "Engine/Component/ColliderComponent.h"
-#include "Engine/Component/HealthComponent.h"
+#include "Engine/Engine.h"
+#include "Engine/Hitbox.h"
 
 namespace entity {
-
-    void initPlayer(std::shared_ptr<Entity> entity, int x, int y);
-
-    void initProjectile(std::shared_ptr<Entity> entity, int x, int y, int velX);
-
-    void initEnemy(std::shared_ptr<Entity> entity, int x, int y);
 
     bool applyPhysic(std::shared_ptr<Entity> entity);
 

@@ -24,6 +24,8 @@
 #include "Engine/Engine.h"
 #include "Engine/EntityUtils.h"
 #include "Hitbox.h"
+#include "TeamComponent.h"
+#include "ColliderComponent.h"
 
 void ColliderHitboxSystem::update(EnginePtr engine) {
     std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> teams;

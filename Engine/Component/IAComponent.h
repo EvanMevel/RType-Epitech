@@ -20,31 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
-#define R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+#ifndef R_TYPE_SERVER_IACOMPONENT_H
+#define R_TYPE_SERVER_IACOMPONENT_H
 
-#include "Engine/ISystem.h"
-#include "RTypeServer.h"
-#include <random>
+#include "IComponent.h"
 
-/**
- * @brief System that spawns enemies randomly
- */
-class EnemyRandomSpawnSystem : public ISystem {
-private:
-    size_t count = 0;
-    std::random_device rd;
-    std::mt19937 gen;
-    std::uniform_int_distribution<> distrx;
-    std::uniform_int_distribution<> distry;;
-    std::uniform_int_distribution<> distrType;
-public:
-    EnemyRandomSpawnSystem();
+class IAComponent : public IComponent {
 
-    void spawnRandomEntity(std::unique_ptr<Engine> &engine, RTypeServerPtr srv);
-
-    void update(std::unique_ptr<Engine> &engine) override;
 };
 
-
-#endif //R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+#endif //R_TYPE_SERVER_IACOMPONENT_H

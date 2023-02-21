@@ -24,6 +24,10 @@
 #include "Engine/EntityUtils.h"
 #include "Engine/Network/Packets/EntityInfoPacket.h"
 #include "Engine/Network/Packets/ProjectileHitPacket.h"
+#include "Engine/engineLua/LuaEntityTypeFactory.h"
+#include "Engine/Component/PhysicComponent.h"
+#include "Engine/Component/ColliderComponent.h"
+#include "Engine/Component/TeamComponent.h"
 
 PlayerShootConsumer::PlayerShootConsumer(EnginePtr e) : RTypePlayerPacketConsumer(e) {}
 
@@ -45,8 +49,12 @@ void PlayerShootConsumer::consume(PlayerShootPacket &packet, std::shared_ptr<Net
     auto pos = player->getComponent<PositionComponent>();
     if (pos == nullptr)
         return;
+    auto typeFactory = e->getModule<LuaEntityTypeFactory>();
     auto projectile = e->getScene()->createEntity();
-    entity::initProjectile(projectile, pos->x + 20, pos->y + 20, 10);
+    typeFactory->initEntity(projectile, "projectile");
+    projectile->addComponent<PositionComponent>(pos->x + 20, pos->y + 20);
+    projectile->getComponent<PhysicComponent>()->velocity.x = 10;
+
 
     projectile->addComponent<ColliderComponent>(projectileHit);
 

@@ -20,31 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
-#define R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+#include "EntityTypeComponent2.h"
 
-#include "Engine/ISystem.h"
-#include "RTypeServer.h"
-#include <random>
+EntityTypeComponent2::EntityTypeComponent2() {}
 
-/**
- * @brief System that spawns enemies randomly
- */
-class EnemyRandomSpawnSystem : public ISystem {
-private:
-    size_t count = 0;
-    std::random_device rd;
-    std::mt19937 gen;
-    std::uniform_int_distribution<> distrx;
-    std::uniform_int_distribution<> distry;;
-    std::uniform_int_distribution<> distrType;
-public:
-    EnemyRandomSpawnSystem();
+EntityTypeComponent2::EntityTypeComponent2(const std::string &entityType) : _entityType(entityType) {}
 
-    void spawnRandomEntity(std::unique_ptr<Engine> &engine, RTypeServerPtr srv);
+const std::string &EntityTypeComponent2::getEntityType() const {
+    return _entityType;
+}
 
-    void update(std::unique_ptr<Engine> &engine) override;
-};
-
-
-#endif //R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+void EntityTypeComponent2::setEntityType(const std::string &entityType) {
+    _entityType = entityType;
+}

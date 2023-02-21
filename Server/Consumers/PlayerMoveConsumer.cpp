@@ -23,6 +23,7 @@
 #include "PlayerMoveConsumer.h"
 #include "Engine/Network/Packets/EntityVelocityPacket.h"
 #include "Engine/TickUtil.h"
+#include "Engine/Component/PhysicComponent.h"
 
 PlayerMoveConsumer::PlayerMoveConsumer(EnginePtr e) : RTypePlayerPacketConsumer(e) {}
 

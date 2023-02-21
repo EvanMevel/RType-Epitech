@@ -20,31 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
-#define R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+#ifndef R_TYPE_SERVER_COOLDOWNCOMPONENT_H
+#define R_TYPE_SERVER_COOLDOWNCOMPONENT_H
 
-#include "Engine/ISystem.h"
-#include "RTypeServer.h"
-#include <random>
+
+#include <cstddef>
+#include "Engine/Component/IComponent.h"
 
 /**
- * @brief System that spawns enemies randomly
+ * @brief Component that stores the cooldown of a weapon
  */
-class EnemyRandomSpawnSystem : public ISystem {
-private:
-    size_t count = 0;
-    std::random_device rd;
-    std::mt19937 gen;
-    std::uniform_int_distribution<> distrx;
-    std::uniform_int_distribution<> distry;;
-    std::uniform_int_distribution<> distrType;
+class CooldownComponent : public IComponent {
 public:
-    EnemyRandomSpawnSystem();
+    size_t current = 0;
+    size_t cooldown;
 
-    void spawnRandomEntity(std::unique_ptr<Engine> &engine, RTypeServerPtr srv);
+    CooldownComponent();
 
-    void update(std::unique_ptr<Engine> &engine) override;
+    explicit CooldownComponent(size_t cooldown);
 };
 
 
-#endif //R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+#endif //R_TYPE_SERVER_COOLDOWNCOMPONENT_H

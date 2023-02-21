@@ -20,31 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
-#define R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+#ifndef R_TYPE_SERVER_STRINGREGISTRY_H
+#define R_TYPE_SERVER_STRINGREGISTRY_H
 
-#include "Engine/ISystem.h"
-#include "RTypeServer.h"
-#include <random>
+#include <string>
+#include <unordered_map>
+#include <memory>
 
-/**
- * @brief System that spawns enemies randomly
- */
-class EnemyRandomSpawnSystem : public ISystem {
+template<typename Type>
+class StringRegistry {
 private:
-    size_t count = 0;
-    std::random_device rd;
-    std::mt19937 gen;
-    std::uniform_int_distribution<> distrx;
-    std::uniform_int_distribution<> distry;;
-    std::uniform_int_distribution<> distrType;
+    std::unordered_map<std::string, std::shared_ptr<Type>> _data;
+
 public:
-    EnemyRandomSpawnSystem();
+    void registerValue(const std::string &key, std::shared_ptr<Type> value) {
+        _data[key] = std::move(value);
+    }
 
-    void spawnRandomEntity(std::unique_ptr<Engine> &engine, RTypeServerPtr srv);
-
-    void update(std::unique_ptr<Engine> &engine) override;
+    std::shared_ptr<Type> &getValue(const std::string &key) {
+        return _data[key];
+    }
 };
 
 
-#endif //R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+#endif //R_TYPE_SERVER_STRINGREGISTRY_H
