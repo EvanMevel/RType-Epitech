@@ -26,7 +26,7 @@
 #include "Client/Textures/FixTextureComponent.h"
 #include <cstddef>
 
-class LifeComponent : public FixTextureComponent{
+class LifeComponent : public IComponent{
 private:
     float scale = 1;
     int width = 0;

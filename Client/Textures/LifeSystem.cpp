@@ -47,10 +47,10 @@ void drawHearts(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entity
 
         int i = 0;
         for (; i != ten; i++) {
-            lib->drawTextureEx(fullHeartTexture, pos->getX() + i * width, pos->getY(), 0.0, 0.25, ColorCodes::COLOR_WHITE);
+            lib->drawTextureEx(fullHeartTexture, pos->getX() + i * width, pos->getY(), 0.0, life->getScale(), ColorCodes::COLOR_WHITE);
         }
         for (; i != maxten; i++) {
-            lib->drawTextureEx(emptyHeartTexture, pos->getX() + i * width, pos->getY(), 0.0, 0.25, ColorCodes::COLOR_WHITE);
+            lib->drawTextureEx(emptyHeartTexture, pos->getX() + i * width, pos->getY(), 0.0, life->getScale(), ColorCodes::COLOR_WHITE);
         }
     }
 }

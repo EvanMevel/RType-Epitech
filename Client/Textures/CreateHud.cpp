@@ -38,10 +38,9 @@ std::shared_ptr<Entity> createHud(const std::shared_ptr<IGraphicLib> &lib, const
 
     hudEntity->addComponent<PositionComponent>(x, lib->getWindow().getHeight() - (lifeTexture->getHeight() / 2));
 
-    lifeComponent->setTextureId(heartTexture);
     lifeComponent->setWidth(lifeTexture->getWidth());
+    lifeComponent->setScale(0.25);
 
-    cooldownComponent->setTextureId(heartTexture);
     cooldownComponent->setWidth(cooldownTexture->getWidth());
 
     return hudEntity;
