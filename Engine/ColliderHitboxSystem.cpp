@@ -24,6 +24,17 @@
 #include "Engine/Engine.h"
 #include "Engine/EntityUtils.h"
 #include "Hitbox.h"
+#include "Network/Packets/DamagePacket.h"
+#include "Server/RTypeServer.h"
+
+
+static void onDamage(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)
+{
+    auto server = engine->getModule<RTypeServer>();
+
+    DamagePacket packet(touched, damages);
+    server->broadcast(packet);
+}
 
 void ColliderHitboxSystem::update(EnginePtr engine) {
     std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> teams;
@@ -76,7 +87,7 @@ void ColliderHitboxSystem::update(EnginePtr engine) {
                 auto otherHitbox = std::get<0>(otherTeamHitbox);
                 auto otherEntity = std::get<1>(otherTeamHitbox);
                 if (hitbox.isColliding(otherHitbox)) {
-                    entity->getComponent<ColliderComponent>()->onCollision(engine, entity, otherEntity, teams);
+                    entity->getComponent<ColliderComponent>()->onCollision(engine, entity, otherEntity, teams, onDamage);
                     break;
                 }
             }

@@ -60,3 +60,7 @@ bool HealthComponent::isInvincible() const {
 [[maybe_unused]] void HealthComponent::setHealth(size_t health) {
     _health = health;
 }
+
+size_t HealthComponent::getHealth() const {
+    return _health;
+}

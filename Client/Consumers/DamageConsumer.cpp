@@ -20,33 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_ENTITYUTILS_H
-#define R_TYPE_SERVER_ENTITYUTILS_H
-
-#include "Engine/Entity.h"
-#include "Engine/EntityType.h"
-#include "Engine/Component/EntityTypeComponent.h"
-#include "Engine/Component/PositionComponent.h"
-#include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/HitboxComponent.h"
-#include "Engine/Component/TeamComponent.h"
-#include "Engine/Component/ColliderComponent.h"
+#include "DamageConsumer.h"
 #include "Engine/Component/HealthComponent.h"
 
-namespace entity {
+void DamageConsumer::consume(DamagePacket &packet, std::unique_ptr<Engine> &engine, RTypeServer server) {
+    auto entity = engine->getScene()->getOrCreateEntityById(packet.playerId);
+    auto health = entity->getOrCreate<HealthComponent>();
 
-    void initPlayer(std::shared_ptr<Entity> entity, int x, int y);
+    std::cout << "life before hit : " << health->getHealth() << std::endl;
 
-    void initProjectile(std::shared_ptr<Entity> entity, int x, int y, int velX);
+    health->setHealth(packet.health - packet.damage);
 
-    void initEnemy(std::shared_ptr<Entity> entity, int x, int y);
-
-    bool applyPhysic(std::shared_ptr<Entity> entity);
-
-    void projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
-                       std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams,
-                       std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)>);
+    std::cout << "life after hit : " << health->getHealth() << std::endl;
 }
-
-
-#endif //R_TYPE_SERVER_ENTITYUTILS_H

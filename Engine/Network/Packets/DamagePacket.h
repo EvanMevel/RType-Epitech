@@ -20,33 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_ENTITYUTILS_H
-#define R_TYPE_SERVER_ENTITYUTILS_H
+#ifndef R_TYPE_SERVER_DAMAGEPACKET_H
+#define R_TYPE_SERVER_DAMAGEPACKET_H
 
+
+#include "IPacket.h"
 #include "Engine/Entity.h"
-#include "Engine/EntityType.h"
-#include "Engine/Component/EntityTypeComponent.h"
-#include "Engine/Component/PositionComponent.h"
-#include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/HitboxComponent.h"
-#include "Engine/Component/TeamComponent.h"
-#include "Engine/Component/ColliderComponent.h"
-#include "Engine/Component/HealthComponent.h"
 
-namespace entity {
+class DamagePacket : public IPacket {
+public:
+    static const int ID = 14;
 
-    void initPlayer(std::shared_ptr<Entity> entity, int x, int y);
+    size_t health;
+    int damage;
 
-    void initProjectile(std::shared_ptr<Entity> entity, int x, int y, int velX);
+    EntityId playerId;
 
-    void initEnemy(std::shared_ptr<Entity> entity, int x, int y);
+    DamagePacket();
 
-    bool applyPhysic(std::shared_ptr<Entity> entity);
+    explicit DamagePacket(EntityPtr entity, int damage);
 
-    void projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
-                       std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams,
-                       std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)>);
-}
+    void write(ByteArray &buffer) const override;
+
+    void read(ByteArray &buffer) override;
+};
 
 
-#endif //R_TYPE_SERVER_ENTITYUTILS_H
+#endif //R_TYPE_SERVER_DAMAGEPACKET_H

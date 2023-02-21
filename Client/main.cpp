@@ -41,6 +41,7 @@
 #include "Engine/TickUtil.h"
 #include "StayAliveSystem.h"
 #include "Engine/LuaWrapper.h"
+#include "Client/Consumers/DamageConsumer.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -77,6 +78,8 @@ void loadNetwork(EnginePtr engine) {
     server->addConsumer<EntityInfoConsumer>();
 
     server->addConsumer<ProjectileHitConsumer>();
+
+    server->addConsumer<DamageConsumer>();
 
     server->addSystem<StayAliveSystem>();
 
