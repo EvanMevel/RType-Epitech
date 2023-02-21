@@ -20,21 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_ENTITYUTILS_H
-#define R_TYPE_SERVER_ENTITYUTILS_H
+#include "DamagePacket.h"
+#include "Engine/Component/HealthComponent.h"
 
-#include "Engine/Entity.h"
-#include "Engine/Engine.h"
-#include "Engine/Hitbox.h"
-
-namespace entity {
-
-    bool applyPhysic(std::shared_ptr<Entity> entity);
-
-    void projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
-                       std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams,
-                       std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)>);
+DamagePacket::DamagePacket() : playerId(0), health(0), damage(0) {
 }
 
+DamagePacket::DamagePacket(EntityPtr entity, int damage): damage(damage) {
+    playerId = entity->getId();
+    auto healthComponent = entity->getComponent<HealthComponent>();
+    if (healthComponent) {
+        health = healthComponent->getHealth();
+    } else {
+        throw std::runtime_error("Player has no health component");
+    }
+}
 
-#endif //R_TYPE_SERVER_ENTITYUTILS_H
+void DamagePacket::write(ByteArray &buffer) const {
+    buffer << playerId << health << damage;
+}
+
+void DamagePacket::read(ByteArray &buffer) {
+    buffer >> playerId >> health >> damage;
+}

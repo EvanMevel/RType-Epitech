@@ -27,7 +27,6 @@
 #include "Client/Textures/Textures.h"
 #include "Client/Textures/DrawFixTextureSystem.h"
 #include "Client/Textures/ScrollingTextureSystem.h"
-#include "Client/Textures/LifeSystem.h"
 #include "Client/Sounds.h"
 #include "Client/Sprites/DrawSpriteSystem.h"
 #include "Client/Consumers/PlayerInfoConsumer.h"
@@ -42,6 +41,7 @@
 #include "Engine/TickUtil.h"
 #include "StayAliveSystem.h"
 #include "Engine/engineLua/LuaLoader.h"
+#include "Client/Consumers/DamageConsumer.h"
 #include "Client/Textures/CooldownSystem.h"
 #include <mutex>
 #include <condition_variable>
@@ -79,6 +79,8 @@ void loadNetwork(EnginePtr engine) {
     server->addConsumer<EntityInfoConsumer>();
 
     server->addConsumer<ProjectileHitConsumer>();
+
+    server->addConsumer<DamageConsumer>();
 
     server->addSystem<StayAliveSystem>();
 

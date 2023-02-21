@@ -20,21 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_ENTITYUTILS_H
-#define R_TYPE_SERVER_ENTITYUTILS_H
+#ifndef R_TYPE_SERVER_DAMAGEPACKET_H
+#define R_TYPE_SERVER_DAMAGEPACKET_H
 
+
+#include "IPacket.h"
 #include "Engine/Entity.h"
-#include "Engine/Engine.h"
-#include "Engine/Hitbox.h"
 
-namespace entity {
+class DamagePacket : public IPacket {
+public:
+    static const int ID = 14;
 
-    bool applyPhysic(std::shared_ptr<Entity> entity);
+    size_t health;
+    int damage;
 
-    void projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
-                       std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams,
-                       std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)>);
-}
+    EntityId playerId;
+
+    DamagePacket();
+
+    explicit DamagePacket(EntityPtr entity, int damage);
+
+    void write(ByteArray &buffer) const override;
+
+    void read(ByteArray &buffer) override;
+};
 
 
-#endif //R_TYPE_SERVER_ENTITYUTILS_H
+#endif //R_TYPE_SERVER_DAMAGEPACKET_H

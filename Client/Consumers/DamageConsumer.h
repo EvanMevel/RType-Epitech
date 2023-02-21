@@ -20,21 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_ENTITYUTILS_H
-#define R_TYPE_SERVER_ENTITYUTILS_H
-
-#include "Engine/Entity.h"
-#include "Engine/Engine.h"
-#include "Engine/Hitbox.h"
-
-namespace entity {
-
-    bool applyPhysic(std::shared_ptr<Entity> entity);
-
-    void projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
-                       std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams,
-                       std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)>);
-}
+#ifndef R_TYPE_SERVER_DAMAGECONSUMER_H
+#define R_TYPE_SERVER_DAMAGECONSUMER_H
 
 
-#endif //R_TYPE_SERVER_ENTITYUTILS_H
+#include "Engine/Network/Packets/DamagePacket.h"
+#include "Client/ClientNetServer.h"
+
+class DamageConsumer : public ClientPacketConsumer<DamagePacket>{
+public:
+    void consume(DamagePacket &packet, EnginePtr engine, RTypeServer server) override;
+};
+
+
+#endif //R_TYPE_SERVER_DAMAGECONSUMER_H

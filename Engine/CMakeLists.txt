@@ -30,6 +30,7 @@ add_library(eng
         Network/Packets/EntityDestroyPacket.cpp
         Network/Packets/EntityVelocityPacket.cpp
         Network/Packets/ProjectileHitPacket.cpp
+        Network/Packets/DamagePacket.cpp
 
         Graphic/IGraphicLib.cpp
         Graphic/SpriteProperty.cpp

@@ -32,18 +32,14 @@
 class HealthComponent : public IComponent {
 private:
     size_t _health;
+    size_t _maxHealth;
+    size_t _invincibilityTime = 0;
+    unsigned long long _lastDamageTime = 0;
+
 public:
     size_t getHealth() const;
 
-private:
-    size_t _maxHealth;
-public:
     size_t getMaxHealth() const;
-
-private:
-    size_t _invincibilityTime = 0;
-    unsigned long long _lastDamageTime = 0;
-public:
 
     HealthComponent();
 
