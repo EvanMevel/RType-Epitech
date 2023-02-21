@@ -20,21 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_COOLDOWNCOMPONENT_H
-#define R_TYPE_SERVER_COOLDOWNCOMPONENT_H
+#ifndef R_TYPE_SERVER_ENTITYTYPECOMPONENT2_H
+#define R_TYPE_SERVER_ENTITYTYPECOMPONENT2_H
 
 
-#include <cstddef>
-#include "Engine/Component/IComponent.h"
+#include <string>
+#include "IComponent.h"
 
-/**
- * @brief Component that stores the cooldown of a weapon
- */
-class CooldownComponent : public IComponent {
+class EntityTypeComponent2 : public IComponent {
+private:
+    std::string _entityType;
+
 public:
-    size_t current = 0;
-    size_t cooldown;
+    EntityTypeComponent2();
+
+    explicit EntityTypeComponent2(const std::string &entityType);
+
+    const std::string &getEntityType() const;
+
+    void setEntityType(const std::string &entityType);
 };
 
 
-#endif //R_TYPE_SERVER_COOLDOWNCOMPONENT_H
+#endif //R_TYPE_SERVER_ENTITYTYPECOMPONENT2_H

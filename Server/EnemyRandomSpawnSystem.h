@@ -24,6 +24,7 @@
 #define R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
 
 #include "Engine/ISystem.h"
+#include "RTypeServer.h"
 #include <random>
 
 /**
@@ -39,6 +40,8 @@ private:
     std::uniform_int_distribution<> distrType;
 public:
     EnemyRandomSpawnSystem();
+
+    void spawnRandomEntity(std::unique_ptr<Engine> &engine, RTypeServerPtr srv);
 
     void update(std::unique_ptr<Engine> &engine) override;
 };

@@ -23,10 +23,15 @@
 #include "EnemyShootSystem.h"
 #include "Engine/Engine.h"
 #include "Engine/EntityUtils.h"
-#include "CooldownComponent.h"
+#include "Engine/Component/CooldownComponent.h"
 #include "Engine/Network/Packets/EntityInfoPacket.h"
 #include "RTypeServer.h"
 #include "Engine/Network/Packets/ProjectileHitPacket.h"
+#include "Engine/Component/IAComponent.h"
+#include "Engine/Component/ColliderComponent.h"
+#include "Engine/Component/TeamComponent.h"
+#include "Engine/engineLua/LuaEntityTypeFactory.h"
+#include "Engine/Component/PhysicComponent.h"
 
 
 static void projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
@@ -45,8 +50,8 @@ void EnemyShootSystem::update(std::unique_ptr<Engine> &engine) {
     auto &entities = engine->getScene()->getEntities();
     for (size_t i = 0; i < entities.size(); i++) {
         auto &ent = entities[i];
-        auto type = ent->getComponent<EntityTypeComponent>();
-        if (type && type->getType() == EntityType::ENEMY) {
+        auto ia = ent->getComponent<IAComponent>();
+        if (ia) {
             auto cd = ent->getComponent<CooldownComponent>();
             auto pos = ent->getComponent<PositionComponent>();
             if (cd == nullptr || pos == nullptr) {
@@ -55,8 +60,11 @@ void EnemyShootSystem::update(std::unique_ptr<Engine> &engine) {
             cd->current++;
             if (cd->current >= cd->cooldown) {
                 cd->current = 0;
+                auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
                 auto projectile = engine->getScene()->unsafeCreateEntity();
-                entity::initProjectile(projectile, pos->x, pos->y + 20, -10);
+                typeFactory->initEntity(projectile, "projectile");
+                projectile->addComponent<PositionComponent>(pos->x, pos->y + 20);
+                projectile->getComponent<PhysicComponent>()->velocity.x = -10;
 
                 projectile->addComponent<ColliderComponent>(projectileHit);
 

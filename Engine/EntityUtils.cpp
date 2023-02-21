@@ -21,19 +21,10 @@
 // SOFTWARE.
 
 #include "EntityUtils.h"
-
-void entity::initPlayer(std::shared_ptr<Entity> entity, int x, int y) {
-    entity->addComponent<EntityTypeComponent>(EntityType::PLAYER);
-    entity->addComponent<PositionComponent>(x, y);
-    auto physic = entity->addComponent<PhysicComponent>();
-    physic->maxVelocity = 10;
-
-    entity->addComponent<HitboxComponent>(100, 56);
-
-    entity->addComponent<TeamComponent>(0);
-
-    auto health = entity->addComponent<HealthComponent>(100, 1000);
-}
+#include "Engine/Component/PhysicComponent.h"
+#include "Engine/Component/TeamComponent.h"
+#include "Engine/Component/HealthComponent.h"
+#include "EntityTypeComponent2.h"
 
 void entityDied(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<Entity> cause) {
     engine->getScene()->removeEntity(entity);
@@ -58,8 +49,8 @@ void entity::projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::
             }
         }
     } else {
-        auto type = other->getComponent<EntityTypeComponent>();
-        if (type != nullptr && type->getType() == EntityType::PROJECTILE) {
+        auto type = other->getComponent<EntityTypeComponent2>();
+        if (type != nullptr && type->getEntityType() == "projectile") {
             entityDied(engine, other, self);
             auto team = teams[other->getComponent<TeamComponent>()->getTeam()];
             team.erase(std::remove_if(team.begin(), team.end(), [other](std::tuple<Hitbox, std::shared_ptr<Entity>> &t) {
@@ -68,28 +59,6 @@ void entity::projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::
         }
     }
     entityDied(engine, self, other);
-}
-
-void entity::initProjectile(std::shared_ptr<Entity> entity, int x, int y, int velX) {
-    entity->addComponent<EntityTypeComponent>(EntityType::PROJECTILE);
-    entity->addComponent<PositionComponent>(x, y);
-    auto physic = entity->addComponent<PhysicComponent>();
-    physic->velocity.x = velX;
-    physic->velocitySlow = 0;
-
-    entity->addComponent<HitboxComponent>(81, 16);
-}
-
-void entity::initEnemy(std::shared_ptr<Entity> entity, int x, int y) {
-    entity->addComponent<EntityTypeComponent>(EntityType::ENEMY);
-    entity->addComponent<PositionComponent>(x, y);
-    auto physic = entity->addComponent<PhysicComponent>();
-
-    entity->addComponent<TeamComponent>(1);
-
-    entity->addComponent<HitboxComponent>(99, 66);
-
-    auto health = entity->addComponent<HealthComponent>(50, 400);
 }
 
 bool entity::applyPhysic(std::shared_ptr<Entity> entity) {

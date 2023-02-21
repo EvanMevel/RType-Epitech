@@ -24,6 +24,8 @@
 #include "Engine/Engine.h"
 #include "Engine/EntityUtils.h"
 #include "Hitbox.h"
+#include "TeamComponent.h"
+#include "ColliderComponent.h"
 #include "Network/Packets/DamagePacket.h"
 #include "Server/RTypeServer.h"
 

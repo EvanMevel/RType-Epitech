@@ -23,39 +23,21 @@
 #ifndef R_TYPE_SERVER_SPRITE_H
 #define R_TYPE_SERVER_SPRITE_H
 
-#include <memory>
-#include "Engine/Rectangle.h"
-#include "ITexture.h"
 
-/**
- * @brief Sprite class
- */
+#include "SpriteProperty.h"
+
 class Sprite {
+private:
+    std::size_t currentFrame = 0;
+
 public:
-    std::shared_ptr<ITexture> texture;
-    int startX;
-    int startY;
-
-    int lengthX;
-    int lengthY;
-
-    int repeatX;
-    int repeatY;
-
     Rectangle currentRect;
 
-    size_t frameSpeed;
-    size_t currentFrame;
+    std::shared_ptr<SpriteProperty> spriteProperty;
 
-    float scale = 1.0f;
+    explicit Sprite(const std::shared_ptr<SpriteProperty> &spriteProperty);
 
     void updateRect();
-
-    Sprite(const std::shared_ptr<ITexture> &texture, int startX, int startY, int lengthX, int lengthY, int repeatX,
-           int repeatY, size_t frameSpeed);
-
-    Sprite(const std::shared_ptr<ITexture> &texture, int startX, int startY, int lengthX, int lengthY, int repeatX,
-           int repeatY, size_t frameSpeed, float scale);
 };
 
 

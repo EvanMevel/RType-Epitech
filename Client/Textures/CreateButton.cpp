@@ -23,13 +23,16 @@
 #include "CreateButton.h"
 #include "Engine/Component/HitboxComponent.h"
 #include "Client/ButtonComponent.h"
+#include "Engine/Component/EntityTypeComponent2.h"
+#include "Engine/Component/PositionComponent.h"
+#include "Client/Textures/Textures.h"
 
 std::shared_ptr<Entity> createButton(const std::shared_ptr<IGraphicLib> &lib, const std::shared_ptr<Scene> &sc, int x, int y,
                                      Textures texture, const std::function<void(EnginePtr)> &onClick)
 {
     auto button = sc->createEntity();
 
-    button->addComponent<EntityTypeComponent>(EntityType::BUTTON);
+    button->addComponent<EntityTypeComponent2>("button");
     button->addComponent<FixTextureComponent>()->setTextureId(texture);
 
     auto pos = button->addComponent<PositionComponent>(x, y);

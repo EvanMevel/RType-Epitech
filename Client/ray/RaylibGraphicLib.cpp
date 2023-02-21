@@ -61,7 +61,7 @@ void RaylibGraphicLib::closeWindow() {
 
 Texture RaylibGraphicLib::createTexture(const std::string &texturePath) {
     char *rtypeAssetsPath = std::getenv("RTYPE_ASSETS_PATH");
-    std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "";
+    std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "assets/";
     return std::make_shared<RaylibTexture>(assetsPath + texturePath);
 }
 
@@ -80,11 +80,12 @@ void RaylibGraphicLib::drawTexture(Texture &texture, int x, int y, ColorCodes co
 }
 
 void RaylibGraphicLib::drawSprite(std::shared_ptr<Sprite> sprite, int x, int y, ColorCodes codes) {
-    auto texture2D = any_cast<ray::Texture2D>(sprite->texture->handle);
-    ray::Rectangle sourceRec = {(float) sprite->currentRect.x, (float) sprite->currentRect.y,
-                                (float) sprite->currentRect.width, (float) sprite->currentRect.height};
-    float width = (float) sprite->currentRect.width * sprite->scale;
-    float height = (float) sprite->currentRect.height * sprite->scale;
+    auto texture2D = any_cast<ray::Texture2D>(sprite->spriteProperty->texture->handle);
+    Rectangle rec = sprite->currentRect;
+    ray::Rectangle sourceRec = {(float) rec.x, (float) rec.y,
+                                (float) rec.width, (float) rec.height};
+    float width = (float) rec.width * sprite->spriteProperty->scale;
+    float height = (float) rec.height * sprite->spriteProperty->scale;
     ray::Rectangle destRec = {
             (float) x + (float) width / 2.0f,
             (float) y + (float) height / 2.0f,
@@ -100,7 +101,7 @@ void RaylibGraphicLib::drawSprite(std::shared_ptr<Sprite> sprite, int x, int y, 
 
 std::shared_ptr<IAnimation> RaylibGraphicLib::createAnimation(const std::string &texturePath) {
     char *rtypeAssetsPath = std::getenv("RTYPE_ASSETS_PATH");
-    std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "";
+    std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "assets/";
     return std::make_shared<RaylibAnimation>(assetsPath + texturePath);
 }
 
@@ -124,7 +125,7 @@ void RaylibGraphicLib::initAudio() {
 
 std::shared_ptr<IMusic> RaylibGraphicLib::createMusic(const std::string &musicPath) {
     char *rtypeAssetsPath = std::getenv("RTYPE_ASSETS_PATH");
-    std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "";
+    std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "assets/";
     return std::make_shared<RaylibMusic>(assetsPath + musicPath);
 }
 
@@ -135,7 +136,7 @@ void RaylibGraphicLib::playMusic(std::shared_ptr<IMusic> music) {
 
 std::shared_ptr<ISound> RaylibGraphicLib::createSound(const std::string &soundPath) {
     char *rtypeAssetsPath = std::getenv("RTYPE_ASSETS_PATH");
-    std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "";
+    std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "assets/";
     return std::make_shared<RaylibSound>(assetsPath + soundPath);
 }
 

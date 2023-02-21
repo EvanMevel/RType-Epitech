@@ -22,7 +22,6 @@
 
 #include "MouseSystem.h"
 #include "Engine/Engine.h"
-#include "Engine/Component/EntityTypeComponent.h"
 #include "ButtonComponent.h"
 
 void MouseSystem::update(EnginePtr engine) {
@@ -36,11 +35,8 @@ void MouseSystem::update(EnginePtr engine) {
     }
     auto mousePos = lib->getMouse().getPos();
     for (auto &entity: engine->getScene()->getEntities()) {
-        auto typeComponent = entity->getComponent<EntityTypeComponent>();
         auto buttonComponent= entity->getComponent<ButtonComponent>();
-        if (typeComponent != nullptr && typeComponent->getType() == EntityType::BUTTON &&
-                buttonComponent != nullptr && buttonComponent->getHitbox().contains(mousePos)) {
-
+        if (buttonComponent != nullptr && buttonComponent->getHitbox().contains(mousePos)) {
             buttonComponent->clicked(engine);
         }
     }

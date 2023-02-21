@@ -20,21 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+#ifndef R_TYPE_SERVER_LUACOMPONENTFACTORY_H
+#define R_TYPE_SERVER_LUACOMPONENTFACTORY_H
+
+
+#include "Engine/Entity.h"
 #include "LuaWrapper.h"
+#include <functional>
 
-LuaWrapper::LuaWrapper() {
-    L = luaL_newstate();
-    luaL_openlibs(L);
-}
+class LuaComponentFactory {
+private:
+    std::unordered_map<std::string, std::function<void(std::shared_ptr<Entity> entity, std::vector<int>)>> _componentFactory;
 
-LuaWrapper::~LuaWrapper() {
-    lua_close(L);
-}
+public:
+    LuaComponentFactory() = default;
 
-int LuaWrapper::doFile(const std::string &filename) {
-    return luaL_dofile(L, filename.c_str());
-}
+    void addComponent(const std::string &componentName, std::function<void(std::shared_ptr<Entity> entity, std::vector<int>)> component);
 
-void LuaWrapper::registerFunction(std::string name, lua_CFunction func) {
-    lua_register(L, name.c_str(), func);
-}
+    void initComponent(const std::string &componentName, std::shared_ptr<Entity> entity, std::vector<int> args);
+};
+
+#endif //R_TYPE_SERVER_LUACOMPONENTFACTORY_H

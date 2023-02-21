@@ -48,12 +48,18 @@ public:
         _buffer.sgetn(reinterpret_cast<char*>(&value), sizeof(Type));
     }
 
+    void read(char *buff, unsigned int length) {
+        _buffer.sgetn(buff, length);
+    }
+
     std::string getString() const {
         return _buffer.str();
     }
 };
 
 ByteArray& operator<<(ByteArray &buffer, const std::string &value);
+
+ByteArray& operator>>(ByteArray &buffer, std::string &value);
 
 ByteArray& operator<<(ByteArray &buffer, const int &value);
 

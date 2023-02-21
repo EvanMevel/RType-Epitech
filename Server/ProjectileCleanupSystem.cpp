@@ -22,14 +22,13 @@
 
 #include "ProjectileCleanupSystem.h"
 #include "RTypeServer.h"
-#include "Engine/Component/EntityTypeComponent.h"
 #include "Engine/Component/PositionComponent.h"
-#include "Engine/Network/Packets/EntityDestroyPacket.h"
+#include "Engine/Component/EntityTypeComponent2.h"
 
 void ProjectileCleanupSystem::update(EnginePtr engine) {
     std::function<bool(std::shared_ptr<Entity> entity, EnginePtr engine)> f = [](std::shared_ptr<Entity> entity, EnginePtr engine) {
-        auto type = entity->getComponent<EntityTypeComponent>();
-        if (type == nullptr || type->getType() != EntityType::PROJECTILE) {
+        auto type = entity->getComponent<EntityTypeComponent2>();
+        if (type == nullptr || type->getEntityType() != "projectile") {
             return false;
         }
         auto pos = entity->getComponent<PositionComponent>();
