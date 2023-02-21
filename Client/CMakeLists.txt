@@ -46,4 +46,7 @@ add_executable(r-type-client
         GameScene.cpp
         Sounds.cpp
         Scenes.cpp
-        ClientNetServer.cpp)
+        ClientNetServer.cpp
+
+        ipScene.cpp
+        TextBoxComponent.cpp)
