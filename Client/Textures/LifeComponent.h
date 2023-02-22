@@ -20,20 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Textures.h"
+#ifndef R_TYPE_SERVER_LIFECOMPONENT_H
+#define R_TYPE_SERVER_LIFECOMPONENT_H
 
-void loadTextures(const std::shared_ptr<IGraphicLib> &lib) {
-    lib->registerTexture(Textures::TITLE, "rtype.png");
-    lib->registerTexture(Textures::PLAY_BUTTON, "play-button.png");
+#include "Client/Textures/FixTextureComponent.h"
+#include <cstddef>
 
-    lib->registerTexture(Textures::BACKGROUND_1, "Starry background  - Layer 01 - Solid colour.png");
-    lib->registerTexture(Textures::BACKGROUND_2, "Starry background  - Layer 02 - Shadows.png");
-    lib->registerTexture(Textures::BACKGROUND_3, "Starry background  - Layer 02 - Shadows 2.png");
-    lib->registerTexture(Textures::BACKGROUND_4, "Starry background  - Layer 03 - Stars.png");
-    lib->registerTexture(Textures::BACKGROUND_5, "Starry background  - Layer 03 - Stars 2.png");
+class LifeComponent : public IComponent{
+private:
+    float scale = 1;
+public:
+    float getScale() const;
 
-    lib->registerTexture(Textures::HEART, "heart.png");
-    lib->registerTexture(Textures::EMPTY_HEART, "empty_heart.png");
-    lib->registerTexture(Textures::CAN_SHOOT, "can_shoot.png");
-    lib->registerTexture(Textures::CANT_SHOOT, "cant_shoot.png");
-}
+    void setScale(float scale);
+};
+
+
+#endif //R_TYPE_SERVER_LIFECOMPONENT_H

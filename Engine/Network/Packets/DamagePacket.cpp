@@ -20,20 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Textures.h"
+#include "DamagePacket.h"
+#include "Engine/Component/HealthComponent.h"
 
-void loadTextures(const std::shared_ptr<IGraphicLib> &lib) {
-    lib->registerTexture(Textures::TITLE, "rtype.png");
-    lib->registerTexture(Textures::PLAY_BUTTON, "play-button.png");
+DamagePacket::DamagePacket() : playerId(0), health(0), damage(0) {
+}
 
-    lib->registerTexture(Textures::BACKGROUND_1, "Starry background  - Layer 01 - Solid colour.png");
-    lib->registerTexture(Textures::BACKGROUND_2, "Starry background  - Layer 02 - Shadows.png");
-    lib->registerTexture(Textures::BACKGROUND_3, "Starry background  - Layer 02 - Shadows 2.png");
-    lib->registerTexture(Textures::BACKGROUND_4, "Starry background  - Layer 03 - Stars.png");
-    lib->registerTexture(Textures::BACKGROUND_5, "Starry background  - Layer 03 - Stars 2.png");
+DamagePacket::DamagePacket(EntityPtr entity, int damage): damage(damage) {
+    playerId = entity->getId();
+    auto healthComponent = entity->getComponent<HealthComponent>();
+    if (healthComponent) {
+        health = healthComponent->getHealth();
+    } else {
+        throw std::runtime_error("Player has no health component");
+    }
+}
 
-    lib->registerTexture(Textures::HEART, "heart.png");
-    lib->registerTexture(Textures::EMPTY_HEART, "empty_heart.png");
-    lib->registerTexture(Textures::CAN_SHOOT, "can_shoot.png");
-    lib->registerTexture(Textures::CANT_SHOOT, "cant_shoot.png");
+void DamagePacket::write(ByteArray &buffer) const {
+    buffer << playerId << health << damage;
+}
+
+void DamagePacket::read(ByteArray &buffer) {
+    buffer >> playerId >> health >> damage;
 }

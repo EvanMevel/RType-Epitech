@@ -21,11 +21,13 @@
 // SOFTWARE.
 
 #include "ColliderHitboxSystem.h"
+#include <utility>
 #include "Engine/Engine.h"
 #include "Engine/EntityUtils.h"
 #include "Hitbox.h"
 #include "TeamComponent.h"
 #include "ColliderComponent.h"
+#include "EntityTypeComponent2.h"
 
 void ColliderHitboxSystem::update(EnginePtr engine) {
     std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> teams;
@@ -78,7 +80,7 @@ void ColliderHitboxSystem::update(EnginePtr engine) {
                 auto otherHitbox = std::get<0>(otherTeamHitbox);
                 auto otherEntity = std::get<1>(otherTeamHitbox);
                 if (hitbox.isColliding(otherHitbox)) {
-                    entity->getComponent<ColliderComponent>()->onCollision(engine, entity, otherEntity, teams);
+                    entity->getComponent<ColliderComponent>()->onCollision(engine, entity, otherEntity, teams, _onDamage);
                     break;
                 }
             }
@@ -88,4 +90,7 @@ void ColliderHitboxSystem::update(EnginePtr engine) {
 
 std::string ColliderHitboxSystem::getName() {
     return "ProjectileHitboxSystem";
+}
+
+ColliderHitboxSystem::ColliderHitboxSystem(std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)> onDamage): _onDamage(std::move(onDamage)) {
 }

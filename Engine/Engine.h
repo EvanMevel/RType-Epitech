@@ -58,7 +58,10 @@ public:
     }
     template<class Module>
     std::shared_ptr<Module> getModule() {
-        return std::any_cast<std::shared_ptr<Module>>(engineComponents[std::type_index(typeid(Module))]);
+        auto module = engineComponents.find(std::type_index(typeid(Module)));
+        if (module == engineComponents.end())
+            return nullptr;
+        return std::any_cast<std::shared_ptr<Module>>(module->second);
     }
 
     template <class SceneType, class ...Args>

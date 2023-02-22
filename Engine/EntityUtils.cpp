@@ -30,15 +30,14 @@ void entityDied(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_pt
     engine->getScene()->removeEntity(entity);
 }
 
-void entityDamaged(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<Entity> cause) {
-}
-
 void entity::projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
-                   std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams) {
+                   std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams,
+                   std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)> onDamage) {
     auto health = other->getComponent<HealthComponent>();
     if (health != nullptr) {
         if (!health->isInvincible()) {
             health->damage(10);
+            onDamage(engine, other, 10);
             if (!health->isAlive()) {
                 entityDied(engine, other, self);
                 auto team = teams[other->getComponent<TeamComponent>()->getTeam()];
@@ -46,8 +45,6 @@ void entity::projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::
                                           [other](std::tuple<Hitbox, std::shared_ptr<Entity>> &t) {
                                               return std::get<1>(t)->getId() == other->getId();
                                           }), team.end());
-            } else {
-                entityDamaged(engine, other, self);
             }
         }
     } else {

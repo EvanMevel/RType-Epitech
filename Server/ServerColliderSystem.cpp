@@ -21,8 +21,25 @@
 // SOFTWARE.
 
 #include "ServerColliderSystem.h"
+#include "Engine/Component/EntityTypeComponent2.h"
+#include "Engine/Network/Packets/DamagePacket.h"
+
+static void onDamage(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)
+{
+    auto server = engine->getModule<RTypeServer>();
+    auto entityType = touched->getComponent<EntityTypeComponent2>();
+
+    if (entityType != nullptr && entityType->getEntityType() == "player") {
+        DamagePacket packet(touched, damages);
+        server->broadcast(packet);
+    }
+}
 
 std::string ServerColliderSystem::getName() {
     return "ServerVelocitySystem";
+}
+
+ServerColliderSystem::ServerColliderSystem(): ColliderHitboxSystem(onDamage) {
+
 }
 

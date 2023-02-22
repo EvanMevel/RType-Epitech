@@ -41,6 +41,9 @@
 #include "Engine/TickUtil.h"
 #include "StayAliveSystem.h"
 #include "Engine/engineLua/LuaLoader.h"
+#include "Client/Consumers/DamageConsumer.h"
+#include "Client/Textures/CooldownSystem.h"
+#include "Client/Textures/LifeSystem.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -77,6 +80,8 @@ void loadNetwork(EnginePtr engine) {
     server->addConsumer<EntityInfoConsumer>();
 
     server->addConsumer<ProjectileHitConsumer>();
+
+    server->addConsumer<DamageConsumer>();
 
     server->addSystem<StayAliveSystem>();
 
@@ -146,6 +151,8 @@ void loadGraphsAndScenes(EnginePtr engine) {
     lib->addSystem<DrawSpriteSystem>();
     lib->addSystem<AnimationSystem>();
     lib->addSystem<MouseSystem>();
+    lib->addSystem<LifeSystem>();
+    lib->addSystem<CooldownSystem>();
 
 
     graphicReady = true;

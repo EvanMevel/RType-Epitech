@@ -35,7 +35,6 @@
 class PlayerShootSystem : public ISystem {
 private:
     std::shared_ptr<Player> player;
-    size_t cooldown = 0;
 public:
     PlayerShootSystem(const std::shared_ptr<Player> &player);
 
