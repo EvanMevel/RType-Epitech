@@ -6,6 +6,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.11)
 if (NOT raylib_FOUND)
     INCLUDE(FetchContent)
     FetchContent_Declare(raylib
+            DOWNLOAD_EXTRACT_TIMESTAMP TRUE
             URL https://github.com/raysan5/raylib/archive/refs/tags/4.0.0.tar.gz)
     FetchContent_GetProperties(raylib)
     if (NOT raylib_POPULATED)
