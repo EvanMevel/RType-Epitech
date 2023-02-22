@@ -31,6 +31,11 @@
 #include "Client/Textures/Textures.h"
 #include "Client/Textures/CreateScrollingTexture.h"
 #include "Engine/VelocitySystem.h"
+#include "CreateTextBox.h"
+#include "Engine/SceneHolder.h"
+#include "ClientNetServer.h"
+#include "Engine/Network/Packets/HandshakePacket.h"
+#include "Scenes.h"
 
 std::shared_ptr<Scene> ipScene(EnginePtr engine);
 

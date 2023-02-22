@@ -21,11 +21,25 @@
 // SOFTWARE.
 
 #include "ipScene.h"
-#include "CreateTextBox.h"
+#include "Client/Textures/CreateButton.h"
+
+static void changeIpButtonClick(EnginePtr engine) {
+    auto sceneHolder = engine->getModule<SceneHolder>();
+    auto sc = sceneHolder->getValue(Scenes::GAME);
+    engine->setScene(sc);
+    
+
+    auto server = engine->getModule<ClientNetServer>();
+    std::cout << "Sending handshake" << std::endl;
+    server->startListening();
+    server->sendPacket(HandshakePacket());
+}
 
 std::shared_ptr<Scene> ipScene(EnginePtr engine){
     auto sc = engine->createScene<Scene>();
     auto lib = engine->getModule<IGraphicLib>();
+    auto height = lib->getWindow().getHeight();
+    auto width = lib->getWindow().getWidth();
 
     auto background = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_1,-1);
     auto fourthground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_2,-2);
@@ -35,6 +49,7 @@ std::shared_ptr<Scene> ipScene(EnginePtr engine){
 
     auto textBox = createTextBox(lib,sc,(lib->getWindow().getWidth() / 2) - (800 / 2), (int) (lib->getWindow().getHeight() * 0.45) - (100 / 2));
 
+    createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.85) - (100 / 2),Textures::IP_BUTTON, changeIpButtonClick);
     sc->addSystem<VelocitySystem>();
     return sc;
 }
