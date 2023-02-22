@@ -94,6 +94,8 @@ public:
 
     virtual int getCharPressed() = 0;
 
+    virtual bool isKeyPressed(int key) = 0;
+
     virtual IMouse &getMouse() = 0;
 
     virtual void initAudio() = 0;

@@ -141,3 +141,7 @@ void RaylibGraphicLib::drawRectangle(int posX, int posY, int width, int height, 
 int RaylibGraphicLib::getCharPressed() {
     return ray::GetCharPressed();
 }
+
+bool RaylibGraphicLib::isKeyPressed(int key) {
+    return ray::IsKeyPressed(key);
+}
