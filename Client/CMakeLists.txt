@@ -23,7 +23,7 @@ add_executable(r-type-client
         Textures/CreateHud.cpp
         Textures/LifeComponent.cpp
         Textures/LifeSystem.cpp
-        Textures/CooldownComponent.cpp
+        Textures/HudCooldownComponent.cpp
         Textures/CooldownSystem.cpp
 
         Consumers/PingPacketConsumer.cpp

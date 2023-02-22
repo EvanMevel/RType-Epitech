@@ -24,16 +24,4 @@
 // Created by gugue on 15/02/2023.
 //
 
-#include "CooldownComponent.h"
-
-float CooldownComponent2::getScale() const {
-    return scale;
-}
-
-void CooldownComponent2::setScale(float scale) {
-    CooldownComponent2::scale = scale;
-}
-
-void CooldownComponent2::setWidth(int width) {
-    CooldownComponent2::width = width;
-}
+#include "HudCooldownComponent.h"

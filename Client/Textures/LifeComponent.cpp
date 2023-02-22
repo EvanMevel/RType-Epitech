@@ -30,7 +30,3 @@ void LifeComponent::setScale(float sca) {
     LifeComponent::scale = sca;
 }
 
-void LifeComponent::setWidth(int w) {
-    LifeComponent::width = w;
-}
-

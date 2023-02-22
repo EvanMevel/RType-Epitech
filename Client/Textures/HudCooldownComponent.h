@@ -30,16 +30,7 @@
 
 #include "FixTextureComponent.h"
 
-class CooldownComponent2 : public IComponent{
-private:
-    float scale = 1;
-    int width = 0;
-public:
-    void setScale(float scale);
-
-    void setWidth(int width);
-
-    float getScale() const;
+class HudCooldownComponent : public IComponent{
 };
 
 

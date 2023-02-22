@@ -25,26 +25,30 @@
 //
 
 #include "CooldownSystem.h"
-#include "CooldownComponent.h"
+#include "HudCooldownComponent.h"
 #include "Engine/Component/PositionComponent.h"
 #include "Client/Player/Player.h"
 
 void drawCooldown(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entity, EnginePtr engine) {
-    auto cooldown = entity->getComponent<CooldownComponent2>();
+    auto cooldown = entity->getComponent<HudCooldownComponent>();
     auto pos = entity->getComponent<PositionComponent>();
 
     if (cooldown != nullptr && pos != nullptr) {
-        Texture &canShootTexture = lib->getTextures()->getValue(Textures::CAN_SHOOT);
-        Texture &cantShootTexture = lib->getTextures()->getValue(Textures::CANT_SHOOT);
 
         auto player = engine->getModule<Player>();
 
         if (player == nullptr)
             return;
-        if (player->cooldown > 0 || player->dead)
-            lib->drawTexture(cantShootTexture, pos->getX() - canShootTexture->getWidth(), pos->getY(), ColorCodes::COLOR_WHITE);
-        else
-            lib->drawTexture(canShootTexture, pos->getX() - canShootTexture->getWidth(), pos->getY(), ColorCodes::COLOR_WHITE);
+        if (player->cooldown > 0 || player->dead) {
+            Texture &cantShootTexture = lib->getTextures()->getValue(Textures::CANT_SHOOT);
+            lib->drawTexture(cantShootTexture, pos->getX() - cantShootTexture->getWidth(), pos->getY(),
+                             ColorCodes::COLOR_WHITE);
+        }
+        else {
+            Texture &canShootTexture = lib->getTextures()->getValue(Textures::CAN_SHOOT);
+            lib->drawTexture(canShootTexture, pos->getX() - canShootTexture->getWidth(), pos->getY(),
+                             ColorCodes::COLOR_WHITE);
+        }
     }
 }
 

@@ -29,13 +29,10 @@
 class LifeComponent : public IComponent{
 private:
     float scale = 1;
-    int width = 0;
 public:
     float getScale() const;
 
     void setScale(float scale);
-
-    void setWidth(int width);
 };
 
 

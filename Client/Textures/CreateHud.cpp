@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 #include "CreateHud.h"
-#include "CooldownComponent.h"
+#include "HudCooldownComponent.h"
 
 std::shared_ptr<Entity> createHud(const std::shared_ptr<IGraphicLib> &lib, const std::shared_ptr<Scene> &sc,
                                   Textures heartTexture, Textures shootTexture)
@@ -32,16 +32,13 @@ std::shared_ptr<Entity> createHud(const std::shared_ptr<IGraphicLib> &lib, const
     const Texture &cooldownTexture = lib->getTextures()->getValue(shootTexture);
 
     auto lifeComponent = hudEntity->addComponent<LifeComponent>();
-    auto cooldownComponent = hudEntity->addComponent<CooldownComponent2>();
+    auto cooldownComponent = hudEntity->addComponent<HudCooldownComponent>();
 
     auto x = cooldownTexture->getWidth();
 
     hudEntity->addComponent<PositionComponent>(x, lib->getWindow().getHeight() - (lifeTexture->getHeight() / 2));
 
-    lifeComponent->setWidth(lifeTexture->getWidth());
     lifeComponent->setScale(0.25);
-
-    cooldownComponent->setWidth(cooldownTexture->getWidth());
 
     return hudEntity;
 }
