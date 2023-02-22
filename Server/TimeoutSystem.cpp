@@ -32,17 +32,23 @@ void TimeoutSystem::update(EnginePtr engine) {
     auto server = engine->getModule<RTypeServer>();
 
     long long currentTime = getCurrentTime();
+    auto disconnected = std::make_shared<std::vector<std::pair<std::shared_ptr<NetClient>, std::shared_ptr<ClientData>>>>();
 
-    std::function<bool(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> &data)> func = [server, currentTime](std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> &data) {
+    std::function<bool(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> &data)> func = [server, currentTime, disconnected](std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> &data) {
         if (data->getLastPing() + RTYPE_TIMEOUT < currentTime) {
             log() << "Client " << client->addressPort() << " timed out" << std::endl;
-            server->clientDisconnected(client, data);
+            auto pair = std::make_pair(client, data);
+            disconnected->push_back(pair);
             return true;
         }
         return false;
     };
 
     server->filterClients(func);
+
+    for (auto &pair : *disconnected) {
+        server->clientDisconnected(pair.first, pair.second);
+    }
 }
 
 std::string TimeoutSystem::getName() {
