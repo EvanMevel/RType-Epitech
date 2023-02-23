@@ -24,18 +24,20 @@
 #include "Engine/Component/HitboxComponent.h"
 #include "Engine/Component/EntityTypeComponent2.h"
 
-void LuaEntityTypeFactory::addEntityType(const LuaEntityType &entityType) {
-    _entityTypes.push_back(entityType);
+std::shared_ptr<LuaEntityType> LuaEntityTypeFactory::addEntityType(const LuaEntityType &entityType) {
+    auto type = std::make_shared<LuaEntityType>(entityType);
+    _entityTypes.push_back(type);
+    return type;
 }
 
 void LuaEntityTypeFactory::initEntity(std::shared_ptr<Entity> entity, const std::string &entityType) {
     for (auto &type : _entityTypes) {
-        if (type.getId() == entityType) {
-            entity->addComponent<EntityTypeComponent2>(type.getId());
+        if (type->getId() == entityType) {
+            entity->addComponent<EntityTypeComponent2>(type->getId());
 
-            entity->addComponent<HitboxComponent>(type.getHitboxWidth(), type.getHitboxHeight());
+            entity->addComponent<HitboxComponent>(type->getHitboxWidth(), type->getHitboxHeight());
 
-            for (auto &component : type.getComponents()) {
+            for (auto &component : type->getComponents()) {
                 _componentFactory.initComponent(component.first, entity, component.second);
             }
             return;
@@ -47,9 +49,9 @@ LuaComponentFactory &LuaEntityTypeFactory::getComponentFactory() {
     return _componentFactory;
 }
 
-LuaEntityType &LuaEntityTypeFactory::getEntityType(const std::string &entityType) {
+std::shared_ptr<LuaEntityType> LuaEntityTypeFactory::getEntityType(const std::string &entityType) {
     for (auto &type : _entityTypes) {
-        if (type.getId() == entityType) {
+        if (type->getId() == entityType) {
             return type;
         }
     }
@@ -65,25 +67,27 @@ LuaEntityType &LuaEntityTypeFactory::getEntityType(const std::string &entityType
     std::size_t hitboxWidth = lua_tointeger(L, 3);
     std::size_t hitboxLength = lua_tointeger(L, 4);
 
-    factory->addEntityType(LuaEntityType(id, hitboxWidth, hitboxLength));
+    auto type = factory->addEntityType(LuaEntityType(id, hitboxWidth, hitboxLength));
 
-    return 0;
+    lua_pushlightuserdata(L, type.get());
+    luaL_setmetatable(L, "LuaEntityType");
+
+    return 1;
 }
 
 [[maybe_unused]] int luaAddComponentToType(lua_State *L) {
     int argc = lua_gettop(L);
-    LuaEntityTypeFactory *factory = (LuaEntityTypeFactory*) lua_touserdata(L, 1);
-    std::string type = lua_tostring(L, 2);
+    LuaEntityType *type = (LuaEntityType*) luaL_checkudata(L, 1, "LuaEntityType");
 
-    std::string component = lua_tostring(L, 3);
+    std::string component = lua_tostring(L, 2);
 
     std::vector<int> args;
 
-    for (size_t i = 4; i <= argc; i++) {
+    for (size_t i = 3; i <= argc; i++) {
         args.push_back(lua_tointeger(L, i));
     }
 
-    factory->getEntityType(type).addComponent(component, args);
+    type->addComponent(component, args);
 
     return 0;
 }

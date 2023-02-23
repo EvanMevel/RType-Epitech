@@ -61,6 +61,6 @@ add_library(eng
         ColliderHitboxSystem.cpp
         Hitbox.cpp
         Rectangle.cpp
-        Vector2i.cpp)
+        Vector2i.cpp engineLua/LuaClass.cpp engineLua/LuaClass.h engineLua/LuaType.cpp engineLua/LuaType.h)
 
 target_link_libraries(eng lua_static)

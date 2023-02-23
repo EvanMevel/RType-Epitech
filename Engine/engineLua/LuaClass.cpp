@@ -20,34 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "LuaWrapper.h"
+#include "LuaClass.h"
 
-LuaWrapper::LuaWrapper() {
-    L = luaL_newstate();
-    luaL_openlibs(L);
-}
-
-LuaWrapper::~LuaWrapper() {
-    lua_close(L);
-}
-
-int LuaWrapper::doFile(const std::string &filename) {
-    return luaL_dofile(L, filename.c_str());
-}
-
-void LuaWrapper::registerFunction(std::string name, lua_CFunction func) {
-    lua_register(L, name.c_str(), func);
-}
-
-void LuaWrapper::defineGlobal(std::string name, int value) {
-    lua_pushinteger(L, value);
-    lua_setglobal(L, name.c_str());
-}
-
-lua_State *LuaWrapper::getLuaState() const {
-    return L;
-}
-
-void LuaWrapper::newMetaTable(const std::string &name) {
+LuaClass::LuaClass(const LuaWrapper &lua, const std::string &name, int index) : L(lua.getLuaState()) {
     luaL_newmetatable(L, name.c_str());
+
+    lua_newtable(L);
 }
+
+void LuaClass::registerFunction(const std::string &name, lua_CFunction function) {
+    lua_pushcfunction(L, function);
+    lua_setfield(L, -2, name.c_str());
+}
+
+void LuaClass::done() {
+    lua_setfield(L, -2, "__index");
+}
+

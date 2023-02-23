@@ -30,6 +30,8 @@
 #include "Engine/Component/CooldownComponent.h"
 #include "PhysicComponent.h"
 #include "IAComponent.h"
+#include "LuaClass.h"
+#include "LuaType.h"
 
 LuaLoader::LuaLoader() {
     _lua.defineGlobal("ENGINE_TPS", ENGINE_TPS);
@@ -91,13 +93,33 @@ void addComponentConstructors(std::shared_ptr<LuaEntityTypeFactory> luaEntityTyp
     });
 }
 
+static int luaPreloadEntityTypeFactory(lua_State *L) {
+    LuaEntityTypeFactory *factory = (LuaEntityTypeFactory*) lua_touserdata(L, 1);
+
+    lua_pushlightuserdata(L, factory);
+    luaL_setmetatable(L, "LuaEntityTypeFactory");
+
+    std::cout << "ezaeza" << std::endl;
+
+    return 1;
+}
+
+static int tst(lua_State *L) {
+    std::cout << "tst" << std::endl;
+    return 0;
+}
+
 void LuaLoader::loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory) {
     void *luaEntityTypeFactoryPtr = luaEntityTypeFactory.get();
 
     _lua.registerFunction("registerEntityType", luaRegisterEntityType);
-    _lua.registerFunction("addComponentToType", luaAddComponentToType);
+
+    auto entityType = LuaClass(_lua, "LuaEntityType", -1);
+    entityType.registerFunction("addComponent", luaAddComponentToType);
+    entityType.done();
 
     auto func = _lua.getFunction<VoidType, void*>("loadEntityTypes");
+    //func.call(LuaType("LuaEntityTypeFactory", luaEntityTypeFactoryPtr));
     func.call(luaEntityTypeFactoryPtr);
 
     addComponentConstructors(luaEntityTypeFactory);
