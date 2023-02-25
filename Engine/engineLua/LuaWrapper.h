@@ -66,6 +66,7 @@ public:
             } else if (vec[i].type() == typeid(LuaType)) {
                 LuaType t = std::any_cast<LuaType>(vec[i]);
                 lua_pushlightuserdata(L, t.getPtr());
+
                 luaL_setmetatable(L, t.getName().c_str());
             }
         }

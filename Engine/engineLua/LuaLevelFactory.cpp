@@ -20,37 +20,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PACKETSENDINGSCENE_H
-#define R_TYPE_SERVER_PACKETSENDINGSCENE_H
+#include "LuaLevelFactory.h"
 
+std::shared_ptr<Level> LuaLevelFactory::createLevel(const std::string &name) {
+    auto level = std::make_shared<Level>(name);
+    _levels.push_back(level);
+    return level;
+}
 
-#include "Engine/Scene.h"
-#include "RTypeServer.h"
+[[maybe_unused]] int luaCreateLevel(lua_State *L) {
+    LuaLevelFactory *levelList = (LuaLevelFactory*) lua_touserdata(L, 1);
 
-/**
- * @brief Scene that sends packets to the clients when entities are removed
- */
-class PacketSendingScene : public Scene {
-private:
-    RTypeServerPtr server;
-public:
-    PacketSendingScene(EntityManager &entityManager, const RTypeServerPtr &server);
+    std::string name = lua_tostring(L, 2);
 
-    void removeEntity(std::shared_ptr<Entity> entity) override;
+    std::shared_ptr<Level> level = levelList->createLevel(name);
 
-    void removeEntity(EntityId entityId) override;
+    lua_pushlightuserdata(L, level.get());
+    luaL_setmetatable(L, "LuaLevel");
 
-    void filterEntities(std::function<bool(std::shared_ptr<Entity>)> filter) override;
+    return 1;
+}
 
-    void filterEntities(std::function<bool(std::shared_ptr<Entity>, EnginePtr)> func,
-                        std::unique_ptr<Engine> &engine) override;
+[[maybe_unused]] int luaAddEnemyToLevel(lua_State *L) {
+    Level *level = (Level*) luaL_checkudata(L, 1, "LuaLevel");
 
-    std::shared_ptr<Entity> createEntity(std::unique_ptr<Engine> &engine, const std::string &type, int x, int y) override;
+    std::string type = lua_tostring(L, 2);
+    int x = lua_tonumber(L, 3);
+    int y = lua_tonumber(L, 4);
 
-    std::shared_ptr<Entity>
-    unsafeCreateEntity(std::unique_ptr<Engine> &engine, const std::string &type, int x, int y) override;
-
-};
-
-
-#endif //R_TYPE_SERVER_PACKETSENDINGSCENE_H
+    level->addEnemy(type, x, y);
+    return 0;
+}

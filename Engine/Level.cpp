@@ -20,37 +20,52 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PACKETSENDINGSCENE_H
-#define R_TYPE_SERVER_PACKETSENDINGSCENE_H
+#include "Level.h"
+#include "Engine.h"
 
+LevelEnemy::LevelEnemy(const std::string &type, int x, int y) : _type(type), _x(x), _y(y) {
 
-#include "Engine/Scene.h"
-#include "RTypeServer.h"
+}
 
-/**
- * @brief Scene that sends packets to the clients when entities are removed
- */
-class PacketSendingScene : public Scene {
-private:
-    RTypeServerPtr server;
-public:
-    PacketSendingScene(EntityManager &entityManager, const RTypeServerPtr &server);
+[[maybe_unused]] const std::string &LevelEnemy::getType() const {
+    return _type;
+}
 
-    void removeEntity(std::shared_ptr<Entity> entity) override;
+int LevelEnemy::getX() const {
+    return _x;
+}
 
-    void removeEntity(EntityId entityId) override;
+int LevelEnemy::getY() const {
+    return _y;
+}
 
-    void filterEntities(std::function<bool(std::shared_ptr<Entity>)> filter) override;
+Level::Level(const std::string &name) : _name(name) {
 
-    void filterEntities(std::function<bool(std::shared_ptr<Entity>, EnginePtr)> func,
-                        std::unique_ptr<Engine> &engine) override;
+}
 
-    std::shared_ptr<Entity> createEntity(std::unique_ptr<Engine> &engine, const std::string &type, int x, int y) override;
+void Level::spawn(std::unique_ptr<Engine> &engine, const LevelEnemy &enemy) {
+    engine->getScene()->createEntity(engine, enemy.getType(), enemy.getX(), enemy.getY());
+}
 
-    std::shared_ptr<Entity>
-    unsafeCreateEntity(std::unique_ptr<Engine> &engine, const std::string &type, int x, int y) override;
+void Level::update(int x, EnginePtr engine) {
+    auto it = _enemies.begin();
+    while (it != _enemies.end()) {
+        if (it->getX() >= x) {
+            spawn(engine, *it);
+            it = _enemies.erase(it);
+        } else {
+            return;
+        }
+    }
+}
 
-};
-
-
-#endif //R_TYPE_SERVER_PACKETSENDINGSCENE_H
+void Level::addEnemy(const std::string &type, int x, int y) {
+    auto it = _enemies.begin();
+    while (it != _enemies.end()) {
+        if (it->getX() > x) {
+            break;
+        }
+        it++;
+    }
+    _enemies.insert(it, LevelEnemy{type, x, y});
+}

@@ -60,6 +60,8 @@ void EnemyShootSystem::update(std::unique_ptr<Engine> &engine) {
             cd->current++;
             if (cd->current >= cd->cooldown) {
                 cd->current = 0;
+
+                // TODO use the other unsafeCreateEntity
                 auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
                 auto projectile = engine->getScene()->unsafeCreateEntity();
                 typeFactory->initEntity(projectile, "projectile");

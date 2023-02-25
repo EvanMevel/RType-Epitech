@@ -63,3 +63,9 @@ function loadEntityTypes(factory)
 
     loadEnemy2(factory);
 end
+
+function loadLevels(factory)
+    local level = createLevel(factory, "Level 1");
+    level:addEnemy("enemy1", 0, 450);
+    level:addEnemy("enemy1", 0, 550);
+end

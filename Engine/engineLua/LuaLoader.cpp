@@ -60,6 +60,10 @@ void LuaLoader::loadFolder(const std::string &folderPath) {
     luaLoadFolder(_lua, folderEntry);
 }
 
+void LuaLoader::loadFile(const std::string &filePath) {
+    _lua.doFile(filePath);
+}
+
 void addComponentConstructors(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory) {
     luaEntityTypeFactory->getComponentFactory().addComponent("TeamComponent", [](std::shared_ptr<Entity> entity, std::vector<int> args) {
         entity->addComponent<TeamComponent>((std::size_t) args[0]);
@@ -93,22 +97,6 @@ void addComponentConstructors(std::shared_ptr<LuaEntityTypeFactory> luaEntityTyp
     });
 }
 
-static int luaPreloadEntityTypeFactory(lua_State *L) {
-    LuaEntityTypeFactory *factory = (LuaEntityTypeFactory*) lua_touserdata(L, 1);
-
-    lua_pushlightuserdata(L, factory);
-    luaL_setmetatable(L, "LuaEntityTypeFactory");
-
-    std::cout << "ezaeza" << std::endl;
-
-    return 1;
-}
-
-static int tst(lua_State *L) {
-    std::cout << "tst" << std::endl;
-    return 0;
-}
-
 void LuaLoader::loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory) {
     void *luaEntityTypeFactoryPtr = luaEntityTypeFactory.get();
 
@@ -123,6 +111,20 @@ void LuaLoader::loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityT
     func.call(luaEntityTypeFactoryPtr);
 
     addComponentConstructors(luaEntityTypeFactory);
+}
+
+void LuaLoader::loadLevels(std::shared_ptr<LuaLevelFactory> luaLevelParser) {
+    void *luaLevelParserPtr = luaLevelParser.get();
+
+    _lua.registerFunction("createLevel", luaCreateLevel);
+
+    auto level = LuaClass(_lua, "LuaLevel", -1);
+    level.registerFunction("addEnemy", luaAddEnemyToLevel);
+    level.done();
+
+    auto func = _lua.getFunction<VoidType, void *>("loadLevels");
+    //func.call(LuaType("LuaLevelParser", luaLevelParserPtr));
+    func.call(luaLevelParserPtr);
 }
 
 int luaRegisterSprite(lua_State *L) {

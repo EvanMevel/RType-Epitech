@@ -3,8 +3,10 @@ project(Engine)
 
 set(CMAKE_CXX_STANDARD 20)
 
-option(LUA_ENABLE_TESTING "Build and run tests" OFF)
+set(LUA_ENABLE_TESTING OFF)
 add_subdirectory(lua)
+get_filename_component(LUA_INCLUDE_DIR lua/lua-5.4.4/include REALPATH)
+set(LUA_LIBRARIES lua_static)
 
 include_directories(.)
 include_directories(Component)
@@ -52,6 +54,9 @@ add_library(eng
         engineLua/LuaEntityTypeFactory.cpp
         engineLua/LuaLoader.cpp
         engineLua/LuaComponentFactory.cpp
+        engineLua/LuaClass.cpp
+        engineLua/LuaType.cpp
+        engineLua/LuaLevelFactory.cpp
 
         EntityManager.cpp
         TimeUtil.cpp
@@ -61,6 +66,10 @@ add_library(eng
         ColliderHitboxSystem.cpp
         Hitbox.cpp
         Rectangle.cpp
-        Vector2i.cpp engineLua/LuaClass.cpp engineLua/LuaClass.h engineLua/LuaType.cpp engineLua/LuaType.h)
+        Vector2i.cpp
+
+        Level.cpp
+
+        )
 
 target_link_libraries(eng lua_static)

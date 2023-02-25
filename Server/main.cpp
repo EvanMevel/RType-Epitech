@@ -106,9 +106,11 @@ int main()
 
     auto luaLoad = engine->registerModule<LuaLoader>();
     auto typeFactory = engine->registerModule<LuaEntityTypeFactory>();
+    auto levelFactory = engine->registerModule<LuaLevelFactory>();
 
     luaLoad->loadFolder("config");
     luaLoad->loadEntityTypes(typeFactory);
+    luaLoad->loadLevels(levelFactory);
 
     createScene(engine);
     std::thread t = std::thread(stopThread, std::ref(engine));

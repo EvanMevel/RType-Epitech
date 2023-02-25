@@ -20,37 +20,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PACKETSENDINGSCENE_H
-#define R_TYPE_SERVER_PACKETSENDINGSCENE_H
+#ifndef R_TYPE_CLIENT_LEVEL_H
+#define R_TYPE_CLIENT_LEVEL_H
 
+#include <string>
+#include <vector>
+#include "Engine/EngineTypes.h"
 
-#include "Engine/Scene.h"
-#include "RTypeServer.h"
-
-/**
- * @brief Scene that sends packets to the clients when entities are removed
- */
-class PacketSendingScene : public Scene {
+class LevelEnemy {
 private:
-    RTypeServerPtr server;
+    std::string _type;
+    int _x;
+    int _y;
 public:
-    PacketSendingScene(EntityManager &entityManager, const RTypeServerPtr &server);
+    LevelEnemy(const std::string &type, int x, int y);
 
-    void removeEntity(std::shared_ptr<Entity> entity) override;
+    [[maybe_unused]] const std::string &getType() const;
 
-    void removeEntity(EntityId entityId) override;
+    int getX() const;
 
-    void filterEntities(std::function<bool(std::shared_ptr<Entity>)> filter) override;
+    int getY() const;
+};
 
-    void filterEntities(std::function<bool(std::shared_ptr<Entity>, EnginePtr)> func,
-                        std::unique_ptr<Engine> &engine) override;
+class Level {
+private:
+    std::vector<LevelEnemy> _enemies;
+    std::string _name;
 
-    std::shared_ptr<Entity> createEntity(std::unique_ptr<Engine> &engine, const std::string &type, int x, int y) override;
+public:
+    explicit Level(const std::string &name);
 
-    std::shared_ptr<Entity>
-    unsafeCreateEntity(std::unique_ptr<Engine> &engine, const std::string &type, int x, int y) override;
+    void spawn(EnginePtr engine, const LevelEnemy &enemy);
 
+    void update(int x, EnginePtr engine);
+
+    void addEnemy(const std::string &type, int x, int y);
 };
 
 
-#endif //R_TYPE_SERVER_PACKETSENDINGSCENE_H
+#endif //R_TYPE_CLIENT_LEVEL_H
