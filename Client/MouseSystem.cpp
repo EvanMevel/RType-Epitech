@@ -24,6 +24,14 @@
 #include "Engine/Engine.h"
 #include "ButtonComponent.h"
 
+void isButtonClicked(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entity, EnginePtr engine) {
+    auto mousePos = lib->getMouse().getPos();
+    auto buttonComponent= entity->getComponent<ButtonComponent>();
+    if (buttonComponent != nullptr && buttonComponent->getHitbox().contains(mousePos)) {
+        buttonComponent->clicked(engine,entity);
+    }
+}
+
 void MouseSystem::update(EnginePtr engine) {
     auto lib = engine->getModule<IGraphicLib>();
     if (lib == nullptr)
@@ -33,11 +41,8 @@ void MouseSystem::update(EnginePtr engine) {
     if (!lib->getMouse().isClicked(MouseCode::MOUSE_BUTTON_LEFT)) {
         return;
     }
-    auto mousePos = lib->getMouse().getPos();
-    for (auto &entity: engine->getScene()->getEntities()) {
-        auto buttonComponent= entity->getComponent<ButtonComponent>();
-        if (buttonComponent != nullptr && buttonComponent->getHitbox().contains(mousePos)) {
-            buttonComponent->clicked(engine);
-        }
-    }
+    std::function<void(std::shared_ptr<Entity>)> button = [&lib, &engine](std::shared_ptr<Entity> entity) {
+        isButtonClicked(lib, entity, engine);
+    };
+    engine->getScene()->forEachEntity(button);
 }

@@ -32,12 +32,12 @@ void ButtonComponent::setHitbox(const Hitbox &box) {
     this->hitbox = box;
 }
 
-void ButtonComponent::setOnClick(const std::function<void(EnginePtr)> &onClick) {
+void ButtonComponent::setOnClick(const std::function<void(EnginePtr, std::shared_ptr<Entity>)> &onClick) {
     _onClick = onClick;
 }
 
-void ButtonComponent::clicked(std::unique_ptr<Engine> &engine) {
+void ButtonComponent::clicked(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> entity) {
     if (_onClick) {
-        _onClick(engine);
+        _onClick(engine, entity);
     }
 }

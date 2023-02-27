@@ -20,33 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_BUTTONCOMPONENT_H
-#define R_TYPE_SERVER_BUTTONCOMPONENT_H
+#ifndef R_TYPE_SERVER_IPSCENE_H
+#define R_TYPE_SERVER_IPSCENE_H
 
+#include "Engine/Scene.h"
+#include "Engine/EntityType.h"
+#include "Engine/Entity.h"
+#include "Engine/Engine.h"
+#include "Engine/Graphic/IGraphicLib.h"
+#include "Client/Textures/Textures.h"
+#include "Client/Textures/CreateScrollingTexture.h"
+#include "Engine/VelocitySystem.h"
+#include "CreateTextBox.h"
+#include "Engine/SceneHolder.h"
+#include "ClientNetServer.h"
+#include "Engine/Network/Packets/HandshakePacket.h"
+#include "Scenes.h"
 
-#include <functional>
-#include "Engine/Component/IComponent.h"
-#include "Engine/Hitbox.h"
+std::shared_ptr<Scene> ipScene(EnginePtr engine);
 
-/**
- * @brief Component that contains a FIX hitbox, it does not move, and can be clicked
- * @details This component is used to create buttons
- */
-class ButtonComponent : public IComponent {
-private:
-    Hitbox hitbox;
-    std::function<void(EnginePtr, std::shared_ptr<Entity>)> _onClick;
-public:
-    ButtonComponent();
-
-    const Hitbox &getHitbox() const;
-
-    void setHitbox(const Hitbox &hitbox);
-
-    void setOnClick(const std::function<void(EnginePtr, std::shared_ptr<Entity>)> &onClick);
-
-    void clicked(EnginePtr engine, std::shared_ptr<Entity> entity);
-};
-
-
-#endif //R_TYPE_SERVER_BUTTONCOMPONENT_H
+#endif //R_TYPE_SERVER_IPSCENE_H

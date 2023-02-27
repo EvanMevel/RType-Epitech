@@ -27,16 +27,16 @@
 /**
  * @brief A rectangle
  */
-class Rectangle {
+class MyRectangle {
 public:
     int x;
     int y;
     int width;
     int height;
 
-    Rectangle(int x, int y, int width, int height);
+    MyRectangle(int x, int y, int width, int height);
 
-    Rectangle();
+    MyRectangle();
 };
 
 

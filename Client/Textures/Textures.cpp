@@ -25,6 +25,7 @@
 void loadTextures(const std::shared_ptr<IGraphicLib> &lib) {
     lib->registerTexture(Textures::TITLE, "rtype.png");
     lib->registerTexture(Textures::PLAY_BUTTON, "play-button.png");
+    lib->registerTexture(Textures::IP_BUTTON, "play-button.png");
 
     lib->registerTexture(Textures::BACKGROUND_1, "Starry background  - Layer 01 - Solid colour.png");
     lib->registerTexture(Textures::BACKGROUND_2, "Starry background  - Layer 02 - Shadows.png");

@@ -28,7 +28,7 @@
 #include "Client/Textures/Textures.h"
 
 std::shared_ptr<Entity> createButton(const std::shared_ptr<IGraphicLib> &lib, const std::shared_ptr<Scene> &sc, int x, int y,
-                                     Textures texture, const std::function<void(EnginePtr)> &onClick)
+                                     Textures texture, const std::function<void(EnginePtr,std::shared_ptr<Entity>)> &onClick)
 {
     auto button = sc->createEntity();
 

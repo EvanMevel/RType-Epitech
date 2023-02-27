@@ -20,33 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_BUTTONCOMPONENT_H
-#define R_TYPE_SERVER_BUTTONCOMPONENT_H
+#include "TextBoxComponent.h"
 
+TextBoxComponent::TextBoxComponent() = default;
 
-#include <functional>
-#include "Engine/Component/IComponent.h"
-#include "Engine/Hitbox.h"
+const std::string &TextBoxComponent::getText() const {
+    return text;
+}
 
-/**
- * @brief Component that contains a FIX hitbox, it does not move, and can be clicked
- * @details This component is used to create buttons
- */
-class ButtonComponent : public IComponent {
-private:
-    Hitbox hitbox;
-    std::function<void(EnginePtr, std::shared_ptr<Entity>)> _onClick;
-public:
-    ButtonComponent();
+void TextBoxComponent::setText(const std::string &text) {
+    TextBoxComponent::text = text;
+}
 
-    const Hitbox &getHitbox() const;
+const MyRectangle &TextBoxComponent::getRectangle() const {
+    return rectangle;
+}
 
-    void setHitbox(const Hitbox &hitbox);
+void TextBoxComponent::setRectangle(const MyRectangle &rectangle) {
+    TextBoxComponent::rectangle = rectangle;
+}
 
-    void setOnClick(const std::function<void(EnginePtr, std::shared_ptr<Entity>)> &onClick);
+TextBoxComponent::~TextBoxComponent() = default;
 
-    void clicked(EnginePtr engine, std::shared_ptr<Entity> entity);
-};
-
-
-#endif //R_TYPE_SERVER_BUTTONCOMPONENT_H

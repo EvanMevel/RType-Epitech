@@ -55,4 +55,8 @@ add_executable(r-type-client
         Scenes.cpp
         ClientNetServer.cpp
 
-        )
+        ipScene.cpp
+        TextBoxComponent.cpp
+        TextBoxSystem.cpp
+        CreateTextBox.cpp
+        EntityLinkComponent.cpp)

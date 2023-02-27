@@ -20,33 +20,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_BUTTONCOMPONENT_H
-#define R_TYPE_SERVER_BUTTONCOMPONENT_H
+#ifndef R_TYPE_SERVER_TEXTBOXCOMPONENT_H
+#define R_TYPE_SERVER_TEXTBOXCOMPONENT_H
 
 
-#include <functional>
+#include <string>
+#include <any>
 #include "Engine/Component/IComponent.h"
-#include "Engine/Hitbox.h"
+#include "Engine/Rectangle.h"
 
-/**
- * @brief Component that contains a FIX hitbox, it does not move, and can be clicked
- * @details This component is used to create buttons
- */
-class ButtonComponent : public IComponent {
+class TextBoxComponent : public IComponent{
 private:
-    Hitbox hitbox;
-    std::function<void(EnginePtr, std::shared_ptr<Entity>)> _onClick;
+    std::string text;
+    MyRectangle rectangle;
 public:
-    ButtonComponent();
+    TextBoxComponent();
 
-    const Hitbox &getHitbox() const;
+    virtual ~TextBoxComponent();
 
-    void setHitbox(const Hitbox &hitbox);
+    const std::string &getText() const;
 
-    void setOnClick(const std::function<void(EnginePtr, std::shared_ptr<Entity>)> &onClick);
+    void setText(const std::string &text);
 
-    void clicked(EnginePtr engine, std::shared_ptr<Entity> entity);
+    const MyRectangle &getRectangle() const;
+
+    void setRectangle(const MyRectangle &rectangle);
 };
 
 
-#endif //R_TYPE_SERVER_BUTTONCOMPONENT_H
+#endif //R_TYPE_SERVER_TEXTBOXCOMPONENT_H

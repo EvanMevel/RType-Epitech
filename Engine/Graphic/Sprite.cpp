@@ -23,7 +23,7 @@
 #include "Sprite.h"
 
 Sprite::Sprite(const std::shared_ptr<SpriteProperty> &spriteProperty) : spriteProperty(spriteProperty) {
-    currentRect = Rectangle(spriteProperty->startX, spriteProperty->startY, spriteProperty->lengthX, spriteProperty->lengthY);
+    currentRect = MyRectangle(spriteProperty->startX, spriteProperty->startY, spriteProperty->lengthX, spriteProperty->lengthY);
 }
 
 void Sprite::updateRect() {

@@ -20,33 +20,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "MainMenu.h"
-#include "Engine/SceneHolder.h"
-#include "Scenes.h"
-#include "ClientNetServer.h"
-#include "Engine/Network/Packets/HandshakePacket.h"
+#include "ipScene.h"
+#include "Client/Textures/CreateButton.h"
+#include "Engine/Network/NetworkRemoteServer.h"
+#include "TextBoxComponent.h"
+#include "EntityLinkComponent.h"
 
-static void ipButtonClick(EnginePtr engine, std::shared_ptr<Entity> entity) {
-    auto sceneHolder = engine->getModule<SceneHolder>();
-    auto sc = sceneHolder->getValue(Scenes::IP_MENU);
-    engine->setScene(sc);
+
+void getTextboxStr(std::shared_ptr<Entity> entity, std::shared_ptr<ClientNetServer> server) {
+
+    auto textBoxComponent= entity->getComponent<TextBoxComponent>();
+    if (textBoxComponent != nullptr && !textBoxComponent->getText().empty()) {
+        auto input = textBoxComponent->getText();
+        std::size_t delimiter_pos = input.find(':');
+
+        if (delimiter_pos != std::string::npos) {
+            std::string adress = input.substr(0, delimiter_pos);
+            unsigned short port = (short) std::stoi(input.substr(delimiter_pos + 1));
+            server->setAddress(adress);
+            server->setPort(port);
+        }
+    }
 }
 
-static void playButtonClick(EnginePtr engine, std::shared_ptr<Entity> entity) {
+static void changeIpButtonClick(EnginePtr engine, std::shared_ptr<Entity> entity) {
     auto sceneHolder = engine->getModule<SceneHolder>();
     auto sc = sceneHolder->getValue(Scenes::GAME);
     engine->setScene(sc);
 
     auto server = engine->getModule<ClientNetServer>();
+    getTextboxStr(entity->getComponent<EntityLinkComponent>()->entity, server);
     std::cout << "Sending handshake" << std::endl;
     server->startListening();
     server->sendPacket(HandshakePacket());
 }
 
-std::shared_ptr<Scene> mainMenu(EnginePtr engine)
-{
+std::shared_ptr<Scene> ipScene(EnginePtr engine){
     auto sc = engine->createScene<Scene>();
     auto lib = engine->getModule<IGraphicLib>();
+    auto height = lib->getWindow().getHeight();
+    auto width = lib->getWindow().getWidth();
 
     auto background = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_1,-1);
     auto fourthground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_2,-2);
@@ -54,22 +67,14 @@ std::shared_ptr<Scene> mainMenu(EnginePtr engine)
     auto secondground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_4,-3);
     auto firstground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_5,-4);
 
-    auto height = lib->getWindow().getHeight();
-    auto width = lib->getWindow().getWidth();
-
-    auto title = sc->createEntity();
-    auto titlePos = title->addComponent<PositionComponent>((width / 2) - (800 / 2), (height / 3) - (400 / 2));
-    title->addComponent<FixTextureComponent>()->setTextureId(Textures::TITLE);
-
-    createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.45) - (100 / 2),
-                 Textures::PLAY_BUTTON, playButtonClick);
-
-
-    createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.85) - (100 / 2),
-                 Textures::IP_BUTTON, ipButtonClick);
-
-    //auto optionButton = createButton(engine,sc,"img_3.png",width/2-(400/2),height*0.65-(100/2));
-    //auto quitButton = createButton(engine,sc,"img.png",width/2-(400/2),height*0.85-(100/2));
-
+    auto textBox = createTextBox(lib,sc,(lib->getWindow().getWidth() / 2) - (800 / 2), (int) (lib->getWindow().getHeight() * 0.45) - (100 / 2));
+    char *rtypeServerIp = std::getenv("RTYPE_SERVER_IP");
+    std::string serverIp = rtypeServerIp ? rtypeServerIp : "127.0.0.1";
+    char *rtypeServerPort = std::getenv("RTYPE_SERVER_PORT");
+    int serverport = rtypeServerPort ? std::stoi(rtypeServerPort) : 4242;
+    textBox->getComponent<TextBoxComponent>()->setText(serverIp + ":" + std::to_string(serverport));
+    auto button = createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.85) - (100 / 2),Textures::IP_BUTTON, changeIpButtonClick);
+    button->addComponent<EntityLinkComponent>(textBox);
+    sc->addSystem<VelocitySystem>();
     return sc;
 }
