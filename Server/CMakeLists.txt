@@ -24,4 +24,4 @@ add_executable(r-type-server
         LevelSystem.cpp
 
         ProjUtils.cpp
-        )
+        SynchronizedWeapon.cpp SynchronizedWeapon.h)

@@ -24,15 +24,23 @@
 #define R_TYPE_CLIENT_WEAPON_H
 
 #include "EngineTypes.h"
+#include "Engine/EngineTypes.h"
+#include "Engine/Component/ColliderComponent.h"
 
 class Weapon {
 private:
     std::string _projectile;
     std::size_t _cooldown;
+    CollideFunction _projectileHit;
+
 public:
     Weapon(const std::string &projectile, size_t cooldown);
 
-    void shoot(EnginePtr engine, std::shared_ptr<Entity> shooter);
+    virtual void shoot(EnginePtr engine, std::shared_ptr<Entity> shooter);
+
+    virtual CollideResult projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other);
+
+    virtual void onDamage(EnginePtr engine, std::shared_ptr<Entity> cause, std::shared_ptr<Entity> victim, int damage);
 };
 
 

@@ -91,7 +91,4 @@ void shoot(EnginePtr engine, std::shared_ptr<Entity> source, int xMult) {
     projectile->addComponent<ColliderComponent>(projectileHit);
 
     projectile->addComponent<TeamComponent>(team->getTeam());
-
-    EntityInfoPacket newEntityPacket(projectile);
-    engine->getModule<RTypeServer>()->broadcast(newEntityPacket);
 }

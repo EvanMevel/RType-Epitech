@@ -20,24 +20,4 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <utility>
-#include "ColliderComponent.h"
-#include "Engine/Engine.h"
-
-ColliderComponent::ColliderComponent() = default;
-
-ColliderComponent::ColliderComponent(const CollideFunction &onCollision) : _onCollision(onCollision) {
-
-}
-
-CollideResult ColliderComponent::onCollision(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other) const {
-    if (_onCollision != nullptr) {
-        return _onCollision(engine, std::move(self), std::move(other));
-    }
-    return CollideResult::NONE;
-}
-
-[[maybe_unused]] void ColliderComponent::setOnCollision(const CollideFunction &onCollision) {
-    _onCollision = onCollision;
-}
-
+#include "ProjectileComponent.h"

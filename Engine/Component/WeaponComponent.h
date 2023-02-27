@@ -20,24 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <utility>
-#include "ColliderComponent.h"
-#include "Engine/Engine.h"
+#ifndef R_TYPE_CLIENT_WEAPONCOMPONENT_H
+#define R_TYPE_CLIENT_WEAPONCOMPONENT_H
 
-ColliderComponent::ColliderComponent() = default;
 
-ColliderComponent::ColliderComponent(const CollideFunction &onCollision) : _onCollision(onCollision) {
+#include "IComponent.h"
+#include "Engine/Weapon.h"
 
-}
+class WeaponComponent : public IComponent {
+private:
+    std::shared_ptr<Weapon> _weapon;
 
-CollideResult ColliderComponent::onCollision(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other) const {
-    if (_onCollision != nullptr) {
-        return _onCollision(engine, std::move(self), std::move(other));
-    }
-    return CollideResult::NONE;
-}
+public:
+    explicit WeaponComponent(const std::shared_ptr<Weapon> &weapon);
 
-[[maybe_unused]] void ColliderComponent::setOnCollision(const CollideFunction &onCollision) {
-    _onCollision = onCollision;
-}
+    const std::shared_ptr<Weapon> &getWeapon() const;
 
+    void setWeapon(const std::shared_ptr<Weapon> &weapon);
+
+};
+
+
+#endif //R_TYPE_CLIENT_WEAPONCOMPONENT_H

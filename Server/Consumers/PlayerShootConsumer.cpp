@@ -22,6 +22,7 @@
 
 #include "PlayerShootConsumer.h"
 #include "Server/ProjUtils.h"
+#include "Engine/Component/WeaponComponent.h"
 
 PlayerShootConsumer::PlayerShootConsumer(EnginePtr e) : RTypePlayerPacketConsumer(e) {}
 
@@ -30,5 +31,8 @@ void PlayerShootConsumer::consume(PlayerShootPacket &packet, std::shared_ptr<Net
     if (player == nullptr)
         return;
 
-    shoot(e, player, 1);
+    auto weapon = player->getComponent<WeaponComponent>();
+    if (weapon == nullptr)
+        return;
+    weapon->getWeapon()->shoot(e, player);
 }

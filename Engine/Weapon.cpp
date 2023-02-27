@@ -25,9 +25,12 @@
 #include "engineLua/LuaEntityTypeFactory.h"
 #include "PositionComponent.h"
 #include "TeamComponent.h"
+#include "EntityTypeComponent2.h"
+#include "HealthComponent.h"
+#include "PhysicComponent.h"
 
 Weapon::Weapon(const std::string &projectile, size_t cooldown) : _projectile(projectile), _cooldown(cooldown) {
-
+    _projectileHit = std::bind(&Weapon::projectileHit, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 }
 
 void Weapon::shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter) {
@@ -38,7 +41,50 @@ void Weapon::shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shoo
     if (!pos || !team) {
         return;
     }
-    auto proj = engine->getScene()->unsafeCreateEntity(engine, _projectile, pos->x, pos->y);
+    auto projectile = engine->getScene()->unsafeCreateEntity(engine, _projectile, pos->x, pos->y + 20);
 
-    proj->addComponent<TeamComponent>(team->getTeam());
+    projectile->getComponent<PhysicComponent>()->velocity.x = 10;
+
+    projectile->addComponent<ColliderComponent>(_projectileHit);
+
+    projectile->addComponent<TeamComponent>(team->getTeam());
+
+}
+
+void Weapon::onDamage(EnginePtr engine, std::shared_ptr<Entity> cause, std::shared_ptr<Entity> victim, int damage) {
+
+}
+
+CollideResult Weapon::projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other) {
+    auto otherTeam = other->getComponent<TeamComponent>();
+    auto selfTeam = self->getComponent<TeamComponent>();
+
+    if (selfTeam == nullptr || otherTeam == nullptr || selfTeam->getTeam() == otherTeam->getTeam()) {
+        return CollideResult::NONE;
+    }
+
+    engine->getScene()->removeEntity(self);
+
+    auto health = other->getComponent<HealthComponent>();
+
+    if (health != nullptr) {
+        if (!health->isInvincible()) {
+            health->damage(10);
+            onDamage(engine, self, other, 10);
+            if (!health->isAlive()) {
+                engine->getScene()->removeEntity(other);
+                return CollideResult::BOTH_REMOVED;
+            } else {
+                return CollideResult::SOURCE_REMOVED;
+            }
+        }
+    } else {
+        auto otherType = other->getComponent<EntityTypeComponent2>();
+        if (otherType != nullptr && otherType->getEntityType() == "projectile") {
+            engine->getScene()->removeEntity(other);
+            return CollideResult::BOTH_REMOVED;
+        }
+        return CollideResult::SOURCE_REMOVED;
+    }
+    return CollideResult::SOURCE_REMOVED;
 }

@@ -54,7 +54,7 @@ public:
 
     CollideResult onCollision(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other) const;
 
-    void setOnCollision(const CollideFunction &onCollision);
+    [[maybe_unused]] void setOnCollision(const CollideFunction &onCollision);
 };
 
 
