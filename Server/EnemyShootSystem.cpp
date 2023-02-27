@@ -35,13 +35,14 @@
 
 
 static void projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
-                   std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams) {
+                   std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams,
+                          std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)> onDamage) {
     auto server = engine->getModule<RTypeServer>();
 
     ProjectileHitPacket packet;
     server->broadcast(packet);
 
-    entity::projectileHit(engine, self, other, teams);
+    entity::projectileHit(engine, self, other, teams, onDamage);
 }
 
 void EnemyShootSystem::update(std::unique_ptr<Engine> &engine) {
@@ -59,6 +60,8 @@ void EnemyShootSystem::update(std::unique_ptr<Engine> &engine) {
             cd->current++;
             if (cd->current >= cd->cooldown) {
                 cd->current = 0;
+
+                // TODO use the other unsafeCreateEntity
                 auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
                 auto projectile = engine->getScene()->unsafeCreateEntity();
                 typeFactory->initEntity(projectile, "projectile");

@@ -32,7 +32,8 @@ enum class EntityType {
     ENEMY = 1,
     PROJECTILE = 2,
     BUTTON = 3,
-    OBSTACLE = 4
+    OBSTACLE = 4,
+    HUD = 5
 };
 
 

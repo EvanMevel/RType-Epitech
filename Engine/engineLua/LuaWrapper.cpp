@@ -43,3 +43,11 @@ void LuaWrapper::defineGlobal(std::string name, int value) {
     lua_pushinteger(L, value);
     lua_setglobal(L, name.c_str());
 }
+
+lua_State *LuaWrapper::getLuaState() const {
+    return L;
+}
+
+void LuaWrapper::newMetaTable(const std::string &name) {
+    luaL_newmetatable(L, name.c_str());
+}

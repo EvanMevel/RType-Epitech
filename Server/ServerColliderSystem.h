@@ -33,6 +33,7 @@
  */
 class ServerColliderSystem : public ColliderHitboxSystem {
 public:
+    ServerColliderSystem();
     std::string getName() override;
 };
 

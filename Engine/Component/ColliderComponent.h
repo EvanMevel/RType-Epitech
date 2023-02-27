@@ -34,19 +34,24 @@
 class ColliderComponent : public IComponent {
 private:
     std::function<void(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
-            std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams)> _onCollision;
+            std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams,
+            std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)>)> _onCollision;
 
 public:
     ColliderComponent();
 
     explicit ColliderComponent(const std::function<void(EnginePtr, std::shared_ptr<Entity>, std::shared_ptr<Entity>,
-                                                        std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &)> &onCollision);
+                                                        std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &,
+                                                        std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)>)> &onCollision);
 
     void onCollision(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
-                     std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams) const;
+                     std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams,
+                     std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)> onDamage) const;
 
-    [[maybe_unused]] void setOnCollision(const std::function<void(EnginePtr, std::shared_ptr<Entity>, std::shared_ptr<Entity>,
-                                                 std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &)> &onCollision);
+    void setOnCollision(const std::function<void(EnginePtr, std::shared_ptr<Entity>, std::shared_ptr<Entity>,
+                                                 std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &,
+                                                 std::function<void(EnginePtr, std::shared_ptr<Entity>,
+                                                                    int)>)> &onCollision);
 };
 
 

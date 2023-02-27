@@ -30,6 +30,7 @@
 #include <utility>
 #include <vector>
 #include <any>
+#include "LuaType.h"
 
 extern "C" {
     #include "Engine/lua/lua-5.4.4/include/lua.h"
@@ -62,6 +63,11 @@ public:
                 lua_pushboolean(L, std::any_cast<bool>(vec[i]));
             } else if (vec[i].type() == typeid(void*)) {
                 lua_pushlightuserdata(L, std::any_cast<void*>(vec[i]));
+            } else if (vec[i].type() == typeid(LuaType)) {
+                LuaType t = std::any_cast<LuaType>(vec[i]);
+                lua_pushlightuserdata(L, t.getPtr());
+
+                luaL_setmetatable(L, t.getName().c_str());
             }
         }
         std::any value;
@@ -106,6 +112,10 @@ public:
     void registerFunction(std::string name, lua_CFunction func);
 
     void defineGlobal(std::string name, int value);
+
+    lua_State *getLuaState() const;
+
+    void newMetaTable(const std::string &name);
 
 };
 

@@ -42,6 +42,9 @@
 #include "StayAliveSystem.h"
 #include "Engine/engineLua/LuaLoader.h"
 #include "TextBoxSystem.h"
+#include "Client/Consumers/DamageConsumer.h"
+#include "Client/Textures/CooldownSystem.h"
+#include "Client/Textures/LifeSystem.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -78,6 +81,8 @@ void loadNetwork(EnginePtr engine) {
     server->addConsumer<EntityInfoConsumer>();
 
     server->addConsumer<ProjectileHitConsumer>();
+
+    server->addConsumer<DamageConsumer>();
 
     server->addSystem<StayAliveSystem>();
 
@@ -148,6 +153,8 @@ void loadGraphsAndScenes(EnginePtr engine) {
     lib->addSystem<AnimationSystem>();
     lib->addSystem<MouseSystem>();
     lib->addSystem<TextBoxSystem>();
+    lib->addSystem<LifeSystem>();
+    lib->addSystem<CooldownSystem>();
 
 
     graphicReady = true;
@@ -167,9 +174,11 @@ void loadAll() {
 
     auto luaLoad = engine->registerModule<LuaLoader>();
     auto typeFactory = engine->registerModule<LuaEntityTypeFactory>();
+    auto levelFactory = engine->registerModule<LuaLevelFactory>();
 
     luaLoad->loadFolder("config");
     luaLoad->loadEntityTypes(typeFactory);
+    luaLoad->loadLevels(levelFactory);
 
     std::thread graphThread(startGraph, std::ref(engine));
 

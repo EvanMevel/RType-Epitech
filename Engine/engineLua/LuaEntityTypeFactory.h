@@ -30,19 +30,19 @@
 
 class LuaEntityTypeFactory {
 private:
-    std::vector<LuaEntityType> _entityTypes;
+    std::vector<std::shared_ptr<LuaEntityType>> _entityTypes;
     LuaComponentFactory _componentFactory;
 
 public:
     LuaEntityTypeFactory() = default;
 
-    void addEntityType(const LuaEntityType &entityType);
+    std::shared_ptr<LuaEntityType> addEntityType(const LuaEntityType &entityType);
 
     void initEntity(std::shared_ptr<Entity> entity, const std::string &entityType);
 
     LuaComponentFactory &getComponentFactory();
 
-    LuaEntityType &getEntityType(const std::string &entityType);
+    std::shared_ptr<LuaEntityType> getEntityType(const std::string &entityType);
 };
 
 [[maybe_unused]] int luaRegisterEntityType(lua_State *L);

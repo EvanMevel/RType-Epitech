@@ -20,6 +20,12 @@ add_executable(r-type-client
         Textures/CreateScrollingTexture.cpp
         Textures/Textures.cpp
 
+        Textures/CreateHud.cpp
+        Textures/LifeComponent.cpp
+        Textures/LifeSystem.cpp
+        Textures/HudCooldownComponent.cpp
+        Textures/CooldownSystem.cpp
+
         Consumers/PingPacketConsumer.cpp
         Consumers/HandshakeResponseConsumer.cpp
         Consumers/PlayerInfoConsumer.cpp
@@ -27,6 +33,7 @@ add_executable(r-type-client
         Consumers/EntityDestroyConsumer.cpp
         Consumers/EntityVelocityPacketConsumer.cpp
         Consumers/ProjectileHitConsumer.cpp
+        Consumers/DamageConsumer.cpp
 
         Sprites/SpriteComponent.cpp
         Sprites/DrawSpriteSystem.cpp
@@ -49,4 +56,7 @@ add_executable(r-type-client
         ClientNetServer.cpp
 
         ipScene.cpp
-        TextBoxComponent.cpp TextBoxSystem.cpp TextBoxSystem.h CreateTextBox.cpp CreateTextBox.h EntityLinkComponent.cpp EntityLinkComponent.h)
+        TextBoxComponent.cpp
+        TextBoxSystem.cpp
+        CreateTextBox.cpp
+        EntityLinkComponent.cpp)

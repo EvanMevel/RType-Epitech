@@ -30,6 +30,8 @@
 #include "Engine/Component/CooldownComponent.h"
 #include "PhysicComponent.h"
 #include "IAComponent.h"
+#include "LuaClass.h"
+#include "LuaType.h"
 
 LuaLoader::LuaLoader() {
     _lua.defineGlobal("ENGINE_TPS", ENGINE_TPS);
@@ -56,6 +58,10 @@ void LuaLoader::loadFolder(const std::string &folderPath) {
     std::filesystem::directory_entry folderEntry(path);
 
     luaLoadFolder(_lua, folderEntry);
+}
+
+void LuaLoader::loadFile(const std::string &filePath) {
+    _lua.doFile(filePath);
 }
 
 void addComponentConstructors(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory) {
@@ -95,12 +101,30 @@ void LuaLoader::loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityT
     void *luaEntityTypeFactoryPtr = luaEntityTypeFactory.get();
 
     _lua.registerFunction("registerEntityType", luaRegisterEntityType);
-    _lua.registerFunction("addComponentToType", luaAddComponentToType);
+
+    auto entityType = LuaClass(_lua, "LuaEntityType", -1);
+    entityType.registerFunction("addComponent", luaAddComponentToType);
+    entityType.done();
 
     auto func = _lua.getFunction<VoidType, void*>("loadEntityTypes");
+    //func.call(LuaType("LuaEntityTypeFactory", luaEntityTypeFactoryPtr));
     func.call(luaEntityTypeFactoryPtr);
 
     addComponentConstructors(luaEntityTypeFactory);
+}
+
+void LuaLoader::loadLevels(std::shared_ptr<LuaLevelFactory> luaLevelParser) {
+    void *luaLevelParserPtr = luaLevelParser.get();
+
+    _lua.registerFunction("createLevel", luaCreateLevel);
+
+    auto level = LuaClass(_lua, "LuaLevel", -1);
+    level.registerFunction("addEnemy", luaAddEnemyToLevel);
+    level.done();
+
+    auto func = _lua.getFunction<VoidType, void *>("loadLevels");
+    //func.call(LuaType("LuaLevelParser", luaLevelParserPtr));
+    func.call(luaLevelParserPtr);
 }
 
 int luaRegisterSprite(lua_State *L) {

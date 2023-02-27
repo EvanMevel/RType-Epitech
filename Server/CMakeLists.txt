@@ -20,4 +20,6 @@ add_executable(r-type-server
         PacketSendingScene.cpp
         EnemyInfoComponent.cpp
         Levels.cpp
-        PlayerList.cpp)
+        PlayerList.cpp
+
+        LevelSystem.cpp)

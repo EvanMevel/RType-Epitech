@@ -22,6 +22,7 @@
 
 #include "PacketSendingScene.h"
 #include "Engine/Network/Packets/EntityDestroyPacket.h"
+#include "Engine/Network/Packets/EntityInfoPacket.h"
 
 PacketSendingScene::PacketSendingScene(EntityManager &entityManager, const RTypeServerPtr &server) : Scene(
         entityManager), server(server) {}
@@ -71,4 +72,20 @@ void PacketSendingScene::filterEntities(std::function<bool(std::shared_ptr<Entit
             }),
             entities.end()
     );
+}
+
+std::shared_ptr<Entity> PacketSendingScene::createEntity(std::unique_ptr<Engine> &engine, const std::string &type, int x, int y) {
+    auto entity = Scene::createEntity(engine, type, x, y);
+
+    EntityInfoPacket newEntityPacket(entity);
+    server->broadcast(newEntityPacket);
+    return entity;
+}
+
+std::shared_ptr<Entity> PacketSendingScene::unsafeCreateEntity(std::unique_ptr<Engine> &engine, const std::string &type, int x, int y) {
+    auto entity = Scene::unsafeCreateEntity(engine, type, x, y);
+
+    EntityInfoPacket newEntityPacket(entity);
+    server->broadcast(newEntityPacket);
+    return entity;
 }

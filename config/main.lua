@@ -22,27 +22,52 @@ function loadEntitySprites(graphicLib)
     registerSprite(graphicLib, enemySpriteSheet2, "enemy2", 1, 34, 33, 32, 3, 0, 30, 3.0)
 end
 
+function loadPlayer(factory)
+    local player = registerEntityType(factory, "player", 100, 56)
+    player:addComponent("TeamComponent", 0)
+    player:addComponent("HealthComponent", 100, 1000)
+    player:addComponent("PhysicComponent", 10)
+end
+
+function loadProjectile(factory)
+    local projectile = registerEntityType(factory, "projectile", 81, 16)
+    projectile:addComponent("PhysicComponent", 0, 1, 0)
+end
+
+function loadEnemy1(factory)
+    local enemy1 = registerEntityType(factory, "enemy1", 99, 66)
+    enemy1:addComponent("TeamComponent", 1)
+    enemy1:addComponent("TeamComponent", 1)
+    enemy1:addComponent("HealthComponent", 50, 400)
+    enemy1:addComponent("CooldownComponent", math.floor(ENGINE_TPS * 2))
+    enemy1:addComponent("PhysicComponent")
+    enemy1:addComponent("IAComponent")
+end
+
+function loadEnemy2(factory)
+    local enemy2 = registerEntityType(factory, "enemy2", 99, 96)
+    enemy2:addComponent("TeamComponent", 1)
+    enemy2:addComponent("HealthComponent", 50, 400)
+    enemy2:addComponent("CooldownComponent", math.floor(ENGINE_TPS * 1.2))
+    enemy2:addComponent("PhysicComponent")
+    enemy2:addComponent("IAComponent")
+end
+
 function loadEntityTypes(factory)
-    registerEntityType(factory, "player", 100, 56)
-    addComponentToType(factory, "player", "TeamComponent", 0)
-    addComponentToType(factory, "player", "HealthComponent", 100, 1000)
-    addComponentToType(factory, "player", "PhysicComponent", 10)
 
-    registerEntityType(factory, "projectile", 81, 16)
-    addComponentToType(factory, "projectile", "PhysicComponent", 0, 1, 0)
+    loadPlayer(factory);
 
-    registerEntityType(factory, "enemy1", 99, 66)
-    addComponentToType(factory, "enemy1", "TeamComponent", 1)
-    addComponentToType(factory, "enemy1", "HealthComponent", 50, 400)
-    addComponentToType(factory, "enemy1", "CooldownComponent", math.floor(ENGINE_TPS * 2))
-    addComponentToType(factory, "enemy1", "PhysicComponent")
-    addComponentToType(factory, "enemy1", "IAComponent")
+    loadProjectile(factory);
 
+    loadEnemy1(factory);
 
-    registerEntityType(factory, "enemy2", 99, 96)
-    addComponentToType(factory, "enemy2", "TeamComponent", 1)
-    addComponentToType(factory, "enemy2", "HealthComponent", 50, 400)
-    addComponentToType(factory, "enemy2", "CooldownComponent", math.floor(ENGINE_TPS * 1.2))
-    addComponentToType(factory, "enemy2", "PhysicComponent")
-    addComponentToType(factory, "enemy2", "IAComponent")
+    loadEnemy2(factory);
+end
+
+function loadLevels(factory)
+    local level = createLevel(factory, "Level 1");
+    level:addEnemy("enemy1", 0, 450);
+    level:addEnemy("enemy1", 0, 550);
+    level:addEnemy("enemy2", 250, 100);
+    level:addEnemy("enemy2", 500, 750);
 end

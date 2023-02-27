@@ -23,6 +23,7 @@
 #ifndef R_TYPE_SERVER_COLLIDERHITBOXSYSTEM_H
 #define R_TYPE_SERVER_COLLIDERHITBOXSYSTEM_H
 
+#include <functional>
 #include "Engine/ISystem.h"
 #include "Engine/Entity.h"
 
@@ -30,10 +31,12 @@
  * @brief System that checks if a collider is colliding with another entity
  */
 class ColliderHitboxSystem : public ISystem {
-
+private:
+    std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)> _onDamage;
 public:
     void update(EnginePtr engine) override;
 
+    ColliderHitboxSystem(std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)>);
     std::string getName() override;
 };
 

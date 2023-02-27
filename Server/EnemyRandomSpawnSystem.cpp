@@ -21,11 +21,8 @@
 // SOFTWARE.
 
 #include "EnemyRandomSpawnSystem.h"
-#include "Engine/EntityUtils.h"
-#include "Engine/Network/Packets/EntityInfoPacket.h"
 #include "Engine/Component/CooldownComponent.h"
 #include "Levels.h"
-#include "Engine/engineLua/LuaEntityTypeFactory.h"
 #include "Engine/Component/IAComponent.h"
 
 const std::string enemies[] = {
@@ -39,17 +36,12 @@ EnemyRandomSpawnSystem::EnemyRandomSpawnSystem() : gen(rd()), distrx(0, 400), di
 }
 
 void EnemyRandomSpawnSystem::spawnRandomEntity(std::unique_ptr<Engine> &engine, RTypeServerPtr srv) {
-    auto ent = engine->getScene()->createEntity();
     int x = 1300 + distrx(gen);
     int y = 50 + distry(gen);
-    ent->addComponent<PositionComponent>(x, y);
 
-    std::string enemy = enemies[distrType(gen)];
-    auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
-    typeFactory->initEntity(ent, enemy);
+    std::string enemyType = enemies[distrType(gen)];
 
-    EntityInfoPacket newEntityPacket(ent);
-    srv->broadcast(newEntityPacket);
+    engine->getScene()->createEntity(engine, enemyType, x, y);
 }
 
 void EnemyRandomSpawnSystem::update(std::unique_ptr<Engine> &engine) {
