@@ -24,6 +24,7 @@
 #define R_TYPE_SERVER_LUALOADER_H
 
 #include "LuaEntityTypeFactory.h"
+#include "LuaLevelFactory.h"
 
 class IGraphicLib;
 
@@ -37,9 +38,13 @@ public:
 
     void loadFolder(const std::string &folderPath);
 
+    void loadFile(const std::string &filePath);
+
     void loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory);
 
     void loadEntitySprites(std::shared_ptr<IGraphicLib> graphicLib);
+
+    void loadLevels(std::shared_ptr<LuaLevelFactory> luaLevelParser);
 };
 
 

@@ -20,34 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "LuaWrapper.h"
+#ifndef R_TYPE_CLIENT_LUATYPE_H
+#define R_TYPE_CLIENT_LUATYPE_H
 
-LuaWrapper::LuaWrapper() {
-    L = luaL_newstate();
-    luaL_openlibs(L);
-}
+#include <string>
 
-LuaWrapper::~LuaWrapper() {
-    lua_close(L);
-}
+class LuaType {
+private:
+    std::string _name;
+    void *_ptr;
 
-int LuaWrapper::doFile(const std::string &filename) {
-    return luaL_dofile(L, filename.c_str());
-}
+public:
+    LuaType(const std::string &name, void *ptr);
 
-void LuaWrapper::registerFunction(std::string name, lua_CFunction func) {
-    lua_register(L, name.c_str(), func);
-}
+    const std::string &getName() const;
 
-void LuaWrapper::defineGlobal(std::string name, int value) {
-    lua_pushinteger(L, value);
-    lua_setglobal(L, name.c_str());
-}
+    void *getPtr() const;
+};
 
-lua_State *LuaWrapper::getLuaState() const {
-    return L;
-}
 
-void LuaWrapper::newMetaTable(const std::string &name) {
-    luaL_newmetatable(L, name.c_str());
-}
+#endif //R_TYPE_CLIENT_LUATYPE_H

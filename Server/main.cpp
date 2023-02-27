@@ -38,6 +38,7 @@
 #include "Levels.h"
 #include "PlayerList.h"
 #include "Engine/engineLua/LuaLoader.h"
+#include "LevelSystem.h"
 
 std::atomic<bool> running = true;
 
@@ -52,11 +53,6 @@ void runServer(EnginePtr engine) {
 
 
     srv->addSystem<TimeoutSystem>();
-    engine->getScene()->addSystem<ServerVelocitySystem>();
-    engine->getScene()->addSystem<ProjectileCleanupSystem>();
-    engine->getScene()->addSystem<EnemyRandomSpawnSystem>();
-    engine->getScene()->addSystem<EnemyShootSystem>();
-    engine->getScene()->addSystem<ServerColliderSystem>();
 
     log() << "Server listening" << std::endl;
 
@@ -87,7 +83,8 @@ void stopThread(EnginePtr engine) {
     running = false;
 }
 
-void createScene(EnginePtr engine) {
+void createScene(EnginePtr engine, std::shared_ptr<Level> level) {
+    std::cout << "Playing level " << level->getName() << std::endl;
     engine->registerModule<Levels>();
 
     char *rtypeServerIp = std::getenv("RTYPE_SERVER_IP");
@@ -97,6 +94,14 @@ void createScene(EnginePtr engine) {
 
     RTypeServerPtr srv = engine->registerModule<RTypeServer>(engine, serverIp, serverport);
     auto sc = engine->createScene<PacketSendingScene>(srv);
+
+    sc->addSystem<ServerVelocitySystem>();
+    sc->addSystem<ProjectileCleanupSystem>();
+    sc->addSystem<EnemyShootSystem>();
+    sc->addSystem<ServerColliderSystem>();
+    //sc->addSystem<EnemyRandomSpawnSystem>();
+    sc->addSystem<LevelSystem>(level);
+
     engine->setScene(sc);
 }
 
@@ -106,11 +111,13 @@ int main()
 
     auto luaLoad = engine->registerModule<LuaLoader>();
     auto typeFactory = engine->registerModule<LuaEntityTypeFactory>();
+    auto levelFactory = engine->registerModule<LuaLevelFactory>();
 
     luaLoad->loadFolder("config");
     luaLoad->loadEntityTypes(typeFactory);
+    luaLoad->loadLevels(levelFactory);
 
-    createScene(engine);
+    createScene(engine, levelFactory->getLevels()[0]);
     std::thread t = std::thread(stopThread, std::ref(engine));
 
     runServer(engine);

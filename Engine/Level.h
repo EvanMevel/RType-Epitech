@@ -20,34 +20,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "LuaWrapper.h"
+#ifndef R_TYPE_CLIENT_LEVEL_H
+#define R_TYPE_CLIENT_LEVEL_H
 
-LuaWrapper::LuaWrapper() {
-    L = luaL_newstate();
-    luaL_openlibs(L);
-}
+#include <string>
+#include <vector>
+#include "Engine/EngineTypes.h"
 
-LuaWrapper::~LuaWrapper() {
-    lua_close(L);
-}
+class LevelEnemy {
+private:
+    std::string _type;
+    int _x;
+    int _y;
+public:
+    LevelEnemy(const std::string &type, int x, int y);
 
-int LuaWrapper::doFile(const std::string &filename) {
-    return luaL_dofile(L, filename.c_str());
-}
+    [[maybe_unused]] const std::string &getType() const;
 
-void LuaWrapper::registerFunction(std::string name, lua_CFunction func) {
-    lua_register(L, name.c_str(), func);
-}
+    int getX() const;
 
-void LuaWrapper::defineGlobal(std::string name, int value) {
-    lua_pushinteger(L, value);
-    lua_setglobal(L, name.c_str());
-}
+    int getY() const;
+};
 
-lua_State *LuaWrapper::getLuaState() const {
-    return L;
-}
+class Level {
+private:
+    std::vector<LevelEnemy> _enemies;
+    std::string _name;
 
-void LuaWrapper::newMetaTable(const std::string &name) {
-    luaL_newmetatable(L, name.c_str());
-}
+public:
+    explicit Level(const std::string &name);
+
+    void spawn(EnginePtr engine, const LevelEnemy &enemy);
+
+    void update(int x, EnginePtr engine);
+
+    void addEnemy(const std::string &type, int x, int y);
+
+    const std::string &getName() const;
+};
+
+
+#endif //R_TYPE_CLIENT_LEVEL_H

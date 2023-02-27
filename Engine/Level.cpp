@@ -20,34 +20,56 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "LuaWrapper.h"
+#include "Level.h"
+#include "Engine.h"
 
-LuaWrapper::LuaWrapper() {
-    L = luaL_newstate();
-    luaL_openlibs(L);
+LevelEnemy::LevelEnemy(const std::string &type, int x, int y) : _type(type), _x(x), _y(y) {
+
 }
 
-LuaWrapper::~LuaWrapper() {
-    lua_close(L);
+[[maybe_unused]] const std::string &LevelEnemy::getType() const {
+    return _type;
 }
 
-int LuaWrapper::doFile(const std::string &filename) {
-    return luaL_dofile(L, filename.c_str());
+int LevelEnemy::getX() const {
+    return _x;
 }
 
-void LuaWrapper::registerFunction(std::string name, lua_CFunction func) {
-    lua_register(L, name.c_str(), func);
+int LevelEnemy::getY() const {
+    return _y;
 }
 
-void LuaWrapper::defineGlobal(std::string name, int value) {
-    lua_pushinteger(L, value);
-    lua_setglobal(L, name.c_str());
+Level::Level(const std::string &name) : _name(name) {
+
 }
 
-lua_State *LuaWrapper::getLuaState() const {
-    return L;
+void Level::spawn(std::unique_ptr<Engine> &engine, const LevelEnemy &enemy) {
+    engine->getScene()->createEntity(engine, enemy.getType(), 1800, enemy.getY());
 }
 
-void LuaWrapper::newMetaTable(const std::string &name) {
-    luaL_newmetatable(L, name.c_str());
+void Level::update(int x, EnginePtr engine) {
+    auto it = _enemies.begin();
+    while (it != _enemies.end()) {
+        if (it->getX() <= x) {
+            spawn(engine, *it);
+            it = _enemies.erase(it);
+        } else {
+            return;
+        }
+    }
+}
+
+void Level::addEnemy(const std::string &type, int x, int y) {
+    auto it = _enemies.begin();
+    while (it != _enemies.end()) {
+        if (it->getX() > x) {
+            break;
+        }
+        it++;
+    }
+    _enemies.insert(it, LevelEnemy{type, x, y});
+}
+
+const std::string &Level::getName() const {
+    return _name;
 }

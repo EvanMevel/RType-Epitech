@@ -44,6 +44,12 @@ public:
 
     void filterEntities(std::function<bool(std::shared_ptr<Entity>, EnginePtr)> func,
                         std::unique_ptr<Engine> &engine) override;
+
+    std::shared_ptr<Entity> createEntity(std::unique_ptr<Engine> &engine, const std::string &type, int x, int y) override;
+
+    std::shared_ptr<Entity>
+    unsafeCreateEntity(std::unique_ptr<Engine> &engine, const std::string &type, int x, int y) override;
+
 };
 
 

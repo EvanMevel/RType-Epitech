@@ -20,13 +20,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
+#include "LevelSystem.h"
 #include "Engine/Engine.h"
+#include "RTypeServer.h"
+#include "Engine/Component/IAComponent.h"
+#include "Engine/Component/PhysicComponent.h"
 
-int main(int argc, char** argv)
-{
-    Engine engine;
+LevelSystem::LevelSystem(std::shared_ptr<Level> level) : _level(level) {
 
-    return 0;
 }
 
+void LevelSystem::update(std::unique_ptr<Engine> &engine) {
+    RTypeServerPtr server = engine->getModule<RTypeServer>();
+    if (server->getClientCount() == 0)
+        return;
+    _x += 1;
+    _level->update(_x, engine);
+
+    std::function<void(std::shared_ptr<Entity>)> moveEntity = [](std::shared_ptr<Entity> ent) {
+        auto ia = ent->getComponent<IAComponent>();
+        auto phys = ent->getComponent<PhysicComponent>();
+        if (ia && phys) {
+            phys->velocity.x -= 1;
+        }
+    };
+    engine->getScene()->forEachEntity(moveEntity);
+}

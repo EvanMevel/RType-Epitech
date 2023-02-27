@@ -20,34 +20,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "LuaWrapper.h"
+#include "LuaLevelFactory.h"
 
-LuaWrapper::LuaWrapper() {
-    L = luaL_newstate();
-    luaL_openlibs(L);
+std::shared_ptr<Level> LuaLevelFactory::createLevel(const std::string &name) {
+    auto level = std::make_shared<Level>(name);
+    _levels.push_back(level);
+    return level;
 }
 
-LuaWrapper::~LuaWrapper() {
-    lua_close(L);
+const std::vector<std::shared_ptr<Level>> &LuaLevelFactory::getLevels() const {
+    return _levels;
 }
 
-int LuaWrapper::doFile(const std::string &filename) {
-    return luaL_dofile(L, filename.c_str());
+[[maybe_unused]] int luaCreateLevel(lua_State *L) {
+    LuaLevelFactory *levelList = (LuaLevelFactory*) lua_touserdata(L, 1);
+
+    std::string name = lua_tostring(L, 2);
+
+    std::shared_ptr<Level> level = levelList->createLevel(name);
+
+    lua_pushlightuserdata(L, level.get());
+    luaL_setmetatable(L, "LuaLevel");
+
+    return 1;
 }
 
-void LuaWrapper::registerFunction(std::string name, lua_CFunction func) {
-    lua_register(L, name.c_str(), func);
-}
+[[maybe_unused]] int luaAddEnemyToLevel(lua_State *L) {
+    Level *level = (Level*) luaL_checkudata(L, 1, "LuaLevel");
 
-void LuaWrapper::defineGlobal(std::string name, int value) {
-    lua_pushinteger(L, value);
-    lua_setglobal(L, name.c_str());
-}
+    std::string type = lua_tostring(L, 2);
+    int x = lua_tonumber(L, 3);
+    int y = lua_tonumber(L, 4);
 
-lua_State *LuaWrapper::getLuaState() const {
-    return L;
-}
-
-void LuaWrapper::newMetaTable(const std::string &name) {
-    luaL_newmetatable(L, name.c_str());
+    level->addEnemy(type, x, y);
+    return 0;
 }

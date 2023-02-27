@@ -60,14 +60,19 @@ public:
 
     virtual void filterEntities(std::function<bool(std::shared_ptr<Entity>, EnginePtr engine)> func, EnginePtr engine);
 
+    /* Entity management */
     void addEntity(std::shared_ptr<Entity>);
+
     std::shared_ptr<Entity> createEntity();
+    virtual std::shared_ptr<Entity> createEntity(EnginePtr engine, const std::string &type, int x, int y);
+
     std::shared_ptr<Entity> unsafeCreateEntity();
+    virtual std::shared_ptr<Entity> unsafeCreateEntity(EnginePtr engine, const std::string &type, int x, int y);
+
     std::shared_ptr<Entity> getOrCreateEntityById(EntityId id);
     std::shared_ptr<Entity> getEntityById(EntityId id);
 
     virtual void removeEntity(std::shared_ptr<Entity> entity);
-
     virtual void removeEntity(EntityId entityId);
 
     std::unique_ptr<std::lock_guard<std::mutex>> obtainLock();

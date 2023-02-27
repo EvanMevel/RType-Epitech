@@ -20,34 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "LuaWrapper.h"
+#ifndef R_TYPE_CLIENT_LEVELSYSTEM_H
+#define R_TYPE_CLIENT_LEVELSYSTEM_H
 
-LuaWrapper::LuaWrapper() {
-    L = luaL_newstate();
-    luaL_openlibs(L);
-}
 
-LuaWrapper::~LuaWrapper() {
-    lua_close(L);
-}
+#include "Engine/ISystem.h"
+#include "Engine/Level.h"
 
-int LuaWrapper::doFile(const std::string &filename) {
-    return luaL_dofile(L, filename.c_str());
-}
+class LevelSystem : public ISystem {
+private:
+    std::shared_ptr<Level> _level;
+    int _x = 0;
+public:
+    explicit LevelSystem(std::shared_ptr<Level> level);
 
-void LuaWrapper::registerFunction(std::string name, lua_CFunction func) {
-    lua_register(L, name.c_str(), func);
-}
+    void update(std::unique_ptr<Engine> &engine) override;
+};
 
-void LuaWrapper::defineGlobal(std::string name, int value) {
-    lua_pushinteger(L, value);
-    lua_setglobal(L, name.c_str());
-}
 
-lua_State *LuaWrapper::getLuaState() const {
-    return L;
-}
-
-void LuaWrapper::newMetaTable(const std::string &name) {
-    luaL_newmetatable(L, name.c_str());
-}
+#endif //R_TYPE_CLIENT_LEVELSYSTEM_H
