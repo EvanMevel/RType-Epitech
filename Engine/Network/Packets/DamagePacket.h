@@ -31,7 +31,7 @@ class DamagePacket : public IPacket {
 public:
     static const int ID = 14;
 
-    size_t health;
+    unsigned int health;
     int damage;
 
     EntityId playerId;
