@@ -29,10 +29,10 @@
  */
 class MyRectangle {
 public:
-    int x{};
-    int y{};
-    int width{};
-    int height{};
+    int x;
+    int y;
+    int width;
+    int height;
 
     MyRectangle(int x, int y, int width, int height);
 
