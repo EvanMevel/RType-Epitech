@@ -20,26 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "ServerColliderSystem.h"
-#include "Engine/Component/EntityTypeComponent2.h"
-#include "Engine/Network/Packets/DamagePacket.h"
+#ifndef R_TYPE_CLIENT_PROJUTILS_H
+#define R_TYPE_CLIENT_PROJUTILS_H
 
-static void onDamage(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)
-{
-    auto server = engine->getModule<RTypeServer>();
-    auto entityType = touched->getComponent<EntityTypeComponent2>();
+#include "Engine/EngineTypes.h"
+#include "Engine/Component/ColliderComponent.h"
 
-    if (entityType != nullptr && entityType->getEntityType() == "player") {
-        DamagePacket packet(touched, damages);
-        server->broadcast(packet);
-    }
-}
+CollideResult projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other);
 
-std::string ServerColliderSystem::getName() {
-    return "ServerVelocitySystem";
-}
+void shoot(EnginePtr engine, std::shared_ptr<Entity> source, int xMult);
 
-ServerColliderSystem::ServerColliderSystem(): ColliderHitboxSystem(onDamage) {
 
-}
-
+#endif //R_TYPE_CLIENT_PROJUTILS_H

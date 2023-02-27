@@ -23,74 +23,70 @@
 #include "ColliderHitboxSystem.h"
 #include <utility>
 #include "Engine/Engine.h"
-#include "Engine/EntityUtils.h"
 #include "Hitbox.h"
-#include "TeamComponent.h"
 #include "ColliderComponent.h"
 #include "EntityTypeComponent2.h"
 
+ColliderHitboxSystem::ColliderHitboxSystem() {
+}
+
 void ColliderHitboxSystem::update(EnginePtr engine) {
-    std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> teams;
-    std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>, size_t>> colliders;
+    std::vector<std::pair<std::shared_ptr<Entity>, Hitbox>> colliders;
+    std::vector<std::pair<std::shared_ptr<Entity>, Hitbox>> hitboxes;
+
     {
         auto lock = engine->getScene()->obtainLock();
         for (auto &entity: engine->getScene()->getEntities()) {
             auto hitboxComp = entity->getComponent<HitboxComponent>();
-            auto team = entity->getComponent<TeamComponent>();
             auto pos = entity->getComponent<PositionComponent>();
 
-            if (hitboxComp != nullptr && team != nullptr && pos != nullptr) {
+            if (hitboxComp != nullptr && pos != nullptr) {
                 auto hitbox = Hitbox(pos, hitboxComp);
-
-                std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>> &v = teams[team->getTeam()];
-
-                v.emplace_back(hitbox, entity);
+                hitboxes.emplace_back(entity, hitbox);
                 if (entity->hasComponent<ColliderComponent>()) {
-                    colliders.emplace_back(hitbox, entity, team->getTeam());
+                    colliders.emplace_back(entity, hitbox);
                 }
             }
         }
     }
-    if (teams.size() < 2 || colliders.empty()) {
+
+    if (colliders.empty() || hitboxes.empty()) {
         return;
     }
 
-    /*std::cout << "Collision check" << std::endl;
-    for (auto hitboxTeam: hitboxes) {
-        std::cout << "Team " << hitboxTeam.first << std::endl;
-        for (auto &hitbox: hitboxTeam.second) {
-            std::cout << "Hitbox " << std::get<1>(hitbox)->getId() << std::endl;
-        }
-    }
-    std::cout << "Colliders" << std::endl;
+    CollideResult res;
     for (auto &collider: colliders) {
-        std::cout << "Collider " << std::get<1>(collider)->getId() << std::endl;
-    }*/
-
-    for (auto &collider: colliders) {
-        auto hitbox = std::get<0>(collider);
-        auto entity = std::get<1>(collider);
-        auto teamId = std::get<2>(collider);
-
-        for (auto team: teams) {
-            if (team.first == teamId) {
+        res = CollideResult::NONE;
+        auto other = hitboxes.begin();
+        while (other != hitboxes.end()) {
+            if (collider.first == other->first) {
+                ++other;
                 continue;
             }
-            for (auto &otherTeamHitbox: team.second) {
-                auto otherHitbox = std::get<0>(otherTeamHitbox);
-                auto otherEntity = std::get<1>(otherTeamHitbox);
-                if (hitbox.isColliding(otherHitbox)) {
-                    entity->getComponent<ColliderComponent>()->onCollision(engine, entity, otherEntity, teams, _onDamage);
+            if (collider.second.isColliding(other->second)) {
+                res = collider.first->getComponent<ColliderComponent>()->onCollision(engine, collider.first, other->first);
+
+                if (res & CollideResult::TARGET_REMOVED) {
+                    other = hitboxes.erase(other);
+                    if (res & CollideResult::SOURCE_REMOVED) {
+                        break;
+                    }
+                    continue;
+                } else if (res & CollideResult::SOURCE_REMOVED) {
                     break;
                 }
             }
+            ++other;
+        }
+        if (res & CollideResult::SOURCE_REMOVED) {
+            std::remove_if(hitboxes.begin(), hitboxes.end(), [&collider](const std::pair<std::shared_ptr<Entity>, Hitbox> &pair) {
+                return pair.first == collider.first;
+            });
+            break;
         }
     }
 }
 
 std::string ColliderHitboxSystem::getName() {
     return "ProjectileHitboxSystem";
-}
-
-ColliderHitboxSystem::ColliderHitboxSystem(std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)> onDamage): _onDamage(std::move(onDamage)) {
 }

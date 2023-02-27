@@ -24,26 +24,8 @@
 #include "Engine/Engine.h"
 #include "Engine/EntityUtils.h"
 #include "Engine/Component/CooldownComponent.h"
-#include "Engine/Network/Packets/EntityInfoPacket.h"
-#include "RTypeServer.h"
-#include "Engine/Network/Packets/ProjectileHitPacket.h"
 #include "Engine/Component/IAComponent.h"
-#include "Engine/Component/ColliderComponent.h"
-#include "Engine/Component/TeamComponent.h"
-#include "Engine/engineLua/LuaEntityTypeFactory.h"
-#include "Engine/Component/PhysicComponent.h"
-
-
-static void projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
-                   std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams,
-                          std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)> onDamage) {
-    auto server = engine->getModule<RTypeServer>();
-
-    ProjectileHitPacket packet;
-    server->broadcast(packet);
-
-    entity::projectileHit(engine, self, other, teams, onDamage);
-}
+#include "ProjUtils.h"
 
 void EnemyShootSystem::update(std::unique_ptr<Engine> &engine) {
     auto lock = engine->getScene()->obtainLock();
@@ -60,20 +42,7 @@ void EnemyShootSystem::update(std::unique_ptr<Engine> &engine) {
             cd->current++;
             if (cd->current >= cd->cooldown) {
                 cd->current = 0;
-
-                // TODO use the other unsafeCreateEntity
-                auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
-                auto projectile = engine->getScene()->unsafeCreateEntity();
-                typeFactory->initEntity(projectile, "projectile");
-                projectile->addComponent<PositionComponent>(pos->x, pos->y + 20);
-                projectile->getComponent<PhysicComponent>()->velocity.x = -10;
-
-                projectile->addComponent<ColliderComponent>(projectileHit);
-
-                projectile->addComponent<TeamComponent>(1);
-
-                EntityInfoPacket newEntityPacket(projectile);
-                engine->getModule<RTypeServer>()->broadcast(newEntityPacket);
+                shoot(engine, ent, -1);
             }
         }
     }

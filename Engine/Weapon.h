@@ -20,15 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "PlayerShootConsumer.h"
-#include "Server/ProjUtils.h"
+#ifndef R_TYPE_CLIENT_WEAPON_H
+#define R_TYPE_CLIENT_WEAPON_H
 
-PlayerShootConsumer::PlayerShootConsumer(EnginePtr e) : RTypePlayerPacketConsumer(e) {}
+#include "EngineTypes.h"
 
-void PlayerShootConsumer::consume(PlayerShootPacket &packet, std::shared_ptr<NetClient> client,
-                                  std::shared_ptr<ClientData> data, std::shared_ptr<Entity> player) {
-    if (player == nullptr)
-        return;
+class Weapon {
+private:
+    std::string _projectile;
+    std::size_t _cooldown;
+public:
+    Weapon(const std::string &projectile, size_t cooldown);
 
-    shoot(e, player, 1);
-}
+    void shoot(EnginePtr engine, std::shared_ptr<Entity> shooter);
+};
+
+
+#endif //R_TYPE_CLIENT_WEAPON_H

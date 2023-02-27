@@ -32,11 +32,10 @@
  */
 class ColliderHitboxSystem : public ISystem {
 private:
-    std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)> _onDamage;
 public:
     void update(EnginePtr engine) override;
 
-    ColliderHitboxSystem(std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)>);
+    ColliderHitboxSystem();
     std::string getName() override;
 };
 

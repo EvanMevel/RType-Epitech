@@ -20,21 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_SERVERCOLLIDERSYSTEM_H
-#define R_TYPE_SERVER_SERVERCOLLIDERSYSTEM_H
+#include "Weapon.h"
+#include "Engine.h"
+#include "engineLua/LuaEntityTypeFactory.h"
+#include "PositionComponent.h"
+#include "TeamComponent.h"
 
-#include "RTypeServer.h"
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/ColliderHitboxSystem.h"
+Weapon::Weapon(const std::string &projectile, size_t cooldown) : _projectile(projectile), _cooldown(cooldown) {
 
-/**
- * @brief System that do the collision between entities
- */
-class ServerColliderSystem : public ColliderHitboxSystem {
-public:
-    ServerColliderSystem();
-    std::string getName() override;
-};
+}
 
-#endif //R_TYPE_SERVER_SERVERCOLLIDERSYSTEM_H
+void Weapon::shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter) {
+    auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
+    auto pos = shooter->getComponent<PositionComponent>();
+    auto team = shooter->getComponent<TeamComponent>();
+
+    if (!pos || !team) {
+        return;
+    }
+    auto proj = engine->getScene()->unsafeCreateEntity(engine, _projectile, pos->x, pos->y);
+
+    proj->addComponent<TeamComponent>(team->getTeam());
+}

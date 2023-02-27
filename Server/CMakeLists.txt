@@ -16,10 +16,12 @@ add_executable(r-type-server
         ProjectileCleanupSystem.cpp
         EnemyRandomSpawnSystem.cpp
         EnemyShootSystem.cpp
-        ServerColliderSystem.cpp
         PacketSendingScene.cpp
         EnemyInfoComponent.cpp
         Levels.cpp
         PlayerList.cpp
 
-        LevelSystem.cpp)
+        LevelSystem.cpp
+
+        ProjUtils.cpp
+        )

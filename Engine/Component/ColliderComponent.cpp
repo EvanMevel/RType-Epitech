@@ -20,31 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <functional>
 #include <utility>
 #include "ColliderComponent.h"
+#include "Engine/Engine.h"
 
 ColliderComponent::ColliderComponent() = default;
 
-ColliderComponent::ColliderComponent(
-        const std::function<void(EnginePtr, std::shared_ptr<Entity>, std::shared_ptr<Entity>,
-                                 std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &,
-                                 std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)>)> &onCollision)
-        : _onCollision(onCollision) {
+ColliderComponent::ColliderComponent(const CollideFunction &onCollision) : _onCollision(onCollision) {
 
 }
 
-void ColliderComponent::onCollision(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
-                                    std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams,
-                                    std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)> onDamage) const {
-    if (_onCollision != nullptr)
-        _onCollision(engine, std::move(self), std::move(other), teams, onDamage);
+CollideResult ColliderComponent::onCollision(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other) const {
+    if (_onCollision != nullptr) {
+        return _onCollision(engine, std::move(self), std::move(other));
+    }
+    return CollideResult::NONE;
 }
 
-void ColliderComponent::setOnCollision(
-        const std::function<void(EnginePtr, std::shared_ptr<Entity>, std::shared_ptr<Entity>,
-                                 std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &,
-                                 std::function<void(EnginePtr, std::shared_ptr<Entity>, int)>)> &onCollision) {
+void ColliderComponent::setOnCollision(const CollideFunction &onCollision) {
     _onCollision = onCollision;
 }
 

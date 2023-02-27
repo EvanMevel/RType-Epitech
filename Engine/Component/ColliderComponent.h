@@ -24,8 +24,20 @@
 #define R_TYPE_SERVER_COLLIDERCOMPONENT_H
 
 #include "Engine/Component/IComponent.h"
-#include "Engine/Hitbox.h"
-#include "Engine/Engine.h"
+#include "Engine/EngineTypes.h"
+#include <functional>
+
+/**
+ * @brief Describes the result of a collision
+ */
+enum CollideResult {
+    NONE = 0,
+    SOURCE_REMOVED = 1,
+    TARGET_REMOVED = 2,
+    BOTH_REMOVED = 3
+};
+
+using CollideFunction = std::function<CollideResult(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other)>;
 
 /**
  * @brief A component that describes a collider
@@ -33,25 +45,16 @@
  */
 class ColliderComponent : public IComponent {
 private:
-    std::function<void(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
-            std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams,
-            std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)>)> _onCollision;
+    CollideFunction _onCollision;
 
 public:
     ColliderComponent();
 
-    explicit ColliderComponent(const std::function<void(EnginePtr, std::shared_ptr<Entity>, std::shared_ptr<Entity>,
-                                                        std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &,
-                                                        std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)>)> &onCollision);
+    explicit ColliderComponent(const CollideFunction &onCollision);
 
-    void onCollision(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
-                     std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams,
-                     std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)> onDamage) const;
+    CollideResult onCollision(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other) const;
 
-    void setOnCollision(const std::function<void(EnginePtr, std::shared_ptr<Entity>, std::shared_ptr<Entity>,
-                                                 std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &,
-                                                 std::function<void(EnginePtr, std::shared_ptr<Entity>,
-                                                                    int)>)> &onCollision);
+    void setOnCollision(const CollideFunction &onCollision);
 };
 
 

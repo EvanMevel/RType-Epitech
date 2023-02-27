@@ -70,6 +70,8 @@ add_library(eng
 
         Level.cpp
 
+        Weapon.cpp
+
         )
 
 target_link_libraries(eng lua_static)

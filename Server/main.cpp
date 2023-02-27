@@ -22,22 +22,21 @@
 
 #include <iostream>
 #include "Engine/Engine.h"
-#include "RTypeServer.h"
 #include "Engine/TickUtil.h"
+#include "Engine/ColliderHitboxSystem.h"
+#include "Engine/engineLua/LuaLoader.h"
+#include "RTypeServer.h"
 #include "Server/Consumers/PingPacketConsumer.h"
-#include "TimeoutSystem.h"
 #include "Server/Consumers/HandshakeConsumer.h"
-#include "ServerVelocitySystem.h"
 #include "Server/Consumers/PlayerMoveConsumer.h"
 #include "Server/Consumers/PlayerShootConsumer.h"
+#include "TimeoutSystem.h"
+#include "ServerVelocitySystem.h"
 #include "ProjectileCleanupSystem.h"
-#include "EnemyRandomSpawnSystem.h"
 #include "EnemyShootSystem.h"
-#include "ServerColliderSystem.h"
 #include "PacketSendingScene.h"
 #include "Levels.h"
 #include "PlayerList.h"
-#include "Engine/engineLua/LuaLoader.h"
 #include "LevelSystem.h"
 
 std::atomic<bool> running = true;
@@ -98,7 +97,7 @@ void createScene(EnginePtr engine, std::shared_ptr<Level> level) {
     sc->addSystem<ServerVelocitySystem>();
     sc->addSystem<ProjectileCleanupSystem>();
     sc->addSystem<EnemyShootSystem>();
-    sc->addSystem<ServerColliderSystem>();
+    sc->addSystem<ColliderHitboxSystem>();
     //sc->addSystem<EnemyRandomSpawnSystem>();
     sc->addSystem<LevelSystem>(level);
 
