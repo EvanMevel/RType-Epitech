@@ -59,7 +59,6 @@ public:
         _port = port;
     }
 
-public:
     NetworkRemoteServer(Data dat, const std::string &address, unsigned short port) : socket(std::make_shared<CrossPlatformSocket>()),
         data(dat), _address(address), _port(port) {
         if (!socket->create()) {

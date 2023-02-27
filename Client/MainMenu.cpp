@@ -26,13 +26,13 @@
 #include "ClientNetServer.h"
 #include "Engine/Network/Packets/HandshakePacket.h"
 
-static void ipButtonClick(EnginePtr engine) {
+static void ipButtonClick(EnginePtr engine, std::shared_ptr<Entity> entity) {
     auto sceneHolder = engine->getModule<SceneHolder>();
     auto sc = sceneHolder->getValue(Scenes::IP_MENU);
     engine->setScene(sc);
 }
 
-static void playButtonClick(EnginePtr engine) {
+static void playButtonClick(EnginePtr engine, std::shared_ptr<Entity> entity) {
     auto sceneHolder = engine->getModule<SceneHolder>();
     auto sc = sceneHolder->getValue(Scenes::GAME);
     engine->setScene(sc);

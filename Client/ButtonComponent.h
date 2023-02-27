@@ -35,7 +35,7 @@
 class ButtonComponent : public IComponent {
 private:
     Hitbox hitbox;
-    std::function<void(EnginePtr)> _onClick;
+    std::function<void(EnginePtr, std::shared_ptr<Entity>)> _onClick;
 public:
     ButtonComponent();
 
@@ -43,9 +43,9 @@ public:
 
     void setHitbox(const Hitbox &hitbox);
 
-    void setOnClick(const std::function<void(EnginePtr)> &onClick);
+    void setOnClick(const std::function<void(EnginePtr, std::shared_ptr<Entity>)> &onClick);
 
-    void clicked(EnginePtr engine);
+    void clicked(EnginePtr engine, std::shared_ptr<Entity> entity);
 };
 
 

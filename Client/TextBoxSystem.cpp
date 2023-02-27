@@ -19,7 +19,6 @@ void drawTextBox(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entit
         }if (lib->isKeyPressed(KeyCodes::KEY_BACKSPACE) && !textBoxComponent->getText().empty()) {
             textBoxComponent->setText(textBoxComponent->getText().substr(0, textBoxComponent->getText().length() - 1));
         }
-        std::cout<<textBoxComponent->getText()<<std::endl;
         lib->drawText(textBoxComponent->getText(),rect.x +5, rect.y,35,ColorCodes::COLOR_BLACK);
     }
 }

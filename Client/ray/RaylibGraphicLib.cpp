@@ -71,7 +71,7 @@ void RaylibGraphicLib::drawTexture(Texture &texture, int x, int y, ColorCodes co
 
 void RaylibGraphicLib::drawSprite(std::shared_ptr<Sprite> sprite, int x, int y, ColorCodes codes) {
     auto texture2D = any_cast<ray::Texture2D>(sprite->spriteProperty->texture->handle);
-    Rectangle rec = sprite->currentRect;
+    MyRectangle rec = sprite->currentRect;
     ray::Rectangle sourceRec = {(float) rec.x, (float) rec.y,
                                 (float) rec.width, (float) rec.height};
     float width = (float) rec.width * sprite->spriteProperty->scale;

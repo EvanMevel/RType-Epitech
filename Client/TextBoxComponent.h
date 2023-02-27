@@ -32,7 +32,7 @@
 class TextBoxComponent : public IComponent{
 private:
     std::string text;
-    Rectangle rectangle;
+    MyRectangle rectangle;
 public:
     TextBoxComponent();
 
@@ -42,9 +42,9 @@ public:
 
     void setText(const std::string &text);
 
-    const Rectangle &getRectangle() const;
+    const MyRectangle &getRectangle() const;
 
-    void setRectangle(const Rectangle &rectangle);
+    void setRectangle(const MyRectangle &rectangle);
 };
 
 

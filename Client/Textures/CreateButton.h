@@ -40,6 +40,6 @@
  * @return The button entity
  */
 std::shared_ptr<Entity> createButton(const std::shared_ptr<IGraphicLib> &lib, const std::shared_ptr<Scene> &sc,
-                                     int x, int y, Textures texture, const std::function<void(EnginePtr)> &onClick);
+                                     int x, int y, Textures texture, const std::function<void(EnginePtr,std::shared_ptr<Entity>)> &onClick);
 
 #endif //R_TYPE_SERVER_CREATEBUTTON_H

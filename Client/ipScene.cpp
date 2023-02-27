@@ -22,14 +22,34 @@
 
 #include "ipScene.h"
 #include "Client/Textures/CreateButton.h"
+#include "Engine/Network/NetworkRemoteServer.h"
+#include "TextBoxComponent.h"
+#include "EntityLinkComponent.h"
 
-static void changeIpButtonClick(EnginePtr engine) {
+
+void getTextboxStr(std::shared_ptr<Entity> entity, std::shared_ptr<ClientNetServer> server) {
+
+    auto textBoxComponent= entity->getComponent<TextBoxComponent>();
+    if (textBoxComponent != nullptr && !textBoxComponent->getText().empty()) {
+        auto input = textBoxComponent->getText();
+        std::size_t delimiter_pos = input.find(':');
+
+        if (delimiter_pos != std::string::npos) {
+            std::string adress = input.substr(0, delimiter_pos);
+            unsigned short port = (short) std::stoi(input.substr(delimiter_pos + 1));
+            server->setAddress(adress);
+            server->setPort(port);
+        }
+    }
+}
+
+static void changeIpButtonClick(EnginePtr engine, std::shared_ptr<Entity> entity) {
     auto sceneHolder = engine->getModule<SceneHolder>();
     auto sc = sceneHolder->getValue(Scenes::GAME);
     engine->setScene(sc);
-    
 
     auto server = engine->getModule<ClientNetServer>();
+    getTextboxStr(entity->getComponent<EntityLinkComponent>()->entity, server);
     std::cout << "Sending handshake" << std::endl;
     server->startListening();
     server->sendPacket(HandshakePacket());
@@ -48,8 +68,13 @@ std::shared_ptr<Scene> ipScene(EnginePtr engine){
     auto firstground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_5,-4);
 
     auto textBox = createTextBox(lib,sc,(lib->getWindow().getWidth() / 2) - (800 / 2), (int) (lib->getWindow().getHeight() * 0.45) - (100 / 2));
-
-    createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.85) - (100 / 2),Textures::IP_BUTTON, changeIpButtonClick);
+    char *rtypeServerIp = std::getenv("RTYPE_SERVER_IP");
+    std::string serverIp = rtypeServerIp ? rtypeServerIp : "127.0.0.1";
+    char *rtypeServerPort = std::getenv("RTYPE_SERVER_PORT");
+    int serverport = rtypeServerPort ? std::stoi(rtypeServerPort) : 4242;
+    textBox->getComponent<TextBoxComponent>()->setText(serverIp + ":" + std::to_string(serverport));
+    auto button = createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.85) - (100 / 2),Textures::IP_BUTTON, changeIpButtonClick);
+    button->addComponent<EntityLinkComponent>(textBox);
     sc->addSystem<VelocitySystem>();
     return sc;
 }
