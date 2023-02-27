@@ -68,4 +68,6 @@ function loadLevels(factory)
     local level = createLevel(factory, "Level 1");
     level:addEnemy("enemy1", 0, 450);
     level:addEnemy("enemy1", 0, 550);
+    level:addEnemy("enemy2", 250, 100);
+    level:addEnemy("enemy2", 500, 750);
 end

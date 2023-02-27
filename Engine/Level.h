@@ -55,6 +55,8 @@ public:
     void update(int x, EnginePtr engine);
 
     void addEnemy(const std::string &type, int x, int y);
+
+    const std::string &getName() const;
 };
 
 

@@ -44,13 +44,13 @@ Level::Level(const std::string &name) : _name(name) {
 }
 
 void Level::spawn(std::unique_ptr<Engine> &engine, const LevelEnemy &enemy) {
-    engine->getScene()->createEntity(engine, enemy.getType(), enemy.getX(), enemy.getY());
+    engine->getScene()->createEntity(engine, enemy.getType(), 1800, enemy.getY());
 }
 
 void Level::update(int x, EnginePtr engine) {
     auto it = _enemies.begin();
     while (it != _enemies.end()) {
-        if (it->getX() >= x) {
+        if (it->getX() <= x) {
             spawn(engine, *it);
             it = _enemies.erase(it);
         } else {
@@ -68,4 +68,8 @@ void Level::addEnemy(const std::string &type, int x, int y) {
         it++;
     }
     _enemies.insert(it, LevelEnemy{type, x, y});
+}
+
+const std::string &Level::getName() const {
+    return _name;
 }

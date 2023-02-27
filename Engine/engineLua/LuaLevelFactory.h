@@ -32,6 +32,8 @@ private:
 
 public:
     std::shared_ptr<Level> createLevel(const std::string &name);
+
+    const std::vector<std::shared_ptr<Level>> &getLevels() const;
 };
 
 [[maybe_unused]] int luaCreateLevel(lua_State *L);
