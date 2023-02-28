@@ -30,4 +30,4 @@ add_executable(pong
 
         Textures.cpp
 
-        )
+        PlayerComponent.cpp PlayerComponent.h PlayerMoveSystem.cpp PlayerMoveSystem.h PlayerKeys.cpp PlayerKeys.h PlayerKeysSystem.cpp PlayerKeysSystem.h PongVelocitySystem.cpp PongVelocitySystem.h Pong.h)

@@ -29,7 +29,8 @@
 enum class Textures {
     TEXTURE_ERROR = -1,
     TITLE = 0,
-    PLAY_BUTTON = 1
+    PLAY_BUTTON = 1,
+    PLAYER = 2
 };
 
 void loadTextures(const std::shared_ptr<IGraphicLib> &lib);

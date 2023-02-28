@@ -30,6 +30,9 @@
 #include <condition_variable>
 #include "Pong/DrawFixTextureSystem.h"
 #include "Pong/MouseSystem.h"
+#include "PlayerKeys.h"
+#include "PlayerKeysSystem.h"
+#include "Pong.h"
 
 
 bool windowClosed = false;
@@ -76,7 +79,7 @@ void loadGraphsAndScenes(EnginePtr engine) {
 
     std::shared_ptr<IGraphicLib> lib = engine->registerIModule<IGraphicLib, RaylibGraphicLib>();
 
-    IWindow &window = lib->createWindow(1820, 1000, "PONG");
+    IWindow &window = lib->createWindow(PONG_WINDOW_WIDTH, PONG_WINDOW_HEIGHT, "PONG");
     window.setTargetFPS(60);
     lib->initAudio();
     //window.setFullScreen();
@@ -91,6 +94,7 @@ void loadGraphsAndScenes(EnginePtr engine) {
 
     lib->addSystem<DrawFixTextureSystem>();
     lib->addSystem<MouseSystem>();
+    lib->addSystem<PlayerKeysSystem>();
 
     std::cout << "[Graphic] Finished loading" << std::endl;
 }
@@ -102,6 +106,8 @@ void startGraph(EnginePtr engine) {
 
 void loadAll() {
     std::unique_ptr<Engine> engine = std::make_unique<Engine>();
+
+    engine->registerModule<PlayerKeys>();
 
     std::thread graphThread(startGraph, std::ref(engine));
 

@@ -25,6 +25,8 @@
 
 #include "Engine/ISystem.h"
 #include "Engine/Entity.h"
+#include "Engine/Component/PhysicComponent.h"
+#include "Engine/Component/PositionComponent.h"
 
 /**
  * @brief System that updates the position of entities with a velocity component
@@ -37,6 +39,10 @@ public:
     void update(EnginePtr engine) override;
 
     virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
+
+    bool applyPhysic(std::shared_ptr<Entity> entity);
+
+    virtual void applyVelocity(std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
 
     std::string getName() override;
 };
