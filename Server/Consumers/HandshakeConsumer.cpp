@@ -62,7 +62,6 @@ void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClie
     auto player = e->getScene()->createEntity();
     typeFactory->initEntity(player, "player");
     player->addComponent<PositionComponent>(100, 100);
-    player->addComponent<WeaponComponent>(std::make_shared<SynchronizedWeapon>("projectile", 20));
     data->playerId = player->getId();
     auto playerList = e->getModule<PlayerList>();
     int playerNumber = playerList->getAvailable();

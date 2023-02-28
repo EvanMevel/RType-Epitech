@@ -72,6 +72,6 @@ add_library(eng
 
         Weapon.cpp
 
-        Component/ProjectileComponent.cpp Component/ProjectileComponent.h Component/WeaponComponent.cpp Component/WeaponComponent.h)
+        Component/ProjectileComponent.cpp Component/ProjectileComponent.h Component/WeaponComponent.cpp Component/WeaponComponent.h engineLua/LuaWeaponFactory.cpp engineLua/LuaWeaponFactory.h)
 
 target_link_libraries(eng lua_static)

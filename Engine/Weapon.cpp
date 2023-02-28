@@ -43,7 +43,7 @@ void Weapon::shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shoo
     }
     auto projectile = engine->getScene()->unsafeCreateEntity(engine, _projectile, pos->x, pos->y + 20);
 
-    projectile->getComponent<PhysicComponent>()->velocity.x = 10;
+    projectile->getComponent<PhysicComponent>()->velocity.x = team->getTeam() == 0 ? 10 : -10;
 
     projectile->addComponent<ColliderComponent>(_projectileHit);
 
@@ -80,11 +80,15 @@ CollideResult Weapon::projectileHit(EnginePtr engine, std::shared_ptr<Entity> se
         }
     } else {
         auto otherType = other->getComponent<EntityTypeComponent2>();
-        if (otherType != nullptr && otherType->getEntityType() == "projectile") {
+        if (otherType != nullptr && otherType->getEntityType().find("projectile") != std::string::npos) {
             engine->getScene()->removeEntity(other);
             return CollideResult::BOTH_REMOVED;
         }
         return CollideResult::SOURCE_REMOVED;
     }
     return CollideResult::SOURCE_REMOVED;
+}
+
+size_t Weapon::getCooldown() const {
+    return _cooldown;
 }

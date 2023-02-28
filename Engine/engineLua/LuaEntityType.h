@@ -30,7 +30,7 @@ private:
     std::string _id;
     std::size_t _hitboxWidth;
     std::size_t _hitboxHeight;
-    std::vector<std::pair<std::string, std::vector<int>>> _components;
+    std::vector<std::pair<std::string, std::vector<std::any>>> _components;
 public:
     LuaEntityType(const std::string &id, size_t hitboxWidth, size_t hitboxHeight);
 
@@ -40,9 +40,9 @@ public:
 
     size_t getHitboxHeight() const;
 
-    void addComponent(const std::string &name, const std::vector<int> &args);
+    void addComponent(const std::string &name, const std::vector<std::any> &args);
 
-    const std::vector<std::pair<std::string, std::vector<int>>> &getComponents() const;
+    const std::vector<std::pair<std::string, std::vector<std::any>>> &getComponents() const;
 };
 
 

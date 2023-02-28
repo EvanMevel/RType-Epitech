@@ -21,7 +21,6 @@
 // SOFTWARE.
 
 #include "PlayerShootConsumer.h"
-#include "Server/ProjUtils.h"
 #include "Engine/Component/WeaponComponent.h"
 
 PlayerShootConsumer::PlayerShootConsumer(EnginePtr e) : RTypePlayerPacketConsumer(e) {}

@@ -38,6 +38,7 @@
 #include "Levels.h"
 #include "PlayerList.h"
 #include "LevelSystem.h"
+#include "SynchronizedWeapon.h"
 
 std::atomic<bool> running = true;
 
@@ -111,9 +112,10 @@ int main()
     auto luaLoad = engine->registerModule<LuaLoader>();
     auto typeFactory = engine->registerModule<LuaEntityTypeFactory>();
     auto levelFactory = engine->registerModule<LuaLevelFactory>();
+    auto weaponFactory = engine->registerIModule<LuaWeaponFactoryBase, LuaWeaponFactory<SynchronizedWeapon>>();
 
     luaLoad->loadFolder("config");
-    luaLoad->loadEntityTypes(typeFactory);
+    luaLoad->loadEntityTypes(typeFactory, weaponFactory);
     luaLoad->loadLevels(levelFactory);
 
     createScene(engine, levelFactory->getLevels()[0]);

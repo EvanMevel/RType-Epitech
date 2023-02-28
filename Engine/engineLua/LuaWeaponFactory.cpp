@@ -20,15 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_CLIENT_PROJUTILS_H
-#define R_TYPE_CLIENT_PROJUTILS_H
-
-#include "Engine/EngineTypes.h"
-#include "Engine/Component/ColliderComponent.h"
-
-CollideResult projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other);
-
-void shoot(EnginePtr engine, std::shared_ptr<Entity> source, int xMult);
+#include "LuaWeaponFactory.h"
 
 
-#endif //R_TYPE_CLIENT_PROJUTILS_H
+[[maybe_unused]] int luaRegisterWeapon(lua_State *L) {
+    LuaWeaponFactoryBase *factory = (LuaWeaponFactoryBase*) lua_touserdata(L, 1);
+
+    std::size_t len;
+    std::string name = lua_tolstring(L, 2, &len);
+    std::string proj = lua_tolstring(L, 3, &len);
+
+    std::size_t cooldown = lua_tointeger(L, 4);
+
+    factory->registerWeapon(name, proj, cooldown);
+
+    return 0;
+}

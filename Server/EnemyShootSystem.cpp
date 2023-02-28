@@ -22,10 +22,9 @@
 
 #include "EnemyShootSystem.h"
 #include "Engine/Engine.h"
-#include "Engine/EntityUtils.h"
 #include "Engine/Component/CooldownComponent.h"
 #include "Engine/Component/IAComponent.h"
-#include "ProjUtils.h"
+#include "Engine/Component/WeaponComponent.h"
 
 void EnemyShootSystem::update(std::unique_ptr<Engine> &engine) {
     auto lock = engine->getScene()->obtainLock();
@@ -33,17 +32,13 @@ void EnemyShootSystem::update(std::unique_ptr<Engine> &engine) {
     for (size_t i = 0; i < entities.size(); i++) {
         auto &ent = entities[i];
         auto ia = ent->getComponent<IAComponent>();
-        if (ia) {
-            auto cd = ent->getComponent<CooldownComponent>();
-            auto pos = ent->getComponent<PositionComponent>();
-            if (cd == nullptr || pos == nullptr) {
-                continue;
-            }
-            cd->current++;
-            if (cd->current >= cd->cooldown) {
-                cd->current = 0;
-                shoot(engine, ent, -1);
-            }
+        auto weapon = ent->getComponent<WeaponComponent>();
+        if (!ia || !weapon) {
+            continue;
+        }
+        if (weapon->canShoot()) {
+            weapon->setNextShot();
+            weapon->getWeapon()->shoot(engine, ent);
         }
     }
 }

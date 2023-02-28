@@ -41,6 +41,8 @@ public:
     virtual CollideResult projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other);
 
     virtual void onDamage(EnginePtr engine, std::shared_ptr<Entity> cause, std::shared_ptr<Entity> victim, int damage);
+
+    size_t getCooldown() const;
 };
 
 

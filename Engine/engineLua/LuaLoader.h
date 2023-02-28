@@ -25,6 +25,7 @@
 
 #include "LuaEntityTypeFactory.h"
 #include "LuaLevelFactory.h"
+#include "LuaWeaponFactory.h"
 
 class IGraphicLib;
 
@@ -40,7 +41,7 @@ public:
 
     void loadFile(const std::string &filePath);
 
-    void loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory);
+    void loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory, std::shared_ptr<LuaWeaponFactoryBase> luaWeaponFactory);
 
     void loadEntitySprites(std::shared_ptr<IGraphicLib> graphicLib);
 

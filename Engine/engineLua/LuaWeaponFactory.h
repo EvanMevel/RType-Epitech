@@ -20,30 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_CLIENT_WEAPONCOMPONENT_H
-#define R_TYPE_CLIENT_WEAPONCOMPONENT_H
+#ifndef R_TYPE_CLIENT_LUAWEAPONFACTORY_H
+#define R_TYPE_CLIENT_LUAWEAPONFACTORY_H
 
-
-#include "IComponent.h"
 #include "Engine/Weapon.h"
+#include "Engine/engineLua/LuaWrapper.h"
 
-class WeaponComponent : public IComponent {
-private:
-    std::shared_ptr<Weapon> _weapon;
-    long long nextShot = 0;
 
+class LuaWeaponFactoryBase {
+protected:
+    std::unordered_map<std::string, std::shared_ptr<Weapon>> _weapons;
 public:
-    explicit WeaponComponent(const std::shared_ptr<Weapon> &weapon);
+    virtual void registerWeapon(const std::string &name, const std::string &proj, std::size_t cooldown) = 0;
 
-    bool canShoot() const;
+    std::shared_ptr<Weapon> getWeapon(const std::string &name) {
+        return _weapons[name];
+    }
+};
 
-    void setNextShot();
-
-    const std::shared_ptr<Weapon> &getWeapon() const;
-
-    void setWeapon(const std::shared_ptr<Weapon> &weapon);
+template <class T>
+class LuaWeaponFactory : public LuaWeaponFactoryBase {
+public:
+    void registerWeapon(const std::string &name, const std::string &proj, std::size_t cooldown) override {
+        _weapons[name] = std::make_shared<T>(proj, cooldown);
+    }
 
 };
 
+[[maybe_unused]] int luaRegisterWeapon(lua_State *L);
 
-#endif //R_TYPE_CLIENT_WEAPONCOMPONENT_H
+#endif //R_TYPE_CLIENT_LUAWEAPONFACTORY_H

@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #include "WeaponComponent.h"
+#include "Engine/TimeUtil.h"
 
 WeaponComponent::WeaponComponent(const std::shared_ptr<Weapon> &weapon) : _weapon(weapon) {}
 
@@ -30,4 +31,12 @@ const std::shared_ptr<Weapon> &WeaponComponent::getWeapon() const {
 
 void WeaponComponent::setWeapon(const std::shared_ptr<Weapon> &weapon) {
     _weapon = weapon;
+}
+
+bool WeaponComponent::canShoot() const {
+    return getCurrentTime() > nextShot;
+}
+
+void WeaponComponent::setNextShot() {
+    nextShot = getCurrentTime() + (long long) (_weapon->getCooldown() * (1000 / ENGINE_TPS));
 }

@@ -28,7 +28,7 @@
 void ProjectileCleanupSystem::update(EnginePtr engine) {
     std::function<bool(std::shared_ptr<Entity> entity, EnginePtr engine)> f = [](std::shared_ptr<Entity> entity, EnginePtr engine) {
         auto type = entity->getComponent<EntityTypeComponent2>();
-        if (type == nullptr || type->getEntityType() != "projectile") {
+        if (type == nullptr || type->getEntityType().find("projectile") == std::string::npos) {
             return false;
         }
         auto pos = entity->getComponent<PositionComponent>();
