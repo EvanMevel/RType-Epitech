@@ -26,13 +26,12 @@
 #include "Pong/Textures.h"
 #include "Pong/Sounds.h"
 #include "Engine/TickUtil.h"
-#include <mutex>
-#include <condition_variable>
 #include "Pong/DrawFixTextureSystem.h"
 #include "Pong/MouseSystem.h"
 #include "PlayerKeys.h"
 #include "PlayerKeysSystem.h"
 #include "Pong.h"
+#include <thread>
 
 bool windowClosed = false;
 int playerWin = 0;
