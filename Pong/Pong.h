@@ -31,4 +31,7 @@
 
 #define PONG_GOALS_WIDTH 60
 
+#define PONG_BALL_WIDTH 20
+#define PONG_BALL_HEIGHT 20
+
 #endif //PONG_PONG_H

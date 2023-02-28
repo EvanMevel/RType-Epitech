@@ -31,6 +31,8 @@ public:
 
     bool up2;
     bool down2;
+
+    bool space;
 };
 
 

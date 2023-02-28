@@ -20,10 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Sounds.h"
+#ifndef PONG_BALLCOMPONENT_H
+#define PONG_BALLCOMPONENT_H
 
-void loadSounds(const std::shared_ptr<IGraphicLib> &lib) {
-    lib->registerSound(Sounds::THUD, "Thud.wav");
-    lib->registerSound(Sounds::FORTINITE, "FORTINITE.mp3");
-    lib->registerSound(Sounds::BABEGI, "BABAGI.mp3");
-}
+
+#include "Engine/Component/IComponent.h"
+
+class BallComponent : public IComponent {
+public:
+    bool shoot = false;
+
+};
+
+
+#endif //PONG_BALLCOMPONENT_H

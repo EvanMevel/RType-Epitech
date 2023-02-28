@@ -20,10 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Sounds.h"
+#ifndef PONG_BALLBOUNCESYSTEM_H
+#define PONG_BALLBOUNCESYSTEM_H
 
-void loadSounds(const std::shared_ptr<IGraphicLib> &lib) {
-    lib->registerSound(Sounds::THUD, "Thud.wav");
-    lib->registerSound(Sounds::FORTINITE, "FORTINITE.mp3");
-    lib->registerSound(Sounds::BABEGI, "BABAGI.mp3");
-}
+
+#include "Engine/ISystem.h"
+#include "Engine/Entity.h"
+
+class BallBounceSystem : public ISystem {
+public:
+    std::shared_ptr<Entity> ball;
+    std::shared_ptr<Entity> player1;
+    std::shared_ptr<Entity> player2;
+
+    BallBounceSystem(const std::shared_ptr<Entity> &ball, const std::shared_ptr<Entity> &player1,
+                     const std::shared_ptr<Entity> &player2);
+
+    void update(std::unique_ptr<Engine> &engine) override;
+};
+
+
+#endif //PONG_BALLBOUNCESYSTEM_H

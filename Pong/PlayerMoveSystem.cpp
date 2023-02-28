@@ -25,31 +25,44 @@
 #include "PlayerKeys.h"
 #include "PlayerComponent.h"
 #include "Engine/Component/PhysicComponent.h"
+#include "BallComponent.h"
 
 void playerMove(EnginePtr engine, std::shared_ptr<Entity> entity) {
-    auto playerComponent = entity->getComponent<PlayerComponent>();
     auto physicsComponent = entity->getComponent<PhysicComponent>();
-    if (!playerComponent || !physicsComponent)
+    if (!physicsComponent)
         return;
 
     auto keys = engine->getModule<PlayerKeys>();
-    Vector2i acceleration(0, 0);
-    if (playerComponent->number == 1) {
-        if (keys->up1) {
-            acceleration.y += -2;
+
+    auto playerComponent = entity->getComponent<PlayerComponent>();
+    if (playerComponent) {
+        Vector2i acceleration(0, 0);
+        if (playerComponent->number == 1) {
+            if (keys->up1) {
+                acceleration.y += -2;
+            }
+            if (keys->down1) {
+                acceleration.y += 2;
+            }
+        } else if (playerComponent->number == 2) {
+            if (keys->up2) {
+                acceleration.y += -2;
+            }
+            if (keys->down2) {
+                acceleration.y += 2;
+            }
         }
-        if (keys->down1) {
-            acceleration.y += 2;
+        physicsComponent->acceleration = acceleration;
+    } else {
+        auto ball = entity->getComponent<BallComponent>();
+        if (!ball) {
+            return;
         }
-    } else if (playerComponent->number == 2) {
-        if (keys->up2) {
-            acceleration.y += -2;
-        }
-        if (keys->down2) {
-            acceleration.y += 2;
+        if (keys->space && !ball->shoot) {
+            ball->shoot = true;
+            physicsComponent->velocity = Vector2i(1, 2);
         }
     }
-    physicsComponent->acceleration = acceleration;
 }
 
 void PlayerMoveSystem::update(std::unique_ptr<Engine> &engine) {

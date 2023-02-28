@@ -20,10 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Sounds.h"
+#include "WinConditionSystem.h"
+#include "Engine/Component/PositionComponent.h"
+#include "Pong.h"
+#include "Engine/Engine.h"
+#include <iostream>
 
-void loadSounds(const std::shared_ptr<IGraphicLib> &lib) {
-    lib->registerSound(Sounds::THUD, "Thud.wav");
-    lib->registerSound(Sounds::FORTINITE, "FORTINITE.mp3");
-    lib->registerSound(Sounds::BABEGI, "BABAGI.mp3");
+extern int playerWin;
+
+static void closeWin(std::shared_ptr<IGraphicLib> lib) {
+    if (lib->getWindow().shouldClose()) {
+        return;
+    }
+    lib->closeWindow();
 }
+
+void WinConditionSystem::update(std::unique_ptr<Engine> &engine) {
+    auto pos = ball->getComponent<PositionComponent>();
+
+    if (pos->getX() < PONG_GOALS_WIDTH - (PONG_BALL_WIDTH * 2)) {
+        playerWin = 2;
+        auto lib = engine->getModule<IGraphicLib>();
+        lib->execOnLibThread(closeWin, lib);
+    } else if (pos->getX() > PONG_WINDOW_WIDTH - (PONG_GOALS_WIDTH - (PONG_BALL_WIDTH * 2))) {
+        playerWin = 1;
+        auto lib = engine->getModule<IGraphicLib>();
+        lib->execOnLibThread(closeWin, lib);
+    }
+}
+
+WinConditionSystem::WinConditionSystem(const std::shared_ptr<Entity> &ball) : ball(ball) {}

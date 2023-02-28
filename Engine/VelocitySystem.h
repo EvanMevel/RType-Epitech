@@ -40,9 +40,9 @@ public:
 
     virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
 
-    bool applyPhysic(std::shared_ptr<Entity> entity);
+    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity);
 
-    virtual void applyVelocity(std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
+    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
 
     std::string getName() override;
 };

@@ -23,3 +23,11 @@ add_executable(r-type-server
         PlayerList.cpp
 
         LevelSystem.cpp)
+
+
+target_link_libraries(r-type-server eng)
+if(WIN32)
+    target_link_libraries(r-type-server wsock32 ws2_32 -static)
+else()
+    target_link_libraries(r-type-server -static-libgcc -static-libstdc++ -lpthread)
+endif()

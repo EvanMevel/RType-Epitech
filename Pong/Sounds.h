@@ -26,8 +26,9 @@
 #include "Engine/Graphic/IGraphicLib.h"
 
 enum class Sounds {
-    PROJECTILE_SHOOT = 0,
-    PROJECTILE_HIT = 1
+    THUD = 0,
+    FORTINITE = 1,
+    BABEGI = 2
 };
 
 void loadSounds(const std::shared_ptr<IGraphicLib> &lib);

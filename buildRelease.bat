@@ -12,3 +12,7 @@ powershell Compress-Archive -Force ^
 powershell Compress-Archive -Force ^
     -Path ".\build\Server\r-type-server.exe,.\config" ^
     -DestinationPath ".\release\r-type-server.zip"
+
+powershell Compress-Archive -Force ^
+    -Path ".\build\Pong\pong.exe,.\Pong\assets" ^
+    -DestinationPath ".\release\ponge.zip"

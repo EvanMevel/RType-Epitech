@@ -33,4 +33,6 @@ void PlayerKeysSystem::update(std::unique_ptr<Engine> &engine) {
 
     keys->up2 = lib->isKeyDown(KeyCodes::KEY_UP);
     keys->down2 = lib->isKeyDown(KeyCodes::KEY_DOWN);
+
+    keys->space = lib->isKeyDown(KeyCodes::KEY_SPACE);
 }

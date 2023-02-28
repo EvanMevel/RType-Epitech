@@ -23,8 +23,9 @@
 #include "Textures.h"
 
 void loadTextures(const std::shared_ptr<IGraphicLib> &lib) {
-    lib->registerTexture(Textures::TITLE, "rtype.png");
-    lib->registerTexture(Textures::PLAY_BUTTON, "play-button.png");
+    lib->registerTexture(Textures::TITLE, "pong-title.png");
+    lib->registerTexture(Textures::PLAY_BUTTON, "pong-play-button.png");
     lib->registerTexture(Textures::PLAYER, "pong-player.png");
+    lib->registerTexture(Textures::BALL, "pong-ball.png");
 
 }

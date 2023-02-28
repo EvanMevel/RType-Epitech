@@ -20,10 +20,4 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Sounds.h"
-
-void loadSounds(const std::shared_ptr<IGraphicLib> &lib) {
-    lib->registerSound(Sounds::THUD, "Thud.wav");
-    lib->registerSound(Sounds::FORTINITE, "FORTINITE.mp3");
-    lib->registerSound(Sounds::BABEGI, "BABAGI.mp3");
-}
+#include "BallComponent.h"

@@ -44,10 +44,8 @@ std::shared_ptr<Scene> mainMenu(EnginePtr engine)
     auto width = lib->getWindow().getWidth();
 
     auto title = sc->createEntity();
-    auto titlePos = title->addComponent<PositionComponent>((width / 2) - (800 / 2), (height / 3) - (400 / 2));
+    auto titlePos = title->addComponent<PositionComponent>((width / 2) - (700 / 2), (height / 3) - (122 / 2));
     title->addComponent<FixTextureComponent>()->setTextureId(Textures::TITLE);
-
-
 
 
     auto button = sc->createEntity();
@@ -55,7 +53,7 @@ std::shared_ptr<Scene> mainMenu(EnginePtr engine)
     button->addComponent<EntityTypeComponent2>("button");
     button->addComponent<FixTextureComponent>()->setTextureId(Textures::PLAY_BUTTON);
 
-    auto pos = button->addComponent<PositionComponent>((width / 2) - (400 / 2), (int) (height * 0.45) - (100 / 2));
+    auto pos = button->addComponent<PositionComponent>((width / 2) - (200 / 2), (int) (height * 0.7) - (100 / 2));
 
     const Texture& buttonTexture = lib->getTextures()->getValue(Textures::PLAY_BUTTON);
     auto hitboxComponent = button->addComponent<HitboxComponent>(buttonTexture->getWidth(), buttonTexture->getHeight());

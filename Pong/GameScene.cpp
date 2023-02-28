@@ -28,6 +28,9 @@
 #include "Pong.h"
 #include "Engine/Component/HitboxComponent.h"
 #include "PongVelocitySystem.h"
+#include "BallComponent.h"
+#include "BallBounceSystem.h"
+#include "WinConditionSystem.h"
 
 std::shared_ptr<Scene> gameScene(EnginePtr engine){
     auto sc = engine->createScene<Scene>();
@@ -54,6 +57,16 @@ std::shared_ptr<Scene> gameScene(EnginePtr engine){
     player2->addComponent<FixTextureComponent>()->setTextureId(Textures::PLAYER);
     player2->addComponent<HitboxComponent>(PONG_PLAYER_WIDTH, PONG_PLAYER_HEIGHT);
 
+    auto ball = sc->createEntity();
+    ball->addComponent<PositionComponent>(PONG_WINDOW_WIDTH / 2 - PONG_BALL_WIDTH / 2, PONG_WINDOW_HEIGHT / 2 - PONG_BALL_HEIGHT / 2);
+    physic = ball->addComponent<PhysicComponent>();
+    physic->velocitySlow = 0;
+    ball->addComponent<BallComponent>();
+    ball->addComponent<FixTextureComponent>()->setTextureId(Textures::BALL);
+    ball->addComponent<HitboxComponent>(PONG_BALL_WIDTH, PONG_BALL_HEIGHT);
+
+    sc->addSystem<BallBounceSystem>(ball, player1, player2);
+    sc->addSystem<WinConditionSystem>(ball);
 
     return sc;
 }

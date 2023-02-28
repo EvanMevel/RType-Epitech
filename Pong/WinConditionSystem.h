@@ -20,10 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Sounds.h"
+#ifndef PONG_WINCONDITIONSYSTEM_H
+#define PONG_WINCONDITIONSYSTEM_H
 
-void loadSounds(const std::shared_ptr<IGraphicLib> &lib) {
-    lib->registerSound(Sounds::THUD, "Thud.wav");
-    lib->registerSound(Sounds::FORTINITE, "FORTINITE.mp3");
-    lib->registerSound(Sounds::BABEGI, "BABAGI.mp3");
-}
+
+#include "Engine/ISystem.h"
+#include "Engine/Entity.h"
+
+class WinConditionSystem : public ISystem {
+public:
+    std::shared_ptr<Entity> ball;
+
+    explicit WinConditionSystem(const std::shared_ptr<Entity> &ball);
+
+    void update(std::unique_ptr<Engine> &engine) override;
+};
+
+
+#endif //PONG_WINCONDITIONSYSTEM_H

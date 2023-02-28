@@ -20,36 +20,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "PongVelocitySystem.h"
-#include "PlayerComponent.h"
-#include "Pong.h"
-#include "BallComponent.h"
+#include "BallBounceSystem.h"
 #include "Engine/Engine.h"
+#include "Engine/Hitbox.h"
+#include "Engine/Component/PhysicComponent.h"
 #include "Sounds.h"
 
-void PongVelocitySystem::applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity,
-                                       std::shared_ptr<PositionComponent> pos,
-                                       std::shared_ptr<PhysicComponent> physic) {
-    VelocitySystem::applyVelocity(engine, entity, pos, physic);
+void BallBounceSystem::update(std::unique_ptr<Engine> &engine) {
+    if (!ball || !player1 || !player2) {
+        return;
+    }
+    auto physic = ball->getComponent<PhysicComponent>();
+    Hitbox ballHitBox(ball);
+    Hitbox player1HitBox(player1);
+    Hitbox player2HitBox(player2);
 
-    if (entity->hasComponent<PlayerComponent>()) {
-        if (pos->y < 0) {
-            pos->y = 0;
-        } else if (pos->y > PONG_WINDOW_HEIGHT - PONG_PLAYER_HEIGHT) {
-            pos->y = PONG_WINDOW_HEIGHT - PONG_PLAYER_HEIGHT;
+    if (ballHitBox.isColliding(player1HitBox)) {
+        if (physic->velocity.x < 0) {
+            auto lib = engine->getModule<IGraphicLib>();
+            lib->execOnLibThread(playSound, lib, Sounds::BABEGI);
+            physic->velocity.x = -physic->velocity.x;
         }
-    } else if (entity->hasComponent<BallComponent>()) {
-        if (pos->y < 0) {
-            pos->y = 0;
-            physic->velocity.y = -physic->velocity.y;
+    } else if (ballHitBox.isColliding(player2HitBox)) {
+        if (physic->velocity.x > 0) {
             auto lib = engine->getModule<IGraphicLib>();
-            lib->execOnLibThread(playSound, lib, Sounds::THUD);
-        } else if (pos->y > PONG_WINDOW_HEIGHT - PONG_BALL_HEIGHT) {
-            pos->y = PONG_WINDOW_HEIGHT - PONG_BALL_HEIGHT;
-            physic->velocity.y = -physic->velocity.y;
-            auto lib = engine->getModule<IGraphicLib>();
-            lib->execOnLibThread(playSound, lib, Sounds::THUD);
+            lib->execOnLibThread(playSound, lib, Sounds::FORTINITE);
+            physic->velocity.x = -physic->velocity.x;
         }
     }
-
 }
+
+BallBounceSystem::BallBounceSystem(const std::shared_ptr<Entity> &ball, const std::shared_ptr<Entity> &player1,
+                                   const std::shared_ptr<Entity> &player2) : ball(ball), player1(player1),
+                                                                             player2(player2) {}

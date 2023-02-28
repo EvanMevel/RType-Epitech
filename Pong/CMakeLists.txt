@@ -30,4 +30,23 @@ add_executable(pong
 
         Textures.cpp
 
-        PlayerComponent.cpp PlayerComponent.h PlayerMoveSystem.cpp PlayerMoveSystem.h PlayerKeys.cpp PlayerKeys.h PlayerKeysSystem.cpp PlayerKeysSystem.h PongVelocitySystem.cpp PongVelocitySystem.h Pong.h)
+        PlayerComponent.cpp
+
+        PlayerMoveSystem.cpp
+        PlayerKeys.cpp
+        PlayerKeysSystem.cpp
+        PongVelocitySystem.cpp
+        BallComponent.cpp
+        BallBounceSystem.cpp
+        WinConditionSystem.cpp
+
+        )
+
+
+target_link_libraries(pong eng raylib)
+
+if(WIN32)
+    target_link_libraries(pong ws2_32 -static)
+else()
+    target_link_libraries(pong -static-libgcc -static-libstdc++ -lpthread)
+endif()

@@ -34,21 +34,19 @@
 #include "PlayerKeysSystem.h"
 #include "Pong.h"
 
-
 bool windowClosed = false;
+int playerWin = 0;
 
 void loadGame(EnginePtr engine) {
     auto ticker = engine->registerModule<TickUtil>(ENGINE_TPS);
 
-    while (!windowClosed) {
+    while (!windowClosed && playerWin == 0) {
         ticker->startTick();
 
         engine->updateScene(engine);
 
         ticker->endTickAndWait();
     }
-
-    std::cout << "Graphic closed, closing network" << std::endl;
 }
 
 void graphicLoop(EnginePtr engine) {
@@ -79,7 +77,7 @@ void loadGraphsAndScenes(EnginePtr engine) {
 
     std::shared_ptr<IGraphicLib> lib = engine->registerIModule<IGraphicLib, RaylibGraphicLib>();
 
-    IWindow &window = lib->createWindow(PONG_WINDOW_WIDTH, PONG_WINDOW_HEIGHT, "PONG");
+    IWindow &window = lib->createWindow(PONG_WINDOW_WIDTH, PONG_WINDOW_HEIGHT, "pOnGE Remastered Definive edition GOTY version HD 2025 4K 60FPS");
     window.setTargetFPS(60);
     lib->initAudio();
     //window.setFullScreen();
@@ -119,6 +117,10 @@ void loadAll() {
 int main()
 {
     loadAll();
+
+    if (playerWin != 0) {
+        std::cout << "Player " << playerWin << " wins!" << std::endl;
+    }
 
     return 0;
 }
