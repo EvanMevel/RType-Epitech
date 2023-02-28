@@ -20,32 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_VELOCITYSYSTEM_H
-#define R_TYPE_SERVER_VELOCITYSYSTEM_H
+#ifndef R_TYPE_SERVER_BUTTONCOMPONENT_H
+#define R_TYPE_SERVER_BUTTONCOMPONENT_H
 
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/PositionComponent.h"
+
+#include <functional>
+#include "Engine/Component/IComponent.h"
+#include "Engine/Hitbox.h"
 
 /**
- * @brief System that updates the position of entities with a velocity component
+ * @brief Component that contains a FIX hitbox, it does not move, and can be clicked
+ * @details This component is used to create buttons
  */
-class VelocitySystem : public ISystem {
-
+class ButtonComponent : public IComponent {
+private:
+    Hitbox hitbox;
+    std::function<void(EnginePtr, std::shared_ptr<Entity>)> _onClick;
 public:
-    int count = 0;
+    ButtonComponent();
 
-    void update(EnginePtr engine) override;
+    const Hitbox &getHitbox() const;
 
-    virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
+    void setHitbox(const Hitbox &hitbox);
 
-    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity);
+    void setOnClick(const std::function<void(EnginePtr, std::shared_ptr<Entity>)> &onClick);
 
-    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
-
-    std::string getName() override;
+    void clicked(EnginePtr engine, std::shared_ptr<Entity> entity);
 };
 
 
-#endif //R_TYPE_SERVER_VELOCITYSYSTEM_H
+#endif //R_TYPE_SERVER_BUTTONCOMPONENT_H

@@ -20,32 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_VELOCITYSYSTEM_H
-#define R_TYPE_SERVER_VELOCITYSYSTEM_H
+#ifndef R_TYPE_SERVER_RAYLIBANIMATION_H
+#define R_TYPE_SERVER_RAYLIBANIMATION_H
 
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/PositionComponent.h"
+
+#include <string>
+#include "Engine/Graphic/IAnimation.h"
+namespace ray {
+#include "raylib.h"
+}
 
 /**
- * @brief System that updates the position of entities with a velocity component
+ *  @brief Raylib implementation of IAnimation
  */
-class VelocitySystem : public ISystem {
-
+class RaylibAnimation : public IAnimation{
 public:
-    int count = 0;
+    explicit RaylibAnimation(const std::string &texturePath);
 
-    void update(EnginePtr engine) override;
-
-    virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
-
-    std::string getName() override;
+    void setAnimationFrame(int frame) override;
 };
 
 
-#endif //R_TYPE_SERVER_VELOCITYSYSTEM_H
+#endif //R_TYPE_SERVER_RAYLIBANIMATION_H

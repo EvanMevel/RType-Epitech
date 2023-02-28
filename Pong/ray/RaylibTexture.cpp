@@ -20,32 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_VELOCITYSYSTEM_H
-#define R_TYPE_SERVER_VELOCITYSYSTEM_H
+#include <string>
+#include "RaylibTexture.h"
 
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/PositionComponent.h"
+RaylibTexture::RaylibTexture(const std::string &path) {
+    const char *c = path.c_str();
+    this->handle = ray::LoadTexture(c);
+}
 
-/**
- * @brief System that updates the position of entities with a velocity component
- */
-class VelocitySystem : public ISystem {
+int RaylibTexture::getWidth() {
+    auto texture2D = any_cast<ray::Texture2D>(handle);
+    return texture2D.width;
+}
 
-public:
-    int count = 0;
-
-    void update(EnginePtr engine) override;
-
-    virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
-
-    std::string getName() override;
-};
-
-
-#endif //R_TYPE_SERVER_VELOCITYSYSTEM_H
+int RaylibTexture::getHeight() {
+    auto texture2D = any_cast<ray::Texture2D>(handle);
+    return texture2D.height;
+}

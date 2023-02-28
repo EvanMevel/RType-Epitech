@@ -20,32 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_VELOCITYSYSTEM_H
-#define R_TYPE_SERVER_VELOCITYSYSTEM_H
+#include "PlayerKeysSystem.h"
+#include "Engine/Engine.h"
+#include "PlayerKeys.h"
 
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/PositionComponent.h"
+void PlayerKeysSystem::update(std::unique_ptr<Engine> &engine) {
+    auto lib = engine->getModule<IGraphicLib>();
+    auto keys = engine->getModule<PlayerKeys>();
 
-/**
- * @brief System that updates the position of entities with a velocity component
- */
-class VelocitySystem : public ISystem {
+    keys->up1 = lib->isKeyDown(KeyCodes::KEY_W);
+    keys->down1 = lib->isKeyDown(KeyCodes::KEY_S);
 
-public:
-    int count = 0;
+    keys->up2 = lib->isKeyDown(KeyCodes::KEY_UP);
+    keys->down2 = lib->isKeyDown(KeyCodes::KEY_DOWN);
 
-    void update(EnginePtr engine) override;
-
-    virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
-
-    std::string getName() override;
-};
-
-
-#endif //R_TYPE_SERVER_VELOCITYSYSTEM_H
+    keys->space = lib->isKeyDown(KeyCodes::KEY_SPACE);
+}

@@ -22,13 +22,51 @@
 
 #include <iostream>
 #include "VelocitySystem.h"
-#include "Engine/EntityUtils.h"
+#include "Engine/Engine.h"
+
+void VelocitySystem::applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic) {
+
+    // Add velocity to position
+    pos->x += physic->velocity.x;
+    pos->y += physic->velocity.y;
+
+    // Decrement velocity
+    physic->velocity.decrementTo0(physic->velocitySlow);
+}
+
+bool VelocitySystem::applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity) {
+    auto pos = entity->getComponent<PositionComponent>();
+    auto physic = entity->getComponent<PhysicComponent>();
+    if (pos != nullptr && physic != nullptr) {
+        if (physic->acceleration.lengthSquare() != 0) {
+            // Add acceleration to velocity
+            physic->velocity.x += physic->acceleration.x;
+            physic->velocity.y += physic->acceleration.y;
+
+            // Decrement acceleration
+            physic->acceleration.decrementTo0(physic->accelerationSlow);
+        }
+
+        if (physic->velocity.lengthSquare() == 0) {
+            return false;
+        }
+
+        if (physic->maxVelocity != 0) {
+            physic->velocity.ensureNotGreater((int) physic->maxVelocity);
+        }
+
+        applyVelocity(engine, entity, pos, physic);
+
+        return true;
+    }
+    return false;
+}
 
 void VelocitySystem::update(EnginePtr engine) {
     count = (count + 1) % 4;
     auto lock = engine->getScene()->obtainLock();
     for (auto &entity: engine->getScene()->getEntities()) {
-        if (entity::applyPhysic(entity)) {
+        if (applyPhysic(engine, entity)) {
             entityMoved(engine, entity);
         }
     }

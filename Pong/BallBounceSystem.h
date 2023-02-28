@@ -20,32 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_VELOCITYSYSTEM_H
-#define R_TYPE_SERVER_VELOCITYSYSTEM_H
+#ifndef PONG_BALLBOUNCESYSTEM_H
+#define PONG_BALLBOUNCESYSTEM_H
+
 
 #include "Engine/ISystem.h"
 #include "Engine/Entity.h"
-#include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/PositionComponent.h"
 
-/**
- * @brief System that updates the position of entities with a velocity component
- */
-class VelocitySystem : public ISystem {
-
+class BallBounceSystem : public ISystem {
 public:
-    int count = 0;
+    std::shared_ptr<Entity> ball;
+    std::shared_ptr<Entity> player1;
+    std::shared_ptr<Entity> player2;
 
-    void update(EnginePtr engine) override;
+    BallBounceSystem(const std::shared_ptr<Entity> &ball, const std::shared_ptr<Entity> &player1,
+                     const std::shared_ptr<Entity> &player2);
 
-    virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
-
-    std::string getName() override;
+    void update(std::unique_ptr<Engine> &engine) override;
 };
 
 
-#endif //R_TYPE_SERVER_VELOCITYSYSTEM_H
+#endif //PONG_BALLBOUNCESYSTEM_H

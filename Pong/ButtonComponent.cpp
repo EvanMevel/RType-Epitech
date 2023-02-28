@@ -20,32 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_VELOCITYSYSTEM_H
-#define R_TYPE_SERVER_VELOCITYSYSTEM_H
+#include "ButtonComponent.h"
 
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/PositionComponent.h"
+ButtonComponent::ButtonComponent() = default;
 
-/**
- * @brief System that updates the position of entities with a velocity component
- */
-class VelocitySystem : public ISystem {
+const Hitbox &ButtonComponent::getHitbox() const {
+    return hitbox;
+}
 
-public:
-    int count = 0;
+void ButtonComponent::setHitbox(const Hitbox &box) {
+    this->hitbox = box;
+}
 
-    void update(EnginePtr engine) override;
+void ButtonComponent::setOnClick(const std::function<void(EnginePtr, std::shared_ptr<Entity>)> &onClick) {
+    _onClick = onClick;
+}
 
-    virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
-
-    std::string getName() override;
-};
-
-
-#endif //R_TYPE_SERVER_VELOCITYSYSTEM_H
+void ButtonComponent::clicked(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> entity) {
+    if (_onClick) {
+        _onClick(engine, entity);
+    }
+}

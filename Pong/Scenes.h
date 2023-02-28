@@ -20,32 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_VELOCITYSYSTEM_H
-#define R_TYPE_SERVER_VELOCITYSYSTEM_H
+#ifndef R_TYPE_SERVER_SCENES_H
+#define R_TYPE_SERVER_SCENES_H
 
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/PositionComponent.h"
+#include "Engine/Engine.h"
 
 /**
- * @brief System that updates the position of entities with a velocity component
+ * @brief Enum of all the scenes
  */
-class VelocitySystem : public ISystem {
-
-public:
-    int count = 0;
-
-    void update(EnginePtr engine) override;
-
-    virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
-
-    std::string getName() override;
+enum class Scenes {
+    MAIN_MENU = 0,
+    GAME = 1
 };
 
+void loadScenes(EnginePtr engine);
 
-#endif //R_TYPE_SERVER_VELOCITYSYSTEM_H
+#endif //R_TYPE_SERVER_SCENES_H

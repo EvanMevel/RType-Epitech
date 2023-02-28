@@ -60,3 +60,11 @@ add_executable(r-type-client
         TextBoxSystem.cpp
         CreateTextBox.cpp
         EntityLinkComponent.cpp)
+
+
+target_link_libraries(r-type-client eng raylib)
+if(WIN32)
+    target_link_libraries(r-type-client wsock32 ws2_32 -static)
+else()
+    target_link_libraries(r-type-client -static-libgcc -static-libstdc++ -lpthread)
+endif()

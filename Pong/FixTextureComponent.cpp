@@ -20,32 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_VELOCITYSYSTEM_H
-#define R_TYPE_SERVER_VELOCITYSYSTEM_H
+#include "FixTextureComponent.h"
 
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/PositionComponent.h"
+FixTextureComponent::FixTextureComponent() : textureId(Textures::TEXTURE_ERROR) {
 
-/**
- * @brief System that updates the position of entities with a velocity component
- */
-class VelocitySystem : public ISystem {
+}
 
-public:
-    int count = 0;
+Textures FixTextureComponent::getTextureId() const {
+    return textureId;
+}
 
-    void update(EnginePtr engine) override;
-
-    virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
-
-    std::string getName() override;
-};
-
-
-#endif //R_TYPE_SERVER_VELOCITYSYSTEM_H
+void FixTextureComponent::setTextureId(Textures id) {
+    FixTextureComponent::textureId = id;
+}

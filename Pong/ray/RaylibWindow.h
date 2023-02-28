@@ -20,32 +20,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_VELOCITYSYSTEM_H
-#define R_TYPE_SERVER_VELOCITYSYSTEM_H
+#ifndef R_TYPE_SERVER_RAYLIBWINDOW_H
+#define R_TYPE_SERVER_RAYLIBWINDOW_H
 
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/PositionComponent.h"
+#include <unordered_map>
+#include "Engine/Graphic/IWindow.h"
+namespace ray {
+#include "raylib.h"
+}
 
 /**
- * @brief System that updates the position of entities with a velocity component
+ * @brief Raylib implementation of IWindow
  */
-class VelocitySystem : public ISystem {
-
+class RaylibWindow : public IWindow {
+private:
+    std::unordered_map<ColorCodes, ray::Color> colors;
 public:
-    int count = 0;
+    bool shouldClose() override;
 
-    void update(EnginePtr engine) override;
+    void beginDrawing() override;
 
-    virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
+    void endDrawing() override;
 
-    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity);
+    void setTargetFPS(int i) override;
 
-    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
+    void setBackground(ColorCodes code) override;
 
-    std::string getName() override;
+    void setColors(const std::unordered_map<ColorCodes, ray::Color> &colors);
+
+    int getWidth() override;
+
+    int getHeight() override;
+
+    void setFullScreen() override;
 };
 
 
-#endif //R_TYPE_SERVER_VELOCITYSYSTEM_H
+#endif //R_TYPE_SERVER_RAYLIBWINDOW_H

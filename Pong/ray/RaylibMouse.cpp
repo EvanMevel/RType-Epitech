@@ -20,32 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_VELOCITYSYSTEM_H
-#define R_TYPE_SERVER_VELOCITYSYSTEM_H
+#include "RaylibMouse.h"
 
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/PositionComponent.h"
+RaylibMouse::RaylibMouse() {
+    button[MouseCode::MOUSE_BUTTON_LEFT] = ray::MOUSE_BUTTON_LEFT;
+    button[MouseCode::MOUSE_BUTTON_MIDDLE] = ray::MOUSE_BUTTON_MIDDLE;
+    button[MouseCode::MOUSE_BUTTON_RIGHT] = ray::MOUSE_BUTTON_RIGHT;
+}
 
-/**
- * @brief System that updates the position of entities with a velocity component
- */
-class VelocitySystem : public ISystem {
+Vector2i RaylibMouse::getPos() {
 
-public:
-    int count = 0;
+    auto rayPos = ray::GetMousePosition();
+    Vector2i pos{};
+    pos.x = static_cast<int>(rayPos.x);
+    pos.y = static_cast<int>(rayPos.y);
+    return pos;
+}
 
-    void update(EnginePtr engine) override;
-
-    virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
-
-    std::string getName() override;
-};
-
-
-#endif //R_TYPE_SERVER_VELOCITYSYSTEM_H
+bool RaylibMouse::isClicked(MouseCode code){
+    ray::MouseButton rayButton = button[code];
+    return ray::IsMouseButtonPressed(rayButton);
+}

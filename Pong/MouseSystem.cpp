@@ -20,32 +20,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_VELOCITYSYSTEM_H
-#define R_TYPE_SERVER_VELOCITYSYSTEM_H
+#include "MouseSystem.h"
+#include "Engine/Engine.h"
+#include "ButtonComponent.h"
 
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/PositionComponent.h"
+void isButtonClicked(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entity, EnginePtr engine) {
+    auto mousePos = lib->getMouse().getPos();
+    auto buttonComponent= entity->getComponent<ButtonComponent>();
+    if (buttonComponent != nullptr && buttonComponent->getHitbox().contains(mousePos)) {
+        buttonComponent->clicked(engine,entity);
+    }
+}
 
-/**
- * @brief System that updates the position of entities with a velocity component
- */
-class VelocitySystem : public ISystem {
-
-public:
-    int count = 0;
-
-    void update(EnginePtr engine) override;
-
-    virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
-
-    std::string getName() override;
-};
-
-
-#endif //R_TYPE_SERVER_VELOCITYSYSTEM_H
+void MouseSystem::update(EnginePtr engine) {
+    auto lib = engine->getModule<IGraphicLib>();
+    if (lib == nullptr)
+        return;
+    if(engine->getScene() == nullptr)
+        return;
+    if (!lib->getMouse().isClicked(MouseCode::MOUSE_BUTTON_LEFT)) {
+        return;
+    }
+    std::function<void(std::shared_ptr<Entity>)> button = [&lib, &engine](std::shared_ptr<Entity> entity) {
+        isButtonClicked(lib, entity, engine);
+    };
+    engine->getScene()->forEachEntity(button);
+}

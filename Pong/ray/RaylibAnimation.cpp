@@ -20,32 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_VELOCITYSYSTEM_H
-#define R_TYPE_SERVER_VELOCITYSYSTEM_H
-
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/PositionComponent.h"
-
+#include "RaylibAnimation.h"
 /**
- * @brief System that updates the position of entities with a velocity component
+ * @brief Set every parameter which is needed for the draw function
  */
-class VelocitySystem : public ISystem {
-
-public:
-    int count = 0;
-
-    void update(EnginePtr engine) override;
-
-    virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
-
-    std::string getName() override;
-};
-
-
-#endif //R_TYPE_SERVER_VELOCITYSYSTEM_H
+RaylibAnimation::RaylibAnimation(const std::string &texturePath) {
+    const char *c = texturePath.c_str();
+    image = ray::LoadImageAnim(c,&frame);
+    texture = ray::LoadTextureFromImage(std::any_cast<ray::Image>(image));
+    width = std::any_cast<ray::Image>(image).width;
+    height = std::any_cast<ray::Image>(image).height;
+}
+/**
+ * @brief change the animation frame
+ */
+void RaylibAnimation::setAnimationFrame(int frame) {
+    int nextFrameAnim = width * height * 4 * frame;
+    ray::UpdateTexture(std::any_cast<ray::Texture2D>(texture), ((unsigned char *)std::any_cast<ray::Image>(image).data) + nextFrameAnim);
+}

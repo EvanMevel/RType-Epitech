@@ -20,32 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_VELOCITYSYSTEM_H
-#define R_TYPE_SERVER_VELOCITYSYSTEM_H
-
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/Component/PhysicComponent.h"
+#include "WinConditionSystem.h"
 #include "Engine/Component/PositionComponent.h"
+#include "Pong.h"
+#include "Engine/Engine.h"
+#include <iostream>
 
-/**
- * @brief System that updates the position of entities with a velocity component
- */
-class VelocitySystem : public ISystem {
+extern int playerWin;
 
-public:
-    int count = 0;
+static void closeWin(std::shared_ptr<IGraphicLib> lib) {
+    if (lib->getWindow().shouldClose()) {
+        return;
+    }
+    lib->closeWindow();
+}
 
-    void update(EnginePtr engine) override;
+void WinConditionSystem::update(std::unique_ptr<Engine> &engine) {
+    auto pos = ball->getComponent<PositionComponent>();
 
-    virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
+    if (pos->getX() < PONG_GOALS_WIDTH - (PONG_BALL_WIDTH * 2)) {
+        playerWin = 2;
+        auto lib = engine->getModule<IGraphicLib>();
+        lib->execOnLibThread(closeWin, lib);
+    } else if (pos->getX() > PONG_WINDOW_WIDTH - (PONG_GOALS_WIDTH - (PONG_BALL_WIDTH * 2))) {
+        playerWin = 1;
+        auto lib = engine->getModule<IGraphicLib>();
+        lib->execOnLibThread(closeWin, lib);
+    }
+}
 
-    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
-
-    std::string getName() override;
-};
-
-
-#endif //R_TYPE_SERVER_VELOCITYSYSTEM_H
+WinConditionSystem::WinConditionSystem(const std::shared_ptr<Entity> &ball) : ball(ball) {}

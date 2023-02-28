@@ -20,32 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_VELOCITYSYSTEM_H
-#define R_TYPE_SERVER_VELOCITYSYSTEM_H
+#ifndef PONG_PONG_H
+#define PONG_PONG_H
 
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/PositionComponent.h"
+#define PONG_WINDOW_WIDTH 700
+#define PONG_WINDOW_HEIGHT 500
 
-/**
- * @brief System that updates the position of entities with a velocity component
- */
-class VelocitySystem : public ISystem {
+#define PONG_PLAYER_WIDTH 20
+#define PONG_PLAYER_HEIGHT 70
 
-public:
-    int count = 0;
+#define PONG_GOALS_WIDTH 60
 
-    void update(EnginePtr engine) override;
+#define PONG_BALL_WIDTH 20
+#define PONG_BALL_HEIGHT 20
 
-    virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
-
-    std::string getName() override;
-};
-
-
-#endif //R_TYPE_SERVER_VELOCITYSYSTEM_H
+#endif //PONG_PONG_H

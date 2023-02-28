@@ -20,32 +20,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_VELOCITYSYSTEM_H
-#define R_TYPE_SERVER_VELOCITYSYSTEM_H
+#include "RaylibWindow.h"
 
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/PositionComponent.h"
+bool RaylibWindow::shouldClose() {
+    return ray::WindowShouldClose();
+}
 
-/**
- * @brief System that updates the position of entities with a velocity component
- */
-class VelocitySystem : public ISystem {
+void RaylibWindow::beginDrawing() {
+    ray::BeginDrawing();
+}
 
-public:
-    int count = 0;
+void RaylibWindow::endDrawing() {
+    ray::EndDrawing();
+}
 
-    void update(EnginePtr engine) override;
+void RaylibWindow::setTargetFPS(int i) {
+    ray::SetTargetFPS(i);
+}
 
-    virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
+void RaylibWindow::setBackground(ColorCodes code) {
+    ClearBackground(colors[code]);
+}
 
-    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity);
+void RaylibWindow::setColors(const std::unordered_map<ColorCodes, ray::Color> &color) {
+    RaylibWindow::colors = color;
+}
 
-    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
+int RaylibWindow::getWidth() {
+    return ray::GetScreenWidth();
+}
 
-    std::string getName() override;
-};
+int RaylibWindow::getHeight() {
+    return ray::GetScreenHeight();
+}
 
-
-#endif //R_TYPE_SERVER_VELOCITYSYSTEM_H
+void RaylibWindow::setFullScreen() {
+ return ray::ToggleFullscreen();
+}

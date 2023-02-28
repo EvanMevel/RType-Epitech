@@ -1,4 +1,4 @@
-// MIT License
+/// MIT License
 //
 // Copyright (c) 2023 Audrey Amar, Théo Guguen, Evan Mevel
 //
@@ -20,32 +20,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_VELOCITYSYSTEM_H
-#define R_TYPE_SERVER_VELOCITYSYSTEM_H
-
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/Component/PhysicComponent.h"
+#include <iostream>
+#include "DrawFixTextureSystem.h"
+#include "Engine/Engine.h"
+#include "FixTextureComponent.h"
 #include "Engine/Component/PositionComponent.h"
 
-/**
- * @brief System that updates the position of entities with a velocity component
- */
-class VelocitySystem : public ISystem {
+void drawEntity(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entity) {
+    auto textureComponent = entity->getComponent<FixTextureComponent>();
+    auto posComponent = entity->getComponent<PositionComponent>();
+    if (textureComponent != nullptr && posComponent != nullptr) {
+        lib->drawTexture(lib->getTextures()->getValue(textureComponent->getTextureId()), posComponent->getX(), posComponent->getY(), ColorCodes::COLOR_WHITE);
+    }
+}
 
-public:
-    int count = 0;
+void DrawFixTextureSystem::update(EnginePtr engine) {
+    auto lib = engine->getModule<IGraphicLib>();
+    if (lib == nullptr)
+        return;
+    if(engine->getScene() == nullptr)
+        return;
+    std::function<void(std::shared_ptr<Entity>)> draw = [&lib](std::shared_ptr<Entity> entity) {
+        drawEntity(lib, entity);
+    };
+    engine->getScene()->forEachEntity(draw);
+}
 
-    void update(EnginePtr engine) override;
-
-    virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity);
-
-    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
-
-    std::string getName() override;
-};
-
-
-#endif //R_TYPE_SERVER_VELOCITYSYSTEM_H
+std::string DrawFixTextureSystem::getName() {
+    return "DrawFixTextureSystem";
+}
