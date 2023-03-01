@@ -74,11 +74,17 @@ public:
 
     std::shared_ptr<IMusic> createMusic(const std::string &musicPath) override;
 
+    void stopMusic(std::shared_ptr<IMusic> ptr) override;
+
+    void setVolumeMusic(std::shared_ptr<IMusic> ptr, float volume) override;
+
     std::shared_ptr<ISound> createSound(const std::string &soundPath) override;
 
     void playMusic(std::shared_ptr<IMusic>) override;
 
     void playSound(std::shared_ptr<ISound> ptr) override;
+
+    void setVolumeSound(std::shared_ptr<ISound> ptr, float volume) override;
 };
 
 

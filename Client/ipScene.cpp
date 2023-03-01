@@ -25,6 +25,7 @@
 #include "Engine/Network/NetworkRemoteServer.h"
 #include "TextBoxComponent.h"
 #include "EntityLinkComponent.h"
+#include "Musics.h"
 
 
 void getTextboxStr(std::shared_ptr<Entity> entity, std::shared_ptr<ClientNetServer> server) {
@@ -43,6 +44,12 @@ void getTextboxStr(std::shared_ptr<Entity> entity, std::shared_ptr<ClientNetServ
     }
 }
 
+static void ipSceneToMenu(EnginePtr engine, std::shared_ptr<Entity> entity) {
+    auto sceneHolder = engine->getModule<SceneHolder>();
+    auto sc = sceneHolder->getValue(Scenes::MAIN_MENU);
+    engine->setScene(sc);
+}
+
 static void changeIpButtonClick(EnginePtr engine, std::shared_ptr<Entity> entity) {
     auto sceneHolder = engine->getModule<SceneHolder>();
     auto sc = sceneHolder->getValue(Scenes::GAME);
@@ -53,6 +60,8 @@ static void changeIpButtonClick(EnginePtr engine, std::shared_ptr<Entity> entity
     std::cout << "Sending handshake" << std::endl;
     server->startListening();
     server->sendPacket(HandshakePacket());
+
+    playMusic(engine->getModule<IGraphicLib>(),Musics::GAME_MUSIC);
 }
 
 std::shared_ptr<Scene> ipScene(EnginePtr engine){
@@ -67,14 +76,15 @@ std::shared_ptr<Scene> ipScene(EnginePtr engine){
     auto secondground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_4,-3);
     auto firstground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_5,-4);
 
-    auto textBox = createTextBox(lib,sc,(lib->getWindow().getWidth() / 2) - (800 / 2), (int) (lib->getWindow().getHeight() * 0.45) - (100 / 2));
+    auto textBox = createTextBox(lib,sc,(width / 2) - (800 / 2), (int) (height * 0.45) - (100 / 2));
     char *rtypeServerIp = std::getenv("RTYPE_SERVER_IP");
     std::string serverIp = rtypeServerIp ? rtypeServerIp : "127.0.0.1";
     char *rtypeServerPort = std::getenv("RTYPE_SERVER_PORT");
     int serverport = rtypeServerPort ? std::stoi(rtypeServerPort) : 4242;
     textBox->getComponent<TextBoxComponent>()->setText(serverIp + ":" + std::to_string(serverport));
-    auto button = createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.85) - (100 / 2),Textures::IP_BUTTON, changeIpButtonClick);
-    button->addComponent<EntityLinkComponent>(textBox);
+    auto playButton = createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.65) - (100),Textures::IP_BUTTON, changeIpButtonClick);
+    playButton->addComponent<EntityLinkComponent>(textBox);
+    auto backButton = createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.75) ,Textures::BACK_BUTTON, ipSceneToMenu);
     sc->addSystem<VelocitySystem>();
     return sc;
 }

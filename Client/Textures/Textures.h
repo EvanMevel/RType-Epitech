@@ -40,6 +40,11 @@ enum class Textures {
     EMPTY_HEART = 9,
     CAN_SHOOT = 10,
     CANT_SHOOT = 11,
+    BACK_BUTTON = 12,
+    QUIT_BUTTON = 13,
+    OPTION_BUTTON = 14,
+    ARROW_LEFT = 15,
+    ARROW_RIGHT = 16,
 };
 
 void loadTextures(const std::shared_ptr<IGraphicLib> &lib);

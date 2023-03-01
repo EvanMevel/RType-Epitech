@@ -24,8 +24,11 @@
 
 void loadTextures(const std::shared_ptr<IGraphicLib> &lib) {
     lib->registerTexture(Textures::TITLE, "rtype.png");
-    lib->registerTexture(Textures::PLAY_BUTTON, "play-button.png");
-    lib->registerTexture(Textures::IP_BUTTON, "play-button.png");
+    lib->registerTexture(Textures::PLAY_BUTTON, "play_button.png");
+    lib->registerTexture(Textures::IP_BUTTON, "play_button.png");
+    lib->registerTexture(Textures::OPTION_BUTTON, "settings_button.png");
+    lib->registerTexture(Textures::QUIT_BUTTON, "quit_button.png");
+    lib->registerTexture(Textures::BACK_BUTTON, "back_button.png");
 
     lib->registerTexture(Textures::BACKGROUND_1, "Starry background  - Layer 01 - Solid colour.png");
     lib->registerTexture(Textures::BACKGROUND_2, "Starry background  - Layer 02 - Shadows.png");
@@ -37,4 +40,7 @@ void loadTextures(const std::shared_ptr<IGraphicLib> &lib) {
     lib->registerTexture(Textures::EMPTY_HEART, "empty_heart.png");
     lib->registerTexture(Textures::CAN_SHOOT, "can_shoot.png");
     lib->registerTexture(Textures::CANT_SHOOT, "cant_shoot.png");
+
+    lib->registerTexture(Textures::ARROW_LEFT, "arrow_left.png");
+    lib->registerTexture(Textures::ARROW_RIGHT, "arrow_right.png");
 }

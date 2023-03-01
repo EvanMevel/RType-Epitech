@@ -59,4 +59,4 @@ add_executable(r-type-client
         TextBoxComponent.cpp
         TextBoxSystem.cpp
         CreateTextBox.cpp
-        EntityLinkComponent.cpp)
+        EntityLinkComponent.cpp OptionScene.cpp OptionScene.h Textures/createFixTexture.cpp Textures/createFixTexture.h Musics.cpp Musics.h)
