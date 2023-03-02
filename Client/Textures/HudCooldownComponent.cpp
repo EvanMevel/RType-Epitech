@@ -20,8 +20,4 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-//
-// Created by gugue on 15/02/2023.
-//
-
 #include "HudCooldownComponent.h"
