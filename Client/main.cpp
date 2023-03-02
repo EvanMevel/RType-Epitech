@@ -46,6 +46,7 @@
 #include "Client/Textures/CooldownSystem.h"
 #include "Client/Textures/LifeSystem.h"
 #include "Musics.h"
+#include "TextSystem.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -156,6 +157,7 @@ void loadGraphsAndScenes(EnginePtr engine) {
     lib->addSystem<TextBoxSystem>();
     lib->addSystem<LifeSystem>();
     lib->addSystem<CooldownSystem>();
+    lib->addSystem<TextSystem>();
 
 
     graphicReady = true;

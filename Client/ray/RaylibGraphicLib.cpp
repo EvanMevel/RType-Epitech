@@ -33,6 +33,7 @@ RaylibGraphicLib::RaylibGraphicLib() {
     colors[ColorCodes::COLOR_GREEN] = ray::GREEN;
     colors[ColorCodes::COLOR_BLUE] = ray::BLUE;
     colors[ColorCodes::COLOR_YELLOW] = ray::YELLOW;
+    colors[ColorCodes::COLOR_ORANGE] = ray::ORANGE;
 }
 
 IWindow &RaylibGraphicLib::createWindow(int width, int height, std::string title) {

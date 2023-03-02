@@ -20,20 +20,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_COLORCODES_H
-#define R_TYPE_SERVER_COLORCODES_H
+#ifndef R_TYPE_CLIENT_TEXTCOMPONENT_H
+#define R_TYPE_CLIENT_TEXTCOMPONENT_H
 
-/**
- * @brief Color codes for the graphic library
- */
-enum class ColorCodes {
-    COLOR_RED,
-    COLOR_GREEN,
-    COLOR_BLUE,
-    COLOR_YELLOW,
-    COLOR_BLACK,
-    COLOR_WHITE,
-    COLOR_ORANGE
+
+#include <string>
+#include "Engine/Component/IComponent.h"
+
+class TextComponent :  public IComponent{
+private:
+    std::string text;
+    int fontSize = 35;
+public:
+
+    TextComponent(const std::string &text, int fontSize);
+
+    const std::string &getText() const;
+
+    void setText(const std::string &text);
+
+    void setFontSize(int fontSize);
+
+    int getFontSize() const;
 };
 
-#endif //R_TYPE_SERVER_COLORCODES_H
+
+#endif //R_TYPE_CLIENT_TEXTCOMPONENT_H

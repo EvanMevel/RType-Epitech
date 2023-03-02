@@ -20,20 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_COLORCODES_H
-#define R_TYPE_SERVER_COLORCODES_H
+#include "TextComponent.h"
 
-/**
- * @brief Color codes for the graphic library
- */
-enum class ColorCodes {
-    COLOR_RED,
-    COLOR_GREEN,
-    COLOR_BLUE,
-    COLOR_YELLOW,
-    COLOR_BLACK,
-    COLOR_WHITE,
-    COLOR_ORANGE
-};
+const std::string &TextComponent::getText() const {
+    return text;
+}
 
-#endif //R_TYPE_SERVER_COLORCODES_H
+void TextComponent::setText(const std::string &text) {
+    TextComponent::text = text;
+}
+
+void TextComponent::setFontSize(int fontSize) {
+    TextComponent::fontSize = fontSize;
+}
+
+int TextComponent::getFontSize() const {
+    return fontSize;
+}
+
+TextComponent::TextComponent(const std::string &text, int fontSize) : text(text), fontSize(fontSize) {}
