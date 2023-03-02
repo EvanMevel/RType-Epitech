@@ -7,13 +7,13 @@
 
 static void volumeUp(EnginePtr engine, std::shared_ptr<Entity> entity) {
     auto lib = engine->getModule<IGraphicLib>();
-    lib->setVolume(lib->getVolume() + 0.01);
+    lib->setVolume(lib->getVolume() + 0.05);
     lib->setVolumeMusic(lib->getMusic(),lib->getVolume());
 }
 
 static void volumeDown(EnginePtr engine, std::shared_ptr<Entity> entity) {
     auto lib = engine->getModule<IGraphicLib>();
-    lib->setVolume(lib->getVolume() - 0.01);
+    lib->setVolume(lib->getVolume() - 0.05);
     lib->setVolumeMusic(lib->getMusic(),lib->getVolume());
 }
 
