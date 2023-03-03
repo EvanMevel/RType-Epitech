@@ -45,6 +45,8 @@
 #include "Client/Consumers/DamageConsumer.h"
 #include "Client/Textures/CooldownSystem.h"
 #include "Client/Textures/LifeSystem.h"
+#include "Musics.h"
+#include "TextSystem.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -103,8 +105,6 @@ void loadNetwork(EnginePtr engine) {
 void graphicLoop(EnginePtr engine) {
     auto lib = engine->getModule<IGraphicLib>();
     IWindow &window = lib->getWindow();
-    auto music = lib->createMusic("GameMusic.mp3");
-    lib->playMusic(music);
     while (!window.shouldClose()) {
         auto it = lib->getExecs().begin();
         while (!window.shouldClose() && it != lib->getExecs().end()) {
@@ -114,7 +114,7 @@ void graphicLoop(EnginePtr engine) {
         if (window.shouldClose()) {
             break;
         }
-        music->updateMusic();
+        lib->getMusic()->updateMusic();
         window.beginDrawing();
         window.setBackground(ColorCodes::COLOR_BLACK);
         lib->update(engine);
@@ -143,6 +143,8 @@ void loadGraphsAndScenes(EnginePtr engine) {
     std::cout << "[Graphic] Sprites ready" << std::endl;
     loadSounds(lib);
     std::cout << "[Graphic] Sounds ready" << std::endl;
+    loadMusics(lib);
+    std::cout << "[Graphic] Musics ready" << std::endl;
     loadScenes(engine);
     std::cout << "[Graphic] Scenes ready" << std::endl;
 
@@ -155,6 +157,7 @@ void loadGraphsAndScenes(EnginePtr engine) {
     lib->addSystem<TextBoxSystem>();
     lib->addSystem<LifeSystem>();
     lib->addSystem<CooldownSystem>();
+    lib->addSystem<TextSystem>();
 
 
     graphicReady = true;

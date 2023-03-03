@@ -30,8 +30,8 @@ void drawEntity(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entity
     auto textureComponent = entity->getComponent<FixTextureComponent>();
     auto posComponent = entity->getComponent<PositionComponent>();
     if (textureComponent != nullptr && posComponent != nullptr) {
-        lib->drawTexture(lib->getTextures()->getValue(textureComponent->getTextureId()), posComponent->getX(), posComponent->getY(), ColorCodes::COLOR_WHITE);
-    }
+        lib->drawTextureEx(lib->getTextures()->getValue(textureComponent->getTextureId()),posComponent->getX(), posComponent->getY(), textureComponent->getRotation(),textureComponent->getScale(), ColorCodes::COLOR_WHITE);}
+
 }
 
 void DrawFixTextureSystem::update(EnginePtr engine) {

@@ -30,6 +30,9 @@
 #include "Engine/EntityType.h"
 #include "Client/Textures/CreateButton.h"
 #include "Client/Textures/CreateScrollingTexture.h"
+#include "Engine/SceneHolder.h"
+#include "Scenes.h"
+#include "ClientNetServer.h"
 
 /**
  * @brief function that return mainMenu Scene

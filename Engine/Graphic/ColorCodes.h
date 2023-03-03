@@ -32,7 +32,8 @@ enum class ColorCodes {
     COLOR_BLUE,
     COLOR_YELLOW,
     COLOR_BLACK,
-    COLOR_WHITE
+    COLOR_WHITE,
+    COLOR_ORANGE
 };
 
 #endif //R_TYPE_SERVER_COLORCODES_H

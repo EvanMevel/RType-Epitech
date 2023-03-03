@@ -53,4 +53,6 @@ public:
     }
 };
 
+void closeWindow(std::shared_ptr<IGraphicLib> lib);
+
 #endif //R_TYPE_SERVER_CLIENTNETSERVER_H

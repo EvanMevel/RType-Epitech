@@ -55,3 +55,23 @@ std::vector<std::shared_ptr<SpriteSheet>> &IGraphicLib::getSpriteSheets() {
 const std::unique_ptr<CountRegistry<Sprite>> &IGraphicLib::getSprites() const {
     return _sprites;
 }
+
+const std::shared_ptr<IMusic> &IGraphicLib::getMusic() const {
+    return _music;
+}
+
+void IGraphicLib::setMusic(const std::shared_ptr<IMusic> &music) {
+    _music = music;
+}
+
+const std::unique_ptr<Registry<IMusic>> &IGraphicLib::getMusics() const {
+    return _musics;
+}
+
+float IGraphicLib::getVolume() const {
+    return _volume;
+}
+
+void IGraphicLib::setVolume(float volume) {
+    _volume = volume;
+}

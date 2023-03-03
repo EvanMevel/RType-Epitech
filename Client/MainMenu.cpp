@@ -21,10 +21,12 @@
 // SOFTWARE.
 
 #include "MainMenu.h"
-#include "Engine/SceneHolder.h"
-#include "Scenes.h"
-#include "ClientNetServer.h"
-#include "Engine/Network/Packets/HandshakePacket.h"
+
+static void menuToOptionScene(EnginePtr engine, std::shared_ptr<Entity> entity) {
+    auto sceneHolder = engine->getModule<SceneHolder>();
+    auto sc = sceneHolder->getValue(Scenes::OPTION_MENU);
+    engine->setScene(sc);
+}
 
 static void ipButtonClick(EnginePtr engine, std::shared_ptr<Entity> entity) {
     auto sceneHolder = engine->getModule<SceneHolder>();
@@ -32,15 +34,9 @@ static void ipButtonClick(EnginePtr engine, std::shared_ptr<Entity> entity) {
     engine->setScene(sc);
 }
 
-static void playButtonClick(EnginePtr engine, std::shared_ptr<Entity> entity) {
-    auto sceneHolder = engine->getModule<SceneHolder>();
-    auto sc = sceneHolder->getValue(Scenes::GAME);
-    engine->setScene(sc);
-
-    auto server = engine->getModule<ClientNetServer>();
-    std::cout << "Sending handshake" << std::endl;
-    server->startListening();
-    server->sendPacket(HandshakePacket());
+static void quitGame(EnginePtr engine, std::shared_ptr<Entity> entity) {
+    auto lib = engine->getModule<IGraphicLib>();
+    lib->execOnLibThread(closeWindow, lib);
 }
 
 std::shared_ptr<Scene> mainMenu(EnginePtr engine)
@@ -61,15 +57,9 @@ std::shared_ptr<Scene> mainMenu(EnginePtr engine)
     auto titlePos = title->addComponent<PositionComponent>((width / 2) - (800 / 2), (height / 3) - (400 / 2));
     title->addComponent<FixTextureComponent>()->setTextureId(Textures::TITLE);
 
-    createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.45) - (100 / 2),
-                 Textures::PLAY_BUTTON, playButtonClick);
-
-
-    createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.85) - (100 / 2),
-                 Textures::IP_BUTTON, ipButtonClick);
-
-    //auto optionButton = createButton(engine,sc,"img_3.png",width/2-(400/2),height*0.65-(100/2));
-    //auto quitButton = createButton(engine,sc,"img.png",width/2-(400/2),height*0.85-(100/2));
+    createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.45) - (100 / 2),Textures::IP_BUTTON, ipButtonClick);
+    createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.65) - (100 / 2),Textures::OPTION_BUTTON, menuToOptionScene);
+    createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.85) - (100 / 2),Textures::QUIT_BUTTON, quitGame);
 
     return sc;
 }

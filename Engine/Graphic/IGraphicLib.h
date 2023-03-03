@@ -54,6 +54,9 @@ using Texture = std::shared_ptr<ITexture>;
  */
 class IGraphicLib : public SystemHolder {
 private:
+    float _volume = 0.5;
+    std::unique_ptr<Registry<IMusic>> _musics = std::make_unique<Registry<IMusic>>();
+    std::shared_ptr<IMusic> _music;
     std::unordered_map<std::type_index, std::any> modules;
     std::vector<std::function<void()>> execs;
     std::unique_ptr<Registry<ITexture>> _textures = std::make_unique<Registry<ITexture>>();
@@ -99,17 +102,31 @@ public:
     virtual IMouse &getMouse() = 0;
 
     virtual void initAudio() = 0;
+
     virtual std::shared_ptr<IMusic> createMusic(const std::string &musicPath) = 0;
+
+    template<class EnumType>
+    void registerMusic(EnumType key, const std::string &musicPath) {
+        _musics->registerValue(key, createMusic(musicPath));
+    }
+
     virtual void playMusic(std::shared_ptr<IMusic>) = 0;
+    virtual void stopMusic(std::shared_ptr<IMusic>) = 0;
+    const std::shared_ptr<IMusic> &getMusic() const;
+    void setMusic(const std::shared_ptr<IMusic> &music);
+    virtual void setVolumeMusic(std::shared_ptr<IMusic>, float volume) = 0;
+
+    float getVolume() const;
+
+    void setVolume(float volume);
 
     virtual std::shared_ptr<ISound> createSound(const std::string &soundPath) = 0;
-
     template<class EnumType>
     void registerSound(EnumType key, const std::string &soundPath) {
         _sounds->registerValue(key, createSound(soundPath));
     }
     virtual void playSound(std::shared_ptr<ISound>) = 0;
-
+    virtual void setVolumeSound(std::shared_ptr<ISound>, float volume) = 0;
     template<class ...Args>
     void execOnLibThread(std::function<void(Args...)> func, Args... args) {
         auto fu = std::bind(func, args...);
@@ -127,6 +144,8 @@ public:
 
     const std::unique_ptr<Registry<ISound>> &getSounds();
 
+    const std::unique_ptr<Registry<IMusic>> &getMusics() const;
+
     std::vector<std::shared_ptr<SpriteSheet>> &getSpriteSheets();
 
     const std::unique_ptr<CountRegistry<Sprite>> &getSprites() const;
@@ -135,7 +154,18 @@ public:
 
 template<class SoundType>
 void playSound(std::shared_ptr<IGraphicLib> lib, SoundType sound) {
+    lib->setVolumeSound(lib->getSounds()->getValue(sound),lib->getVolume());
     lib->playSound(lib->getSounds()->getValue(sound));
+}
+
+template<class MusicType>
+void playMusic(std::shared_ptr<IGraphicLib> lib, MusicType music) {
+    if (lib->getMusic() != nullptr) {
+        lib->stopMusic(lib->getMusic());
+    }
+    lib->setMusic(lib->getMusics()->getValue(music));
+    lib->setVolumeMusic(lib->getMusic(),lib->getVolume());
+    lib->playMusic(lib->getMusic());
 }
 
 #endif //R_TYPE_SERVER_IGRAPHICLIB_H

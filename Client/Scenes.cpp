@@ -25,13 +25,16 @@
 #include "MainMenu.h"
 #include "GameScene.h"
 #include "ipScene.h"
+#include "OptionScene.h"
+#include "Musics.h"
 
 void loadScenes(EnginePtr engine) {
     auto sceneHolder = engine->registerModule<SceneHolder>();
     auto sc = mainMenu(engine);
     engine->setScene(sc);
+    playMusic(engine->getModule<IGraphicLib>(),Musics::MAIN_MENU_MUSIC);
     sceneHolder->registerValue(Scenes::MAIN_MENU, sc);
     sceneHolder->registerValue(Scenes::IP_MENU, ipScene(engine));
     sceneHolder->registerValue(Scenes::GAME, gameScene(engine));
-
+    sceneHolder->registerValue(Scenes::OPTION_MENU, optionScene(engine));
 }

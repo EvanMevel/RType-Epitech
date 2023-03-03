@@ -19,7 +19,7 @@ add_executable(r-type-client
         Textures/ScrollingTextureSystem.cpp
         Textures/CreateScrollingTexture.cpp
         Textures/Textures.cpp
-
+        Textures/createFixTexture.cpp
         Textures/CreateHud.cpp
         Textures/LifeComponent.cpp
         Textures/LifeSystem.cpp
@@ -59,7 +59,11 @@ add_executable(r-type-client
         TextBoxComponent.cpp
         TextBoxSystem.cpp
         CreateTextBox.cpp
-        EntityLinkComponent.cpp)
+        EntityLinkComponent.cpp
+        OptionScene.cpp
+        Musics.cpp
+        TextComponent.cpp
+        TextSystem.cpp)
 
 
 target_link_libraries(r-type-client eng raylib)
