@@ -33,6 +33,7 @@ RaylibGraphicLib::RaylibGraphicLib() {
     colors[ColorCodes::COLOR_GREEN] = ray::GREEN;
     colors[ColorCodes::COLOR_BLUE] = ray::BLUE;
     colors[ColorCodes::COLOR_YELLOW] = ray::YELLOW;
+    colors[ColorCodes::COLOR_ORANGE] = ray::ORANGE;
 }
 
 IWindow &RaylibGraphicLib::createWindow(int width, int height, std::string title) {
@@ -50,8 +51,8 @@ void RaylibGraphicLib::closeWindow() {
 }
 
 Texture RaylibGraphicLib::createTexture(const std::string &texturePath) {
-    char *pongAssetsPath = std::getenv("PONG_ASSETS_PATH");
-    std::string assetsPath = pongAssetsPath ? pongAssetsPath : "assets/";
+    char *rtypeAssetsPath = std::getenv("PONG_ASSETS_PATH");
+    std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "assets/";
     return std::make_shared<RaylibTexture>(assetsPath + texturePath);
 }
 
@@ -90,8 +91,8 @@ void RaylibGraphicLib::drawSprite(std::shared_ptr<Sprite> sprite, int x, int y, 
 }
 
 std::shared_ptr<IAnimation> RaylibGraphicLib::createAnimation(const std::string &texturePath) {
-    char *pongAssetsPath = std::getenv("PONG_ASSETS_PATH");
-    std::string assetsPath = pongAssetsPath ? pongAssetsPath : "assets/";
+    char *rtypeAssetsPath = std::getenv("PONG_ASSETS_PATH");
+    std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "assets/";
     return std::make_shared<RaylibAnimation>(assetsPath + texturePath);
 }
 
@@ -113,8 +114,8 @@ void RaylibGraphicLib::initAudio() {
 }
 
 std::shared_ptr<IMusic> RaylibGraphicLib::createMusic(const std::string &musicPath) {
-    char *pongAssetsPath = std::getenv("PONG_ASSETS_PATH");
-    std::string assetsPath = pongAssetsPath ? pongAssetsPath : "assets/";
+    char *rtypeAssetsPath = std::getenv("PONG_ASSETS_PATH");
+    std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "assets/";
     return std::make_shared<RaylibMusic>(assetsPath + musicPath);
 }
 
@@ -124,8 +125,8 @@ void RaylibGraphicLib::playMusic(std::shared_ptr<IMusic> music) {
 }
 
 std::shared_ptr<ISound> RaylibGraphicLib::createSound(const std::string &soundPath) {
-    char *pongAssetsPath = std::getenv("PONG_ASSETS_PATH");
-    std::string assetsPath = pongAssetsPath ? pongAssetsPath : "assets/";
+    char *rtypeAssetsPath = std::getenv("PONG_ASSETS_PATH");
+    std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "assets/";
     return std::make_shared<RaylibSound>(assetsPath + soundPath);
 }
 
@@ -144,4 +145,19 @@ int RaylibGraphicLib::getCharPressed() {
 
 bool RaylibGraphicLib::isKeyPressed(int key) {
     return ray::IsKeyPressed(key);
+}
+
+void RaylibGraphicLib::stopMusic(std::shared_ptr<IMusic> ptr) {
+    ray::Music raylibMusic = std::any_cast<ray::Music>(ptr->music);
+    ray::StopMusicStream(raylibMusic);
+}
+
+void RaylibGraphicLib::setVolumeMusic(std::shared_ptr<IMusic> ptr, float volume) {
+    ray::Music raylibMusic = std::any_cast<ray::Music>(ptr->music);
+    ray::SetMusicVolume(raylibMusic, volume);
+}
+
+void RaylibGraphicLib::setVolumeSound(std::shared_ptr<ISound> ptr, float volume) {
+    ray::Sound raylibSound = std::any_cast<ray::Sound>(ptr->sound);
+    ray::SetSoundVolume(raylibSound, volume);
 }
