@@ -81,10 +81,15 @@ std::shared_ptr<LuaEntityType> LuaEntityTypeFactory::getEntityType(const std::st
 
     std::string component = lua_tostring(L, 2);
 
-    std::vector<int> args;
+    std::vector<std::any> args;
 
     for (size_t i = 3; i <= argc; i++) {
-        args.push_back(lua_tointeger(L, i));
+        if (lua_isinteger(L, (int) i)) {
+            args.emplace_back((int) lua_tointeger(L, i));
+        } else if (lua_isstring(L, (int) i)) {
+            std::string str = lua_tostring(L, i);
+            args.emplace_back(str);
+        }
     }
 
     type->addComponent(component, args);

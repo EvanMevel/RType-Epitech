@@ -30,14 +30,14 @@
 
 class LuaComponentFactory {
 private:
-    std::unordered_map<std::string, std::function<void(std::shared_ptr<Entity> entity, std::vector<int>)>> _componentFactory;
+    std::unordered_map<std::string, std::function<void(std::shared_ptr<Entity> entity, std::vector<std::any>)>> _componentFactory;
 
 public:
     LuaComponentFactory() = default;
 
-    void addComponent(const std::string &componentName, std::function<void(std::shared_ptr<Entity> entity, std::vector<int>)> component);
+    void addComponent(const std::string &componentName, std::function<void(std::shared_ptr<Entity> entity, std::vector<std::any>)> component);
 
-    void initComponent(const std::string &componentName, std::shared_ptr<Entity> entity, std::vector<int> args);
+    void initComponent(const std::string &componentName, std::shared_ptr<Entity> entity, std::vector<std::any> args);
 };
 
 #endif //R_TYPE_SERVER_LUACOMPONENTFACTORY_H

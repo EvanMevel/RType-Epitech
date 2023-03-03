@@ -37,13 +37,8 @@ void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTy
     auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
     typeFactory->initEntity(entity, packet.type);
 
-    if (packet.type == "projectile") {
-        if (packet.entityInfo == 0) {
-            spriteProp = lib->getSpriteProperties()->getValue("projectile1");
-            lib->execOnLibThread(playSound, lib, Sounds::PROJECTILE_SHOOT);
-        } else {
-            spriteProp = lib->getSpriteProperties()->getValue("projectile2");
-        }
+    if (packet.type.find("projectile") != std::string::npos) {
+        spriteProp = lib->getSpriteProperties()->getValue(packet.type);
     } else if (packet.type == "player") {
         std::string spriteName = "player" + std::to_string(packet.entityInfo + 1);
         spriteProp = lib->getSpriteProperties()->getValue(spriteName);

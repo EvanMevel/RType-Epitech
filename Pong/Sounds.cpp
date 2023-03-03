@@ -20,26 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "ServerColliderSystem.h"
-#include "Engine/Component/EntityTypeComponent2.h"
-#include "Engine/Network/Packets/DamagePacket.h"
+#include "Sounds.h"
 
-static void onDamage(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)
-{
-    auto server = engine->getModule<RTypeServer>();
-    auto entityType = touched->getComponent<EntityTypeComponent2>();
-
-    if (entityType != nullptr && entityType->getEntityType() == "player") {
-        DamagePacket packet(touched, damages);
-        server->broadcast(packet);
-    }
+void loadSounds(const std::shared_ptr<IGraphicLib> &lib) {
+    lib->registerSound(Sounds::THUD, "Thud.wav");
+    lib->registerSound(Sounds::FORTINITE, "FORTINITE.mp3");
+    lib->registerSound(Sounds::BABEGI, "BABAGI.mp3");
 }
-
-std::string ServerColliderSystem::getName() {
-    return "ServerVelocitySystem";
-}
-
-ServerColliderSystem::ServerColliderSystem(): ColliderHitboxSystem(onDamage) {
-
-}
-

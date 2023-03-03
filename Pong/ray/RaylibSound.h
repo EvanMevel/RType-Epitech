@@ -20,21 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_SERVERCOLLIDERSYSTEM_H
-#define R_TYPE_SERVER_SERVERCOLLIDERSYSTEM_H
+#ifndef R_TYPE_SERVER_RAYLIBSOUND_H
+#define R_TYPE_SERVER_RAYLIBSOUND_H
 
-#include "RTypeServer.h"
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/ColliderHitboxSystem.h"
+#include <string>
+#include "Engine/Graphic/ISound.h"
+
+namespace ray {
+#include "raylib.h"
+}
 
 /**
- * @brief System that do the collision between entities
+ * @brief Raylib implementation of ISound
  */
-class ServerColliderSystem : public ColliderHitboxSystem {
+class RaylibSound : public ISound{
 public:
-    ServerColliderSystem();
-    std::string getName() override;
+    explicit RaylibSound(const std::string &soundPath);
 };
 
-#endif //R_TYPE_SERVER_SERVERCOLLIDERSYSTEM_H
+
+#endif //R_TYPE_SERVER_RAYLIBSOUND_H

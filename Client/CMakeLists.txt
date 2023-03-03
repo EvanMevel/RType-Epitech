@@ -19,7 +19,7 @@ add_executable(r-type-client
         Textures/ScrollingTextureSystem.cpp
         Textures/CreateScrollingTexture.cpp
         Textures/Textures.cpp
-
+        Textures/createFixTexture.cpp
         Textures/CreateHud.cpp
         Textures/LifeComponent.cpp
         Textures/LifeSystem.cpp
@@ -59,4 +59,16 @@ add_executable(r-type-client
         TextBoxComponent.cpp
         TextBoxSystem.cpp
         CreateTextBox.cpp
-        EntityLinkComponent.cpp OptionScene.cpp OptionScene.h Textures/createFixTexture.cpp Textures/createFixTexture.h Musics.cpp Musics.h TextComponent.cpp TextComponent.h TextSystem.cpp TextSystem.h)
+        EntityLinkComponent.cpp
+        OptionScene.cpp
+        Musics.cpp
+        TextComponent.cpp
+        TextSystem.cpp)
+
+
+target_link_libraries(r-type-client eng raylib)
+if(WIN32)
+    target_link_libraries(r-type-client wsock32 ws2_32 -static)
+else()
+    target_link_libraries(r-type-client -static-libgcc -static-libstdc++ -lpthread)
+endif()

@@ -26,40 +26,6 @@
 #include "Engine/Component/HealthComponent.h"
 #include "EntityTypeComponent2.h"
 
-void entityDied(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<Entity> cause) {
-    engine->getScene()->removeEntity(entity);
-}
-
-void entity::projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
-                   std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams,
-                   std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)> onDamage) {
-    auto health = other->getComponent<HealthComponent>();
-    if (health != nullptr) {
-        if (!health->isInvincible()) {
-            health->damage(10);
-            onDamage(engine, other, 10);
-            if (!health->isAlive()) {
-                entityDied(engine, other, self);
-                auto team = teams[other->getComponent<TeamComponent>()->getTeam()];
-                team.erase(std::remove_if(team.begin(), team.end(),
-                                          [other](std::tuple<Hitbox, std::shared_ptr<Entity>> &t) {
-                                              return std::get<1>(t)->getId() == other->getId();
-                                          }), team.end());
-            }
-        }
-    } else {
-        auto type = other->getComponent<EntityTypeComponent2>();
-        if (type != nullptr && type->getEntityType() == "projectile") {
-            entityDied(engine, other, self);
-            auto team = teams[other->getComponent<TeamComponent>()->getTeam()];
-            team.erase(std::remove_if(team.begin(), team.end(), [other](std::tuple<Hitbox, std::shared_ptr<Entity>> &t) {
-                return std::get<1>(t)->getId() == other->getId();
-            }), team.end());
-        }
-    }
-    entityDied(engine, self, other);
-}
-
 bool entity::applyPhysic(std::shared_ptr<Entity> entity) {
     auto pos = entity->getComponent<PositionComponent>();
     auto physic = entity->getComponent<PhysicComponent>();

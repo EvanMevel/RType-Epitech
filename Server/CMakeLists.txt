@@ -16,10 +16,19 @@ add_executable(r-type-server
         ProjectileCleanupSystem.cpp
         EnemyRandomSpawnSystem.cpp
         EnemyShootSystem.cpp
-        ServerColliderSystem.cpp
         PacketSendingScene.cpp
         EnemyInfoComponent.cpp
         Levels.cpp
         PlayerList.cpp
 
-        LevelSystem.cpp)
+        LevelSystem.cpp
+        SynchronizedWeapon.cpp
+        )
+
+
+target_link_libraries(r-type-server eng)
+if(WIN32)
+    target_link_libraries(r-type-server wsock32 ws2_32 -static)
+else()
+    target_link_libraries(r-type-server -static-libgcc -static-libstdc++ -lpthread)
+endif()
