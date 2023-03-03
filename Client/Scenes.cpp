@@ -24,11 +24,14 @@
 #include "Engine/SceneHolder.h"
 #include "MainMenu.h"
 #include "GameScene.h"
+#include "ipScene.h"
 
 void loadScenes(EnginePtr engine) {
     auto sceneHolder = engine->registerModule<SceneHolder>();
     auto sc = mainMenu(engine);
     engine->setScene(sc);
     sceneHolder->registerValue(Scenes::MAIN_MENU, sc);
+    sceneHolder->registerValue(Scenes::IP_MENU, ipScene(engine));
     sceneHolder->registerValue(Scenes::GAME, gameScene(engine));
+
 }

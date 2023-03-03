@@ -31,7 +31,7 @@ private:
     std::size_t currentFrame = 0;
 
 public:
-    Rectangle currentRect;
+    MyRectangle currentRect;
 
     std::shared_ptr<SpriteProperty> spriteProperty;
 

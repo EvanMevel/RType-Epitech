@@ -33,16 +33,6 @@ RaylibGraphicLib::RaylibGraphicLib() {
     colors[ColorCodes::COLOR_GREEN] = ray::GREEN;
     colors[ColorCodes::COLOR_BLUE] = ray::BLUE;
     colors[ColorCodes::COLOR_YELLOW] = ray::YELLOW;
-
-    keys[KeyCodes::KEY_A] = ray::KEY_A;
-    keys[KeyCodes::KEY_B] = ray::KEY_B;
-    keys[KeyCodes::KEY_C] = ray::KEY_C;
-    keys[KeyCodes::KEY_UP] = ray::KEY_UP;
-    keys[KeyCodes::KEY_DOWN] = ray::KEY_DOWN;
-    keys[KeyCodes::KEY_LEFT] = ray::KEY_LEFT;
-    keys[KeyCodes::KEY_RIGHT] = ray::KEY_RIGHT;
-    keys[KeyCodes::KEY_SPACE] = ray::KEY_SPACE;
-
 }
 
 IWindow &RaylibGraphicLib::createWindow(int width, int height, std::string title) {
@@ -81,7 +71,7 @@ void RaylibGraphicLib::drawTexture(Texture &texture, int x, int y, ColorCodes co
 
 void RaylibGraphicLib::drawSprite(std::shared_ptr<Sprite> sprite, int x, int y, ColorCodes codes) {
     auto texture2D = any_cast<ray::Texture2D>(sprite->spriteProperty->texture->handle);
-    Rectangle rec = sprite->currentRect;
+    MyRectangle rec = sprite->currentRect;
     ray::Rectangle sourceRec = {(float) rec.x, (float) rec.y,
                                 (float) rec.width, (float) rec.height};
     float width = (float) rec.width * sprite->spriteProperty->scale;
@@ -115,8 +105,7 @@ IMouse &RaylibGraphicLib::getMouse() {
 }
 
 bool RaylibGraphicLib::isKeyDown(KeyCodes code) {
-    ray::KeyboardKey key = keys[code];
-    return ray::IsKeyDown(key);
+    return ray::IsKeyDown(code);
 }
 
 void RaylibGraphicLib::initAudio() {
@@ -143,4 +132,16 @@ std::shared_ptr<ISound> RaylibGraphicLib::createSound(const std::string &soundPa
 void RaylibGraphicLib::playSound(std::shared_ptr<ISound> sound) {
     ray::Sound raylibSound = std::any_cast<ray::Sound>(sound->sound);
     ray::PlaySound(raylibSound);
+}
+
+void RaylibGraphicLib::drawRectangle(int posX, int posY, int width, int height, ColorCodes color) {
+    ray::DrawRectangle(posX, posY, width ,height, colors[color]);
+}
+
+int RaylibGraphicLib::getCharPressed() {
+    return ray::GetCharPressed();
+}
+
+bool RaylibGraphicLib::isKeyPressed(int key) {
+    return ray::IsKeyPressed(key);
 }

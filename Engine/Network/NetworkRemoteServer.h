@@ -43,6 +43,22 @@ protected:
     std::string _address;
     unsigned short _port;
 public:
+    const std::string &getAddress() const {
+        return _address;
+    }
+
+    void setAddress(const std::string &address) {
+        _address = address;
+    }
+
+    unsigned short getPort() const {
+        return _port;
+    }
+
+    void setPort(unsigned short port) {
+        _port = port;
+    }
+
     NetworkRemoteServer(Data dat, const std::string &address, unsigned short port) : socket(std::make_shared<CrossPlatformSocket>()),
         data(dat), _address(address), _port(port) {
         if (!socket->create()) {

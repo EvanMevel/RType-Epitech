@@ -88,7 +88,13 @@ public:
 
     virtual void drawText(std::string, int x, int y, int size, ColorCodes) = 0;
 
+    virtual void drawRectangle(int posX, int posY, int width, int height,  ColorCodes color) = 0;
+
     virtual bool isKeyDown(KeyCodes) = 0;
+
+    virtual int getCharPressed() = 0;
+
+    virtual bool isKeyPressed(int key) = 0;
 
     virtual IMouse &getMouse() = 0;
 

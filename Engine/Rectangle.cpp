@@ -22,6 +22,6 @@
 
 #include "Rectangle.h"
 
-Rectangle::Rectangle(int x, int y, int width, int height) : x(x), y(y), width(width), height(height) {}
+MyRectangle::MyRectangle(int x, int y, int width, int height) : x(x), y(y), width(width), height(height) {}
 
-Rectangle::Rectangle() {}
+MyRectangle::MyRectangle() {}

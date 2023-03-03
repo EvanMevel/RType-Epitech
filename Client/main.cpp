@@ -41,6 +41,7 @@
 #include "Engine/TickUtil.h"
 #include "StayAliveSystem.h"
 #include "Engine/engineLua/LuaLoader.h"
+#include "TextBoxSystem.h"
 #include "Client/Consumers/DamageConsumer.h"
 #include "Client/Textures/CooldownSystem.h"
 #include "Client/Textures/LifeSystem.h"
@@ -151,6 +152,7 @@ void loadGraphsAndScenes(EnginePtr engine) {
     lib->addSystem<DrawSpriteSystem>();
     lib->addSystem<AnimationSystem>();
     lib->addSystem<MouseSystem>();
+    lib->addSystem<TextBoxSystem>();
     lib->addSystem<LifeSystem>();
     lib->addSystem<CooldownSystem>();
 

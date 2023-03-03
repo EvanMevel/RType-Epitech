@@ -38,7 +38,7 @@ SpriteProperty::SpriteProperty(const std::shared_ptr<ITexture> &texture, int sta
 /**
  * Update the currentRect of the sprite
  */
-void SpriteProperty::updateRect(std::size_t &currentFrame, Rectangle &rect) {
+void SpriteProperty::updateRect(std::size_t &currentFrame, MyRectangle &rect) {
     currentFrame = (currentFrame + 1) % (frameSpeed);
     if (currentFrame == 0) {
         if (repeatX != 0) {

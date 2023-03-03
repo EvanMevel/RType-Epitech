@@ -56,7 +56,7 @@ public:
 
     std::shared_ptr<Sprite> createSprite(std::shared_ptr<SpriteProperty> spriteProperty);
 
-    void updateRect(std::size_t &currentFrame, Rectangle &rect);
+    void updateRect(std::size_t &currentFrame, MyRectangle &rect);
 };
 
 
