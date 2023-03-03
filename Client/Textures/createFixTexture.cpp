@@ -22,11 +22,13 @@
 
 #include "createFixTexture.h"
 
-std::shared_ptr<Entity> createFixTexture( const std::shared_ptr<Scene> &sc, Textures texture, int posx,int posy){
+std::shared_ptr<Entity> createFixTexture( const std::shared_ptr<Scene> &sc, Textures texture, int posx,int posy, float rotation, float scale){
 
     auto fixTextureEntity = sc->createEntity();
     auto textureComponent = fixTextureEntity->addComponent<FixTextureComponent>();
     textureComponent->setTextureId(texture);
+    textureComponent->setScale(scale);
+    textureComponent->setRotation(rotation);
     fixTextureEntity->addComponent<PositionComponent>(posx, posy);
 
     return fixTextureEntity;

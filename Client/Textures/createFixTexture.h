@@ -30,6 +30,6 @@
 #define R_TYPE_CLIENT_CREATEFIXTEXTURE_H
 
 
-std::shared_ptr<Entity> createFixTexture(const std::shared_ptr<Scene> &sc, Textures texture, int posx,int posy);
+std::shared_ptr<Entity> createFixTexture(const std::shared_ptr<Scene> &sc, Textures texture, int posx,int posy, float rotation, float scale);
 
 #endif //R_TYPE_CLIENT_CREATEFIXTEXTURE_H

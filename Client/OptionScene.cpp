@@ -64,20 +64,13 @@ std::shared_ptr<Scene> optionScene(EnginePtr engine) {
     auto height = lib->getWindow().getHeight();
     auto width = lib->getWindow().getWidth();
 
-    /*auto background = createFixTexture(sc,Textures::BACKGROUND_1,0,0);
-    auto firstground = createFixTexture(sc,Textures::BACKGROUND_2,0,0);
-    auto secondground = createFixTexture(sc,Textures::BACKGROUND_4,0,0);*/
-
-    auto background = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_1,-1);
-    auto fourthground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_2,-2);
-    auto thirdground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_3,-2);
-    auto secondground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_4,-3);
-    auto firstground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_5,-4);
+    auto background = createFixTexture(sc,Textures::BACKGROUND_1,0,0,0.0,3);
+    auto firstground = createFixTexture(sc,Textures::BACKGROUND_2,0,0,0.0,3);
+    auto secondground = createFixTexture(sc,Textures::BACKGROUND_4,0,0,0.0,3);
 
     auto title = sc->createEntity();
     title->addComponent<PositionComponent>((width / 2) - (800 / 2), (height / 3) - (400 / 2));
     title->addComponent<TextComponent>("Settings",75);
-//faire un rectangle de fond    lib->drawRectangle(200, 200, width - 300, height-400,ColorCodes::COLOR_BLACK);
 
     auto volumeTitle = sc->createEntity();
     volumeTitle->addComponent<PositionComponent>((width / 2) - 350, (height)  / 3);
@@ -86,15 +79,13 @@ std::shared_ptr<Scene> optionScene(EnginePtr engine) {
     auto gameVolume = sc->createEntity();
     auto volumeText = gameVolume->addComponent<TextComponent>(std::to_string((int)(lib->getVolume() * 100)),55);
     auto volumePos = gameVolume->addComponent<PositionComponent>(width - 580 , (height + 30)  / 3);
+
     auto buttonVolumeUp = createButton(lib, sc,width - 500, height / 3,Textures::ARROW_RIGHT, volumeUp);
     buttonVolumeUp->addComponent<EntityLinkComponent>(gameVolume);
+
     auto buttonVolumeDown = createButton(lib, sc,width - 680, height / 3,Textures::ARROW_LEFT, volumeDown);
     buttonVolumeDown->addComponent<EntityLinkComponent>(gameVolume);
-    /*option :
-        - son
-        - langue ? (suedois ?)
-        - key binding
-     */
+
     createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.85) - (100 / 2),Textures::BACK_BUTTON, optionToMainMenu);
     return sc;
 }
