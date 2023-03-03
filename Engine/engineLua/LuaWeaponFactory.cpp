@@ -20,24 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <utility>
-#include "ColliderComponent.h"
-#include "Engine/Engine.h"
+#include "LuaWeaponFactory.h"
 
-ColliderComponent::ColliderComponent() = default;
 
-ColliderComponent::ColliderComponent(const CollideFunction &onCollision) : _onCollision(onCollision) {
+[[maybe_unused]] int luaRegisterWeapon(lua_State *L) {
+    LuaWeaponFactoryBase *factory = (LuaWeaponFactoryBase*) lua_touserdata(L, 1);
 
+    std::size_t len;
+    std::string name = lua_tolstring(L, 2, &len);
+    std::string proj = lua_tolstring(L, 3, &len);
+
+    std::size_t cooldown = lua_tointeger(L, 4);
+
+    factory->registerWeapon(name, proj, cooldown);
+
+    return 0;
 }
-
-CollideResult ColliderComponent::onCollision(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other) const {
-    if (_onCollision != nullptr) {
-        return _onCollision(engine, std::move(self), std::move(other));
-    }
-    return CollideResult::NONE;
-}
-
-[[maybe_unused]] void ColliderComponent::setOnCollision(const CollideFunction &onCollision) {
-    _onCollision = onCollision;
-}
-

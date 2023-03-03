@@ -20,21 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_SERVERCOLLIDERSYSTEM_H
-#define R_TYPE_SERVER_SERVERCOLLIDERSYSTEM_H
+#ifndef R_TYPE_CLIENT_WEAPONCOMPONENT_H
+#define R_TYPE_CLIENT_WEAPONCOMPONENT_H
 
-#include "RTypeServer.h"
-#include "Engine/ISystem.h"
-#include "Engine/Entity.h"
-#include "Engine/ColliderHitboxSystem.h"
 
-/**
- * @brief System that do the collision between entities
- */
-class ServerColliderSystem : public ColliderHitboxSystem {
+#include "IComponent.h"
+#include "Engine/Weapon.h"
+
+class WeaponComponent : public IComponent {
+private:
+    std::shared_ptr<Weapon> _weapon;
+    long long nextShot = 0;
+
 public:
-    ServerColliderSystem();
-    std::string getName() override;
+    explicit WeaponComponent(const std::shared_ptr<Weapon> &weapon);
+
+    bool canShoot() const;
+
+    void setNextShot();
+
+    const std::shared_ptr<Weapon> &getWeapon() const;
+
+    void setWeapon(const std::shared_ptr<Weapon> &weapon);
+
 };
 
-#endif //R_TYPE_SERVER_SERVERCOLLIDERSYSTEM_H
+
+#endif //R_TYPE_CLIENT_WEAPONCOMPONENT_H

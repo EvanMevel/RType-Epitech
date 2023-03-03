@@ -21,46 +21,17 @@
 // SOFTWARE.
 
 #include "PlayerShootConsumer.h"
-#include "Engine/EntityUtils.h"
-#include "Engine/Network/Packets/EntityInfoPacket.h"
-#include "Engine/Network/Packets/ProjectileHitPacket.h"
-#include "Engine/engineLua/LuaEntityTypeFactory.h"
-#include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/ColliderComponent.h"
-#include "Engine/Component/TeamComponent.h"
+#include "Engine/Component/WeaponComponent.h"
 
 PlayerShootConsumer::PlayerShootConsumer(EnginePtr e) : RTypePlayerPacketConsumer(e) {}
-
-static void projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other,
-                   std::unordered_map<size_t, std::vector<std::tuple<Hitbox, std::shared_ptr<Entity>>>> &teams,
-                  std::function<void(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)> onDamage) {
-    auto server = engine->getModule<RTypeServer>();
-
-    ProjectileHitPacket packet;
-    server->broadcast(packet);
-
-    entity::projectileHit(engine, self, other, teams, onDamage);
-}
 
 void PlayerShootConsumer::consume(PlayerShootPacket &packet, std::shared_ptr<NetClient> client,
                                   std::shared_ptr<ClientData> data, std::shared_ptr<Entity> player) {
     if (player == nullptr)
         return;
 
-    auto pos = player->getComponent<PositionComponent>();
-    if (pos == nullptr)
+    auto weapon = player->getComponent<WeaponComponent>();
+    if (weapon == nullptr)
         return;
-    auto typeFactory = e->getModule<LuaEntityTypeFactory>();
-    auto projectile = e->getScene()->createEntity();
-    typeFactory->initEntity(projectile, "projectile");
-    projectile->addComponent<PositionComponent>(pos->x + 20, pos->y + 20);
-    projectile->getComponent<PhysicComponent>()->velocity.x = 10;
-
-
-    projectile->addComponent<ColliderComponent>(projectileHit);
-
-    projectile->addComponent<TeamComponent>(0);
-
-    EntityInfoPacket newEntityPacket(projectile);
-    e->getModule<RTypeServer>()->broadcast(newEntityPacket);
+    weapon->getWeapon()->shoot(e, player);
 }

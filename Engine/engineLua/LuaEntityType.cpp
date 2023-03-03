@@ -39,10 +39,10 @@ size_t LuaEntityType::getHitboxHeight() const {
     return _hitboxHeight;
 }
 
-void LuaEntityType::addComponent(const std::string &name, const std::vector<int> &args) {
+void LuaEntityType::addComponent(const std::string &name, const std::vector<std::any> &args) {
     _components.emplace_back(name, args);
 }
 
-const std::vector<std::pair<std::string, std::vector<int>>> &LuaEntityType::getComponents() const {
+const std::vector<std::pair<std::string, std::vector<std::any>>> &LuaEntityType::getComponents() const {
     return _components;
 }

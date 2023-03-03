@@ -29,6 +29,8 @@
 #include "Engine/Component/PlayerInfoComponent.h"
 #include "Server/PlayerList.h"
 #include "Engine/engineLua/LuaEntityTypeFactory.h"
+#include "Engine/Component/WeaponComponent.h"
+#include "Server/SynchronizedWeapon.h"
 
 HandshakeConsumer::HandshakeConsumer(EnginePtr e) : RTypePacketConsumer(e) {}
 

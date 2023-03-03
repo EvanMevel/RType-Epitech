@@ -20,26 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "ServerColliderSystem.h"
-#include "Engine/Component/EntityTypeComponent2.h"
-#include "Engine/Network/Packets/DamagePacket.h"
+#ifndef R_TYPE_CLIENT_WEAPON_H
+#define R_TYPE_CLIENT_WEAPON_H
 
-static void onDamage(EnginePtr engine, std::shared_ptr<Entity> touched, int damages)
-{
-    auto server = engine->getModule<RTypeServer>();
-    auto entityType = touched->getComponent<EntityTypeComponent2>();
+#include "EngineTypes.h"
+#include "Engine/EngineTypes.h"
+#include "Engine/Component/ColliderComponent.h"
 
-    if (entityType != nullptr && entityType->getEntityType() == "player") {
-        DamagePacket packet(touched, damages);
-        server->broadcast(packet);
-    }
-}
+class Weapon {
+private:
+    std::string _projectile;
+    std::size_t _cooldown;
+    CollideFunction _projectileHit;
 
-std::string ServerColliderSystem::getName() {
-    return "ServerVelocitySystem";
-}
+public:
+    Weapon(const std::string &projectile, size_t cooldown);
 
-ServerColliderSystem::ServerColliderSystem(): ColliderHitboxSystem(onDamage) {
+    virtual void shoot(EnginePtr engine, std::shared_ptr<Entity> shooter);
 
-}
+    virtual CollideResult projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other);
 
+    virtual void onDamage(EnginePtr engine, std::shared_ptr<Entity> cause, std::shared_ptr<Entity> victim, int damage);
+
+    size_t getCooldown() const;
+};
+
+
+#endif //R_TYPE_CLIENT_WEAPON_H

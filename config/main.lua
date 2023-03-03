@@ -27,10 +27,14 @@ function loadPlayer(factory)
     player:addComponent("TeamComponent", 0)
     player:addComponent("HealthComponent", 100, 1000)
     player:addComponent("PhysicComponent", 10)
+    player:addComponent("WeaponComponent", "weapon1")
 end
 
-function loadProjectile(factory)
-    local projectile = registerEntityType(factory, "projectile", 81, 16)
+function loadProjectiles(factory)
+    local projectile = registerEntityType(factory, "projectile1", 81, 16)
+    projectile:addComponent("PhysicComponent", 0, 1, 0)
+
+    local projectile = registerEntityType(factory, "projectile2", 81, 16)
     projectile:addComponent("PhysicComponent", 0, 1, 0)
 end
 
@@ -42,6 +46,7 @@ function loadEnemy1(factory)
     enemy1:addComponent("CooldownComponent", math.floor(ENGINE_TPS * 2))
     enemy1:addComponent("PhysicComponent")
     enemy1:addComponent("IAComponent")
+    enemy1:addComponent("WeaponComponent", "weapon2")
 end
 
 function loadEnemy2(factory)
@@ -51,17 +56,23 @@ function loadEnemy2(factory)
     enemy2:addComponent("CooldownComponent", math.floor(ENGINE_TPS * 1.2))
     enemy2:addComponent("PhysicComponent")
     enemy2:addComponent("IAComponent")
+    enemy2:addComponent("WeaponComponent", "weapon2")
 end
 
 function loadEntityTypes(factory)
 
     loadPlayer(factory);
 
-    loadProjectile(factory);
+    loadProjectiles(factory);
 
     loadEnemy1(factory);
 
     loadEnemy2(factory);
+end
+
+function loadWeapons(factory)
+    registerWeapon(factory, "weapon1", "projectile1", ENGINE_TPS * 1)
+    registerWeapon(factory, "weapon2", "projectile2", ENGINE_TPS * 2)
 end
 
 function loadLevels(factory)

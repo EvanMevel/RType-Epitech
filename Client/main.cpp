@@ -175,9 +175,10 @@ void loadAll() {
     auto luaLoad = engine->registerModule<LuaLoader>();
     auto typeFactory = engine->registerModule<LuaEntityTypeFactory>();
     auto levelFactory = engine->registerModule<LuaLevelFactory>();
+    auto weaponFactory = engine->registerIModule<LuaWeaponFactoryBase, LuaWeaponFactory<Weapon>>();
 
     luaLoad->loadFolder("config");
-    luaLoad->loadEntityTypes(typeFactory);
+    luaLoad->loadEntityTypes(typeFactory, weaponFactory);
     luaLoad->loadLevels(levelFactory);
 
     std::thread graphThread(startGraph, std::ref(engine));

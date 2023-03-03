@@ -20,24 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <utility>
-#include "ColliderComponent.h"
-#include "Engine/Engine.h"
+#ifndef R_TYPE_CLIENT_SYNCHRONIZEDWEAPON_H
+#define R_TYPE_CLIENT_SYNCHRONIZEDWEAPON_H
 
-ColliderComponent::ColliderComponent() = default;
+#include "Engine/Weapon.h"
 
-ColliderComponent::ColliderComponent(const CollideFunction &onCollision) : _onCollision(onCollision) {
+class SynchronizedWeapon : public Weapon {
+public:
 
-}
+    SynchronizedWeapon(const std::string &projectile, size_t cooldown);
 
-CollideResult ColliderComponent::onCollision(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other) const {
-    if (_onCollision != nullptr) {
-        return _onCollision(engine, std::move(self), std::move(other));
-    }
-    return CollideResult::NONE;
-}
+    void shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter) override;
 
-[[maybe_unused]] void ColliderComponent::setOnCollision(const CollideFunction &onCollision) {
-    _onCollision = onCollision;
-}
+    CollideResult projectileHit(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> self,
+                                std::shared_ptr<Entity> other) override;
 
+    void onDamage(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> cause, std::shared_ptr<Entity> victim,
+                  int damage) override;
+
+};
+
+
+#endif //R_TYPE_CLIENT_SYNCHRONIZEDWEAPON_H

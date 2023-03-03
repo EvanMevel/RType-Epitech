@@ -36,12 +36,7 @@ EntityInfoPacket::EntityInfoPacket(EntityPtr entity, std::shared_ptr<EntityTypeC
     this->id = entity->getId();
     if (type) {
         this->type = type->getEntityType();
-        if (this->type == "projectile") {
-            auto team = entity->getComponent<TeamComponent>();
-            if (team) {
-                this->entityInfo = (int) team->getTeam();
-            }
-        } else if (this->type == "player") {
+        if (this->type == "player") {
             auto playerInfo = entity->getComponent<PlayerInfoComponent>();
             if (playerInfo) {
                 this->entityInfo = playerInfo->getPlayerNumber();

@@ -23,12 +23,12 @@
 #include "LuaComponentFactory.h"
 
 void LuaComponentFactory::addComponent(const std::string &componentName,
-                                       std::function<void(std::shared_ptr<Entity>, std::vector<int>)> component) {
+                                       std::function<void(std::shared_ptr<Entity>, std::vector<std::any>)> component) {
     _componentFactory[componentName] = component;
 }
 
 void LuaComponentFactory::initComponent(const std::string &componentName, std::shared_ptr<Entity> entity,
-                                        std::vector<int> args) {
+                                        std::vector<std::any> args) {
     auto it = _componentFactory.find(componentName);
     if (it != _componentFactory.end()) {
         it->second(entity, args);

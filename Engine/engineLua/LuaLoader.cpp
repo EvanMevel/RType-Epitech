@@ -32,6 +32,7 @@
 #include "IAComponent.h"
 #include "LuaClass.h"
 #include "LuaType.h"
+#include "WeaponComponent.h"
 
 LuaLoader::LuaLoader() {
     _lua.defineGlobal("ENGINE_TPS", ENGINE_TPS);
@@ -64,40 +65,58 @@ void LuaLoader::loadFile(const std::string &filePath) {
     _lua.doFile(filePath);
 }
 
-void addComponentConstructors(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory) {
-    luaEntityTypeFactory->getComponentFactory().addComponent("TeamComponent", [](std::shared_ptr<Entity> entity, std::vector<int> args) {
-        entity->addComponent<TeamComponent>((std::size_t) args[0]);
+void addComponentConstructors(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory, std::shared_ptr<LuaWeaponFactoryBase> luaWeaponFactory) {
+    luaEntityTypeFactory->getComponentFactory().addComponent("TeamComponent", [](std::shared_ptr<Entity> entity, std::vector<std::any> args) {
+        entity->addComponent<TeamComponent>((std::size_t) std::any_cast<int>(args[0]));
     });
 
-    luaEntityTypeFactory->getComponentFactory().addComponent("HealthComponent", [](std::shared_ptr<Entity> entity, std::vector<int> args) {
-        entity->addComponent<HealthComponent>((std::size_t) args[0], (std::size_t) args[1]);
+    luaEntityTypeFactory->getComponentFactory().addComponent("HealthComponent", [](std::shared_ptr<Entity> entity, std::vector<std::any> args) {
+        entity->addComponent<HealthComponent>((std::size_t) std::any_cast<int>(args[0]),
+                                              (std::size_t) std::any_cast<int>(args[1]));
     });
 
-    luaEntityTypeFactory->getComponentFactory().addComponent("CooldownComponent", [](std::shared_ptr<Entity> entity, std::vector<int> args) {
-        entity->addComponent<CooldownComponent>((std::size_t) args[0]);
+    luaEntityTypeFactory->getComponentFactory().addComponent("CooldownComponent", [](std::shared_ptr<Entity> entity, std::vector<std::any> args) {
+        entity->addComponent<CooldownComponent>((std::size_t) std::any_cast<int>(args[0]));
     });
 
-    luaEntityTypeFactory->getComponentFactory().addComponent("PhysicComponent", [](std::shared_ptr<Entity> entity, std::vector<int> args) {
+    luaEntityTypeFactory->getComponentFactory().addComponent("PhysicComponent", [](std::shared_ptr<Entity> entity, std::vector<std::any> args) {
         auto physicComponent = entity->addComponent<PhysicComponent>();
         if (args.empty()) {
             return;
         }
 
-        physicComponent->maxVelocity = (std::size_t) args[0];
+        physicComponent->maxVelocity = (std::size_t) std::any_cast<int>(args[0]);
         if (args.size() > 1) {
-            physicComponent->accelerationSlow = (std::size_t) args[1];
+            physicComponent->accelerationSlow = (std::size_t) std::any_cast<int>(args[1]);
         }
         if (args.size() > 2) {
-            physicComponent->velocitySlow = (std::size_t) args[2];
+            physicComponent->velocitySlow = (std::size_t) std::any_cast<int>(args[2]);
         }
     });
 
-    luaEntityTypeFactory->getComponentFactory().addComponent("IAComponent", [](std::shared_ptr<Entity> entity, std::vector<int> args) {
+    luaEntityTypeFactory->getComponentFactory().addComponent("IAComponent", [](std::shared_ptr<Entity> entity, std::vector<std::any> args) {
         entity->addComponent<IAComponent>();
     });
+
+    std::function<void(std::shared_ptr<LuaWeaponFactoryBase>, std::shared_ptr<Entity>, std::vector<std::any>)> fu = [](std::shared_ptr<LuaWeaponFactoryBase> luaWeaponFactory, std::shared_ptr<Entity> entity, std::vector<std::any> args) {
+        auto weapon = luaWeaponFactory->getWeapon(std::any_cast<std::string>(args[0]));
+        entity->addComponent<WeaponComponent>(weapon);
+    };
+
+    std::function<void(std::shared_ptr<Entity>, std::vector<std::any>)> fu2 = std::bind(fu, luaWeaponFactory, std::placeholders::_1, std::placeholders::_2);
+
+    luaEntityTypeFactory->getComponentFactory().addComponent("WeaponComponent", fu2);
 }
 
-void LuaLoader::loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory) {
+void LuaLoader::loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory, std::shared_ptr<LuaWeaponFactoryBase> luaWeaponFactory) {
+    void *luaWeaponPtr = luaWeaponFactory.get();
+
+    _lua.registerFunction("registerWeapon", luaRegisterWeapon);
+
+    auto loadWeapons = _lua.getFunction<VoidType, void*>("loadWeapons");
+    loadWeapons.call(luaWeaponPtr);
+
+
     void *luaEntityTypeFactoryPtr = luaEntityTypeFactory.get();
 
     _lua.registerFunction("registerEntityType", luaRegisterEntityType);
@@ -106,11 +125,11 @@ void LuaLoader::loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityT
     entityType.registerFunction("addComponent", luaAddComponentToType);
     entityType.done();
 
-    auto func = _lua.getFunction<VoidType, void*>("loadEntityTypes");
+    auto loadEntityTypes = _lua.getFunction<VoidType, void*>("loadEntityTypes");
     //func.call(LuaType("LuaEntityTypeFactory", luaEntityTypeFactoryPtr));
-    func.call(luaEntityTypeFactoryPtr);
+    loadEntityTypes.call(luaEntityTypeFactoryPtr);
 
-    addComponentConstructors(luaEntityTypeFactory);
+    addComponentConstructors(luaEntityTypeFactory, luaWeaponFactory);
 }
 
 void LuaLoader::loadLevels(std::shared_ptr<LuaLevelFactory> luaLevelParser) {

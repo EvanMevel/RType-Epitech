@@ -22,23 +22,23 @@
 
 #include <iostream>
 #include "Engine/Engine.h"
-#include "RTypeServer.h"
 #include "Engine/TickUtil.h"
+#include "Engine/ColliderHitboxSystem.h"
+#include "Engine/engineLua/LuaLoader.h"
+#include "RTypeServer.h"
 #include "Server/Consumers/PingPacketConsumer.h"
-#include "TimeoutSystem.h"
 #include "Server/Consumers/HandshakeConsumer.h"
-#include "ServerVelocitySystem.h"
 #include "Server/Consumers/PlayerMoveConsumer.h"
 #include "Server/Consumers/PlayerShootConsumer.h"
+#include "TimeoutSystem.h"
+#include "ServerVelocitySystem.h"
 #include "ProjectileCleanupSystem.h"
-#include "EnemyRandomSpawnSystem.h"
 #include "EnemyShootSystem.h"
-#include "ServerColliderSystem.h"
 #include "PacketSendingScene.h"
 #include "Levels.h"
 #include "PlayerList.h"
-#include "Engine/engineLua/LuaLoader.h"
 #include "LevelSystem.h"
+#include "SynchronizedWeapon.h"
 
 std::atomic<bool> running = true;
 
@@ -98,8 +98,7 @@ void createScene(EnginePtr engine, std::shared_ptr<Level> level) {
     sc->addSystem<ServerVelocitySystem>();
     sc->addSystem<ProjectileCleanupSystem>();
     sc->addSystem<EnemyShootSystem>();
-    sc->addSystem<ServerColliderSystem>();
-    //sc->addSystem<EnemyRandomSpawnSystem>();
+    sc->addSystem<ColliderHitboxSystem>();
     sc->addSystem<LevelSystem>(level);
 
     engine->setScene(sc);
@@ -112,9 +111,10 @@ int main()
     auto luaLoad = engine->registerModule<LuaLoader>();
     auto typeFactory = engine->registerModule<LuaEntityTypeFactory>();
     auto levelFactory = engine->registerModule<LuaLevelFactory>();
+    auto weaponFactory = engine->registerIModule<LuaWeaponFactoryBase, LuaWeaponFactory<SynchronizedWeapon>>();
 
     luaLoad->loadFolder("config");
-    luaLoad->loadEntityTypes(typeFactory);
+    luaLoad->loadEntityTypes(typeFactory, weaponFactory);
     luaLoad->loadLevels(levelFactory);
 
     createScene(engine, levelFactory->getLevels()[0]);

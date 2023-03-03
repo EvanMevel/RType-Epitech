@@ -20,24 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <utility>
-#include "ColliderComponent.h"
-#include "Engine/Engine.h"
+#ifndef R_TYPE_CLIENT_LUAWEAPONFACTORY_H
+#define R_TYPE_CLIENT_LUAWEAPONFACTORY_H
 
-ColliderComponent::ColliderComponent() = default;
+#include "Engine/Weapon.h"
+#include "Engine/engineLua/LuaWrapper.h"
 
-ColliderComponent::ColliderComponent(const CollideFunction &onCollision) : _onCollision(onCollision) {
 
-}
+class LuaWeaponFactoryBase {
+protected:
+    std::unordered_map<std::string, std::shared_ptr<Weapon>> _weapons;
+public:
+    virtual void registerWeapon(const std::string &name, const std::string &proj, std::size_t cooldown) = 0;
 
-CollideResult ColliderComponent::onCollision(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other) const {
-    if (_onCollision != nullptr) {
-        return _onCollision(engine, std::move(self), std::move(other));
+    std::shared_ptr<Weapon> getWeapon(const std::string &name) {
+        return _weapons[name];
     }
-    return CollideResult::NONE;
-}
+};
 
-[[maybe_unused]] void ColliderComponent::setOnCollision(const CollideFunction &onCollision) {
-    _onCollision = onCollision;
-}
+template <class T>
+class LuaWeaponFactory : public LuaWeaponFactoryBase {
+public:
+    void registerWeapon(const std::string &name, const std::string &proj, std::size_t cooldown) override {
+        _weapons[name] = std::make_shared<T>(proj, cooldown);
+    }
 
+};
+
+[[maybe_unused]] int luaRegisterWeapon(lua_State *L);
+
+#endif //R_TYPE_CLIENT_LUAWEAPONFACTORY_H

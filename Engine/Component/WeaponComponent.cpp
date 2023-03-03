@@ -20,24 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <utility>
-#include "ColliderComponent.h"
-#include "Engine/Engine.h"
+#include "WeaponComponent.h"
+#include "Engine/TimeUtil.h"
 
-ColliderComponent::ColliderComponent() = default;
+WeaponComponent::WeaponComponent(const std::shared_ptr<Weapon> &weapon) : _weapon(weapon) {}
 
-ColliderComponent::ColliderComponent(const CollideFunction &onCollision) : _onCollision(onCollision) {
-
+const std::shared_ptr<Weapon> &WeaponComponent::getWeapon() const {
+    return _weapon;
 }
 
-CollideResult ColliderComponent::onCollision(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other) const {
-    if (_onCollision != nullptr) {
-        return _onCollision(engine, std::move(self), std::move(other));
-    }
-    return CollideResult::NONE;
+void WeaponComponent::setWeapon(const std::shared_ptr<Weapon> &weapon) {
+    _weapon = weapon;
 }
 
-[[maybe_unused]] void ColliderComponent::setOnCollision(const CollideFunction &onCollision) {
-    _onCollision = onCollision;
+bool WeaponComponent::canShoot() const {
+    return getCurrentTime() > nextShot;
 }
 
+void WeaponComponent::setNextShot() {
+    nextShot = getCurrentTime() + (long long) (_weapon->getCooldown() * (1000 / ENGINE_TPS));
+}
