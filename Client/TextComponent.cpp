@@ -39,3 +39,11 @@ int TextComponent::getFontSize() const {
 }
 
 TextComponent::TextComponent(const std::string &text, int fontSize) : text(text), fontSize(fontSize) {}
+
+ColorCodes TextComponent::getColor() const {
+    return color;
+}
+
+void TextComponent::setColor(ColorCodes color) {
+    TextComponent::color = color;
+}

@@ -26,11 +26,13 @@
 
 #include <string>
 #include "Engine/Component/IComponent.h"
+#include "Engine/Graphic/ColorCodes.h"
 
 class TextComponent :  public IComponent{
 private:
     std::string text;
     int fontSize = 35;
+    ColorCodes color;
 public:
 
     TextComponent(const std::string &text, int fontSize);
@@ -42,6 +44,10 @@ public:
     void setFontSize(int fontSize);
 
     int getFontSize() const;
+
+    ColorCodes getColor() const;
+
+    void setColor(ColorCodes color);
 };
 
 

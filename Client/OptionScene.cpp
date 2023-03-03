@@ -70,15 +70,19 @@ std::shared_ptr<Scene> optionScene(EnginePtr engine) {
 
     auto title = sc->createEntity();
     title->addComponent<PositionComponent>((width / 2) - (800 / 2), (height / 3) - (400 / 2));
-    title->addComponent<TextComponent>("Settings",75);
+    auto titleText = title->addComponent<TextComponent>("Settings",75);
+    titleText->setColor(ColorCodes::COLOR_ORANGE);
+
 
     auto volumeTitle = sc->createEntity();
     volumeTitle->addComponent<PositionComponent>((width / 2) - 350, (height)  / 3);
-    volumeTitle->addComponent<TextComponent>("Volume",65);
+    auto volumeTitleText = volumeTitle->addComponent<TextComponent>("Volume",65);
+    volumeTitleText->setColor(ColorCodes::COLOR_ORANGE);
 
     auto gameVolume = sc->createEntity();
     auto volumeText = gameVolume->addComponent<TextComponent>(std::to_string((int)(lib->getVolume() * 100)),55);
     auto volumePos = gameVolume->addComponent<PositionComponent>(width - 580 , (height + 30)  / 3);
+    volumeText->setColor(ColorCodes::COLOR_ORANGE);
 
     auto buttonVolumeUp = createButton(lib, sc,width - 500, height / 3,Textures::ARROW_RIGHT, volumeUp);
     buttonVolumeUp->addComponent<EntityLinkComponent>(gameVolume);
