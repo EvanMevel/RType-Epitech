@@ -99,7 +99,6 @@ void createScene(EnginePtr engine, std::shared_ptr<Level> level) {
     sc->addSystem<ProjectileCleanupSystem>();
     sc->addSystem<EnemyShootSystem>();
     sc->addSystem<ColliderHitboxSystem>();
-    //sc->addSystem<EnemyRandomSpawnSystem>();
     sc->addSystem<LevelSystem>(level);
 
     engine->setScene(sc);
