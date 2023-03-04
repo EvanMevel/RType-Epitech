@@ -25,5 +25,4 @@
 
 void BossCreatorServer::createBoss(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> entity) {
     BossCreator::createBoss(engine, entity);
-    engine->getScene()->addSystem<BossSystem>(entity);
 }

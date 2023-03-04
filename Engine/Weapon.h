@@ -36,6 +36,8 @@ private:
 public:
     Weapon(const std::string &projectile, size_t cooldown);
 
+    void shootAtPos(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter, int x, int y);
+
     virtual void shoot(EnginePtr engine, std::shared_ptr<Entity> shooter);
 
     virtual CollideResult projectileHit(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other);
