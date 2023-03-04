@@ -59,7 +59,7 @@ CollideResult Weapon::projectileHit(EnginePtr engine, std::shared_ptr<Entity> se
     auto otherTeam = other->getComponent<TeamComponent>();
     auto selfTeam = self->getComponent<TeamComponent>();
 
-    if (selfTeam == nullptr || otherTeam == nullptr || selfTeam->getTeam() == otherTeam->getTeam()) {
+    if (selfTeam == nullptr || (otherTeam != nullptr && selfTeam->getTeam() == otherTeam->getTeam())) {
         return CollideResult::NONE;
     }
 

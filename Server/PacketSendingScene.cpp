@@ -23,6 +23,9 @@
 #include "PacketSendingScene.h"
 #include "Engine/Network/Packets/EntityDestroyPacket.h"
 #include "Engine/Network/Packets/EntityInfoPacket.h"
+#include "Engine/Component/InanimateComponent.h"
+#include "Engine/Component/ColliderComponent.h"
+#include "Engine/Component/PhysicComponent.h"
 
 PacketSendingScene::PacketSendingScene(EntityManager &entityManager, const RTypeServerPtr &server) : Scene(
         entityManager), server(server) {}
@@ -74,8 +77,24 @@ void PacketSendingScene::filterEntities(std::function<bool(std::shared_ptr<Entit
     );
 }
 
+CollideResult mooveOther(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other) {
+    if (other->hasComponent<InanimateComponent>()) {
+        return CollideResult::NONE;
+    }
+    auto type = other->getComponent<EntityTypeComponent2>();
+
+    if (type != nullptr && type->getEntityType() == "player") {
+        other->getComponent<PhysicComponent>()->acceleration.x = -5;
+    }
+    return CollideResult::NONE;
+}
+
 std::shared_ptr<Entity> PacketSendingScene::createEntity(std::unique_ptr<Engine> &engine, const std::string &type, int x, int y) {
     auto entity = Scene::createEntity(engine, type, x, y);
+
+    if (entity->hasComponent<InanimateComponent>()) {
+        entity->addComponent<ColliderComponent>(mooveOther);
+    }
 
     EntityInfoPacket newEntityPacket(entity);
     server->broadcast(newEntityPacket);

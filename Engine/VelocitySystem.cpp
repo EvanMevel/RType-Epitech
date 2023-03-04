@@ -23,18 +23,62 @@
 #include <iostream>
 #include "VelocitySystem.h"
 #include "Engine/Engine.h"
+#include "InanimateComponent.h"
+#include "ColliderComponent.h"
+#include "Hitbox.h"
+#include "EntityTypeComponent2.h"
 
-void VelocitySystem::applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic) {
+void VelocitySystem::applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos,
+                                   std::shared_ptr<PhysicComponent> physic,
+                                   std::vector<std::pair<std::shared_ptr<Entity>, Hitbox>> inanimates) {
+
+
 
     // Add velocity to position
     pos->x += physic->velocity.x;
     pos->y += physic->velocity.y;
 
+    // Apply hitbox collision
+    auto hitboxComp = entity->getComponent<HitboxComponent>();
+
+    if (hitboxComp != nullptr && !entity->hasComponent<ColliderComponent>() && !entity->hasComponent<InanimateComponent>()) {
+        auto hitbox = Hitbox(pos, hitboxComp);
+
+        for (auto &inanimate: inanimates) {
+            if (hitbox.isColliding(inanimate.second)) {
+                pos->x -= physic->velocity.x;
+                pos->y -= physic->velocity.y;
+
+                physic->velocity.x = 0;
+                physic->velocity.y = 0;
+                physic->acceleration.x = 0;
+                physic->acceleration.y = 0;
+                break;
+            }
+        }
+    }
+
+    auto type = entity->getComponent<EntityTypeComponent2>();
+
+    if (type != nullptr && type->getEntityType() == "player") {
+        if (pos->x <= 0 || pos->y <= 0 || pos->y + hitboxComp->getHeight() >= 1000 ||
+            pos->x + hitboxComp->getWidth() >= 1820) {
+            pos->x -= physic->velocity.x;
+            pos->y -= physic->velocity.y;
+
+            physic->velocity.x = 0;
+            physic->velocity.y = 0;
+            physic->acceleration.x = 0;
+            physic->acceleration.y = 0;
+        }
+    }
+
     // Decrement velocity
     physic->velocity.decrementTo0(physic->velocitySlow);
 }
 
-bool VelocitySystem::applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity) {
+bool VelocitySystem::applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity,
+                                 std::vector<std::pair<std::shared_ptr<Entity>, Hitbox>> inanimates) {
     auto pos = entity->getComponent<PositionComponent>();
     auto physic = entity->getComponent<PhysicComponent>();
     if (pos != nullptr && physic != nullptr) {
@@ -55,7 +99,7 @@ bool VelocitySystem::applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entit
             physic->velocity.ensureNotGreater((int) physic->maxVelocity);
         }
 
-        applyVelocity(engine, entity, pos, physic);
+        applyVelocity(engine, entity, pos, physic, inanimates);
 
         return true;
     }
@@ -63,10 +107,18 @@ bool VelocitySystem::applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entit
 }
 
 void VelocitySystem::update(EnginePtr engine) {
-    count = (count + 1) % 4;
+    std::vector<std::pair<std::shared_ptr<Entity>, Hitbox>> inanimates;
     auto lock = engine->getScene()->obtainLock();
     for (auto &entity: engine->getScene()->getEntities()) {
-        if (applyPhysic(engine, entity)) {
+        auto hitboxComp = entity->getComponent<HitboxComponent>();
+        auto pos = entity->getComponent<PositionComponent>();
+        if (entity->hasComponent<InanimateComponent>() && hitboxComp != nullptr && pos != nullptr) {
+            auto hitbox = Hitbox(pos, hitboxComp);
+            inanimates.emplace_back(entity, hitbox);
+        }
+    }
+    for (auto &entity : engine->getScene()->getEntities()) {
+        if (applyPhysic(engine, entity, inanimates)) {
             entityMoved(engine, entity);
         }
     }
