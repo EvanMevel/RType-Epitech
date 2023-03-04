@@ -28,6 +28,7 @@
 #include "RTypeServer.h"
 #include "Engine/Component/PhysicComponent.h"
 #include "Engine/Component/EntityTypeComponent2.h"
+#include "Engine/Component/HitboxComponent.h"
 
 void BossSystem::myShoot(std::unique_ptr<Engine> &engine, std::shared_ptr<WeaponComponent> weapon){
     if (weapon->canShoot()) {
@@ -100,8 +101,10 @@ BossSystem::BossSystem(){
 
 void SynchronizedWeaponBossStage2::shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter) {
     auto posShooter = shooter->getComponent<PositionComponent>();
-    for (size_t i = 1; i <= _howMany; i++){
-        shootAtPos(engine, shooter, posShooter->getX(), posShooter->getY() + (i-1)*50);
+    auto hitbox = shooter->getComponent<HitboxComponent>();
+    for (size_t i = 2; i <= _howMany; i = i + 2){
+        shootAtPos(engine, shooter, posShooter->getX(), (int)(posShooter->getY() + (i-2)*30 + hitbox->getHeight()/2));
+        shootAtPos(engine, shooter, posShooter->getX(), (int)(posShooter->getY() - (i-2)*30 + hitbox->getHeight()/2));
     }
 }
 
