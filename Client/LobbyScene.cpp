@@ -22,7 +22,6 @@
 
 #include "LobbyScene.h"
 #include "TextComponent.h"
-#include "PlayGameComponent.h"
 #include "PlayGameSystem.h"
 
 std::shared_ptr<Scene> lobbyScene(EnginePtr engine){
@@ -47,8 +46,6 @@ std::shared_ptr<Scene> lobbyScene(EnginePtr engine){
     auto instructionText = instruction->addComponent<TextComponent>("Press Space to start the game",50);
     instructionText->setColor(ColorCodes::COLOR_ORANGE);
 
-    auto playGame = sc->createEntity();
-    playGame->addComponent<PlayGameComponent>();
 
     sc->addSystem<PlayGameSystem>();
     sc->addSystem<VelocitySystem>();

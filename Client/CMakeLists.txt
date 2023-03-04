@@ -63,7 +63,11 @@ add_executable(r-type-client
         OptionScene.cpp
         Musics.cpp
         TextComponent.cpp
-        TextSystem.cpp LobbyScene.cpp LobbyScene.h Consumers/StartGameConsumer.cpp Consumers/StartGameConsumer.h PlayGameComponent.cpp PlayGameComponent.h PlayGameSystem.cpp PlayGameSystem.h)
+        TextSystem.cpp
+
+        LobbyScene.cpp
+        Consumers/StartGameConsumer.cpp
+        PlayGameSystem.cpp)
 
 
 target_link_libraries(r-type-client eng raylib)

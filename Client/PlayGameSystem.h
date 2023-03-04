@@ -27,6 +27,8 @@
 #include "Engine/Engine.h"
 
 class PlayGameSystem: public ISystem {
+private:
+    bool alreadySent = false;
 public:
     void update(EnginePtr engine) override;
 };

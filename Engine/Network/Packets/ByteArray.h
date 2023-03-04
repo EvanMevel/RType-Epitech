@@ -81,8 +81,4 @@ ByteArray& operator<<(ByteArray &buffer, const Vector2i &value);
 
 ByteArray& operator>>(ByteArray &buffer, Vector2i &value);
 
-ByteArray& operator<<(ByteArray &buffer, const std::shared_ptr<Scene>);
-
-ByteArray& operator>>(ByteArray &buffer, std::shared_ptr<Scene>);
-
 #endif //R_TYPE_SERVER_BYTEARRAY_H

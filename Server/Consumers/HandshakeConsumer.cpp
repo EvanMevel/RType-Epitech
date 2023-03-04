@@ -29,6 +29,8 @@
 #include "Engine/Component/PlayerInfoComponent.h"
 #include "Engine/Network/Packets/PlayerInfoPacket.h"
 #include "Engine/ColliderHitboxSystem.h"
+#include "Engine/Component/EntityTypeComponent2.h"
+#include "Engine/Network/Packets/EntityInfoPacket.h"
 
 HandshakeConsumer::HandshakeConsumer(EnginePtr e) : RTypePacketConsumer(e) {}
 

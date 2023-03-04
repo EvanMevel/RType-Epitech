@@ -23,7 +23,8 @@ add_executable(r-type-server
 
         LevelSystem.cpp
         SynchronizedWeapon.cpp
-        Consumers/StartGameConsumer.cpp Consumers/StartGameConsumer.h Consumers/StartGameConsumer.cpp)
+
+        Consumers/StartGameConsumer.cpp)
 
 
 target_link_libraries(r-type-server eng)

@@ -34,7 +34,6 @@
 #include "NetworkListener.h"
 #include "Engine/Network/Packets/PacketConsumerException.h"
 #include "Engine/TimeUtil.h"
-#include "Engine/Network/Packets/EntityInfoPacket.h"
 
 /**
  * @brief NetClient describes a client connected to the server
