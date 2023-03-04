@@ -39,6 +39,7 @@
 #include "PlayerList.h"
 #include "LevelSystem.h"
 #include "SynchronizedWeapon.h"
+#include "BossCreator.h"
 
 std::atomic<bool> running = true;
 
@@ -112,6 +113,7 @@ int main()
     auto typeFactory = engine->registerModule<LuaEntityTypeFactory>();
     auto levelFactory = engine->registerModule<LuaLevelFactory>();
     auto weaponFactory = engine->registerIModule<LuaWeaponFactoryBase, LuaWeaponFactory<SynchronizedWeapon>>();
+    auto boss = engine->registerIModule<BossCreator, BossCreatorServer>();
 
     luaLoad->loadFolder("config");
     luaLoad->loadEntityTypes(typeFactory, weaponFactory);

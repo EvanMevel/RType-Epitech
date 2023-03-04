@@ -20,11 +20,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Musics.h"
+#include "BossSystem.h"
+#include "Engine/Component/HealthComponent.h"
+#include "Engine/Component/PositionComponent.h"
+#include "Engine/Component/CooldownComponent.h"
 
-
-void loadMusics(const std::shared_ptr<IGraphicLib> &lib){
-    lib->registerMusic(Musics::MAIN_MENU_MUSIC,"menu r-type.mp3");
-    lib->registerMusic(Musics::GAME_MUSIC,"r-type game.mp3");
-    lib->registerMusic(Musics::BOSS_MUSIC, "boss rtype.mp3");
+void BossSystem::myShoot(std::unique_ptr<Engine> &engine, std::shared_ptr<WeaponComponent> weapon){
+    if (weapon->canShoot()) {
+        weapon->setNextShot();
+        weapon->getWeapon()->shoot(engine, entity);
+    }
 }
+
+void BossSystem::update(std::unique_ptr<Engine> &engine) {
+    auto health = entity->getComponent<HealthComponent>()->getHealth();
+    auto maxHealth = entity->getComponent<HealthComponent>()->getMaxHealth();
+    auto weapon = entity->getComponent<WeaponComponent>();
+    entity->getComponent<PositionComponent>()->setX(500);
+    entity->getComponent<PositionComponent>()->setY(500);
+    if (weapon) {
+        if (health <= maxHealth * 0.75) {
+            //change weapon
+            myShoot(engine,weapon);
+        } else if (health <= maxHealth * 0.50) {
+
+        } else if (health <= maxHealth * 0.25) {
+
+        } else {
+            myShoot(engine,weapon);
+
+        }
+    }
+}
+
+BossSystem::BossSystem(const std::shared_ptr<Entity> &entity) : entity(entity) {}

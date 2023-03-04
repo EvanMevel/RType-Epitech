@@ -25,6 +25,7 @@
 #include "Engine.h"
 #include "PositionComponent.h"
 #include "engineLua/LuaEntityTypeFactory.h"
+#include "CreateBoss.h"
 
 Scene::~Scene() {
 }
@@ -140,11 +141,18 @@ void Scene::filterEntities(std::function<bool(std::shared_ptr<Entity>, EnginePtr
 }
 
 std::shared_ptr<Entity> Scene::createEntity(std::unique_ptr<Engine> &engine, const std::string &type, int x, int y) {
+
     std::shared_ptr<Entity> entity = createEntity();
 
     entity->addComponent<PositionComponent>(x, y);
-    auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
-    typeFactory->initEntity(entity, type);
+    if(type == "BOSS") {
+        engine->getModule<BossCreator>()->createBoss(engine, entity);
+
+    }else {
+        auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
+        typeFactory->initEntity(entity, type);
+        }
+
     return entity;
 }
 

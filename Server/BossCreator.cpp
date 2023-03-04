@@ -20,11 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Musics.h"
+#include "BossCreator.h"
+#include "BossSystem.h"
 
-
-void loadMusics(const std::shared_ptr<IGraphicLib> &lib){
-    lib->registerMusic(Musics::MAIN_MENU_MUSIC,"menu r-type.mp3");
-    lib->registerMusic(Musics::GAME_MUSIC,"r-type game.mp3");
-    lib->registerMusic(Musics::BOSS_MUSIC, "boss rtype.mp3");
+void BossCreatorServer::createBoss(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> entity) {
+    BossCreator::createBoss(engine, entity);
+    engine->getScene()->addSystem<BossSystem>(entity);
 }

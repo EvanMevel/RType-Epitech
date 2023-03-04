@@ -47,6 +47,7 @@
 #include "Client/Textures/LifeSystem.h"
 #include "Musics.h"
 #include "TextSystem.h"
+#include "BossCreator.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -139,6 +140,9 @@ void loadGraphsAndScenes(EnginePtr engine) {
     std::cout << "[Graphic] Textures ready" << std::endl;
 
     engine->getModule<LuaLoader>()->loadEntitySprites(lib);
+    auto bossSpriteSheets = lib->createSpriteSheet("r-typesheet32.gif");
+    auto sprite = bossSpriteSheets->createSprite(0, 0, 260, 143, 0, 4, 30, 1.0);
+    lib->getSpriteProperties()->registerValue("BOSS", sprite);
 
     std::cout << "[Graphic] Sprites ready" << std::endl;
     loadSounds(lib);
@@ -147,7 +151,6 @@ void loadGraphsAndScenes(EnginePtr engine) {
     std::cout << "[Graphic] Musics ready" << std::endl;
     loadScenes(engine);
     std::cout << "[Graphic] Scenes ready" << std::endl;
-
 
     lib->addSystem<ScrollingTextureSystem>();
     lib->addSystem<DrawFixTextureSystem>();
@@ -158,7 +161,6 @@ void loadGraphsAndScenes(EnginePtr engine) {
     lib->addSystem<LifeSystem>();
     lib->addSystem<CooldownSystem>();
     lib->addSystem<TextSystem>();
-
 
     graphicReady = true;
     cv.notify_all();
@@ -179,6 +181,7 @@ void loadAll() {
     auto typeFactory = engine->registerModule<LuaEntityTypeFactory>();
     auto levelFactory = engine->registerModule<LuaLevelFactory>();
     auto weaponFactory = engine->registerIModule<LuaWeaponFactoryBase, LuaWeaponFactory<Weapon>>();
+    auto boss = engine->registerIModule<BossCreator,BossCreatorClient>();
 
     luaLoad->loadFolder("config");
     luaLoad->loadEntityTypes(typeFactory, weaponFactory);

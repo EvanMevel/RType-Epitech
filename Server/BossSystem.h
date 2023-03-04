@@ -20,11 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Musics.h"
+#ifndef R_TYPE_SERVER_BOSSSYSTEM_H
+#define R_TYPE_SERVER_BOSSSYSTEM_H
 
 
-void loadMusics(const std::shared_ptr<IGraphicLib> &lib){
-    lib->registerMusic(Musics::MAIN_MENU_MUSIC,"menu r-type.mp3");
-    lib->registerMusic(Musics::GAME_MUSIC,"r-type game.mp3");
-    lib->registerMusic(Musics::BOSS_MUSIC, "boss rtype.mp3");
-}
+#include "Engine/ISystem.h"
+#include "Engine/Entity.h"
+#include "Engine/Component/WeaponComponent.h"
+
+class BossSystem : public ISystem {
+private:
+    std::shared_ptr<Entity> entity;
+public:
+    void update(std::unique_ptr<Engine> &engine) override;
+
+    void myShoot(std::unique_ptr<Engine> &engine, std::shared_ptr<WeaponComponent> weapon);
+
+    explicit BossSystem(const std::shared_ptr<Entity> &entity);
+};
+
+#endif //R_TYPE_SERVER_BOSSSYSTEM_H

@@ -63,7 +63,8 @@ add_executable(r-type-client
         OptionScene.cpp
         Musics.cpp
         TextComponent.cpp
-        TextSystem.cpp)
+        TextSystem.cpp
+        BossCreator.cpp)
 
 
 target_link_libraries(r-type-client eng raylib)

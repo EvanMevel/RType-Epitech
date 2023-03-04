@@ -20,34 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "EntityInfoConsumer.h"
-#include "Engine/EntityUtils.h"
-#include "Client/Textures/FixTextureComponent.h"
+#include "BossCreator.h"
 #include "Client/Sprites/SpriteComponent.h"
-#include "Client/Sounds.h"
-#include "Engine/engineLua/LuaEntityTypeFactory.h"
-#include "Client/BossCreator.h"
+#include "Musics.h"
 
-void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTypeServer server) {
-    auto entity = engine->getScene()->getOrCreateEntityById(packet.id);
-    entity->addComponent<PositionComponent>(packet.x, packet.y);
-
+void BossCreatorClient::createBoss(EnginePtr engine, std::shared_ptr<Entity> entity) {
+    BossCreator::createBoss(engine, entity);
     auto lib = engine->getModule<IGraphicLib>();
-    std::shared_ptr<SpriteProperty> spriteProp = nullptr;
-
-    auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
-    typeFactory->initEntity(entity, packet.type);
-
-    if (packet.type.find("projectile") != std::string::npos) {
-        spriteProp = lib->getSpriteProperties()->getValue(packet.type);
-    } else if (packet.type == "player") {
-        std::string spriteName = "player" + std::to_string(packet.entityInfo + 1);
-        spriteProp = lib->getSpriteProperties()->getValue(spriteName);
-    } else if (packet.type.find("enemy") != std::string::npos) {
-        spriteProp = lib->getSpriteProperties()->getValue(packet.type);
-    }else if(packet.type == "BOSS"){
-        engine->getModule<BossCreator>()->createBoss(engine, entity);
-    }
+    if (lib == nullptr)
+        return;
+    auto spriteComponent = entity->addComponent<SpriteComponent>();
+    auto spriteProp = lib->getSpriteProperties()->getValue("BOSS");
+    playMusic(engine->getModule<IGraphicLib>(),Musics::BOSS_MUSIC);
     if (spriteProp != nullptr) {
         auto sprite = spriteProp->createSprite(spriteProp);
         int spriteId = lib->getSprites()->add(sprite);
