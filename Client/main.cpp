@@ -52,6 +52,7 @@
 #include "Client/Consumers/StartGameConsumer.h"
 #include "Engine/BossCreator.h"
 #include "BossCreatorClient.h"
+#include "Client/Consumers/PacketWinConsumer.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -93,6 +94,8 @@ void loadNetwork(EnginePtr engine) {
     server->addSystem<StayAliveSystem>();
 
     server->addConsumer<StartGameConsumer>();
+
+    server->addConsumer<PacketWinConsumer>();
 
     auto ticker = engine->registerModule<TickUtil>(ENGINE_TPS);
 

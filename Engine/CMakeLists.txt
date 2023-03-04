@@ -79,6 +79,6 @@ add_library(eng
         Weapon.cpp
 
         BossCreator.cpp
-        )
+        Network/Packets/PacketWin.cpp Network/Packets/PacketWin.h)
 
 target_link_libraries(eng lua_static)

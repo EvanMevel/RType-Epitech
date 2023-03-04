@@ -28,16 +28,30 @@ std::shared_ptr<Level> LuaLevelFactory::createLevel(const std::string &name) {
     return level;
 }
 
+std::shared_ptr<Level> LuaLevelFactory::createLevel(const std::string &name, std::size_t end) {
+    auto level = std::make_shared<Level>(name, end);
+    _levels.push_back(level);
+    return level;
+}
+
 const std::vector<std::shared_ptr<Level>> &LuaLevelFactory::getLevels() const {
     return _levels;
 }
 
 [[maybe_unused]] int luaCreateLevel(lua_State *L) {
+    int argc = lua_gettop(L);
     LuaLevelFactory *levelList = (LuaLevelFactory*) lua_touserdata(L, 1);
 
     std::string name = lua_tostring(L, 2);
 
-    std::shared_ptr<Level> level = levelList->createLevel(name);
+    std::shared_ptr<Level> level;
+
+    if (argc == 3) {
+        int end = lua_tonumber(L, 3);
+        level = levelList->createLevel(name, end);
+    } else {
+        level = levelList->createLevel(name);
+    }
 
     lua_pushlightuserdata(L, level.get());
     luaL_setmetatable(L, "LuaLevel");

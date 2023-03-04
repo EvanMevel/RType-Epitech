@@ -34,7 +34,7 @@ static void ipButtonClick(EnginePtr engine, std::shared_ptr<Entity> entity) {
     engine->setScene(sc);
 }
 
-static void quitGame(EnginePtr engine, std::shared_ptr<Entity> entity) {
+void quitGame(EnginePtr engine, std::shared_ptr<Entity> entity) {
     auto lib = engine->getModule<IGraphicLib>();
     lib->execOnLibThread(closeWindow, lib);
 }

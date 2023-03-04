@@ -46,13 +46,16 @@ class Level {
 private:
     std::vector<LevelObject> _objects;
     std::string _name;
+    std::size_t _end;
 
 public:
     explicit Level(const std::string &name);
 
+    Level(const std::string &name, size_t end);
+
     void spawn(EnginePtr engine, const LevelObject &obj);
 
-    void update(int x, EnginePtr engine);
+    bool update(int x, EnginePtr engine);
 
     void addObject(const std::string &type, int x, int y);
 

@@ -47,16 +47,20 @@ void Level::spawn(std::unique_ptr<Engine> &engine, const LevelObject &obj) {
     engine->getScene()->createEntity(engine, obj.getType(), 2000, obj.getY());
 }
 
-void Level::update(int x, EnginePtr engine) {
+bool Level::update(int x, EnginePtr engine) {
+    if (x >= _end) {
+        return true;
+    }
     auto it = _objects.begin();
     while (it != _objects.end()) {
         if (it->getX() <= x) {
             spawn(engine, *it);
             it = _objects.erase(it);
         } else {
-            return;
+            return false;
         }
     }
+    return false;
 }
 
 void Level::addObject(const std::string &type, int x, int y) {
@@ -73,3 +77,5 @@ void Level::addObject(const std::string &type, int x, int y) {
 const std::string &Level::getName() const {
     return _name;
 }
+
+Level::Level(const std::string &name, size_t end) : _name(name), _end(end) {}

@@ -33,6 +33,8 @@ private:
 public:
     std::shared_ptr<Level> createLevel(const std::string &name);
 
+    std::shared_ptr<Level> createLevel(const std::string &name, std::size_t end);
+
     const std::vector<std::shared_ptr<Level>> &getLevels() const;
 };
 

@@ -26,17 +26,24 @@
 #include "Engine/Component/IAComponent.h"
 #include "Engine/Component/PhysicComponent.h"
 #include "Engine/Component/InanimateComponent.h"
+#include "Engine/Network/Packets/PacketWin.h"
 
 LevelSystem::LevelSystem(std::shared_ptr<Level> level) : _level(level) {
 
 }
 
 void LevelSystem::update(std::unique_ptr<Engine> &engine) {
+    if (finished)
+        return;
     RTypeServerPtr server = engine->getModule<RTypeServer>();
     if (server->getClientCount() == 0)
         return;
     _x += 1;
-    _level->update(_x, engine);
+    if (_level->update(_x, engine)) {
+        finished = true;
+        server->broadcast(PacketWin());
+        return;
+    }
 
     std::function<void(std::shared_ptr<Entity>)> moveEntity = [](std::shared_ptr<Entity> ent) {
         auto ia = ent->getComponent<IAComponent>();

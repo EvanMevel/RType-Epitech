@@ -29,6 +29,7 @@
 #include "Engine/Component/PhysicComponent.h"
 #include "Engine/Component/EntityTypeComponent2.h"
 #include "Engine/Component/HitboxComponent.h"
+#include "Engine/Network/Packets/PacketWin.h"
 
 void BossSystem::myShoot(std::unique_ptr<Engine> &engine, std::shared_ptr<WeaponComponent> weapon){
     if (weapon->canShoot()) {
@@ -38,6 +39,9 @@ void BossSystem::myShoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Weapon
 }
 
 void BossSystem::update(std::unique_ptr<Engine> &engine) {
+    if (finished) {
+        return;
+    }
     if (_entity == nullptr){
         std::function<void(std::shared_ptr<Entity>)> setter = std::bind(&BossSystem::setEntity, this, std::placeholders::_1);
         std::function<void(std::shared_ptr<Entity> entity, EnginePtr engine)> f = [setter](std::shared_ptr<Entity> entity, EnginePtr engine) {
@@ -53,6 +57,9 @@ void BossSystem::update(std::unique_ptr<Engine> &engine) {
     auto healthComponent = _entity->getComponent<HealthComponent>();
     auto health = healthComponent->getHealth();
     if (!healthComponent->isAlive()){
+        finished = true;
+        auto server = engine->getModule<RTypeServer>();
+        server->broadcast(PacketWin());
         return;
     }
     auto maxHealth = healthComponent->getMaxHealth();
