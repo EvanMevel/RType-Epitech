@@ -29,7 +29,8 @@
 
 void PongVelocitySystem::applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity,
                                        std::shared_ptr<PositionComponent> pos,
-                                       std::shared_ptr<PhysicComponent> physic) {
+                                       std::shared_ptr<PhysicComponent> physic,
+                                       std::vector<std::pair<std::shared_ptr<Entity>, Hitbox>> inanimates) {
     VelocitySystem::applyVelocity(engine, entity, pos, physic);
 
     if (entity->hasComponent<PlayerComponent>()) {

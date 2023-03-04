@@ -1,5 +1,9 @@
 
 
+function loadTextures(graphicLib)
+    registerTexture(graphicLib, "obstacle1", "texture.png")
+end
+
 function loadEntitySprites(graphicLib)
     playerSpriteSheet = createSpriteSheet(graphicLib, "r-typesheet42.gif")
 
@@ -23,7 +27,7 @@ function loadEntitySprites(graphicLib)
 end
 
 function loadPlayer(factory)
-    local player = registerEntityType(factory, "player", 100, 56)
+    local player = registerEntityType(factory, "player", 132, 56)
     player:addComponent("TeamComponent", 0)
     player:addComponent("HealthComponent", 100, 1000)
     player:addComponent("PhysicComponent", 10)
@@ -40,7 +44,6 @@ end
 
 function loadEnemy1(factory)
     local enemy1 = registerEntityType(factory, "enemy1", 99, 66)
-    enemy1:addComponent("TeamComponent", 1)
     enemy1:addComponent("TeamComponent", 1)
     enemy1:addComponent("HealthComponent", 50, 400)
     enemy1:addComponent("CooldownComponent", math.floor(ENGINE_TPS * 2))
@@ -68,6 +71,11 @@ function loadEntityTypes(factory)
     loadEnemy1(factory);
 
     loadEnemy2(factory);
+
+    local obstacle1 = registerEntityType(factory, "obstacle1", 200, 100)
+    obstacle1:addComponent("PhysicComponent")
+    obstacle1:addComponent("InanimateComponent")
+
 end
 
 function loadWeapons(factory)
@@ -81,4 +89,5 @@ function loadLevels(factory)
     level:addEnemy("enemy1", 0, 550);
     level:addEnemy("enemy2", 250, 100);
     level:addEnemy("enemy2", 500, 750);
+    level:addEnemy("obstacle1", 0, 900);
 end

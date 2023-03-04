@@ -55,3 +55,7 @@ std::vector<std::shared_ptr<SpriteSheet>> &IGraphicLib::getSpriteSheets() {
 const std::unique_ptr<CountRegistry<Sprite>> &IGraphicLib::getSprites() const {
     return _sprites;
 }
+
+const std::unique_ptr<StringRegistry<ITexture>> &IGraphicLib::getTexturesReg() const {
+    return _texturesReg;
+}

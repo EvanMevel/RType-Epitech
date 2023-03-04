@@ -33,6 +33,7 @@
 #include "LuaClass.h"
 #include "LuaType.h"
 #include "WeaponComponent.h"
+#include "InanimateComponent.h"
 
 LuaLoader::LuaLoader() {
     _lua.defineGlobal("ENGINE_TPS", ENGINE_TPS);
@@ -96,6 +97,10 @@ void addComponentConstructors(std::shared_ptr<LuaEntityTypeFactory> luaEntityTyp
 
     luaEntityTypeFactory->getComponentFactory().addComponent("IAComponent", [](std::shared_ptr<Entity> entity, std::vector<std::any> args) {
         entity->addComponent<IAComponent>();
+    });
+
+    luaEntityTypeFactory->getComponentFactory().addComponent("InanimateComponent", [](std::shared_ptr<Entity> entity, std::vector<std::any> args) {
+        entity->addComponent<InanimateComponent>();
     });
 
     std::function<void(std::shared_ptr<LuaWeaponFactoryBase>, std::shared_ptr<Entity>, std::vector<std::any>)> fu = [](std::shared_ptr<LuaWeaponFactoryBase> luaWeaponFactory, std::shared_ptr<Entity> entity, std::vector<std::any> args) {
@@ -185,6 +190,30 @@ int luaCreateSpriteSheet(lua_State *L) {
     lua_pushlightuserdata(L, spriteSheet.get());
 
     return 1;
+}
+
+int luaCreateTexture(lua_State *L) {
+    IGraphicLib *lib = (IGraphicLib*) lua_touserdata(L, 1);
+
+    std::string name = lua_tostring(L, 2);
+
+    std::string path = lua_tostring(L, 3);
+
+    auto texture = lib->createTexture(path);
+
+    lib->getTexturesReg()->registerValue(name, texture);
+
+    return 0;
+}
+
+void LuaLoader::loadTextures(std::shared_ptr<IGraphicLib> graphicLib) {
+    void *graphicLibPtr = graphicLib.get();
+
+    _lua.registerFunction("registerTexture", luaCreateTexture);
+
+    auto func = _lua.getFunction<VoidType, void*>("loadTextures");
+
+    func.call(graphicLibPtr);
 }
 
 void LuaLoader::loadEntitySprites(std::shared_ptr<IGraphicLib> graphicLib) {

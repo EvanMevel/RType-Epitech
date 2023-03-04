@@ -45,6 +45,7 @@
 #include "Client/Consumers/DamageConsumer.h"
 #include "Client/Textures/CooldownSystem.h"
 #include "Client/Textures/LifeSystem.h"
+#include "Client/Textures/DrawTextureNameSystem.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -138,7 +139,9 @@ void loadGraphsAndScenes(EnginePtr engine) {
     loadTextures(lib);
     std::cout << "[Graphic] Textures ready" << std::endl;
 
-    engine->getModule<LuaLoader>()->loadEntitySprites(lib);
+    auto luaLoad = engine->getModule<LuaLoader>();
+    luaLoad->loadEntitySprites(lib);
+    luaLoad->loadTextures(lib);
 
     std::cout << "[Graphic] Sprites ready" << std::endl;
     loadSounds(lib);
@@ -149,6 +152,7 @@ void loadGraphsAndScenes(EnginePtr engine) {
 
     lib->addSystem<ScrollingTextureSystem>();
     lib->addSystem<DrawFixTextureSystem>();
+    lib->addSystem<DrawTextureNameSystem>();
     lib->addSystem<DrawSpriteSystem>();
     lib->addSystem<AnimationSystem>();
     lib->addSystem<MouseSystem>();

@@ -20,35 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_LUALOADER_H
-#define R_TYPE_SERVER_LUALOADER_H
+#ifndef PONG_TEXTURENAMECOMPONENT_H
+#define PONG_TEXTURENAMECOMPONENT_H
 
-#include "LuaEntityTypeFactory.h"
-#include "LuaLevelFactory.h"
-#include "LuaWeaponFactory.h"
+#include <string>
+#include "Engine/Component/IComponent.h"
 
-class IGraphicLib;
+class TextureNameComponent : public IComponent {
 
-class LuaLoader {
 private:
-    LuaWrapper _lua;
+    std::string _textureName;
 
 public:
+    explicit TextureNameComponent(const std::string &textureName);
 
-    LuaLoader();
+    TextureNameComponent();
 
-    void loadFolder(const std::string &folderPath);
+    const std::string &getTextureName() const;
 
-    void loadFile(const std::string &filePath);
+    void setTextureName(const std::string &textureName);
 
-    void loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory, std::shared_ptr<LuaWeaponFactoryBase> luaWeaponFactory);
-
-    void loadEntitySprites(std::shared_ptr<IGraphicLib> graphicLib);
-
-    void loadLevels(std::shared_ptr<LuaLevelFactory> luaLevelParser);
-
-    void loadTextures(std::shared_ptr<IGraphicLib> graphicLib);
 };
 
 
-#endif //R_TYPE_SERVER_LUALOADER_H
+#endif //PONG_TEXTURENAMECOMPONENT_H

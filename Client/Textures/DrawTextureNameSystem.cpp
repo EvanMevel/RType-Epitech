@@ -20,35 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_LUALOADER_H
-#define R_TYPE_SERVER_LUALOADER_H
+#include "DrawTextureNameSystem.h"
+#include "Engine/Engine.h"
+#include "TextureNameComponent.h"
+#include "Engine/Component/PositionComponent.h"
 
-#include "LuaEntityTypeFactory.h"
-#include "LuaLevelFactory.h"
-#include "LuaWeaponFactory.h"
+void drawNameTexture(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entity) {
+    auto textureComponent = entity->getComponent<TextureNameComponent>();
+    auto posComponent = entity->getComponent<PositionComponent>();
+    if (textureComponent != nullptr && posComponent != nullptr) {
+        lib->drawTexture(lib->getTexturesReg()->getValue(textureComponent->getTextureName()),
+                         posComponent->getX(), posComponent->getY(), ColorCodes::COLOR_WHITE);
+    }
+}
 
-class IGraphicLib;
-
-class LuaLoader {
-private:
-    LuaWrapper _lua;
-
-public:
-
-    LuaLoader();
-
-    void loadFolder(const std::string &folderPath);
-
-    void loadFile(const std::string &filePath);
-
-    void loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory, std::shared_ptr<LuaWeaponFactoryBase> luaWeaponFactory);
-
-    void loadEntitySprites(std::shared_ptr<IGraphicLib> graphicLib);
-
-    void loadLevels(std::shared_ptr<LuaLevelFactory> luaLevelParser);
-
-    void loadTextures(std::shared_ptr<IGraphicLib> graphicLib);
-};
-
-
-#endif //R_TYPE_SERVER_LUALOADER_H
+void DrawTextureNameSystem::update(std::unique_ptr<Engine> &engine) {
+    auto lib = engine->getModule<IGraphicLib>();
+    if (lib == nullptr)
+        return;
+    if(engine->getScene() == nullptr)
+        return;
+    std::function<void(std::shared_ptr<Entity>)> draw = [&lib](std::shared_ptr<Entity> entity) {
+        drawNameTexture(lib, entity);
+    };
+    engine->getScene()->forEachEntity(draw);
+}

@@ -57,6 +57,7 @@ private:
     std::unordered_map<std::type_index, std::any> modules;
     std::vector<std::function<void()>> execs;
     std::unique_ptr<Registry<ITexture>> _textures = std::make_unique<Registry<ITexture>>();
+    std::unique_ptr<StringRegistry<ITexture>> _texturesReg = std::make_unique<StringRegistry<ITexture>>();
     std::unique_ptr<Registry<ISound>> _sounds = std::make_unique<Registry<ISound>>();
     std::vector<std::shared_ptr<SpriteSheet>> spriteSheets;
     std::unique_ptr<StringRegistry<SpriteProperty>> _spriteProperties = std::make_unique<StringRegistry<SpriteProperty>>();
@@ -122,6 +123,8 @@ public:
     }
 
     const std::unique_ptr<Registry<ITexture>> &getTextures();
+
+    const std::unique_ptr<StringRegistry<ITexture>> &getTexturesReg() const;
 
     const std::unique_ptr<StringRegistry<SpriteProperty>> &getSpriteProperties();
 

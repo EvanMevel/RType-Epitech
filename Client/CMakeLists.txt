@@ -59,7 +59,7 @@ add_executable(r-type-client
         TextBoxComponent.cpp
         TextBoxSystem.cpp
         CreateTextBox.cpp
-        EntityLinkComponent.cpp)
+        EntityLinkComponent.cpp Textures/TextureNameComponent.cpp Textures/TextureNameComponent.h Textures/DrawTextureNameSystem.cpp Textures/DrawTextureNameSystem.h)
 
 
 target_link_libraries(r-type-client eng raylib)
