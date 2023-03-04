@@ -72,7 +72,7 @@ add_executable(r-type-client
         LobbyScene.cpp
         PlayGameSystem.cpp
 
-        BossCreator.cpp
+        BossCreatorClient.cpp
         )
 
 

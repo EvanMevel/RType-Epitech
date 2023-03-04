@@ -20,4 +20,5 @@ void BossCreator::createBoss(EnginePtr engine,std::shared_ptr <Entity> entity) {
     entity->addComponent<TeamComponent>(1);
     entity->addComponent<CooldownComponent>();
     auto weaponFactory = engine->getModule<LuaWeaponFactoryBase>();
+    entity->addComponent<WeaponComponent>();
 }

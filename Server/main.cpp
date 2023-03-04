@@ -36,8 +36,8 @@
 #include "PlayerList.h"
 #include "SynchronizedWeapon.h"
 #include "Server/Consumers/StartGameConsumer.h"
-#include "BossCreator.h"
-#include "BossSystem.h"
+#include "Engine/BossCreator.h"
+#include "BossCreatorServer.h"
 
 std::atomic<bool> running = true;
 

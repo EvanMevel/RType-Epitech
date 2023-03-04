@@ -78,9 +78,7 @@ add_library(eng
 
         Weapon.cpp
 
-        CreateBoss.cpp
-
-
+        BossCreator.cpp
         )
 
 target_link_libraries(eng lua_static)

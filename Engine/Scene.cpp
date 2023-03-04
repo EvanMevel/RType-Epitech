@@ -26,7 +26,7 @@
 #include "PositionComponent.h"
 #include "engineLua/LuaEntityTypeFactory.h"
 #include "InanimateComponent.h"
-#include "CreateBoss.h"
+#include "BossCreator.h"
 
 Scene::~Scene() {
 }
