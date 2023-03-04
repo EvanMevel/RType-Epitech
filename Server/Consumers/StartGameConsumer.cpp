@@ -36,6 +36,7 @@
 #include "Engine/ColliderHitboxSystem.h"
 #include "Server/LevelSystem.h"
 #include "Engine/engineLua/LuaLevelFactory.h"
+#include "Server/BossSystem.h"
 
 bool StartGameConsumer::gameStarted = false;
 
@@ -66,6 +67,7 @@ void StartGameConsumer::consume(StartGamePacket &packet, std::shared_ptr<NetClie
     sc->addSystem<EnemyShootSystem>();
     sc->addSystem<ColliderHitboxSystem>();
     sc->addSystem<LevelSystem>(level);
+    sc->addSystem<BossSystem>();
 
     e->setScene(sc);
 
