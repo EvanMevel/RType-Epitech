@@ -23,19 +23,19 @@
 #include "Level.h"
 #include "Engine.h"
 
-LevelEnemy::LevelEnemy(const std::string &type, int x, int y) : _type(type), _x(x), _y(y) {
+LevelObject::LevelObject(const std::string &type, int x, int y) : _type(type), _x(x), _y(y) {
 
 }
 
-[[maybe_unused]] const std::string &LevelEnemy::getType() const {
+[[maybe_unused]] const std::string &LevelObject::getType() const {
     return _type;
 }
 
-int LevelEnemy::getX() const {
+int LevelObject::getX() const {
     return _x;
 }
 
-int LevelEnemy::getY() const {
+int LevelObject::getY() const {
     return _y;
 }
 
@@ -43,31 +43,31 @@ Level::Level(const std::string &name) : _name(name) {
 
 }
 
-void Level::spawn(std::unique_ptr<Engine> &engine, const LevelEnemy &enemy) {
-    engine->getScene()->createEntity(engine, enemy.getType(), 1800, enemy.getY());
+void Level::spawn(std::unique_ptr<Engine> &engine, const LevelObject &obj) {
+    engine->getScene()->createEntity(engine, obj.getType(), 1800, obj.getY());
 }
 
 void Level::update(int x, EnginePtr engine) {
-    auto it = _enemies.begin();
-    while (it != _enemies.end()) {
+    auto it = _objects.begin();
+    while (it != _objects.end()) {
         if (it->getX() <= x) {
             spawn(engine, *it);
-            it = _enemies.erase(it);
+            it = _objects.erase(it);
         } else {
             return;
         }
     }
 }
 
-void Level::addEnemy(const std::string &type, int x, int y) {
-    auto it = _enemies.begin();
-    while (it != _enemies.end()) {
+void Level::addObject(const std::string &type, int x, int y) {
+    auto it = _objects.begin();
+    while (it != _objects.end()) {
         if (it->getX() > x) {
             break;
         }
         it++;
     }
-    _enemies.insert(it, LevelEnemy{type, x, y});
+    _objects.insert(it, LevelObject{type, x, y});
 }
 
 const std::string &Level::getName() const {

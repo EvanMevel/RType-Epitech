@@ -26,6 +26,7 @@ add_executable(r-type-client
         Textures/HudCooldownComponent.cpp
         Textures/CooldownSystem.cpp
         Textures/TextureNameComponent.cpp
+        Textures/DrawTextureNameSystem.cpp
 
         Consumers/PingPacketConsumer.cpp
         Consumers/HandshakeResponseConsumer.cpp

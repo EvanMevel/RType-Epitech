@@ -52,6 +52,7 @@ add_library(eng
         Component/ProjectileComponent.cpp
         Component/WeaponComponent.cpp
         Component/InanimateComponent.cpp
+        Component/CollectableComponent.cpp
 
         engineLua/LuaWrapper.cpp
         engineLua/LuaEntityType.cpp

@@ -20,13 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef PONG_PLAYERCOLLISION_H
-#define PONG_PLAYERCOLLISION_H
+#ifndef PONG_COLLECTABLECOMPONENT_H
+#define PONG_COLLECTABLECOMPONENT_H
 
 
-#include "Engine/Component/ColliderComponent.h"
+#include "IComponent.h"
+#include "ColliderComponent.h"
 
-CollideResult playerCollision(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other);
+class CollectableComponent : public IComponent {
+private:
+    std::string type;
+    std::string value;
+
+public:
+    CollectableComponent(const std::string &type, const std::string &value);
+
+    const std::string &getType() const;
+
+    const std::string &getValue() const;
+
+};
+
+CollideResult onCollisionCollectableComponent(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other);
 
 
-#endif //PONG_PLAYERCOLLISION_H
+#endif //PONG_COLLECTABLECOMPONENT_H

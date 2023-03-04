@@ -45,13 +45,13 @@ const std::vector<std::shared_ptr<Level>> &LuaLevelFactory::getLevels() const {
     return 1;
 }
 
-[[maybe_unused]] int luaAddEnemyToLevel(lua_State *L) {
+[[maybe_unused]] int luaAddObjectToLevel(lua_State *L) {
     Level *level = (Level*) luaL_checkudata(L, 1, "LuaLevel");
 
     std::string type = lua_tostring(L, 2);
     int x = lua_tonumber(L, 3);
     int y = lua_tonumber(L, 4);
 
-    level->addEnemy(type, x, y);
+    level->addObject(type, x, y);
     return 0;
 }
