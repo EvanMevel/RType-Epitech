@@ -27,16 +27,46 @@
 #include "Engine/ISystem.h"
 #include "Engine/Entity.h"
 #include "Engine/Component/WeaponComponent.h"
+#include "SynchronizedWeapon.h"
 
 class BossSystem : public ISystem {
 private:
-    std::shared_ptr<Entity> entity;
+    size_t currentStage = 0;
+    std::shared_ptr<Weapon> currentWeapon = _weaponStage1;
+    std::shared_ptr<Entity> _entity;
+    std::shared_ptr<Weapon> _weaponStage1;
+    std::shared_ptr<Weapon> _weaponStage2;
+    std::shared_ptr<Weapon> _weaponStage3;
+    std::shared_ptr<Weapon> _weaponStage4;
+
 public:
     void update(std::unique_ptr<Engine> &engine) override;
 
     void myShoot(std::unique_ptr<Engine> &engine, std::shared_ptr<WeaponComponent> weapon);
 
-    explicit BossSystem(const std::shared_ptr<Entity> &entity);
+    explicit BossSystem();
+
+    void setEntity(const std::shared_ptr<Entity> &entity);
+
+    template<class WeaponType, class ...Args>
+    std::shared_ptr<Weapon> createWeapon(Args&&... args){
+        return std::make_shared<WeaponType>(args...);
+    }
+};
+
+class SynchronizedWeaponBossStage2 : public SynchronizedWeapon {
+private:
+    size_t _howMany;
+public:
+    void shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter) override;
+
+    CollideResult projectileHit(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> self,
+                                std::shared_ptr<Entity> other) override;
+
+    void onDamage(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> cause, std::shared_ptr<Entity> victim,
+                  int damage) override;
+
+    SynchronizedWeaponBossStage2(const std::string &projectile, size_t cooldown, size_t howMany);
 };
 
 #endif //R_TYPE_SERVER_BOSSSYSTEM_H

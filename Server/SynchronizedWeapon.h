@@ -30,12 +30,12 @@ public:
 
     SynchronizedWeapon(const std::string &projectile, size_t cooldown);
 
-    void shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter) override;
+    virtual void shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter) override;
 
-    CollideResult projectileHit(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> self,
+    virtual CollideResult projectileHit(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> self,
                                 std::shared_ptr<Entity> other) override;
 
-    void onDamage(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> cause, std::shared_ptr<Entity> victim,
+    virtual void onDamage(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> cause, std::shared_ptr<Entity> victim,
                   int damage) override;
 
 };

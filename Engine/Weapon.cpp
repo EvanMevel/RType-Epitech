@@ -33,15 +33,14 @@ Weapon::Weapon(const std::string &projectile, size_t cooldown) : _projectile(pro
     _projectileHit = std::bind(&Weapon::projectileHit, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 }
 
-void Weapon::shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter) {
+void Weapon::shootAtPos(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter, int x, int y){
     auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
-    auto pos = shooter->getComponent<PositionComponent>();
     auto team = shooter->getComponent<TeamComponent>();
 
-    if (!pos || !team) {
+    if (!team) {
         return;
     }
-    auto projectile = engine->getScene()->unsafeCreateEntity(engine, _projectile, pos->x, pos->y + 20);
+    auto projectile = engine->getScene()->unsafeCreateEntity(engine, _projectile, x, y);
 
     projectile->getComponent<PhysicComponent>()->velocity.x = team->getTeam() == 0 ? 10 : -10;
 
@@ -49,6 +48,15 @@ void Weapon::shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shoo
 
     projectile->addComponent<TeamComponent>(team->getTeam());
 
+}
+
+void Weapon::shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter) {
+    auto pos = shooter->getComponent<PositionComponent>();
+
+    if (!pos) {
+        return;
+    }
+    shootAtPos(engine, shooter, pos->getX(), pos->getY() + 20);
 }
 
 void Weapon::onDamage(EnginePtr engine, std::shared_ptr<Entity> cause, std::shared_ptr<Entity> victim, int damage) {

@@ -140,8 +140,8 @@ void loadGraphsAndScenes(EnginePtr engine) {
     std::cout << "[Graphic] Textures ready" << std::endl;
 
     engine->getModule<LuaLoader>()->loadEntitySprites(lib);
-    auto bossSpriteSheets = lib->createSpriteSheet("r-typesheet32.gif");
-    auto sprite = bossSpriteSheets->createSprite(0, 0, 260, 143, 0, 4, 30, 1.0);
+    auto bossSpriteSheets = lib->createSpriteSheet("r-typesheet32rotate.gif");
+    auto sprite = bossSpriteSheets->createSprite(0, 0, 143, 260, 4, 0, 30, 3.0);
     lib->getSpriteProperties()->registerValue("BOSS", sprite);
 
     std::cout << "[Graphic] Sprites ready" << std::endl;

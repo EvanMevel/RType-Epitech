@@ -40,6 +40,7 @@
 #include "LevelSystem.h"
 #include "SynchronizedWeapon.h"
 #include "BossCreator.h"
+#include "BossSystem.h"
 
 std::atomic<bool> running = true;
 
@@ -101,6 +102,7 @@ void createScene(EnginePtr engine, std::shared_ptr<Level> level) {
     sc->addSystem<EnemyShootSystem>();
     sc->addSystem<ColliderHitboxSystem>();
     sc->addSystem<LevelSystem>(level);
+    sc->addSystem<BossSystem>();
 
     engine->setScene(sc);
 }

@@ -23,34 +23,107 @@
 #include "BossSystem.h"
 #include "Engine/Component/HealthComponent.h"
 #include "Engine/Component/PositionComponent.h"
-#include "Engine/Component/CooldownComponent.h"
+#include "Engine/Network/Packets/EntityVelocityPacket.h"
+#include "Engine/TickUtil.h"
+#include "RTypeServer.h"
+#include "Engine/Component/PhysicComponent.h"
+#include "Engine/Component/EntityTypeComponent2.h"
 
 void BossSystem::myShoot(std::unique_ptr<Engine> &engine, std::shared_ptr<WeaponComponent> weapon){
     if (weapon->canShoot()) {
         weapon->setNextShot();
-        weapon->getWeapon()->shoot(engine, entity);
+        weapon->getWeapon()->shoot(engine, _entity);
     }
 }
 
 void BossSystem::update(std::unique_ptr<Engine> &engine) {
-    auto health = entity->getComponent<HealthComponent>()->getHealth();
-    auto maxHealth = entity->getComponent<HealthComponent>()->getMaxHealth();
-    auto weapon = entity->getComponent<WeaponComponent>();
-    entity->getComponent<PositionComponent>()->setX(500);
-    entity->getComponent<PositionComponent>()->setY(500);
-    if (weapon) {
-        if (health <= maxHealth * 0.75) {
-            //change weapon
-            myShoot(engine,weapon);
-        } else if (health <= maxHealth * 0.50) {
-
-        } else if (health <= maxHealth * 0.25) {
-
-        } else {
-            myShoot(engine,weapon);
-
+    if (_entity == nullptr){
+        std::function<void(std::shared_ptr<Entity>)> setter = std::bind(&BossSystem::setEntity, this, std::placeholders::_1);
+        std::function<void(std::shared_ptr<Entity> entity, EnginePtr engine)> f = [setter](std::shared_ptr<Entity> entity, EnginePtr engine) {
+            auto type = entity->getComponent<EntityTypeComponent2>();
+            if (type == nullptr || type->getEntityType().find("BOSS") == std::string::npos) {
+                return;
+            }
+            setter(entity);
+        };
+        engine->getScene()->forEachEntity(f, engine);
+        return;
+    }
+    auto healthComponent = _entity->getComponent<HealthComponent>();
+    auto health = healthComponent->getHealth();
+    if (!healthComponent->isAlive()){
+        return;
+    }
+    auto maxHealth = healthComponent->getMaxHealth();
+    auto weaponComponent = _entity->getComponent<WeaponComponent>();
+    _entity->getComponent<PositionComponent>()->setY(120);
+    auto physicComponent = _entity->getComponent<PhysicComponent>();
+    if(_entity->getComponent<PositionComponent>()->getX() > 1500){
+        physicComponent->velocity.x = -2;
+    }
+    auto ticker = engine->getModule<TickUtil>();
+    EntityVelocityPacket packet(_entity, ticker->getCurrentTick());
+    engine->getModule<RTypeServer>()->broadcast(packet);
+    if (health <= maxHealth * 0.10) {
+        if (currentStage != 4){
+            currentStage = 4;
+            currentWeapon = _weaponStage4;
+            weaponComponent->setWeapon(currentWeapon);
         }
+        myShoot(engine,weaponComponent);
+    } else if (health <= maxHealth * 0.50) {
+        if (currentStage != 3){
+            currentStage = 3;
+            currentWeapon = _weaponStage3;
+            weaponComponent->setWeapon(currentWeapon);
+        }
+        myShoot(engine,weaponComponent);
+    } else if (health <= maxHealth * 0.75) {
+        if (currentStage != 2){
+            currentStage = 2;
+            currentWeapon = _weaponStage2;
+            weaponComponent->setWeapon(currentWeapon);
+        }
+        myShoot(engine,weaponComponent);
+    } else {
+        if (currentStage != 1){
+            currentStage = 1;
+            currentWeapon = _weaponStage1;
+            weaponComponent->setWeapon(currentWeapon);
+        }
+        myShoot(engine,weaponComponent);
     }
 }
 
-BossSystem::BossSystem(const std::shared_ptr<Entity> &entity) : entity(entity) {}
+void BossSystem::setEntity(const std::shared_ptr<Entity> &entity) {
+    _entity = entity;
+}
+
+BossSystem::BossSystem(){
+    _weaponStage1 = createWeapon<SynchronizedWeaponBossStage2>("projectile2",(size_t)(ENGINE_TPS),4);
+    _weaponStage2 = createWeapon<SynchronizedWeaponBossStage2>("projectile2",(size_t)(ENGINE_TPS/1.5),8);
+    _weaponStage3 = createWeapon<SynchronizedWeaponBossStage2>("projectile2",(size_t)(ENGINE_TPS/2),12);
+    _weaponStage4 = createWeapon<SynchronizedWeaponBossStage2>("projectile2",(size_t)(ENGINE_TPS/2.5),16);
+}
+
+void SynchronizedWeaponBossStage2::shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter) {
+    auto posShooter = shooter->getComponent<PositionComponent>();
+    for (size_t i = 1; i <= _howMany; i++){
+        shootAtPos(engine, shooter, posShooter->getX(), posShooter->getY() + (i-1)*50);
+    }
+}
+
+SynchronizedWeaponBossStage2::SynchronizedWeaponBossStage2(const std::string &projectile, size_t cooldown, size_t howMany)
+        : SynchronizedWeapon(projectile, cooldown) {
+    _howMany = howMany;
+}
+
+CollideResult SynchronizedWeaponBossStage2::projectileHit(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> self,
+                                                          std::shared_ptr<Entity> other) {
+    return SynchronizedWeapon::projectileHit(engine, self, other);
+}
+
+void SynchronizedWeaponBossStage2::onDamage(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> cause,
+                                            std::shared_ptr<Entity> victim, int damage) {
+    SynchronizedWeapon::onDamage(engine, cause, victim, damage);
+}

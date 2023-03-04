@@ -14,8 +14,8 @@
 
 void BossCreator::createBoss(EnginePtr engine,std::shared_ptr <Entity> entity) {
     entity->addComponent<PhysicComponent>();
-    entity->addComponent<HealthComponent>();
-    entity->addComponent<HitboxComponent>(260,143);
+    entity->addComponent<HealthComponent>(400);
+    entity->addComponent<HitboxComponent>(143*3,260*3);
     entity->addComponent<EntityTypeComponent2>("BOSS");
     entity->addComponent<TeamComponent>(1);
     entity->addComponent<CooldownComponent>();
