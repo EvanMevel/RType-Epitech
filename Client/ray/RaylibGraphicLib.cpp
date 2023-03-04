@@ -33,6 +33,7 @@ RaylibGraphicLib::RaylibGraphicLib() {
     colors[ColorCodes::COLOR_GREEN] = ray::GREEN;
     colors[ColorCodes::COLOR_BLUE] = ray::BLUE;
     colors[ColorCodes::COLOR_YELLOW] = ray::YELLOW;
+    colors[ColorCodes::COLOR_ORANGE] = ray::ORANGE;
 }
 
 IWindow &RaylibGraphicLib::createWindow(int width, int height, std::string title) {
@@ -144,4 +145,19 @@ int RaylibGraphicLib::getCharPressed() {
 
 bool RaylibGraphicLib::isKeyPressed(int key) {
     return ray::IsKeyPressed(key);
+}
+
+void RaylibGraphicLib::stopMusic(std::shared_ptr<IMusic> ptr) {
+    ray::Music raylibMusic = std::any_cast<ray::Music>(ptr->music);
+    ray::StopMusicStream(raylibMusic);
+}
+
+void RaylibGraphicLib::setVolumeMusic(std::shared_ptr<IMusic> ptr, float volume) {
+    ray::Music raylibMusic = std::any_cast<ray::Music>(ptr->music);
+    ray::SetMusicVolume(raylibMusic, volume);
+}
+
+void RaylibGraphicLib::setVolumeSound(std::shared_ptr<ISound> ptr, float volume) {
+    ray::Sound raylibSound = std::any_cast<ray::Sound>(ptr->sound);
+    ray::SetSoundVolume(raylibSound, volume);
 }

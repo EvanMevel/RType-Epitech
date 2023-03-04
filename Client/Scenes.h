@@ -31,7 +31,8 @@
 enum class Scenes {
     MAIN_MENU = 0,
     GAME = 1,
-    IP_MENU = 2
+    IP_MENU = 2,
+    OPTION_MENU = 3
 };
 
 void loadScenes(EnginePtr engine);

@@ -34,6 +34,8 @@
 class FixTextureComponent : public IComponent {
 protected:
     Textures textureId;
+    float rotation = 0.0;
+    float scale = 1.0;
 public:
     explicit FixTextureComponent();
 
@@ -42,6 +44,14 @@ public:
     Textures getTextureId() const;
 
     void setTextureId(Textures textureId);
+
+    float getRotation() const;
+
+    void setRotation(float rotation);
+
+    float getScale() const;
+
+    void setScale(float scale);
 };
 
 
