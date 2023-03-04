@@ -25,6 +25,7 @@
 #include "Engine.h"
 #include "PositionComponent.h"
 #include "engineLua/LuaEntityTypeFactory.h"
+#include "InanimateComponent.h"
 
 Scene::~Scene() {
 }

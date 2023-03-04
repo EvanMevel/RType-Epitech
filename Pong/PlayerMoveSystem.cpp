@@ -60,7 +60,7 @@ void playerMove(EnginePtr engine, std::shared_ptr<Entity> entity) {
         }
         if (keys->space && !ball->shoot) {
             ball->shoot = true;
-            physicsComponent->velocity = Vector2i(1, 2);
+            physicsComponent->velocity = Vector2i(2, 2);
         }
     }
 }

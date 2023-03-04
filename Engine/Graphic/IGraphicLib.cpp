@@ -75,3 +75,7 @@ float IGraphicLib::getVolume() const {
 void IGraphicLib::setVolume(float volume) {
     _volume = volume;
 }
+
+const std::unique_ptr<StringRegistry<ITexture>> &IGraphicLib::getTexturesReg() const {
+    return _texturesReg;
+}

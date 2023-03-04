@@ -8,6 +8,7 @@ add_executable(r-type-server
         Consumers/HandshakeConsumer.cpp
         Consumers/PlayerMoveConsumer.cpp
         Consumers/PlayerShootConsumer.cpp
+        Consumers/StartGameConsumer.cpp
 
         ClientData.cpp
         RTypeServer.cpp
@@ -23,8 +24,7 @@ add_executable(r-type-server
 
         LevelSystem.cpp
         SynchronizedWeapon.cpp
-
-        Consumers/StartGameConsumer.cpp)
+        )
 
 
 target_link_libraries(r-type-server eng)

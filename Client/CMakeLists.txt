@@ -25,6 +25,7 @@ add_executable(r-type-client
         Textures/LifeSystem.cpp
         Textures/HudCooldownComponent.cpp
         Textures/CooldownSystem.cpp
+        Textures/TextureNameComponent.cpp
 
         Consumers/PingPacketConsumer.cpp
         Consumers/HandshakeResponseConsumer.cpp
@@ -34,6 +35,7 @@ add_executable(r-type-client
         Consumers/EntityVelocityPacketConsumer.cpp
         Consumers/ProjectileHitConsumer.cpp
         Consumers/DamageConsumer.cpp
+        Consumers/StartGameConsumer.cpp
 
         Sprites/SpriteComponent.cpp
         Sprites/DrawSpriteSystem.cpp
@@ -65,9 +67,11 @@ add_executable(r-type-client
         TextComponent.cpp
         TextSystem.cpp
 
+
         LobbyScene.cpp
-        Consumers/StartGameConsumer.cpp
-        PlayGameSystem.cpp)
+        PlayGameSystem.cpp
+
+        )
 
 
 target_link_libraries(r-type-client eng raylib)

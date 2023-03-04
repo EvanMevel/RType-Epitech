@@ -25,6 +25,7 @@
 #include "RTypeServer.h"
 #include "Engine/Component/IAComponent.h"
 #include "Engine/Component/PhysicComponent.h"
+#include "Engine/Component/InanimateComponent.h"
 
 LevelSystem::LevelSystem(std::shared_ptr<Level> level) : _level(level) {
 
@@ -39,8 +40,9 @@ void LevelSystem::update(std::unique_ptr<Engine> &engine) {
 
     std::function<void(std::shared_ptr<Entity>)> moveEntity = [](std::shared_ptr<Entity> ent) {
         auto ia = ent->getComponent<IAComponent>();
+        auto inanim = ent->getComponent<InanimateComponent>();
         auto phys = ent->getComponent<PhysicComponent>();
-        if (ia && phys) {
+        if ((ia || inanim) && phys) {
             phys->velocity.x -= 1;
         }
     };
