@@ -77,7 +77,7 @@ void BossSystem::update(std::unique_ptr<Engine> &engine) {
     }
     else{
         physicComponent->velocity.y = 2;
-        if (_entity->getComponent<PositionComponent>()->getY() > 320){
+        if (_entity->getComponent<PositionComponent>()->getY() > 280){
             goUp = true;
         }
     }
