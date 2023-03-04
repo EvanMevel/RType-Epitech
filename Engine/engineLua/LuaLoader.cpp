@@ -34,6 +34,7 @@
 #include "LuaType.h"
 #include "WeaponComponent.h"
 #include "InanimateComponent.h"
+#include "CollectableComponent.h"
 
 LuaLoader::LuaLoader() {
     _lua.defineGlobal("ENGINE_TPS", ENGINE_TPS);
@@ -103,6 +104,11 @@ void addComponentConstructors(std::shared_ptr<LuaEntityTypeFactory> luaEntityTyp
         entity->addComponent<InanimateComponent>();
     });
 
+    luaEntityTypeFactory->getComponentFactory().addComponent("CollectableComponent", [](std::shared_ptr<Entity> entity, std::vector<std::any> args) {
+        entity->addComponent<CollectableComponent>(std::any_cast<std::string>(args[0]), std::any_cast<std::string>(args[1]));
+        entity->addComponent<ColliderComponent>(onCollisionCollectableComponent);
+    });
+
     std::function<void(std::shared_ptr<LuaWeaponFactoryBase>, std::shared_ptr<Entity>, std::vector<std::any>)> fu = [](std::shared_ptr<LuaWeaponFactoryBase> luaWeaponFactory, std::shared_ptr<Entity> entity, std::vector<std::any> args) {
         auto weapon = luaWeaponFactory->getWeapon(std::any_cast<std::string>(args[0]));
         entity->addComponent<WeaponComponent>(weapon);
@@ -143,7 +149,7 @@ void LuaLoader::loadLevels(std::shared_ptr<LuaLevelFactory> luaLevelParser) {
     _lua.registerFunction("createLevel", luaCreateLevel);
 
     auto level = LuaClass(_lua, "LuaLevel", -1);
-    level.registerFunction("addEnemy", luaAddEnemyToLevel);
+    level.registerFunction("addObject", luaAddObjectToLevel);
     level.done();
 
     auto func = _lua.getFunction<VoidType, void *>("loadLevels");

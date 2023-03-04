@@ -2,6 +2,7 @@
 
 function loadTextures(graphicLib)
     registerTexture(graphicLib, "obstacle1", "texture.png")
+    registerTexture(graphicLib, "weapon1", "weapon1.png")
 end
 
 function loadEntitySprites(graphicLib)
@@ -62,6 +63,13 @@ function loadEnemy2(factory)
     enemy2:addComponent("WeaponComponent", "weapon2")
 end
 
+function loadWeapon1(factory)
+    local weapon1 = registerEntityType(factory, "weapon1", 50, 50)
+    weapon1:addComponent("IAComponent")
+    weapon1:addComponent("CollectableComponent", "weapon", "weapon2")
+    weapon1:addComponent("PhysicComponent")
+end
+
 function loadEntityTypes(factory)
 
     loadPlayer(factory);
@@ -71,6 +79,8 @@ function loadEntityTypes(factory)
     loadEnemy1(factory);
 
     loadEnemy2(factory);
+
+    loadWeapon1(factory);
 
     local obstacle1 = registerEntityType(factory, "obstacle1", 200, 100)
     obstacle1:addComponent("PhysicComponent")
@@ -85,9 +95,10 @@ end
 
 function loadLevels(factory)
     local level = createLevel(factory, "Level 1");
-    level:addEnemy("enemy1", 0, 450);
-    level:addEnemy("enemy1", 0, 550);
-    level:addEnemy("enemy2", 250, 100);
-    level:addEnemy("enemy2", 500, 750);
-    level:addEnemy("obstacle1", 0, 900);
+    level:addObject("enemy1", 0, 450);
+    level:addObject("enemy1", 0, 550);
+    level:addObject("enemy2", 250, 100);
+    level:addObject("enemy2", 500, 750);
+    level:addObject("obstacle1", 0, 900);
+    level:addObject("weapon1", 0, 620);
 end

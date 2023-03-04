@@ -20,38 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "LuaLevelFactory.h"
+#ifndef PONG_COLLECTABLECOMPONENT_H
+#define PONG_COLLECTABLECOMPONENT_H
 
-std::shared_ptr<Level> LuaLevelFactory::createLevel(const std::string &name) {
-    auto level = std::make_shared<Level>(name);
-    _levels.push_back(level);
-    return level;
-}
 
-const std::vector<std::shared_ptr<Level>> &LuaLevelFactory::getLevels() const {
-    return _levels;
-}
+#include "IComponent.h"
+#include "ColliderComponent.h"
 
-[[maybe_unused]] int luaCreateLevel(lua_State *L) {
-    LuaLevelFactory *levelList = (LuaLevelFactory*) lua_touserdata(L, 1);
+class CollectableComponent : public IComponent {
+private:
+    std::string type;
+    std::string value;
 
-    std::string name = lua_tostring(L, 2);
+public:
+    CollectableComponent(const std::string &type, const std::string &value);
 
-    std::shared_ptr<Level> level = levelList->createLevel(name);
+    const std::string &getType() const;
 
-    lua_pushlightuserdata(L, level.get());
-    luaL_setmetatable(L, "LuaLevel");
+    const std::string &getValue() const;
 
-    return 1;
-}
+};
 
-[[maybe_unused]] int luaAddObjectToLevel(lua_State *L) {
-    Level *level = (Level*) luaL_checkudata(L, 1, "LuaLevel");
+CollideResult onCollisionCollectableComponent(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other);
 
-    std::string type = lua_tostring(L, 2);
-    int x = lua_tonumber(L, 3);
-    int y = lua_tonumber(L, 4);
 
-    level->addObject(type, x, y);
-    return 0;
-}
+#endif //PONG_COLLECTABLECOMPONENT_H
