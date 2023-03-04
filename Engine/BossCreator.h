@@ -2,8 +2,8 @@
 // Created by aaama on 03/03/2023.
 //
 
-#ifndef PONG_CREATEBOSS_H
-#define PONG_CREATEBOSS_H
+#ifndef PONG_BOSSCREATOR_H
+#define PONG_BOSSCREATOR_H
 
 
 #include "Entity.h"
@@ -18,4 +18,4 @@ public:
 };
 
 
-#endif //PONG_CREATEBOSS_H
+#endif //PONG_BOSSCREATOR_H

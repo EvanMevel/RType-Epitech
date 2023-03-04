@@ -67,32 +67,24 @@ void BossSystem::update(std::unique_ptr<Engine> &engine) {
     if (health <= maxHealth * 0.10) {
         if (currentStage != 4){
             currentStage = 4;
-            currentWeapon = _weaponStage4;
-            weaponComponent->setWeapon(currentWeapon);
+            weaponComponent->setWeapon(_weaponStage4);
         }
-        myShoot(engine,weaponComponent);
     } else if (health <= maxHealth * 0.50) {
         if (currentStage != 3){
             currentStage = 3;
-            currentWeapon = _weaponStage3;
-            weaponComponent->setWeapon(currentWeapon);
+            weaponComponent->setWeapon(_weaponStage3);
         }
-        myShoot(engine,weaponComponent);
     } else if (health <= maxHealth * 0.75) {
         if (currentStage != 2){
             currentStage = 2;
-            currentWeapon = _weaponStage2;
-            weaponComponent->setWeapon(currentWeapon);
+            weaponComponent->setWeapon(_weaponStage2);
         }
-        myShoot(engine,weaponComponent);
     } else {
         if (currentStage != 1){
             currentStage = 1;
-            currentWeapon = _weaponStage1;
-            weaponComponent->setWeapon(currentWeapon);
+            weaponComponent->setWeapon(_weaponStage1);
         }
-        myShoot(engine,weaponComponent);
-    }
+    }myShoot(engine,weaponComponent);
 }
 
 void BossSystem::setEntity(const std::shared_ptr<Entity> &entity) {

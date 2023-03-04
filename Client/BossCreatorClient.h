@@ -20,9 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "BossCreator.h"
-#include "BossSystem.h"
+#ifndef R_TYPE_SERVER_BOSSCREATOR_H
+#define R_TYPE_SERVER_BOSSCREATOR_H
 
-void BossCreatorServer::createBoss(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> entity) {
-    BossCreator::createBoss(engine, entity);
-}
+
+#include "Engine/BossCreator.h"
+#include "Engine/Graphic/IGraphicLib.h"
+#include "Engine/Engine.h"
+
+class BossCreatorClient : public BossCreator{
+public:
+    void createBoss(EnginePtr engine, std::shared_ptr<Entity> entity) override;
+};
+
+
+#endif //R_TYPE_SERVER_BOSSCREATOR_H

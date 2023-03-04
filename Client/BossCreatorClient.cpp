@@ -20,18 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_BOSSCREATOR_H
-#define R_TYPE_SERVER_BOSSCREATOR_H
+#include "BossCreatorClient.h"
+#include "Client/Sprites/SpriteComponent.h"
+#include "Musics.h"
 
-
-#include "Engine/CreateBoss.h"
-#include "Engine/Graphic/IGraphicLib.h"
-#include "Engine/Engine.h"
-
-class BossCreatorClient : public BossCreator{
-public:
-    void createBoss(EnginePtr engine, std::shared_ptr<Entity> entity) override;
-};
-
-
-#endif //R_TYPE_SERVER_BOSSCREATOR_H
+void BossCreatorClient::createBoss(EnginePtr engine, std::shared_ptr<Entity> entity) {
+    BossCreator::createBoss(engine, entity);
+    auto lib = engine->getModule<IGraphicLib>();
+    if (lib == nullptr)
+        return;
+    auto spriteComponent = entity->addComponent<SpriteComponent>();
+    auto spriteProp = lib->getSpriteProperties()->getValue("BOSS");
+    playMusic(engine->getModule<IGraphicLib>(),Musics::BOSS_MUSIC);
+    if (spriteProp != nullptr) {
+        auto sprite = spriteProp->createSprite(spriteProp);
+        int spriteId = lib->getSprites()->add(sprite);
+        entity->getOrCreate<SpriteComponent>()->setSpriteId(spriteId);
+    }
+}

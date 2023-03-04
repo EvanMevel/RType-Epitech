@@ -47,7 +47,7 @@
 #include "Client/Textures/LifeSystem.h"
 #include "Musics.h"
 #include "TextSystem.h"
-#include "BossCreator.h"
+#include "BossCreatorClient.h"
 #include <mutex>
 #include <condition_variable>
 

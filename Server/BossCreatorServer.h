@@ -24,8 +24,8 @@
 #define R_TYPE_SERVER_BOSSCREATOR_H
 
 #include <memory>
-#include "Engine/CreateBoss.h"
-#include "BossCreator.h"
+#include "Engine/BossCreator.h"
+#include "BossCreatorServer.h"
 #include "Engine/Engine.h"
 
 class BossCreatorServer : public BossCreator {

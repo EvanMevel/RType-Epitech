@@ -39,7 +39,7 @@
 #include "PlayerList.h"
 #include "LevelSystem.h"
 #include "SynchronizedWeapon.h"
-#include "BossCreator.h"
+#include "BossCreatorServer.h"
 #include "BossSystem.h"
 
 std::atomic<bool> running = true;

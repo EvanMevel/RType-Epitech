@@ -2,7 +2,7 @@
 // Created by aaama on 03/03/2023.
 //
 
-#include "CreateBoss.h"
+#include "BossCreator.h"
 #include "HealthComponent.h"
 #include "PhysicComponent.h"
 #include "HitboxComponent.h"
@@ -20,6 +20,4 @@ void BossCreator::createBoss(EnginePtr engine,std::shared_ptr <Entity> entity) {
     entity->addComponent<TeamComponent>(1);
     entity->addComponent<CooldownComponent>();
     auto weaponFactory = engine->getModule<LuaWeaponFactoryBase>();
-    auto weapon = weaponFactory->getWeapon("weapon2");
-    entity->addComponent<WeaponComponent>(weapon);
 }

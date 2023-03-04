@@ -64,7 +64,7 @@ add_executable(r-type-client
         Musics.cpp
         TextComponent.cpp
         TextSystem.cpp
-        BossCreator.cpp)
+        BossCreatorClient.cpp)
 
 
 target_link_libraries(r-type-client eng raylib)

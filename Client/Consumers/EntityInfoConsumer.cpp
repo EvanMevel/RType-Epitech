@@ -26,7 +26,7 @@
 #include "Client/Sprites/SpriteComponent.h"
 #include "Client/Sounds.h"
 #include "Engine/engineLua/LuaEntityTypeFactory.h"
-#include "Client/BossCreator.h"
+#include "Client/BossCreatorClient.h"
 
 void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTypeServer server) {
     auto entity = engine->getScene()->getOrCreateEntityById(packet.id);

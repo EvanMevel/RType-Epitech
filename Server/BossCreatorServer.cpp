@@ -20,21 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "BossCreator.h"
-#include "Client/Sprites/SpriteComponent.h"
-#include "Musics.h"
+#include "BossCreatorServer.h"
+#include "BossSystem.h"
 
-void BossCreatorClient::createBoss(EnginePtr engine, std::shared_ptr<Entity> entity) {
+void BossCreatorServer::createBoss(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> entity) {
     BossCreator::createBoss(engine, entity);
-    auto lib = engine->getModule<IGraphicLib>();
-    if (lib == nullptr)
-        return;
-    auto spriteComponent = entity->addComponent<SpriteComponent>();
-    auto spriteProp = lib->getSpriteProperties()->getValue("BOSS");
-    playMusic(engine->getModule<IGraphicLib>(),Musics::BOSS_MUSIC);
-    if (spriteProp != nullptr) {
-        auto sprite = spriteProp->createSprite(spriteProp);
-        int spriteId = lib->getSprites()->add(sprite);
-        entity->getOrCreate<SpriteComponent>()->setSpriteId(spriteId);
-    }
 }

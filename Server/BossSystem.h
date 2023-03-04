@@ -32,7 +32,6 @@
 class BossSystem : public ISystem {
 private:
     size_t currentStage = 0;
-    std::shared_ptr<Weapon> currentWeapon = _weaponStage1;
     std::shared_ptr<Entity> _entity;
     std::shared_ptr<Weapon> _weaponStage1;
     std::shared_ptr<Weapon> _weaponStage2;
