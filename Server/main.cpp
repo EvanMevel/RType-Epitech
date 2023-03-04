@@ -31,14 +31,11 @@
 #include "Server/Consumers/PlayerMoveConsumer.h"
 #include "Server/Consumers/PlayerShootConsumer.h"
 #include "TimeoutSystem.h"
-#include "ServerVelocitySystem.h"
-#include "ProjectileCleanupSystem.h"
-#include "EnemyShootSystem.h"
 #include "PacketSendingScene.h"
 #include "Levels.h"
 #include "PlayerList.h"
-#include "LevelSystem.h"
 #include "SynchronizedWeapon.h"
+#include "Server/Consumers/StartGameConsumer.h"
 
 std::atomic<bool> running = true;
 
@@ -50,7 +47,7 @@ void runServer(EnginePtr engine) {
     srv->addConsumer<HandshakeConsumer>(engine);
     srv->addConsumer<PlayerMoveConsumer>(engine);
     srv->addConsumer<PlayerShootConsumer>(engine);
-
+    srv->addConsumer<StartGameConsumer>(engine);
 
     srv->addSystem<TimeoutSystem>();
 
@@ -94,12 +91,6 @@ void createScene(EnginePtr engine, std::shared_ptr<Level> level) {
 
     RTypeServerPtr srv = engine->registerModule<RTypeServer>(engine, serverIp, serverport);
     auto sc = engine->createScene<PacketSendingScene>(srv);
-
-    sc->addSystem<ServerVelocitySystem>();
-    sc->addSystem<ProjectileCleanupSystem>();
-    sc->addSystem<EnemyShootSystem>();
-    sc->addSystem<ColliderHitboxSystem>();
-    sc->addSystem<LevelSystem>(level);
 
     engine->setScene(sc);
 }

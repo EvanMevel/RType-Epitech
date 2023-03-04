@@ -20,18 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_CLIENT_TEXTSYSTEM_H
-#define R_TYPE_CLIENT_TEXTSYSTEM_H
+#ifndef PONG_PLAYGAMESYSTEM_H
+#define PONG_PLAYGAMESYSTEM_H
 
 
-#include "Engine/ISystem.h"
 #include "Engine/Engine.h"
 
-class TextSystem : public ISystem {
+class PlayGameSystem: public ISystem {
+private:
+    bool alreadySent = false;
 public:
     void update(EnginePtr engine) override;
-
 };
 
 
-#endif //R_TYPE_CLIENT_TEXTSYSTEM_H
+#endif //PONG_PLAYGAMESYSTEM_H

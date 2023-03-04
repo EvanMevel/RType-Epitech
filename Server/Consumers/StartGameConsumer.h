@@ -20,18 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_CLIENT_TEXTSYSTEM_H
-#define R_TYPE_CLIENT_TEXTSYSTEM_H
+#ifndef PONG_STARTGAMECONSUMER_H
+#define PONG_STARTGAMECONSUMER_H
 
 
-#include "Engine/ISystem.h"
 #include "Engine/Engine.h"
+#include "Engine/Network/Packets/HandshakePacket.h"
+#include "Engine/Network/NetServer.h"
+#include "Server/ClientData.h"
+#include "Server/RTypeServer.h"
+#include "Engine/Network/Packets/StartGamePacket.h"
 
-class TextSystem : public ISystem {
+
+class StartGameConsumer: public RTypePacketConsumer<StartGamePacket> {
 public:
-    void update(EnginePtr engine) override;
+    static bool gameStarted;
 
+    explicit StartGameConsumer(EnginePtr e);
+
+    void consume(StartGamePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) override;
 };
 
 
-#endif //R_TYPE_CLIENT_TEXTSYSTEM_H
+#endif //PONG_STARTGAMECONSUMER_H
