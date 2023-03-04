@@ -20,18 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_CLIENT_TEXTSYSTEM_H
-#define R_TYPE_CLIENT_TEXTSYSTEM_H
+#include "StartGameConsumer.h"
+#include "Client/Scenes.h"
+#include "Engine/SceneHolder.h"
+#include "Client/Musics.h"
 
-
-#include "Engine/ISystem.h"
-#include "Engine/Engine.h"
-
-class TextSystem : public ISystem {
-public:
-    void update(EnginePtr engine) override;
-
-};
-
-
-#endif //R_TYPE_CLIENT_TEXTSYSTEM_H
+void StartGameConsumer::consume(StartGamePacket &packet, std::unique_ptr<Engine> &engine, RTypeServer server) {
+    auto sceneHolder = engine->getModule<SceneHolder>();
+    auto sc = sceneHolder->getValue(Scenes::GAME);
+    engine->setScene(sc);
+    playMusic(engine->getModule<IGraphicLib>(),Musics::GAME_MUSIC);
+}

@@ -27,6 +27,7 @@
 #include "ipScene.h"
 #include "OptionScene.h"
 #include "Musics.h"
+#include "LobbyScene.h"
 
 void loadScenes(EnginePtr engine) {
     auto sceneHolder = engine->registerModule<SceneHolder>();
@@ -37,4 +38,5 @@ void loadScenes(EnginePtr engine) {
     sceneHolder->registerValue(Scenes::IP_MENU, ipScene(engine));
     sceneHolder->registerValue(Scenes::GAME, gameScene(engine));
     sceneHolder->registerValue(Scenes::OPTION_MENU, optionScene(engine));
+    sceneHolder->registerValue(Scenes::LOBBY_MENU, lobbyScene(engine));
 }

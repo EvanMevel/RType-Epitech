@@ -20,18 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_CLIENT_TEXTSYSTEM_H
-#define R_TYPE_CLIENT_TEXTSYSTEM_H
+#include "StartGamePacket.h"
 
+void StartGamePacket::write(ByteArray &buffer) const {
 
-#include "Engine/ISystem.h"
-#include "Engine/Engine.h"
+}
 
-class TextSystem : public ISystem {
-public:
-    void update(EnginePtr engine) override;
+void StartGamePacket::read(ByteArray &buffer) {
 
-};
-
-
-#endif //R_TYPE_CLIENT_TEXTSYSTEM_H
+}

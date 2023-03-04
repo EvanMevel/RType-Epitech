@@ -20,18 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_CLIENT_TEXTSYSTEM_H
-#define R_TYPE_CLIENT_TEXTSYSTEM_H
+#ifndef PONG_STARTGAMEPACKET_H
+#define PONG_STARTGAMEPACKET_H
 
 
-#include "Engine/ISystem.h"
-#include "Engine/Engine.h"
+#include "IPacket.h"
 
-class TextSystem : public ISystem {
+class StartGamePacket : public IPacket {
 public:
-    void update(EnginePtr engine) override;
+    static const int ID = 18;
 
+    void write(ByteArray &buffer) const override;
+
+    void read(ByteArray &buffer) override;
 };
-
-
-#endif //R_TYPE_CLIENT_TEXTSYSTEM_H
+#endif //PONG_STARTGAMEPACKET_H

@@ -20,18 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_CLIENT_TEXTSYSTEM_H
-#define R_TYPE_CLIENT_TEXTSYSTEM_H
+#ifndef PONG_LOBBYSCENE_H
+#define PONG_LOBBYSCENE_H
 
 
-#include "Engine/ISystem.h"
+#include "Engine/Scene.h"
+#include "Engine/EntityType.h"
+#include "Engine/Entity.h"
 #include "Engine/Engine.h"
+#include "Engine/Graphic/IGraphicLib.h"
+#include "Client/Textures/Textures.h"
+#include "Client/Textures/CreateScrollingTexture.h"
+#include "Engine/VelocitySystem.h"
+#include "CreateTextBox.h"
+#include "Engine/SceneHolder.h"
+#include "ClientNetServer.h"
+#include "Engine/Network/Packets/HandshakePacket.h"
+#include "Scenes.h"
 
-class TextSystem : public ISystem {
-public:
-    void update(EnginePtr engine) override;
+std::shared_ptr<Scene> lobbyScene(EnginePtr engine);
 
-};
-
-
-#endif //R_TYPE_CLIENT_TEXTSYSTEM_H
+#endif //PONG_LOBBYSCENE_H
