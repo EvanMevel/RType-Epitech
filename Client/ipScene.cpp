@@ -25,7 +25,6 @@
 #include "TextBoxComponent.h"
 #include "EntityLinkComponent.h"
 
-
 void getTextboxStr(std::shared_ptr<Entity> entity, std::shared_ptr<ClientNetServer> server) {
 
     auto textBoxComponent= entity->getComponent<TextBoxComponent>();

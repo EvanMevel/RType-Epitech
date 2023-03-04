@@ -22,8 +22,8 @@ void PlayGameSystem::update(std::unique_ptr<Engine> &engine) {
         return;
     if(engine->getScene() == nullptr)
         return;
-    std::function<void(std::shared_ptr<Entity>)> draw = [&lib, &engine](std::shared_ptr<Entity> entity) {
+    std::function<void(std::shared_ptr<Entity>)> play = [&lib, &engine](std::shared_ptr<Entity> entity) {
         playGame(lib, entity, engine);
     };
-    engine->getScene()->forEachEntity(draw);
+    engine->getScene()->forEachEntity(play);
 }

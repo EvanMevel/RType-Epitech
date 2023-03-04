@@ -26,7 +26,7 @@
 #include <sstream>
 #include "Engine/Vector2i.h"
 #include "Engine/EngineTypes.h"
-
+#include "Engine/Scene.h"
 /**
  * @brief ByteArray is a buffer of bytes that can be used to serialize and deserialize data
  */
@@ -81,5 +81,8 @@ ByteArray& operator<<(ByteArray &buffer, const Vector2i &value);
 
 ByteArray& operator>>(ByteArray &buffer, Vector2i &value);
 
+ByteArray& operator<<(ByteArray &buffer, const std::shared_ptr<Scene>);
+
+ByteArray& operator>>(ByteArray &buffer, std::shared_ptr<Scene>);
 
 #endif //R_TYPE_SERVER_BYTEARRAY_H

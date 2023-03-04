@@ -4,9 +4,6 @@
 
 #include "LobbyScene.h"
 #include "TextComponent.h"
-#include "Musics.h"
-#include "Client/Textures/CreateButton.h"
-#include "EntityLinkComponent.h"
 #include "PlayGameComponent.h"
 #include "PlayGameSystem.h"
 

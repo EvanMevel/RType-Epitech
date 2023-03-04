@@ -19,6 +19,8 @@
 #include "Server/LevelSystem.h"
 #include "Engine/engineLua/LuaLevelFactory.h"
 
+bool StartGameConsumer::gameStarted = false;
+
 StartGameConsumer::StartGameConsumer(EnginePtr e) : RTypePacketConsumer(e) {}
 
 static void sendEntitiesInfo(const std::shared_ptr<NetClient>& client, std::shared_ptr<Scene> scene) {
@@ -35,6 +37,7 @@ static void sendEntitiesInfo(const std::shared_ptr<NetClient>& client, std::shar
 
 void StartGameConsumer::consume(StartGamePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) {
 
+    StartGameConsumer::gameStarted = true;
     // Create Scene
     auto server = e->getModule<RTypeServer>();
     auto sc = e->createScene<PacketSendingScene>(server);
@@ -51,13 +54,11 @@ void StartGameConsumer::consume(StartGamePacket &packet, std::shared_ptr<NetClie
     // Send Packet to all clients
     StartGamePacket startGame;
     server->broadcast(startGame);
-    std::cout << "sent packet" << std::endl;
 
     // Send Entity info to all clients
-    std::shared_ptr<std::vector<EntityInfoPacket>> packetList = std::make_shared<std::vector<EntityInfoPacket>>();
     EnginePtr engine = e;
 
-    std::function<void(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> &data)> func = [&engine, &packetList](std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> &data) {
+    std::function<void(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> &data)> func = [&engine](std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> &data) {
         // Init player
         auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
         auto player = engine->getScene()->createEntity();
@@ -72,18 +73,11 @@ void StartGameConsumer::consume(StartGamePacket &packet, std::shared_ptr<NetClie
         // Send player info to client then send all entities to client
         PlayerInfoPacket playerInfo(player);
         client->sendPacket(playerInfo);
-        sendEntitiesInfo(client, engine->getScene());
-
-        // Send new player info to all other clients
-        EntityInfoPacket newPlayerInfo(player);
-        packetList->push_back(newPlayerInfo);
     };
 
     server->forEachClient(func);
-    auto it = packetList->begin();
-    while (it != packetList->end()) {
-        server->broadcast(*it, client);
-        it++;
-    }
-
+    std::function<void(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> &data)> func2 = [&engine](std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> &data) {
+        sendEntitiesInfo(client, engine->getScene());
+    };
+    server->forEachClient(func2);
 }

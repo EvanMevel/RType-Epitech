@@ -13,8 +13,11 @@
 #include "Server/RTypeServer.h"
 #include "Engine/Network/Packets/StartGamePacket.h"
 
+
 class StartGameConsumer: public RTypePacketConsumer<StartGamePacket> {
 public:
+    static bool gameStarted;
+
     explicit StartGameConsumer(EnginePtr e);
 
     void consume(StartGamePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) override;

@@ -22,15 +22,13 @@
 
 #include "HandshakeConsumer.h"
 #include "Engine/Network/Packets/HandshakeResponsePacket.h"
-#include "Engine/EntityUtils.h"
-#include "Engine/Network/Packets/PlayerInfoPacket.h"
 #include "Engine/TickUtil.h"
-#include "Engine/Network/Packets/EntityInfoPacket.h"
-#include "Engine/Component/PlayerInfoComponent.h"
-#include "Server/PlayerList.h"
 #include "Engine/engineLua/LuaEntityTypeFactory.h"
-#include "Engine/Component/WeaponComponent.h"
-#include "Server/SynchronizedWeapon.h"
+#include "StartGameConsumer.h"
+#include "Server/PlayerList.h"
+#include "Engine/Component/PlayerInfoComponent.h"
+#include "Engine/Network/Packets/PlayerInfoPacket.h"
+#include "Engine/ColliderHitboxSystem.h"
 
 HandshakeConsumer::HandshakeConsumer(EnginePtr e) : RTypePacketConsumer(e) {}
 
@@ -57,5 +55,28 @@ void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClie
     HandshakeResponsePacket responsePacket(HandshakeResponsePacketType::OK, ticker->getCurrentTick(), startedMs);
     client->sendPacket(responsePacket);
 
+    if (StartGameConsumer::gameStarted) {
+        StartGamePacket startGame;
+        server->broadcast(startGame);
 
+        // Init player
+        auto typeFactory = e->getModule<LuaEntityTypeFactory>();
+        auto player = e->getScene()->createEntity();
+        typeFactory->initEntity(player, "player");
+        player->addComponent<PositionComponent>(100, 100);
+        data->playerId = player->getId();
+        auto playerList = e->getModule<PlayerList>();
+        int playerNumber = playerList->getAvailable();
+        player->addComponent<PlayerInfoComponent>(playerNumber);
+        data->playerNumber = playerNumber;
+
+        // Send player info to client then send all entities to client
+        PlayerInfoPacket playerInfo(player);
+        client->sendPacket(playerInfo);
+        sendEntitiesInfo(client, e->getScene());
+
+        // Send new player info to all other clients
+        EntityInfoPacket newPlayerInfo(player);
+        server->broadcast(newPlayerInfo, client);
+    }
 }

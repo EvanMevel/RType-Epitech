@@ -31,13 +31,9 @@
 #include "Server/Consumers/PlayerMoveConsumer.h"
 #include "Server/Consumers/PlayerShootConsumer.h"
 #include "TimeoutSystem.h"
-#include "ServerVelocitySystem.h"
-#include "ProjectileCleanupSystem.h"
-#include "EnemyShootSystem.h"
 #include "PacketSendingScene.h"
 #include "Levels.h"
 #include "PlayerList.h"
-#include "LevelSystem.h"
 #include "SynchronizedWeapon.h"
 #include "Server/Consumers/StartGameConsumer.h"
 
