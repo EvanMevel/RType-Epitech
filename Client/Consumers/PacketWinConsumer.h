@@ -20,23 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_CLIENT_LEVELSYSTEM_H
-#define R_TYPE_CLIENT_LEVELSYSTEM_H
+#ifndef PONG_PACKETWINCONSUMER_H
+#define PONG_PACKETWINCONSUMER_H
 
+#include "Engine/Network/Packets/PacketWin.h"
+#include "Client/ClientNetServer.h"
 
-#include "Engine/ISystem.h"
-#include "Engine/Level.h"
-
-class LevelSystem : public ISystem {
-private:
-    std::shared_ptr<Level> _level;
-    int _x = 0;
-    bool finished = false;
+class PacketWinConsumer : public ClientPacketConsumer<PacketWin>{
 public:
-    explicit LevelSystem(std::shared_ptr<Level> level);
+    PacketWinConsumer();
 
-    void update(std::unique_ptr<Engine> &engine) override;
+    void consume(PacketWin &packet, std::unique_ptr<Engine> &engine, RTypeServer server) override;
 };
 
 
-#endif //R_TYPE_CLIENT_LEVELSYSTEM_H
+#endif //PONG_PACKETWINCONSUMER_H

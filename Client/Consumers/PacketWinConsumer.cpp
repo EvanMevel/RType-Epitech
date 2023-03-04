@@ -20,23 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_CLIENT_LEVELSYSTEM_H
-#define R_TYPE_CLIENT_LEVELSYSTEM_H
+#include "PacketWinConsumer.h"
+#include "Engine/Component/PositionComponent.h"
+#include "Client/TextComponent.h"
 
+void PacketWinConsumer::consume(PacketWin &packet, EnginePtr engine, RTypeServer server) {
+    auto lib = engine->getModule<IGraphicLib>();
+    auto height = lib->getWindow().getHeight();
+    auto width = lib->getWindow().getWidth();
 
-#include "Engine/ISystem.h"
-#include "Engine/Level.h"
+    auto title = engine->getScene()->createEntity();
+    title->addComponent<PositionComponent>((width / 2) - 350, (height / 3) - (400 / 2));
+    auto titleText = title->addComponent<TextComponent>("YOU WON !", 200);
+    titleText->setColor(ColorCodes::COLOR_ORANGE);
+}
 
-class LevelSystem : public ISystem {
-private:
-    std::shared_ptr<Level> _level;
-    int _x = 0;
-    bool finished = false;
-public:
-    explicit LevelSystem(std::shared_ptr<Level> level);
-
-    void update(std::unique_ptr<Engine> &engine) override;
-};
-
-
-#endif //R_TYPE_CLIENT_LEVELSYSTEM_H
+PacketWinConsumer::PacketWinConsumer() {}

@@ -20,23 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_CLIENT_LEVELSYSTEM_H
-#define R_TYPE_CLIENT_LEVELSYSTEM_H
+#ifndef PONG_PACKETWIN_H
+#define PONG_PACKETWIN_H
 
 
-#include "Engine/ISystem.h"
-#include "Engine/Level.h"
+#include "IPacket.h"
 
-class LevelSystem : public ISystem {
-private:
-    std::shared_ptr<Level> _level;
-    int _x = 0;
-    bool finished = false;
+class PacketWin : public IPacket {
 public:
-    explicit LevelSystem(std::shared_ptr<Level> level);
+    static const int ID = 20;
 
-    void update(std::unique_ptr<Engine> &engine) override;
+    PacketWin();
+
+    void write(ByteArray &buffer) const override;
+
+    void read(ByteArray &buffer) override;
 };
 
 
-#endif //R_TYPE_CLIENT_LEVELSYSTEM_H
+#endif //PONG_PACKETWIN_H

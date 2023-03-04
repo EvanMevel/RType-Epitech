@@ -73,7 +73,7 @@ add_executable(r-type-client
         PlayGameSystem.cpp
 
         BossCreatorClient.cpp
-        )
+        Consumers/PacketWinConsumer.cpp Consumers/PacketWinConsumer.h)
 
 
 target_link_libraries(r-type-client eng raylib)

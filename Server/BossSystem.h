@@ -37,6 +37,7 @@ private:
     std::shared_ptr<Weapon> _weaponStage2;
     std::shared_ptr<Weapon> _weaponStage3;
     std::shared_ptr<Weapon> _weaponStage4;
+    bool finished = false;
 
 public:
     void update(std::unique_ptr<Engine> &engine) override;
