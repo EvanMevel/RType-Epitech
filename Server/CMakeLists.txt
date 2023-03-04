@@ -23,7 +23,7 @@ add_executable(r-type-server
 
         LevelSystem.cpp
         SynchronizedWeapon.cpp
-        PlayerCollision.cpp PlayerCollision.h)
+        )
 
 
 target_link_libraries(r-type-server eng)

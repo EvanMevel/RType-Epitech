@@ -57,6 +57,7 @@ add_library(eng
         engineLua/LuaClass.cpp
         engineLua/LuaType.cpp
         engineLua/LuaLevelFactory.cpp
+        engineLua/LuaWeaponFactory.cpp
 
         EntityManager.cpp
         TimeUtil.cpp
@@ -72,6 +73,10 @@ add_library(eng
 
         Weapon.cpp
 
-        Component/ProjectileComponent.cpp Component/ProjectileComponent.h Component/WeaponComponent.cpp Component/WeaponComponent.h engineLua/LuaWeaponFactory.cpp engineLua/LuaWeaponFactory.h Component/InanimateComponent.cpp Component/InanimateComponent.h Component/CollectableComponent.cpp Component/CollectableComponent.h)
+        Component/ProjectileComponent.cpp
+        Component/WeaponComponent.cpp
+        Component/InanimateComponent.cpp
+        Component/CollectableComponent.cpp
+        )
 
 target_link_libraries(eng lua_static)
