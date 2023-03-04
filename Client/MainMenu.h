@@ -40,5 +40,6 @@
  * @return mainMenu scene
  */
 std::shared_ptr<Scene> mainMenu(EnginePtr engine);
+void quitGame(EnginePtr engine, std::shared_ptr<Entity> entity);
 
 #endif //R_TYPE_SERVER_MAINMENU_H
