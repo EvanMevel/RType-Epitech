@@ -46,6 +46,8 @@ public:
     void loadEntitySprites(std::shared_ptr<IGraphicLib> graphicLib);
 
     void loadLevels(std::shared_ptr<LuaLevelFactory> luaLevelParser);
+
+    void loadTextures(std::shared_ptr<IGraphicLib> graphicLib);
 };
 
 

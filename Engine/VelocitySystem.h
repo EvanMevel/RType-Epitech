@@ -27,6 +27,8 @@
 #include "Engine/Entity.h"
 #include "Engine/Component/PhysicComponent.h"
 #include "Engine/Component/PositionComponent.h"
+#include "Hitbox.h"
+#include <vector>
 
 /**
  * @brief System that updates the position of entities with a velocity component
@@ -34,15 +36,15 @@
 class VelocitySystem : public ISystem {
 
 public:
-    int count = 0;
 
     void update(EnginePtr engine) override;
 
     virtual void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity);
 
-    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity);
+    bool applyPhysic(EnginePtr engine, std::shared_ptr<Entity> entity, std::vector<std::pair<std::shared_ptr<Entity>, Hitbox>> inanimates);
 
-    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos, std::shared_ptr<PhysicComponent> physic);
+    virtual void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos,
+                               std::shared_ptr<PhysicComponent> physic, std::vector<std::pair<std::shared_ptr<Entity>, Hitbox>> inanimates);
 
     std::string getName() override;
 };

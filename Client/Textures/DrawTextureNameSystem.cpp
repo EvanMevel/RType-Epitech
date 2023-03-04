@@ -20,56 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Level.h"
-#include "Engine.h"
+#include "DrawTextureNameSystem.h"
+#include "Engine/Engine.h"
+#include "TextureNameComponent.h"
+#include "Engine/Component/PositionComponent.h"
 
-LevelObject::LevelObject(const std::string &type, int x, int y) : _type(type), _x(x), _y(y) {
-
-}
-
-[[maybe_unused]] const std::string &LevelObject::getType() const {
-    return _type;
-}
-
-int LevelObject::getX() const {
-    return _x;
-}
-
-int LevelObject::getY() const {
-    return _y;
-}
-
-Level::Level(const std::string &name) : _name(name) {
-
-}
-
-void Level::spawn(std::unique_ptr<Engine> &engine, const LevelObject &obj) {
-    engine->getScene()->createEntity(engine, obj.getType(), 2000, obj.getY());
-}
-
-void Level::update(int x, EnginePtr engine) {
-    auto it = _objects.begin();
-    while (it != _objects.end()) {
-        if (it->getX() <= x) {
-            spawn(engine, *it);
-            it = _objects.erase(it);
-        } else {
-            return;
-        }
+void drawNameTexture(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entity) {
+    auto textureComponent = entity->getComponent<TextureNameComponent>();
+    auto posComponent = entity->getComponent<PositionComponent>();
+    if (textureComponent != nullptr && posComponent != nullptr) {
+        lib->drawTexture(lib->getTexturesReg()->getValue(textureComponent->getTextureName()),
+                         posComponent->getX(), posComponent->getY(), ColorCodes::COLOR_WHITE);
     }
 }
 
-void Level::addObject(const std::string &type, int x, int y) {
-    auto it = _objects.begin();
-    while (it != _objects.end()) {
-        if (it->getX() > x) {
-            break;
-        }
-        it++;
-    }
-    _objects.insert(it, LevelObject{type, x, y});
-}
-
-const std::string &Level::getName() const {
-    return _name;
+void DrawTextureNameSystem::update(std::unique_ptr<Engine> &engine) {
+    auto lib = engine->getModule<IGraphicLib>();
+    if (lib == nullptr)
+        return;
+    if(engine->getScene() == nullptr)
+        return;
+    std::function<void(std::shared_ptr<Entity>)> draw = [&lib](std::shared_ptr<Entity> entity) {
+        drawNameTexture(lib, entity);
+    };
+    engine->getScene()->forEachEntity(draw);
 }

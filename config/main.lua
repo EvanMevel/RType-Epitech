@@ -1,5 +1,10 @@
 
 
+function loadTextures(graphicLib)
+    registerTexture(graphicLib, "obstacle1", "texture.png")
+    registerTexture(graphicLib, "weapon1", "weapon1.png")
+end
+
 function loadEntitySprites(graphicLib)
     playerSpriteSheet = createSpriteSheet(graphicLib, "r-typesheet42.gif")
 
@@ -23,7 +28,7 @@ function loadEntitySprites(graphicLib)
 end
 
 function loadPlayer(factory)
-    local player = registerEntityType(factory, "player", 100, 56)
+    local player = registerEntityType(factory, "player", 132, 56)
     player:addComponent("TeamComponent", 0)
     player:addComponent("HealthComponent", 100, 1000)
     player:addComponent("PhysicComponent", 10)
@@ -40,7 +45,6 @@ end
 
 function loadEnemy1(factory)
     local enemy1 = registerEntityType(factory, "enemy1", 99, 66)
-    enemy1:addComponent("TeamComponent", 1)
     enemy1:addComponent("TeamComponent", 1)
     enemy1:addComponent("HealthComponent", 50, 400)
     enemy1:addComponent("CooldownComponent", math.floor(ENGINE_TPS * 2))
@@ -59,6 +63,13 @@ function loadEnemy2(factory)
     enemy2:addComponent("WeaponComponent", "weapon2")
 end
 
+function loadWeapon1(factory)
+    local weapon1 = registerEntityType(factory, "weapon1", 50, 50)
+    weapon1:addComponent("IAComponent")
+    weapon1:addComponent("CollectableComponent", "weapon", "weapon2")
+    weapon1:addComponent("PhysicComponent")
+end
+
 function loadEntityTypes(factory)
 
     loadPlayer(factory);
@@ -68,6 +79,13 @@ function loadEntityTypes(factory)
     loadEnemy1(factory);
 
     loadEnemy2(factory);
+
+    loadWeapon1(factory);
+
+    local obstacle1 = registerEntityType(factory, "obstacle1", 200, 100)
+    obstacle1:addComponent("PhysicComponent")
+    obstacle1:addComponent("InanimateComponent")
+
 end
 
 function loadWeapons(factory)
@@ -77,9 +95,11 @@ end
 
 function loadLevels(factory)
     local level = createLevel(factory, "Level 1");
-    level:addEnemy("enemy1", 0, 450);
-    level:addEnemy("enemy1", 0, 550);
-    level:addEnemy("enemy2", 250, 100);
-    level:addEnemy("enemy2", 500, 750);
-    level:addEnemy("BOSS",2200,250);
+    level:addObject("enemy1", 0, 450);
+    level:addObject("enemy1", 0, 550);
+    level:addObject("enemy2", 250, 100);
+    level:addObject("enemy2", 500, 750);
+    level:addObject("obstacle1", 0, 900);
+    level:addObject("weapon1", 0, 620);
+    level:addObject("BOSS", 2200, 250);
 end

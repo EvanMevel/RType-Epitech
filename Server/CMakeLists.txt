@@ -8,6 +8,7 @@ add_executable(r-type-server
         Consumers/HandshakeConsumer.cpp
         Consumers/PlayerMoveConsumer.cpp
         Consumers/PlayerShootConsumer.cpp
+        Consumers/StartGameConsumer.cpp
 
         ClientData.cpp
         RTypeServer.cpp

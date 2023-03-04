@@ -20,56 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Level.h"
-#include "Engine.h"
+#include "PlayGameSystem.h"
+#include "ClientNetServer.h"
+#include "Engine/Network/Packets/StartGamePacket.h"
 
-LevelObject::LevelObject(const std::string &type, int x, int y) : _type(type), _x(x), _y(y) {
-
-}
-
-[[maybe_unused]] const std::string &LevelObject::getType() const {
-    return _type;
-}
-
-int LevelObject::getX() const {
-    return _x;
-}
-
-int LevelObject::getY() const {
-    return _y;
-}
-
-Level::Level(const std::string &name) : _name(name) {
-
-}
-
-void Level::spawn(std::unique_ptr<Engine> &engine, const LevelObject &obj) {
-    engine->getScene()->createEntity(engine, obj.getType(), 2000, obj.getY());
-}
-
-void Level::update(int x, EnginePtr engine) {
-    auto it = _objects.begin();
-    while (it != _objects.end()) {
-        if (it->getX() <= x) {
-            spawn(engine, *it);
-            it = _objects.erase(it);
-        } else {
-            return;
-        }
+void PlayGameSystem::update(std::unique_ptr<Engine> &engine) {
+    auto lib = engine->getModule<IGraphicLib>();
+    if (lib == nullptr)
+        return;
+    if(engine->getScene() == nullptr)
+        return;
+    if (lib->isKeyPressed(KeyCodes::KEY_SPACE) && !alreadySent) {
+        alreadySent = true;
+        engine->getModule<ClientNetServer>()->sendPacket(StartGamePacket());
     }
-}
-
-void Level::addObject(const std::string &type, int x, int y) {
-    auto it = _objects.begin();
-    while (it != _objects.end()) {
-        if (it->getX() > x) {
-            break;
-        }
-        it++;
-    }
-    _objects.insert(it, LevelObject{type, x, y});
-}
-
-const std::string &Level::getName() const {
-    return _name;
 }

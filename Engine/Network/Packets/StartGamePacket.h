@@ -20,56 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Level.h"
-#include "Engine.h"
+#ifndef PONG_STARTGAMEPACKET_H
+#define PONG_STARTGAMEPACKET_H
 
-LevelObject::LevelObject(const std::string &type, int x, int y) : _type(type), _x(x), _y(y) {
 
-}
+#include "IPacket.h"
 
-[[maybe_unused]] const std::string &LevelObject::getType() const {
-    return _type;
-}
+class StartGamePacket : public IPacket {
+public:
+    static const int ID = 18;
 
-int LevelObject::getX() const {
-    return _x;
-}
+    void write(ByteArray &buffer) const override;
 
-int LevelObject::getY() const {
-    return _y;
-}
-
-Level::Level(const std::string &name) : _name(name) {
-
-}
-
-void Level::spawn(std::unique_ptr<Engine> &engine, const LevelObject &obj) {
-    engine->getScene()->createEntity(engine, obj.getType(), 2000, obj.getY());
-}
-
-void Level::update(int x, EnginePtr engine) {
-    auto it = _objects.begin();
-    while (it != _objects.end()) {
-        if (it->getX() <= x) {
-            spawn(engine, *it);
-            it = _objects.erase(it);
-        } else {
-            return;
-        }
-    }
-}
-
-void Level::addObject(const std::string &type, int x, int y) {
-    auto it = _objects.begin();
-    while (it != _objects.end()) {
-        if (it->getX() > x) {
-            break;
-        }
-        it++;
-    }
-    _objects.insert(it, LevelObject{type, x, y});
-}
-
-const std::string &Level::getName() const {
-    return _name;
-}
+    void read(ByteArray &buffer) override;
+};
+#endif //PONG_STARTGAMEPACKET_H

@@ -129,6 +129,15 @@ public:
         }
     }
 
+    void forEachClient(std::function<void(std::shared_ptr<NetClient> &client, Data &data)> initPlayer) {
+        std::lock_guard<std::mutex> lock(clientsMutex);
+        auto it = clients.begin();
+        while (it != clients.end()) {
+            initPlayer(it->second.first, it->second.second);
+            it++;
+        }
+    }
+
     virtual void removeClient(std::shared_ptr<NetClient> &client) {
         std::lock_guard<std::mutex> lock(clientsMutex);
         clients.erase(client->getAddress() + ":" + std::to_string(client->getPort()));

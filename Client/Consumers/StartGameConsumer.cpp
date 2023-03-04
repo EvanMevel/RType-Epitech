@@ -20,56 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Level.h"
-#include "Engine.h"
+#include "StartGameConsumer.h"
+#include "Client/Scenes.h"
+#include "Engine/SceneHolder.h"
+#include "Client/Musics.h"
 
-LevelObject::LevelObject(const std::string &type, int x, int y) : _type(type), _x(x), _y(y) {
-
-}
-
-[[maybe_unused]] const std::string &LevelObject::getType() const {
-    return _type;
-}
-
-int LevelObject::getX() const {
-    return _x;
-}
-
-int LevelObject::getY() const {
-    return _y;
-}
-
-Level::Level(const std::string &name) : _name(name) {
-
-}
-
-void Level::spawn(std::unique_ptr<Engine> &engine, const LevelObject &obj) {
-    engine->getScene()->createEntity(engine, obj.getType(), 2000, obj.getY());
-}
-
-void Level::update(int x, EnginePtr engine) {
-    auto it = _objects.begin();
-    while (it != _objects.end()) {
-        if (it->getX() <= x) {
-            spawn(engine, *it);
-            it = _objects.erase(it);
-        } else {
-            return;
-        }
-    }
-}
-
-void Level::addObject(const std::string &type, int x, int y) {
-    auto it = _objects.begin();
-    while (it != _objects.end()) {
-        if (it->getX() > x) {
-            break;
-        }
-        it++;
-    }
-    _objects.insert(it, LevelObject{type, x, y});
-}
-
-const std::string &Level::getName() const {
-    return _name;
+void StartGameConsumer::consume(StartGamePacket &packet, std::unique_ptr<Engine> &engine, RTypeServer server) {
+    auto sceneHolder = engine->getModule<SceneHolder>();
+    auto sc = sceneHolder->getValue(Scenes::GAME);
+    engine->setScene(sc);
+    playMusic(engine->getModule<IGraphicLib>(),Musics::GAME_MUSIC);
 }

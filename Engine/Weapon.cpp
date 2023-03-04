@@ -28,6 +28,7 @@
 #include "EntityTypeComponent2.h"
 #include "HealthComponent.h"
 #include "PhysicComponent.h"
+#include "CollectableComponent.h"
 
 Weapon::Weapon(const std::string &projectile, size_t cooldown) : _projectile(projectile), _cooldown(cooldown) {
     _projectileHit = std::bind(&Weapon::projectileHit, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
@@ -67,7 +68,7 @@ CollideResult Weapon::projectileHit(EnginePtr engine, std::shared_ptr<Entity> se
     auto otherTeam = other->getComponent<TeamComponent>();
     auto selfTeam = self->getComponent<TeamComponent>();
 
-    if (selfTeam == nullptr || otherTeam == nullptr || selfTeam->getTeam() == otherTeam->getTeam()) {
+    if (selfTeam == nullptr || (otherTeam != nullptr && selfTeam->getTeam() == otherTeam->getTeam()) || other->hasComponent<CollectableComponent>()) {
         return CollideResult::NONE;
     }
 

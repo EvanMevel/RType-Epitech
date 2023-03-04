@@ -20,56 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "Level.h"
-#include "Engine.h"
+#ifndef PONG_TEXTURENAMECOMPONENT_H
+#define PONG_TEXTURENAMECOMPONENT_H
 
-LevelObject::LevelObject(const std::string &type, int x, int y) : _type(type), _x(x), _y(y) {
+#include <string>
+#include "Engine/Component/IComponent.h"
 
-}
+class TextureNameComponent : public IComponent {
 
-[[maybe_unused]] const std::string &LevelObject::getType() const {
-    return _type;
-}
+private:
+    std::string _textureName;
 
-int LevelObject::getX() const {
-    return _x;
-}
+public:
+    explicit TextureNameComponent(const std::string &textureName);
 
-int LevelObject::getY() const {
-    return _y;
-}
+    TextureNameComponent();
 
-Level::Level(const std::string &name) : _name(name) {
+    const std::string &getTextureName() const;
 
-}
+    void setTextureName(const std::string &textureName);
 
-void Level::spawn(std::unique_ptr<Engine> &engine, const LevelObject &obj) {
-    engine->getScene()->createEntity(engine, obj.getType(), 2000, obj.getY());
-}
+};
 
-void Level::update(int x, EnginePtr engine) {
-    auto it = _objects.begin();
-    while (it != _objects.end()) {
-        if (it->getX() <= x) {
-            spawn(engine, *it);
-            it = _objects.erase(it);
-        } else {
-            return;
-        }
-    }
-}
 
-void Level::addObject(const std::string &type, int x, int y) {
-    auto it = _objects.begin();
-    while (it != _objects.end()) {
-        if (it->getX() > x) {
-            break;
-        }
-        it++;
-    }
-    _objects.insert(it, LevelObject{type, x, y});
-}
-
-const std::string &Level::getName() const {
-    return _name;
-}
+#endif //PONG_TEXTURENAMECOMPONENT_H

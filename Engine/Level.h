@@ -27,13 +27,13 @@
 #include <vector>
 #include "Engine/EngineTypes.h"
 
-class LevelEnemy {
+class LevelObject {
 private:
     std::string _type;
     int _x;
     int _y;
 public:
-    LevelEnemy(const std::string &type, int x, int y);
+    LevelObject(const std::string &type, int x, int y);
 
     [[maybe_unused]] const std::string &getType() const;
 
@@ -44,17 +44,17 @@ public:
 
 class Level {
 private:
-    std::vector<LevelEnemy> _enemies;
+    std::vector<LevelObject> _objects;
     std::string _name;
 
 public:
     explicit Level(const std::string &name);
 
-    void spawn(EnginePtr engine, const LevelEnemy &enemy);
+    void spawn(EnginePtr engine, const LevelObject &obj);
 
     void update(int x, EnginePtr engine);
 
-    void addEnemy(const std::string &type, int x, int y);
+    void addObject(const std::string &type, int x, int y);
 
     const std::string &getName() const;
 };

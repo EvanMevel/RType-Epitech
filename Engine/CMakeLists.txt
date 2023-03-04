@@ -33,6 +33,7 @@ add_library(eng
         Network/Packets/EntityVelocityPacket.cpp
         Network/Packets/ProjectileHitPacket.cpp
         Network/Packets/DamagePacket.cpp
+        Network/Packets/StartGamePacket.cpp
 
         Graphic/IGraphicLib.cpp
         Graphic/SpriteProperty.cpp
@@ -48,6 +49,10 @@ add_library(eng
         Component/HealthComponent.cpp
         Component/HitboxComponent.cpp
         Component/TeamComponent.cpp
+        Component/ProjectileComponent.cpp
+        Component/WeaponComponent.cpp
+        Component/InanimateComponent.cpp
+        Component/CollectableComponent.cpp
 
         engineLua/LuaWrapper.cpp
         engineLua/LuaEntityType.cpp
@@ -57,6 +62,7 @@ add_library(eng
         engineLua/LuaClass.cpp
         engineLua/LuaType.cpp
         engineLua/LuaLevelFactory.cpp
+        engineLua/LuaWeaponFactory.cpp
 
         EntityManager.cpp
         TimeUtil.cpp
@@ -72,9 +78,9 @@ add_library(eng
 
         Weapon.cpp
 
-        Component/ProjectileComponent.cpp
-        Component/WeaponComponent.cpp
-        engineLua/LuaWeaponFactory.cpp
-        BossCreator.cpp)
+        CreateBoss.cpp
+
+
+        )
 
 target_link_libraries(eng lua_static)
