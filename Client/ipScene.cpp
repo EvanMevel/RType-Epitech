@@ -22,11 +22,8 @@
 
 #include "ipScene.h"
 #include "Client/Textures/CreateButton.h"
-#include "Engine/Network/NetworkRemoteServer.h"
 #include "TextBoxComponent.h"
 #include "EntityLinkComponent.h"
-#include "Musics.h"
-
 
 void getTextboxStr(std::shared_ptr<Entity> entity, std::shared_ptr<ClientNetServer> server) {
 
@@ -52,16 +49,15 @@ static void ipSceneToMenu(EnginePtr engine, std::shared_ptr<Entity> entity) {
 
 static void changeIpButtonClick(EnginePtr engine, std::shared_ptr<Entity> entity) {
     auto sceneHolder = engine->getModule<SceneHolder>();
-    auto sc = sceneHolder->getValue(Scenes::GAME);
+    auto sc = sceneHolder->getValue(Scenes::LOBBY_MENU);
     engine->setScene(sc);
 
     auto server = engine->getModule<ClientNetServer>();
     getTextboxStr(entity->getComponent<EntityLinkComponent>()->entity, server);
+
     std::cout << "Sending handshake" << std::endl;
     server->startListening();
     server->sendPacket(HandshakePacket());
-
-    playMusic(engine->getModule<IGraphicLib>(),Musics::GAME_MUSIC);
 }
 
 std::shared_ptr<Scene> ipScene(EnginePtr engine){

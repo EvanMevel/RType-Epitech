@@ -20,35 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_LUALOADER_H
-#define R_TYPE_SERVER_LUALOADER_H
+#ifndef PONG_STARTGAMECONSUMER_H
+#define PONG_STARTGAMECONSUMER_H
 
-#include "LuaEntityTypeFactory.h"
-#include "LuaLevelFactory.h"
-#include "LuaWeaponFactory.h"
 
-class IGraphicLib;
+#include "Engine/Engine.h"
+#include "Engine/Network/Packets/HandshakePacket.h"
+#include "Engine/Network/NetServer.h"
+#include "Server/ClientData.h"
+#include "Server/RTypeServer.h"
+#include "Engine/Network/Packets/StartGamePacket.h"
 
-class LuaLoader {
-private:
-    LuaWrapper _lua;
 
+class StartGameConsumer: public RTypePacketConsumer<StartGamePacket> {
 public:
+    static bool gameStarted;
 
-    LuaLoader();
+    explicit StartGameConsumer(EnginePtr e);
 
-    void loadFolder(const std::string &folderPath);
-
-    void loadFile(const std::string &filePath);
-
-    void loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory, std::shared_ptr<LuaWeaponFactoryBase> luaWeaponFactory);
-
-    void loadEntitySprites(std::shared_ptr<IGraphicLib> graphicLib);
-
-    void loadLevels(std::shared_ptr<LuaLevelFactory> luaLevelParser);
-
-    void loadTextures(std::shared_ptr<IGraphicLib> graphicLib);
+    void consume(StartGamePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) override;
 };
 
 
-#endif //R_TYPE_SERVER_LUALOADER_H
+#endif //PONG_STARTGAMECONSUMER_H

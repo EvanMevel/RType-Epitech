@@ -20,19 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "HandshakeConsumer.h"
-#include "Engine/Network/Packets/HandshakeResponsePacket.h"
-#include "Engine/TickUtil.h"
-#include "Engine/engineLua/LuaEntityTypeFactory.h"
 #include "StartGameConsumer.h"
+#include "Engine/engineLua/LuaEntityTypeFactory.h"
+#include "Engine/Component/PositionComponent.h"
 #include "Server/PlayerList.h"
 #include "Engine/Component/PlayerInfoComponent.h"
 #include "Engine/Network/Packets/PlayerInfoPacket.h"
-#include "Engine/ColliderHitboxSystem.h"
-#include "Engine/Component/EntityTypeComponent2.h"
 #include "Engine/Network/Packets/EntityInfoPacket.h"
+#include "Engine/Engine.h"
+#include "Server/PacketSendingScene.h"
+#include "Engine/Network/Packets/StartGamePacket.h"
+#include "Server/ProjectileCleanupSystem.h"
+#include "Server/ServerVelocitySystem.h"
+#include "Server/EnemyShootSystem.h"
+#include "Engine/ColliderHitboxSystem.h"
+#include "Server/LevelSystem.h"
+#include "Engine/engineLua/LuaLevelFactory.h"
 
-HandshakeConsumer::HandshakeConsumer(EnginePtr e) : RTypePacketConsumer(e) {}
+bool StartGameConsumer::gameStarted = false;
+
+StartGameConsumer::StartGameConsumer(EnginePtr e) : RTypePacketConsumer(e) {}
 
 static void sendEntitiesInfo(const std::shared_ptr<NetClient>& client, std::shared_ptr<Scene> scene) {
     std::function<void(std::shared_ptr<Entity>)> sendEntityInfo = [&client](std::shared_ptr<Entity> entity) {
@@ -46,28 +53,37 @@ static void sendEntitiesInfo(const std::shared_ptr<NetClient>& client, std::shar
     scene->forEachEntity(sendEntityInfo);
 }
 
-void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) {
+void StartGameConsumer::consume(StartGamePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) {
+
+    StartGameConsumer::gameStarted = true;
+    // Create Scene
     auto server = e->getModule<RTypeServer>();
-    std::cout << "Handshake received" << std::endl;
-    data->handshake = true;
+    auto sc = e->createScene<PacketSendingScene>(server);
+    auto level = e->getModule<LuaLevelFactory>()->getLevels()[0];
 
-    // Send handshake response with tick information
-    auto ticker = e->getModule<TickUtil>();
-    unsigned long long startedMs = std::chrono::time_point_cast<std::chrono::milliseconds>(ticker->getStarted()).time_since_epoch().count();
-    HandshakeResponsePacket responsePacket(HandshakeResponsePacketType::OK, ticker->getCurrentTick(), startedMs);
-    client->sendPacket(responsePacket);
+    sc->addSystem<ServerVelocitySystem>();
+    sc->addSystem<ProjectileCleanupSystem>();
+    sc->addSystem<EnemyShootSystem>();
+    sc->addSystem<ColliderHitboxSystem>();
+    sc->addSystem<LevelSystem>(level);
 
-    if (StartGameConsumer::gameStarted) {
-        StartGamePacket startGame;
-        server->broadcast(startGame);
+    e->setScene(sc);
 
+    // Send Packet to all clients
+    StartGamePacket startGame;
+    server->broadcast(startGame);
+
+    // Send Entity info to all clients
+    EnginePtr engine = e;
+
+    std::function<void(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> &data)> func = [&engine](std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> &data) {
         // Init player
-        auto typeFactory = e->getModule<LuaEntityTypeFactory>();
-        auto player = e->getScene()->createEntity();
+        auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
+        auto player = engine->getScene()->createEntity();
         typeFactory->initEntity(player, "player");
         player->addComponent<PositionComponent>(100, 100);
         data->playerId = player->getId();
-        auto playerList = e->getModule<PlayerList>();
+        auto playerList = engine->getModule<PlayerList>();
         int playerNumber = playerList->getAvailable();
         player->addComponent<PlayerInfoComponent>(playerNumber);
         data->playerNumber = playerNumber;
@@ -75,10 +91,11 @@ void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClie
         // Send player info to client then send all entities to client
         PlayerInfoPacket playerInfo(player);
         client->sendPacket(playerInfo);
-        sendEntitiesInfo(client, e->getScene());
+    };
 
-        // Send new player info to all other clients
-        EntityInfoPacket newPlayerInfo(player);
-        server->broadcast(newPlayerInfo, client);
-    }
+    server->forEachClient(func);
+    std::function<void(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> &data)> func2 = [&engine](std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> &data) {
+        sendEntitiesInfo(client, engine->getScene());
+    };
+    server->forEachClient(func2);
 }

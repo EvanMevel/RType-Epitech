@@ -20,35 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_LUALOADER_H
-#define R_TYPE_SERVER_LUALOADER_H
+#include "TextureNameComponent.h"
 
-#include "LuaEntityTypeFactory.h"
-#include "LuaLevelFactory.h"
-#include "LuaWeaponFactory.h"
+const std::string &TextureNameComponent::getTextureName() const {
+    return _textureName;
+}
 
-class IGraphicLib;
+void TextureNameComponent::setTextureName(const std::string &textureName) {
+    _textureName = textureName;
+}
 
-class LuaLoader {
-private:
-    LuaWrapper _lua;
+TextureNameComponent::TextureNameComponent(const std::string &textureName) : _textureName(textureName) {}
 
-public:
-
-    LuaLoader();
-
-    void loadFolder(const std::string &folderPath);
-
-    void loadFile(const std::string &filePath);
-
-    void loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory, std::shared_ptr<LuaWeaponFactoryBase> luaWeaponFactory);
-
-    void loadEntitySprites(std::shared_ptr<IGraphicLib> graphicLib);
-
-    void loadLevels(std::shared_ptr<LuaLevelFactory> luaLevelParser);
-
-    void loadTextures(std::shared_ptr<IGraphicLib> graphicLib);
-};
-
-
-#endif //R_TYPE_SERVER_LUALOADER_H
+TextureNameComponent::TextureNameComponent() {}

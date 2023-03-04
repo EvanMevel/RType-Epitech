@@ -26,6 +26,7 @@
 #include "Client/Sprites/SpriteComponent.h"
 #include "Client/Sounds.h"
 #include "Engine/engineLua/LuaEntityTypeFactory.h"
+#include "Client/Textures/TextureNameComponent.h"
 #include "Client/BossCreator.h"
 
 void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTypeServer server) {
@@ -52,5 +53,10 @@ void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTy
         auto sprite = spriteProp->createSprite(spriteProp);
         int spriteId = lib->getSprites()->add(sprite);
         entity->getOrCreate<SpriteComponent>()->setSpriteId(spriteId);
+    } else {
+        auto texture = lib->getTexturesReg()->getValue(packet.type);
+        if (texture != nullptr) {
+            entity->getOrCreate<TextureNameComponent>(packet.type);
+        }
     }
 }

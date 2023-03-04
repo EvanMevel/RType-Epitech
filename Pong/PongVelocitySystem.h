@@ -29,7 +29,7 @@
 class PongVelocitySystem : public VelocitySystem {
 public:
     void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos,
-                       std::shared_ptr<PhysicComponent> physic) override;
+                       std::shared_ptr<PhysicComponent> physic, std::vector<std::pair<std::shared_ptr<Entity>, Hitbox>> inanimates) override;
 };
 
 

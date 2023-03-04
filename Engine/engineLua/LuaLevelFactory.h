@@ -38,6 +38,6 @@ public:
 
 [[maybe_unused]] int luaCreateLevel(lua_State *L);
 
-[[maybe_unused]] int luaAddEnemyToLevel(lua_State *L);
+[[maybe_unused]] int luaAddObjectToLevel(lua_State *L);
 
 #endif //R_TYPE_CLIENT_LUALEVELFACTORY_H

@@ -47,10 +47,12 @@
 #include "Client/Textures/LifeSystem.h"
 #include "Musics.h"
 #include "TextSystem.h"
+#include "Client/Textures/DrawTextureNameSystem.h"
+#include "PlayGameSystem.h"
+#include "Client/Consumers/StartGameConsumer.h"
 #include "BossCreator.h"
 #include <mutex>
 #include <condition_variable>
-
 
 std::mutex graphicMutex;
 std::condition_variable cv;
@@ -88,6 +90,8 @@ void loadNetwork(EnginePtr engine) {
     server->addConsumer<DamageConsumer>();
 
     server->addSystem<StayAliveSystem>();
+
+    server->addConsumer<StartGameConsumer>();
 
     auto ticker = engine->registerModule<TickUtil>(ENGINE_TPS);
 
@@ -139,7 +143,9 @@ void loadGraphsAndScenes(EnginePtr engine) {
     loadTextures(lib);
     std::cout << "[Graphic] Textures ready" << std::endl;
 
-    engine->getModule<LuaLoader>()->loadEntitySprites(lib);
+    auto luaLoad = engine->getModule<LuaLoader>();
+    luaLoad->loadEntitySprites(lib);
+    luaLoad->loadTextures(lib);
     auto bossSpriteSheets = lib->createSpriteSheet("r-typesheet32.gif");
     auto sprite = bossSpriteSheets->createSprite(0, 0, 260, 143, 0, 4, 30, 1.0);
     lib->getSpriteProperties()->registerValue("BOSS", sprite);
@@ -154,6 +160,7 @@ void loadGraphsAndScenes(EnginePtr engine) {
 
     lib->addSystem<ScrollingTextureSystem>();
     lib->addSystem<DrawFixTextureSystem>();
+    lib->addSystem<DrawTextureNameSystem>();
     lib->addSystem<DrawSpriteSystem>();
     lib->addSystem<AnimationSystem>();
     lib->addSystem<MouseSystem>();
@@ -161,6 +168,7 @@ void loadGraphsAndScenes(EnginePtr engine) {
     lib->addSystem<LifeSystem>();
     lib->addSystem<CooldownSystem>();
     lib->addSystem<TextSystem>();
+    lib->addSystem<PlayGameSystem>();
 
     graphicReady = true;
     cv.notify_all();

@@ -20,35 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_LUALOADER_H
-#define R_TYPE_SERVER_LUALOADER_H
+#ifndef PONG_COLLECTABLECOMPONENT_H
+#define PONG_COLLECTABLECOMPONENT_H
 
-#include "LuaEntityTypeFactory.h"
-#include "LuaLevelFactory.h"
-#include "LuaWeaponFactory.h"
 
-class IGraphicLib;
+#include "IComponent.h"
+#include "ColliderComponent.h"
 
-class LuaLoader {
+class CollectableComponent : public IComponent {
 private:
-    LuaWrapper _lua;
+    std::string type;
+    std::string value;
 
 public:
+    CollectableComponent(const std::string &type, const std::string &value);
 
-    LuaLoader();
+    const std::string &getType() const;
 
-    void loadFolder(const std::string &folderPath);
+    const std::string &getValue() const;
 
-    void loadFile(const std::string &filePath);
-
-    void loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory, std::shared_ptr<LuaWeaponFactoryBase> luaWeaponFactory);
-
-    void loadEntitySprites(std::shared_ptr<IGraphicLib> graphicLib);
-
-    void loadLevels(std::shared_ptr<LuaLevelFactory> luaLevelParser);
-
-    void loadTextures(std::shared_ptr<IGraphicLib> graphicLib);
 };
 
+CollideResult onCollisionCollectableComponent(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other);
 
-#endif //R_TYPE_SERVER_LUALOADER_H
+
+#endif //PONG_COLLECTABLECOMPONENT_H

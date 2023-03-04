@@ -20,35 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_LUALOADER_H
-#define R_TYPE_SERVER_LUALOADER_H
+#include "PlayGameSystem.h"
+#include "ClientNetServer.h"
+#include "Engine/Network/Packets/StartGamePacket.h"
 
-#include "LuaEntityTypeFactory.h"
-#include "LuaLevelFactory.h"
-#include "LuaWeaponFactory.h"
-
-class IGraphicLib;
-
-class LuaLoader {
-private:
-    LuaWrapper _lua;
-
-public:
-
-    LuaLoader();
-
-    void loadFolder(const std::string &folderPath);
-
-    void loadFile(const std::string &filePath);
-
-    void loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory, std::shared_ptr<LuaWeaponFactoryBase> luaWeaponFactory);
-
-    void loadEntitySprites(std::shared_ptr<IGraphicLib> graphicLib);
-
-    void loadLevels(std::shared_ptr<LuaLevelFactory> luaLevelParser);
-
-    void loadTextures(std::shared_ptr<IGraphicLib> graphicLib);
-};
-
-
-#endif //R_TYPE_SERVER_LUALOADER_H
+void PlayGameSystem::update(std::unique_ptr<Engine> &engine) {
+    auto lib = engine->getModule<IGraphicLib>();
+    if (lib == nullptr)
+        return;
+    if(engine->getScene() == nullptr)
+        return;
+    if (lib->isKeyPressed(KeyCodes::KEY_SPACE) && !alreadySent) {
+        alreadySent = true;
+        engine->getModule<ClientNetServer>()->sendPacket(StartGamePacket());
+    }
+}

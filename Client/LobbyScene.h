@@ -20,35 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_LUALOADER_H
-#define R_TYPE_SERVER_LUALOADER_H
-
-#include "LuaEntityTypeFactory.h"
-#include "LuaLevelFactory.h"
-#include "LuaWeaponFactory.h"
-
-class IGraphicLib;
-
-class LuaLoader {
-private:
-    LuaWrapper _lua;
-
-public:
-
-    LuaLoader();
-
-    void loadFolder(const std::string &folderPath);
-
-    void loadFile(const std::string &filePath);
-
-    void loadEntityTypes(std::shared_ptr<LuaEntityTypeFactory> luaEntityTypeFactory, std::shared_ptr<LuaWeaponFactoryBase> luaWeaponFactory);
-
-    void loadEntitySprites(std::shared_ptr<IGraphicLib> graphicLib);
-
-    void loadLevels(std::shared_ptr<LuaLevelFactory> luaLevelParser);
-
-    void loadTextures(std::shared_ptr<IGraphicLib> graphicLib);
-};
+#ifndef PONG_LOBBYSCENE_H
+#define PONG_LOBBYSCENE_H
 
 
-#endif //R_TYPE_SERVER_LUALOADER_H
+#include "Engine/Scene.h"
+#include "Engine/EntityType.h"
+#include "Engine/Entity.h"
+#include "Engine/Engine.h"
+#include "Engine/Graphic/IGraphicLib.h"
+#include "Client/Textures/Textures.h"
+#include "Client/Textures/CreateScrollingTexture.h"
+#include "Engine/VelocitySystem.h"
+#include "CreateTextBox.h"
+#include "Engine/SceneHolder.h"
+#include "ClientNetServer.h"
+#include "Engine/Network/Packets/HandshakePacket.h"
+#include "Scenes.h"
+
+std::shared_ptr<Scene> lobbyScene(EnginePtr engine);
+
+#endif //PONG_LOBBYSCENE_H
