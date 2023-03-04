@@ -34,6 +34,7 @@
 #include "NetworkListener.h"
 #include "Engine/Network/Packets/PacketConsumerException.h"
 #include "Engine/TimeUtil.h"
+#include "Engine/Network/Packets/EntityInfoPacket.h"
 
 /**
  * @brief NetClient describes a client connected to the server
@@ -126,6 +127,15 @@ public:
             } else {
                 ++it;
             }
+        }
+    }
+
+    void forEachClient(std::function<void(std::shared_ptr<NetClient> &client, Data &data)> initPlayer) {
+        std::lock_guard<std::mutex> lock(clientsMutex);
+        auto it = clients.begin();
+        while (it != clients.end()) {
+            initPlayer(it->second.first, it->second.second);
+            it++;
         }
     }
 

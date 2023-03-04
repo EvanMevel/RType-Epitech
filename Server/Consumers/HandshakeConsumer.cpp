@@ -57,23 +57,5 @@ void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClie
     HandshakeResponsePacket responsePacket(HandshakeResponsePacketType::OK, ticker->getCurrentTick(), startedMs);
     client->sendPacket(responsePacket);
 
-    // Init player
-    auto typeFactory = e->getModule<LuaEntityTypeFactory>();
-    auto player = e->getScene()->createEntity();
-    typeFactory->initEntity(player, "player");
-    player->addComponent<PositionComponent>(100, 100);
-    data->playerId = player->getId();
-    auto playerList = e->getModule<PlayerList>();
-    int playerNumber = playerList->getAvailable();
-    player->addComponent<PlayerInfoComponent>(playerNumber);
-    data->playerNumber = playerNumber;
 
-    // Send player info to client then send all entities to client
-    PlayerInfoPacket playerInfo(player);
-    client->sendPacket(playerInfo);
-    sendEntitiesInfo(client, e->getScene());
-
-    // Send new player info to all other clients
-    EntityInfoPacket newPlayerInfo(player);
-    server->broadcast(newPlayerInfo, client);
 }

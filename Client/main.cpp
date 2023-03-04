@@ -47,9 +47,10 @@
 #include "Client/Textures/LifeSystem.h"
 #include "Musics.h"
 #include "TextSystem.h"
+#include "PlayGameSystem.h"
+#include "Client/Consumers/StartGameConsumer.h"
 #include <mutex>
 #include <condition_variable>
-
 
 std::mutex graphicMutex;
 std::condition_variable cv;
@@ -87,6 +88,8 @@ void loadNetwork(EnginePtr engine) {
     server->addConsumer<DamageConsumer>();
 
     server->addSystem<StayAliveSystem>();
+
+    server->addConsumer<StartGameConsumer>();
 
     auto ticker = engine->registerModule<TickUtil>(ENGINE_TPS);
 
@@ -158,7 +161,7 @@ void loadGraphsAndScenes(EnginePtr engine) {
     lib->addSystem<LifeSystem>();
     lib->addSystem<CooldownSystem>();
     lib->addSystem<TextSystem>();
-
+    lib->addSystem<PlayGameSystem>();
 
     graphicReady = true;
     cv.notify_all();
