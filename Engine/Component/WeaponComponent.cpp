@@ -40,3 +40,5 @@ bool WeaponComponent::canShoot() const {
 void WeaponComponent::setNextShot() {
     nextShot = getCurrentTime() + (long long) (_weapon->getCooldown() * (1000 / ENGINE_TPS));
 }
+
+WeaponComponent::WeaponComponent() {}

@@ -20,25 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_CLIENT_SYNCHRONIZEDWEAPON_H
-#define R_TYPE_CLIENT_SYNCHRONIZEDWEAPON_H
+#include "BossCreatorServer.h"
+#include "BossSystem.h"
 
-#include "Engine/Weapon.h"
-
-class SynchronizedWeapon : public Weapon {
-public:
-
-    SynchronizedWeapon(const std::string &projectile, size_t cooldown);
-
-    virtual void shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter) override;
-
-    virtual CollideResult projectileHit(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> self,
-                                std::shared_ptr<Entity> other) override;
-
-    virtual void onDamage(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> cause, std::shared_ptr<Entity> victim,
-                  int damage) override;
-
-};
-
-
-#endif //R_TYPE_CLIENT_SYNCHRONIZEDWEAPON_H
+void BossCreatorServer::createBoss(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> entity) {
+    BossCreator::createBoss(engine, entity);
+}

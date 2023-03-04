@@ -44,7 +44,7 @@ Level::Level(const std::string &name) : _name(name) {
 }
 
 void Level::spawn(std::unique_ptr<Engine> &engine, const LevelObject &obj) {
-    engine->getScene()->createEntity(engine, obj.getType(), 1800, obj.getY());
+    engine->getScene()->createEntity(engine, obj.getType(), 2000, obj.getY());
 }
 
 void Level::update(int x, EnginePtr engine) {

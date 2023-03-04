@@ -35,6 +35,8 @@ private:
 public:
     explicit WeaponComponent(const std::shared_ptr<Weapon> &weapon);
 
+    WeaponComponent();
+
     bool canShoot() const;
 
     void setNextShot();

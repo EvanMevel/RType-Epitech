@@ -27,6 +27,7 @@
 #include "Client/Sounds.h"
 #include "Engine/engineLua/LuaEntityTypeFactory.h"
 #include "Client/Textures/TextureNameComponent.h"
+#include "Client/BossCreatorClient.h"
 
 void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTypeServer server) {
     auto entity = engine->getScene()->getOrCreateEntityById(packet.id);
@@ -45,6 +46,8 @@ void EntityInfoConsumer::consume(EntityInfoPacket &packet, EnginePtr engine, RTy
         spriteProp = lib->getSpriteProperties()->getValue(spriteName);
     } else if (packet.type.find("enemy") != std::string::npos) {
         spriteProp = lib->getSpriteProperties()->getValue(packet.type);
+    }else if(packet.type == "BOSS"){
+        engine->getModule<BossCreator>()->createBoss(engine, entity);
     }
     if (spriteProp != nullptr) {
         auto sprite = spriteProp->createSprite(spriteProp);

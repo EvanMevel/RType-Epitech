@@ -20,25 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_CLIENT_SYNCHRONIZEDWEAPON_H
-#define R_TYPE_CLIENT_SYNCHRONIZEDWEAPON_H
+#include "BossCreatorClient.h"
+#include "Client/Sprites/SpriteComponent.h"
+#include "Musics.h"
 
-#include "Engine/Weapon.h"
-
-class SynchronizedWeapon : public Weapon {
-public:
-
-    SynchronizedWeapon(const std::string &projectile, size_t cooldown);
-
-    virtual void shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter) override;
-
-    virtual CollideResult projectileHit(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> self,
-                                std::shared_ptr<Entity> other) override;
-
-    virtual void onDamage(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> cause, std::shared_ptr<Entity> victim,
-                  int damage) override;
-
-};
-
-
-#endif //R_TYPE_CLIENT_SYNCHRONIZEDWEAPON_H
+void BossCreatorClient::createBoss(EnginePtr engine, std::shared_ptr<Entity> entity) {
+    BossCreator::createBoss(engine, entity);
+    auto lib = engine->getModule<IGraphicLib>();
+    if (lib == nullptr)
+        return;
+    auto spriteComponent = entity->addComponent<SpriteComponent>();
+    auto spriteProp = lib->getSpriteProperties()->getValue("BOSS");
+    playMusic(engine->getModule<IGraphicLib>(),Musics::BOSS_MUSIC);
+    if (spriteProp != nullptr) {
+        auto sprite = spriteProp->createSprite(spriteProp);
+        int spriteId = lib->getSprites()->add(sprite);
+        entity->getOrCreate<SpriteComponent>()->setSpriteId(spriteId);
+    }
+}
