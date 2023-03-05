@@ -20,22 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "EnemyRandomSpawnSystem.h"
-#include "Levels.h"
+#include "EndlessLevel.h"
 #include "Engine/Component/IAComponent.h"
 
 const std::string enemies[] = {
-    "enemy1",
-    "enemy2"
+        "enemy1",
+        "enemy2"
 };
 
-EnemyRandomSpawnSystem::EnemyRandomSpawnSystem() : gen(rd()), distrx(0, 400), distry(0, 750) {
-    int enemyCount = sizeof(enemies) / sizeof(enemies[0]);
-    distrType = std::uniform_int_distribution<int>(0, enemyCount - 1);
+EndlessLevel::EndlessLevel() : Level("Endless"), gen(rd()), distry(0, 750) {
+    int typeSize = sizeof(enemies) / sizeof(enemies[0]);
+    distrType = std::uniform_int_distribution<int>(0, typeSize - 1);
 }
 
-void EnemyRandomSpawnSystem::spawnRandomEntity(std::unique_ptr<Engine> &engine, RTypeServerPtr srv) {
-    int x = 1300 + distrx(gen);
+void EndlessLevel::spawnRandomEntity(std::unique_ptr<Engine> &engine, RTypeServerPtr srv) {
+    int x = 1800;
     int y = 50 + distry(gen);
 
     std::string enemyType = enemies[distrType(gen)];
@@ -43,33 +42,30 @@ void EnemyRandomSpawnSystem::spawnRandomEntity(std::unique_ptr<Engine> &engine, 
     engine->getScene()->createEntity(engine, enemyType, x, y);
 }
 
-void EnemyRandomSpawnSystem::update(std::unique_ptr<Engine> &engine) {
-    auto levels = engine->getModule<Levels>();
-    if (levels == nullptr) {
-        return;
-    }
+bool EndlessLevel::update(int x, std::unique_ptr<Engine> &engine) {
     count = (count + 1) % ENGINE_TPS;
     if (count != 0) {
-        return;
+        return false;
     }
     RTypeServerPtr srv = engine->getModule<RTypeServer>();
-    size_t enemyCount = 0;
+    size_t eCount = 0;
 
-    std::function<void(std::shared_ptr<Entity>)> countEnemies = [&enemyCount](std::shared_ptr<Entity> ent) {
+    std::function<void(std::shared_ptr<Entity>)> countEnemies = [&eCount](std::shared_ptr<Entity> ent) {
         auto ia = ent->getComponent<IAComponent>();
         if (ia) {
-            enemyCount++;
+            eCount++;
         }
     };
     engine->getScene()->forEachEntity(countEnemies);
-    if (enemyCount < levels->enemyCount) {
-        levels->enemyDead++;
-        levels->enemyCount = 1 + (levels->enemyDead / 2);
+    if (eCount < enemyCount) {
+        enemyDead++;
+        enemyCount = 1 + (enemyDead / 2);
     } else {
-        return;
+        return false;
     }
-    while (enemyCount < levels->enemyCount) {
+    while (eCount < enemyCount) {
         spawnRandomEntity(engine, srv);
-        enemyCount++;
+        eCount++;
     }
+    return false;
 }

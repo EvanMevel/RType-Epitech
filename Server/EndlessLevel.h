@@ -20,31 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
-#define R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+#ifndef PONG_ENDLESSLEVEL_H
+#define PONG_ENDLESSLEVEL_H
 
-#include "Engine/ISystem.h"
-#include "RTypeServer.h"
+
 #include <random>
+#include "Engine/Level.h"
+#include "RTypeServer.h"
 
 /**
- * @brief System that spawns enemies randomly
+ * @brief Endless level class
  */
-class EnemyRandomSpawnSystem : public ISystem {
+class EndlessLevel : public Level {
 private:
-    size_t count = 0;
+    unsigned int count = 0;
+    unsigned int enemyCount = 1;
+    unsigned int enemyDead = 0;
     std::random_device rd;
     std::mt19937 gen;
-    std::uniform_int_distribution<> distrx;
     std::uniform_int_distribution<> distry;;
     std::uniform_int_distribution<> distrType;
 public:
-    EnemyRandomSpawnSystem();
+    EndlessLevel();
 
     void spawnRandomEntity(std::unique_ptr<Engine> &engine, RTypeServerPtr srv);
 
-    void update(std::unique_ptr<Engine> &engine) override;
+    bool update(int x, std::unique_ptr<Engine> &engine) override;
 };
 
 
-#endif //R_TYPE_SERVER_ENEMYRANDOMSPAWNSYSTEM_H
+#endif //PONG_ENDLESSLEVEL_H

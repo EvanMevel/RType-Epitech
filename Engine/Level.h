@@ -61,7 +61,7 @@ public:
 
     void spawn(EnginePtr engine, const LevelObject &obj);
 
-    bool update(int x, EnginePtr engine);
+    virtual bool update(int x, EnginePtr engine);
 
     void addObject(const std::string &type, int x, int y);
 

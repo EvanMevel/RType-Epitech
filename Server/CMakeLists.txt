@@ -15,11 +15,9 @@ add_executable(r-type-server
         TimeoutSystem.cpp
         ServerVelocitySystem.cpp
         ProjectileCleanupSystem.cpp
-        EnemyRandomSpawnSystem.cpp
         EnemyShootSystem.cpp
         PacketSendingScene.cpp
         EnemyInfoComponent.cpp
-        Levels.cpp
         PlayerList.cpp
 
         LevelSystem.cpp
@@ -28,6 +26,7 @@ add_executable(r-type-server
         BossCreatorServer.cpp
 
         ServerCollectableModule.cpp
+        EndlessLevel.cpp
         )
 
 

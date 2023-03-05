@@ -46,6 +46,10 @@ void LuaLevelFactory::setSelectedLevel(int selectedLevel) {
     LuaLevelFactory::selectedLevel = selectedLevel;
 }
 
+void LuaLevelFactory::addLevel(std::shared_ptr<Level> level) {
+    _levels.push_back(level);
+}
+
 [[maybe_unused]] int luaCreateLevel(lua_State *L) {
     int argc = lua_gettop(L);
     LuaLevelFactory *levelList = (LuaLevelFactory*) lua_touserdata(L, 1);

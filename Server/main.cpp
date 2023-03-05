@@ -32,7 +32,6 @@
 #include "Server/Consumers/PlayerShootConsumer.h"
 #include "TimeoutSystem.h"
 #include "PacketSendingScene.h"
-#include "Levels.h"
 #include "PlayerList.h"
 #include "SynchronizedWeapon.h"
 #include "Server/Consumers/StartGameConsumer.h"
@@ -40,6 +39,7 @@
 #include "BossCreatorServer.h"
 #include "Engine/CollectableModule.h"
 #include "ServerCollectableModule.h"
+#include "EndlessLevel.h"
 
 std::atomic<bool> running = true;
 
@@ -85,8 +85,6 @@ void stopThread(EnginePtr engine) {
 }
 
 void createScene(EnginePtr engine) {
-    engine->registerModule<Levels>();
-
     char *rtypeServerIp = std::getenv("RTYPE_SERVER_IP");
     std::string serverIp = rtypeServerIp ? rtypeServerIp : "127.0.0.1";
     char *rtypeServerPort = std::getenv("RTYPE_SERVER_PORT");
@@ -113,6 +111,7 @@ int main()
     luaLoad->loadFolder("config");
     luaLoad->loadEntityTypes(typeFactory, weaponFactory);
     luaLoad->loadLevels(levelFactory);
+    levelFactory->addLevel(std::make_shared<EndlessLevel>());
 
     createScene(engine);
     std::thread t = std::thread(stopThread, std::ref(engine));

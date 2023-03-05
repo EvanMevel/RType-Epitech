@@ -44,6 +44,8 @@ public:
 
     std::shared_ptr<Level> createLevel(const std::string &name, std::size_t end);
 
+    void addLevel(std::shared_ptr<Level> level);
+
     const std::vector<std::shared_ptr<Level>> &getLevels() const;
 };
 
