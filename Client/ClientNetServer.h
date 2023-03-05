@@ -46,6 +46,10 @@ public:
 
 using RTypeServer = std::shared_ptr<ClientNetServer>;
 
+/**
+ * @brief ClientPacketConsumer is a PacketConsumer that is used by the client to consume packets
+ * @tparam Packet
+ */
 template<class Packet>
 class ClientPacketConsumer : public PacketConsumer<Packet, EnginePtr> {
 public:

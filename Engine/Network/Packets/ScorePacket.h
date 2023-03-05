@@ -26,6 +26,9 @@
 
 #include "IPacket.h"
 
+/**
+ * @brief Packet that update the score of a player
+ */
 class ScorePacket: public IPacket {
 private:
     EntityId entityId;

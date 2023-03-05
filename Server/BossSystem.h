@@ -58,6 +58,9 @@ public:
     }
 };
 
+/**
+ * @brief Weapon that shoots x projectiles in a row
+ */
 class SynchronizedWeaponBossStage2 : public SynchronizedWeapon {
 private:
     size_t _howMany;

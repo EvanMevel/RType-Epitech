@@ -49,6 +49,9 @@ public:
     void clientDisconnected(std::shared_ptr<NetClient> &client, std::shared_ptr<ClientData> data) override;
 };
 
+/**
+ * @brief Packet consumer that handles the packets received by the server
+ */
 template<class Packet>
 class RTypePacketConsumer : public PacketClientConsumer<Packet, std::shared_ptr<ClientData>> {
 protected:
@@ -57,6 +60,9 @@ public:
     explicit RTypePacketConsumer(EnginePtr e) : e(e) {}
 };
 
+/**
+ * @brief Packet consumer that handles the packets received by the server that are related to a player
+ */
 template<class Packet>
 class RTypePlayerPacketConsumer : public RTypePacketConsumer<Packet> {
 public:

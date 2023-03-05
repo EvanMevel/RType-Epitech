@@ -25,7 +25,9 @@
 
 #include "Engine/ISystem.h"
 
-
+/**
+ * @brief System that draw texture using the name of the texture
+ */
 class DrawTextureNameSystem : public ISystem {
 public:
     void update(std::unique_ptr<Engine> &engine) override;
