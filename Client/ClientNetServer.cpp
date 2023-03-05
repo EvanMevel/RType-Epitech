@@ -35,7 +35,12 @@ void closeWindow(std::shared_ptr<IGraphicLib> lib) {
 }
 
 void ClientNetServer::errorReceived(std::string address, int port, int err) {
-    auto lib = this->data->getModule<IGraphicLib>();
-    lib->execOnLibThread(closeWindow, lib);
-    running.store(false);
+}
+
+bool ClientNetServer::hasFoundServer() const {
+    return foundServer;
+}
+
+void ClientNetServer::setFoundServer(bool foundServer) {
+    ClientNetServer::foundServer = foundServer;
 }

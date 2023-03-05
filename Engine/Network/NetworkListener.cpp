@@ -48,7 +48,7 @@ void NetworkListener::listen() {
 
         recVal = select(getSocket().getSocket() + 1, &rfds, nullptr, nullptr, &tv);
 
-        if (getSocket().isClosed() || !running.load()) {
+        if (!running.load() || getSocket().isClosed()) {
             return;
         }
         if (recVal == -1) {

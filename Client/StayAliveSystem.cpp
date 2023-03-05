@@ -26,7 +26,7 @@
 
 void StayAliveSystem::update(EnginePtr engine) {
     auto server = engine->getModule<ClientNetServer>();
-    if (server == nullptr || !server->isRunning()) {
+    if (server == nullptr || !server->isRunning() || !server->hasFoundServer()) {
         return;
     }
     long long currentTime = getCurrentTime();
