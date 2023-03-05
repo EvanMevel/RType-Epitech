@@ -92,6 +92,6 @@ add_library(eng
         CollectableModule.cpp
 
         Network/Packets/ScorePacket.cpp
-        Component/ShooterComponent.cpp )
+        Component/ShooterComponent.cpp)
 
 target_link_libraries(eng lua_static)

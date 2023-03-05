@@ -49,7 +49,7 @@ static void sendEntitiesInfo(const std::shared_ptr<NetClient>& client, std::shar
 
 void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) {
     auto server = e->getModule<RTypeServer>();
-    std::cout << "Handshake received" << std::endl;
+    log() << "Handshake received from " << client->getAddress() << ":" << client->getPort() << std::endl;
     data->handshake = true;
 
     // Send handshake response with tick information
