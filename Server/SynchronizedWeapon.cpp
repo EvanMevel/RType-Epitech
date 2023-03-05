@@ -25,6 +25,12 @@
 #include "Engine/Network/Packets/ProjectileHitPacket.h"
 #include "Engine/Component/EntityTypeComponent2.h"
 #include "Engine/Network/Packets/DamagePacket.h"
+#include "Engine/Component/HealthComponent.h"
+#include "Engine/Component/ProjectileComponent.h"
+#include "Engine/Component/ShooterComponent.h"
+#include "Engine/Component/TeamComponent.h"
+#include "Engine/EntityType.h"
+#include "Engine/Network/Packets/ScorePacket.h"
 
 
 SynchronizedWeapon::SynchronizedWeapon(const std::string &projectile, size_t cooldown, int velX, int velY) : Weapon(
@@ -44,6 +50,18 @@ CollideResult SynchronizedWeapon::projectileHit(std::unique_ptr<Engine> &engine,
     }
 
     auto server = engine->getModule<RTypeServer>();
+    auto health = other->getComponent<HealthComponent>();
+
+    if (health != nullptr) {
+        if (!health->isAlive()) {
+            auto entityId = self->getComponent<ShooterComponent>()->getEntityId();
+            auto entityType = engine->getScene()->getEntityById(entityId)->getComponent<EntityTypeComponent2>();
+            if (entityType != nullptr && entityType->getEntityType() == "player") {
+                ScorePacket packet(entityId, 10);
+                server->broadcast(packet);
+            }
+        }
+    }
     ProjectileHitPacket packet;
     server->broadcast(packet);
 

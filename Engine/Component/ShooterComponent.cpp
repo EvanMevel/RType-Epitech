@@ -20,31 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-//
-// Created by gugue on 05/03/2023.
-//
+#include "ShooterComponent.h"
 
-#ifndef PONG_SCOREPACKET_H
-#define PONG_SCOREPACKET_H
-
-
-#include "IPacket.h"
-
-class ScorePacket: public IPacket {
-private:
-    EntityId entityId;
-    int addedScore;
-public:
-    static const int ID = 47;
-
-    ScorePacket();
-
-    ScorePacket(EntityId entityId, int addedScore);
-
-    void write(ByteArray &buffer) const override;
-
-    void read(ByteArray &buffer) override;
-};
-
-
-#endif //PONG_SCOREPACKET_H
+EntityId ShooterComponent::getEntityId() const {
+    return entityId;
+}
