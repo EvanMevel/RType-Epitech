@@ -26,6 +26,9 @@
 #include "Engine/Network/Packets/PacketWin.h"
 #include "Client/ClientNetServer.h"
 
+/**
+ * @brief Listen to PacketWin and display win entities
+ */
 class PacketWinConsumer : public ClientPacketConsumer<PacketWin>{
 public:
     PacketWinConsumer();

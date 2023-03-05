@@ -27,6 +27,9 @@
 #include "Engine/Network/Packets/DamagePacket.h"
 #include "Client/ClientNetServer.h"
 
+/**
+ * @brief Listen to DamagePacket and apply damage to the entity
+ */
 class DamageConsumer : public ClientPacketConsumer<DamagePacket>{
 public:
     void consume(DamagePacket &packet, EnginePtr engine, RTypeServer server) override;

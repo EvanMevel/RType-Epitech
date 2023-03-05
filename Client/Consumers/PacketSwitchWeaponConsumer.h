@@ -26,6 +26,9 @@
 #include "Engine/Network/Packets/PacketSwitchWeapon.h"
 #include "Client/ClientNetServer.h"
 
+/**
+ * @brief Listen to PacketSwitchWeapon and switch the weapon
+ */
 class PacketSwitchWeaponConsumer : public ClientPacketConsumer<PacketSwitchWeapon> {
 public:
     void consume(PacketSwitchWeapon &packet, EnginePtr engine, RTypeServer server) override;

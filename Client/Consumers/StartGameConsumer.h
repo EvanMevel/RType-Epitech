@@ -27,6 +27,9 @@
 #include "Engine/Network/Packets/StartGamePacket.h"
 #include "Client/ClientNetServer.h"
 
+/**
+ * @brief Listen to server StartGamePacket and start the game
+ */
 class StartGameConsumer: public ClientPacketConsumer<StartGamePacket> {
 public:
     void consume(StartGamePacket &packet, std::unique_ptr<Engine> &engine, RTypeServer server) override;
