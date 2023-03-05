@@ -31,6 +31,9 @@
 #include "Engine/Network/NetServer.h"
 #include "ClientData.h"
 
+/**
+ * @brief Server class that handles the connection of clients
+ */
 class RTypeServer : public NetServer<std::shared_ptr<ClientData>>, public SystemHolder {
 private:
     EnginePtr engine;

@@ -28,6 +28,9 @@
 #include "BossCreatorServer.h"
 #include "Engine/Engine.h"
 
+/**
+ * @brief Class that creates a boss
+ */
 class BossCreatorServer : public BossCreator {
 public:
     void createBoss(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> entity) override;

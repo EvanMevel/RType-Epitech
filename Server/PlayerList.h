@@ -25,6 +25,9 @@
 
 #include <vector>
 
+/**
+ * @brief Class that manages the list of players
+ */
 class PlayerList {
 private:
     std::vector<int> availableIds;

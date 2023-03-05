@@ -27,7 +27,7 @@
 #include <memory>
 
 /**
- * @brief Data of a client
+ * @brief Class that stores the data of a client
  */
 class ClientData {
 private:
