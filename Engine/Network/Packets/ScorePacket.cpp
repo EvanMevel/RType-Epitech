@@ -34,3 +34,19 @@ void ScorePacket::read(ByteArray &buffer) {
     buffer >> entityId >> addedScore;
 }
 
+EntityId ScorePacket::getEntityId() const {
+    return entityId;
+}
+
+int ScorePacket::getAddedScore() const {
+    return addedScore;
+}
+
+void ScorePacket::setEntityId(EntityId entityId) {
+    ScorePacket::entityId = entityId;
+}
+
+void ScorePacket::setAddedScore(int addedScore) {
+    ScorePacket::addedScore = addedScore;
+}
+

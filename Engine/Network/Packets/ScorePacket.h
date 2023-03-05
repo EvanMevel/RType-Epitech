@@ -37,6 +37,14 @@ private:
 public:
     static const int ID = 47;
 
+    void setEntityId(EntityId entityId);
+
+    void setAddedScore(int addedScore);
+
+    EntityId getEntityId() const;
+
+    int getAddedScore() const;
+
     ScorePacket();
 
     ScorePacket(EntityId entityId, int addedScore);
