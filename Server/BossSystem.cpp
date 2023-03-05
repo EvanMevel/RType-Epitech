@@ -62,12 +62,24 @@ void BossSystem::update(std::unique_ptr<Engine> &engine) {
         server->broadcast(PacketWin());
         return;
     }
+    auto hitbox = _entity->getComponent<HitboxComponent>();
     auto maxHealth = healthComponent->getMaxHealth();
     auto weaponComponent = _entity->getComponent<WeaponComponent>();
-    _entity->getComponent<PositionComponent>()->setY(120);
     auto physicComponent = _entity->getComponent<PhysicComponent>();
     if(_entity->getComponent<PositionComponent>()->getX() > 1500){
         physicComponent->velocity.x = -2;
+    }
+    if (goUp){
+        physicComponent->velocity.y = -2;
+        if (_entity->getComponent<PositionComponent>()->getY() < 20){
+            goUp = false;
+        }
+    }
+    else{
+        physicComponent->velocity.y = 2;
+        if (_entity->getComponent<PositionComponent>()->getY() > 280){
+            goUp = true;
+        }
     }
     auto ticker = engine->getModule<TickUtil>();
     EntityVelocityPacket packet(_entity, ticker->getCurrentTick());

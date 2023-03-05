@@ -37,6 +37,7 @@ private:
     std::shared_ptr<Weapon> _weaponStage2;
     std::shared_ptr<Weapon> _weaponStage3;
     std::shared_ptr<Weapon> _weaponStage4;
+    bool goUp = false;
     bool finished = false;
 
 public:
