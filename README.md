@@ -25,8 +25,12 @@ You will find the executable in the build directory :
 - r-type-server
 - r-type-client
 
+Run the server using docker :
+
+    docker-compose up --build
+
 # Coding Style
-This r-type is developed with XXXXXXXX coding style.
+This r-type is developed with CLion default coding style.
 
 # Wiki
 Check out the [Wiki](https://github.com/EpitechPromo2025/B-CPP-500-REN-5-2-rtype-audrey.amar/wiki) to know how to use the engine (in progress)
