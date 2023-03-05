@@ -29,7 +29,16 @@
 #ifndef R_TYPE_CLIENT_CREATEFIXTEXTURE_H
 #define R_TYPE_CLIENT_CREATEFIXTEXTURE_H
 
-
+/**
+ * @brief Create a fix texture
+ * @param sc Scene
+ * @param texture Texture
+ * @param posx Position x
+ * @param posy Position y
+ * @param rotation Rotation
+ * @param scale Scale
+ * @return Entity
+ */
 std::shared_ptr<Entity> createFixTexture(const std::shared_ptr<Scene> &sc, Textures texture, int posx,int posy, float rotation, float scale);
 
 #endif //R_TYPE_CLIENT_CREATEFIXTEXTURE_H

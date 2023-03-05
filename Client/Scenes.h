@@ -36,6 +36,10 @@ enum class Scenes {
     LOBBY_MENU = 4
 };
 
+/**
+ * @brief Load all the scenes
+ * @param engine
+ */
 void loadScenes(EnginePtr engine);
 
 #endif //R_TYPE_SERVER_SCENES_H

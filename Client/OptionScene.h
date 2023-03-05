@@ -33,7 +33,11 @@
 #include "Client/Textures/CreateButton.h"
 #include "Sounds.h"
 
-
+/**
+ * @brief function that return optionScene Scene
+ * @param engine
+ * @return optionScene scene
+ */
 std::shared_ptr<Scene> optionScene(EnginePtr engine);
 
 

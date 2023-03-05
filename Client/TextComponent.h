@@ -28,6 +28,9 @@
 #include "Engine/Component/IComponent.h"
 #include "Engine/Graphic/ColorCodes.h"
 
+/**
+ * @brief Text component
+ */
 class TextComponent :  public IComponent{
 private:
     std::string text;

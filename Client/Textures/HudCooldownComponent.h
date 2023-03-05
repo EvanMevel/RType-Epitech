@@ -26,6 +26,9 @@
 
 #include "Engine/Graphic/Textures/FixTextureComponent.h"
 
+/**
+ * @brief Cooldown component
+ */
 class HudCooldownComponent : public IComponent{
 };
 

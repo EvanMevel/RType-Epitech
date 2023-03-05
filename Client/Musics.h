@@ -25,12 +25,19 @@
 
 #include "Engine/Graphic/IGraphicLib.h"
 
+/**
+ * @brief enum of musics
+ */
 enum class Musics {
     MAIN_MENU_MUSIC= 0,
     GAME_MUSIC = 1,
     BOSS_MUSIC = 2
 };
 
+/**
+ * @brief load musics
+ * @param lib
+ */
 void loadMusics(const std::shared_ptr<IGraphicLib> &lib);
 
 

@@ -25,6 +25,9 @@
 
 #include "Engine/ISystem.h"
 
+/**
+ * @brief Life system
+ */
 class LifeSystem : public ISystem {
 public:
     void update(EnginePtr engine) override;

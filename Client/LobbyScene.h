@@ -37,6 +37,11 @@
 #include "Engine/Network/Packets/HandshakePacket.h"
 #include "Scenes.h"
 
+/**
+ * @brief function that create and return lobbyScene
+ * @param engine
+ * @return lobbyScene
+ */
 std::shared_ptr<Scene> lobbyScene(EnginePtr engine);
 
 #endif //R_TYPE_LOBBYSCENE_H
