@@ -33,7 +33,7 @@ void PacketWinConsumer::consume(PacketWin &packet, EnginePtr engine, RTypeServer
     auto sc = engine->getScene();
     auto title = sc->createEntity();
     title->addComponent<PositionComponent>((width / 2) - 350, (height / 3) - (400 / 2));
-    auto titleText = title->addComponent<TextComponent>("YOU WON !", 200);
+    auto titleText = title->addComponent<TextComponent>("Level Complete !", 200);
     titleText->setColor(ColorCodes::COLOR_ORANGE);
     createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.85) - (100 / 2),Textures::QUIT_BUTTON, quitGame);
 }

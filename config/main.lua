@@ -1,8 +1,9 @@
 
 
 function loadTextures(graphicLib)
-    registerTexture(graphicLib, "obstacle1", "texture.png")
-    registerTexture(graphicLib, "weapon1", "weapon1.png")
+    registerTexture(graphicLib, "obstacle1", "asteroide.png")
+    registerTexture(graphicLib, "weapon1", "stronger_pistol.png")
+    registerTexture(graphicLib, "weapon5", "pistol.png")
 end
 
 function loadEntitySprites(graphicLib)
@@ -72,6 +73,13 @@ function loadWeapon1(factory)
     weapon1:addComponent("PhysicComponent")
 end
 
+function loadWeapon5(factory)
+    local weapon5 = registerEntityType(factory, "weapon5", 50, 50)
+    weapon5:addComponent("IAComponent")
+    weapon5:addComponent("CollectableComponent", "weapon", "weapon5")
+    weapon5:addComponent("PhysicComponent")
+end
+
 function loadEntityTypes(factory)
 
     loadPlayer(factory);
@@ -84,7 +92,9 @@ function loadEntityTypes(factory)
 
     loadWeapon1(factory);
 
-    local obstacle1 = registerEntityType(factory, "obstacle1", 200, 100)
+    loadWeapon5(factory);
+
+    local obstacle1 = registerEntityType(factory, "obstacle1", 200, 117)
     obstacle1:addComponent("PhysicComponent")
     obstacle1:addComponent("InanimateComponent")
 
@@ -95,14 +105,64 @@ function loadWeapons(factory)
     registerWeapon(factory, "weapon4", "projectile1", math.floor(ENGINE_TPS * 0.7), 10, 0)
     registerWeapon(factory, "weapon2", "projectile2", ENGINE_TPS * 2, -10, 0)
     registerWeapon(factory, "weapon3", "projectile3", ENGINE_TPS * 3, -5, -5)
+    registerWeapon(factory, "weapon5", "projectile1", math.floor(ENGINE_TPS * 0.3), 10, 0)
 end
 
 function loadLevels(factory)
-    local level = createLevel(factory, "Level 1");
-    level:addObject("enemy1", 0, 450);
-    level:addObject("enemy1", 0, 550);
-    level:addObject("enemy2", 20, 804);
-    level:addObject("obstacle1", 0, 900);
-    level:addObject("weapon1", 0, 620);
-    level:addObject("BOSS", 2200, 250);
+
+    local easyLevel = createLevel(factory, "Easy Level",2220)
+    easyLevel:addObject("enemy1", 0, 450)
+    easyLevel:addObject("enemy1", 0, 550)
+    easyLevel:addObject("enemy2", 250, 100)
+
+    local mediumLevel =  createLevel(factory, "Medium Level", 4200)
+    mediumLevel:addObject("enemy1", 0, 450)
+    mediumLevel:addObject("enemy1", 0, 650)
+    mediumLevel:addObject("enemy2", 750, 100)
+    mediumLevel:addObject("obstacle1", 50, 100)
+    mediumLevel:addObject("enemy1", 2050, 550)
+    mediumLevel:addObject("enemy1", 2050, 150)
+    mediumLevel:addObject("enemy2", 1800, 800)
+    mediumLevel:addObject("obstacle1", 1350, 550)
+    mediumLevel:addObject("obstacle1", 1350, 150)
+
+    local hardLevel = createLevel(factory, "Hard Level");
+    hardLevel:addObject("enemy1", 0, 450)
+    hardLevel:addObject("enemy1", 0, 550)
+    hardLevel:addObject("enemy2", 750, 100)
+    hardLevel:addObject("obstacle1", 50, 100)
+    hardLevel:addObject("enemy1", 2050, 550)
+    hardLevel:addObject("enemy1", 2050, 150)
+    hardLevel:addObject("enemy2", 1800, 800)
+    hardLevel:addObject("obstacle1", 1350, 550)
+    hardLevel:addObject("obstacle1", 1350, 150)
+    hardLevel:addObject("weapon5", 0, 720)
+    hardLevel:addObject("BOSS", 2600, 250)
+
+    local impossibleLevel = createLevel(factory, "Impossible Level");
+    impossibleLevel:addObject("enemy1", 0, 450)
+    impossibleLevel:addObject("enemy1", 0, 650)
+    impossibleLevel:addObject("enemy2", 750, 100)
+    impossibleLevel:addObject("obstacle1", 50, 100)
+    impossibleLevel:addObject("enemy1", 2050, 550)
+    impossibleLevel:addObject("enemy1", 2050, 150)
+    impossibleLevel:addObject("enemy2", 1800, 800)
+    impossibleLevel:addObject("obstacle1", 1350, 550)
+    impossibleLevel:addObject("obstacle1", 1350, 150)
+    impossibleLevel:addObject("weapon1", 0, 720)
+    impossibleLevel:addObject("BOSS", 4000, 250)
+    impossibleLevel:addObject("enemy2", 4200, 800)
+    impossibleLevel:addObject("enemy2", 4400, 680)
+    impossibleLevel:addObject("enemy2", 4600, 480)
+    impossibleLevel:addObject("enemy2", 4800, 540)
+    impossibleLevel:addObject("enemy2", 5005, 240)
+    impossibleLevel:addObject("enemy2", 5205, 800)
+    impossibleLevel:addObject("enemy2", 5400, 680)
+    impossibleLevel:addObject("enemy2", 5605, 480)
+    impossibleLevel:addObject("enemy2", 5800, 540)
+    impossibleLevel:addObject("enemy2", 6005, 240)
+    impossibleLevel:addObject("enemy2", 6205, 800)
+    impossibleLevel:addObject("enemy2", 6400, 680)
+    impossibleLevel:addObject("enemy2", 6605, 480)
+    impossibleLevel:addObject("enemy2", 6800, 540)
 end
