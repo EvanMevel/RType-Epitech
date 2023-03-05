@@ -31,6 +31,9 @@ class ShooterComponent: public IComponent {
 private:
     EntityId entityId;
 public:
+    void setEntityId(EntityId entityId);
+
+public:
     EntityId getEntityId() const;
 };
 

@@ -54,11 +54,13 @@ CollideResult SynchronizedWeapon::projectileHit(std::unique_ptr<Engine> &engine,
 
     if (health != nullptr) {
         if (!health->isAlive()) {
-            auto entityId = self->getComponent<ShooterComponent>()->getEntityId();
-            auto entityType = engine->getScene()->getEntityById(entityId)->getComponent<EntityTypeComponent2>();
-            if (entityType != nullptr && entityType->getEntityType() == "player") {
-                ScorePacket packet(entityId, 10);
-                server->broadcast(packet);
+            auto shooterComponent = self->getComponent<ShooterComponent>();
+            if (shooterComponent != nullptr) {
+                auto entityType = engine->getScene()->getEntityById(shooterComponent->getEntityId())->getComponent<EntityTypeComponent2>();
+                if (entityType != nullptr && entityType->getEntityType() == "player") {
+                    ScorePacket packet(shooterComponent->getEntityId(), 10);
+                    server->broadcast(packet);
+                }
             }
         }
     }

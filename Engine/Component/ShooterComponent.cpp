@@ -25,3 +25,7 @@
 EntityId ShooterComponent::getEntityId() const {
     return entityId;
 }
+
+void ShooterComponent::setEntityId(EntityId entityId) {
+    ShooterComponent::entityId = entityId;
+}
