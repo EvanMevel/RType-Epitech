@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef PONG_COLLECTABLECOMPONENT_H
-#define PONG_COLLECTABLECOMPONENT_H
+#ifndef R_TYPE_COLLECTABLECOMPONENT_H
+#define R_TYPE_COLLECTABLECOMPONENT_H
 
 
 #include "IComponent.h"
@@ -47,4 +47,4 @@ public:
 CollideResult onCollisionCollectableComponent(EnginePtr engine, std::shared_ptr<Entity> self, std::shared_ptr<Entity> other);
 
 
-#endif //PONG_COLLECTABLECOMPONENT_H
+#endif //R_TYPE_COLLECTABLECOMPONENT_H

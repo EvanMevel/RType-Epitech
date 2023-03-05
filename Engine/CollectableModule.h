@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef PONG_COLLECTABLEMODULE_H
-#define PONG_COLLECTABLEMODULE_H
+#ifndef R_TYPE_COLLECTABLEMODULE_H
+#define R_TYPE_COLLECTABLEMODULE_H
 
 #include "Engine/EngineTypes.h"
 #include "Engine/Component/CollectableComponent.h"
@@ -37,4 +37,4 @@ public:
 };
 
 
-#endif //PONG_COLLECTABLEMODULE_H
+#endif //R_TYPE_COLLECTABLEMODULE_H
