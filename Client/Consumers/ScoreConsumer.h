@@ -27,6 +27,9 @@
 #include "Engine/Network/Packets/ScorePacket.h"
 #include "Client/ClientNetServer.h"
 
+/**
+ * @brief Listen to server ScorePacket and update the score
+ */
 class ScoreConsumer : public ClientPacketConsumer<ScorePacket> {
 public:
     void consume(ScorePacket &packet, std::unique_ptr<Engine> &engine, RTypeServer server) override;

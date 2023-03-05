@@ -25,6 +25,9 @@
 
 #include "Engine/Weapon.h"
 
+/**
+ * @brief Weapon that shoots projectiles that are synchronized with the server
+ */
 class SynchronizedWeapon : public Weapon {
 public:
 

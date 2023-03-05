@@ -36,6 +36,11 @@
 #include "Engine/Network/Packets/HandshakePacket.h"
 #include "Scenes.h"
 
+/**
+ * @brief function that create and return ipScene
+ * @param engine
+ * @return ipScene
+ */
 std::shared_ptr<Scene> ipScene(EnginePtr engine);
 
 #endif //R_TYPE_SERVER_IPSCENE_H

@@ -23,9 +23,11 @@
 #ifndef R_TYPE_SERVERCOLLECTABLEMODULE_H
 #define R_TYPE_SERVERCOLLECTABLEMODULE_H
 
-
 #include "Engine/CollectableModule.h"
 
+/**
+ * @brief Module that handles the collectable component
+ */
 class ServerCollectableModule : public CollectableModule {
 public:
     bool collect(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> entity,

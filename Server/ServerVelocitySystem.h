@@ -26,7 +26,7 @@
 #include "Engine/VelocitySystem.h"
 
 /**
- * @brief ServerVelocitySystem
+ * @brief System that updates the position of entities
  */
 class ServerVelocitySystem : public VelocitySystem {
 

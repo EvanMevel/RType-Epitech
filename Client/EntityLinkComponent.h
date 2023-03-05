@@ -26,6 +26,9 @@
 
 #include "Engine/Entity.h"
 
+/**
+ * @brief Component that links an entity to another entity
+ */
 class EntityLinkComponent : public IComponent {
 public:
     std::shared_ptr<Entity> entity;

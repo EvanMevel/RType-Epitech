@@ -32,6 +32,14 @@
 #include "Client/Textures/Textures.h"
 #include "Client/Textures/LifeComponent.h"
 
+/**
+ * @brief Create the hud
+ * @param lib Graphic library
+ * @param sc Scene
+ * @param lifeTexture Life texture
+ * @param cooldownTexture Cooldown texture
+ * @return The hud
+ */
 std::shared_ptr<Entity> createHud(const std::shared_ptr<IGraphicLib> &lib, const std::shared_ptr<Scene> &sc,
                                      Textures lifeTexture, Textures cooldownTexture);
 

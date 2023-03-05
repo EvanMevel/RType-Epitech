@@ -29,6 +29,9 @@
 #include "Engine/Component/WeaponComponent.h"
 #include "SynchronizedWeapon.h"
 
+/**
+ * @brief System that manages the boss behavior
+ */
 class BossSystem : public ISystem {
 private:
     size_t currentStage = 0;

@@ -25,11 +25,18 @@
 
 #include "Engine/Graphic/IGraphicLib.h"
 
+/**
+ * @brief enum of All the sounds
+ */
 enum class Sounds {
     PROJECTILE_SHOOT = 0,
     PROJECTILE_HIT = 1
 };
 
+/**
+ * @brief Load all the sounds
+ * @param lib Graphic library
+ */
 void loadSounds(const std::shared_ptr<IGraphicLib> &lib);
 
 #endif //R_TYPE_SERVER_SOUNDS_H

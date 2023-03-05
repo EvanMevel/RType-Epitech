@@ -28,6 +28,9 @@
 #include "Engine/Graphic/IGraphicLib.h"
 #include "Engine/Engine.h"
 
+/**
+ * @brief Class that creates the boss
+ */
 class BossCreatorClient : public BossCreator{
 public:
     void createBoss(EnginePtr engine, std::shared_ptr<Entity> entity) override;

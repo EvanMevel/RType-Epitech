@@ -27,6 +27,9 @@
 #include "Engine/ISystem.h"
 #include "Engine/Level.h"
 
+/**
+ * @brief System that updates the level
+ */
 class LevelSystem : public ISystem {
 private:
     std::shared_ptr<Level> _level;

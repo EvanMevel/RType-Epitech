@@ -26,6 +26,9 @@
 #include "Engine/Graphic/Textures/FixTextureComponent.h"
 #include <cstddef>
 
+/**
+ * @brief Life component
+ */
 class LifeComponent : public IComponent{
 private:
     float scale = 1;

@@ -26,6 +26,9 @@
 
 #include "Engine/Graphic/IGraphicLib.h"
 
+/**
+ * @brief Textures enum
+ */
 enum class Textures {
     TEXTURE_ERROR = -1,
     TITLE = 0,
@@ -47,6 +50,10 @@ enum class Textures {
     ARROW_RIGHT = 16,
 };
 
+/**
+ * @brief Load all textures
+ * @param lib Graphic library
+ */
 void loadTextures(const std::shared_ptr<IGraphicLib> &lib);
 
 #endif //R_TYPE_SERVER_TEXTURES_H

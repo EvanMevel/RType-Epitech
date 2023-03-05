@@ -27,6 +27,9 @@
 
 #include "Engine/Engine.h"
 
+/**
+ * @brief Cooldown system
+ */
 class CooldownSystem : public ISystem {
 public:
     void update(EnginePtr engine) override;

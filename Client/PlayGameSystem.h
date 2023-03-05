@@ -26,6 +26,9 @@
 
 #include "Engine/Engine.h"
 
+/**
+ * @brief System that send packet<StartGame> when player press space
+ */
 class PlayGameSystem: public ISystem {
 private:
     bool alreadySent = false;

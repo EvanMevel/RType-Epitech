@@ -27,8 +27,10 @@
 #include "Engine/ISystem.h"
 #include "Engine/Engine.h"
 
+/**
+ * @brief System that handles the text box
+ */
 class TextBoxSystem : public ISystem {
-
 public:
     void update(EnginePtr engine) override;
 };

@@ -29,6 +29,9 @@
 #include "Engine/Component/IComponent.h"
 #include "Engine/Rectangle.h"
 
+/**
+ * @brief Text box component
+ */
 class TextBoxComponent : public IComponent{
 private:
     std::string text;

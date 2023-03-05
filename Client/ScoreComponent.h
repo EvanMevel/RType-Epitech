@@ -26,8 +26,10 @@
 
 #include "Engine/Component/IComponent.h"
 
+/**
+ * @brief Score component
+ */
 class ScoreComponent : public IComponent{
-
 public:
     ScoreComponent();
 };
