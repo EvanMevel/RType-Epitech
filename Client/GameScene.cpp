@@ -55,6 +55,8 @@ std::shared_ptr<Scene> gameScene(EnginePtr engine){
     auto scoreNumberText = scoreNumber->addComponent<TextComponent>("0",45);
     scoreNumberText->setColor(ColorCodes::COLOR_ORANGE);
 
-    sc->addSystem<VelocitySystem>();
+    auto vel = engine->registerModule<VelocitySystem>();
+
+    sc->addSystem(vel);
     return sc;
 }

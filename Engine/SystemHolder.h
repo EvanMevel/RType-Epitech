@@ -63,6 +63,14 @@ public:
             sys->update(engine);
         }
     }
+
+    /**
+     * @brief Add a system to the holder
+     * @param system
+     */
+    void addSystem(std::shared_ptr<ISystem> system) {
+        this->systems.push_back(system);
+    }
 };
 
 #endif //R_TYPE_SERVER_SYSTEMHOLDER_H

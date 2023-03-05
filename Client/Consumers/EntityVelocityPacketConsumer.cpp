@@ -23,6 +23,8 @@
 #include "EntityVelocityPacketConsumer.h"
 #include "Engine/Component/PositionComponent.h"
 #include "Engine/Component/PhysicComponent.h"
+#include "Engine/VelocitySystem.h"
+#include "Engine/TickUtil.h"
 
 void EntityVelocityPacketConsumer::consume(EntityVelocityPacket &packet, EnginePtr engine,
                                            RTypeServer server) {
@@ -39,4 +41,15 @@ void EntityVelocityPacketConsumer::consume(EntityVelocityPacket &packet, EngineP
     physics->maxVelocity = packet.maxVelocity;
     physics->accelerationSlow = packet.accelerationSlow;
     physics->velocitySlow = packet.velocitySlow;
+
+    auto vel = engine->getModule<VelocitySystem>();
+    auto ticker = engine->getModule<TickUtil>();
+
+    if (vel == nullptr || ticker == nullptr) {
+        return;
+    }
+
+    for (int i = 0; i + packet.tick < ticker->getCurrentTick(); i++) {
+        vel->applyPhysic(engine, entity, {});
+    }
 }
