@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef PONG_STARTGAMEPACKET_H
-#define PONG_STARTGAMEPACKET_H
+#ifndef R_TYPE_STARTGAMEPACKET_H
+#define R_TYPE_STARTGAMEPACKET_H
 
 
 #include "IPacket.h"
@@ -43,4 +43,4 @@ public:
 
     void read(ByteArray &buffer) override;
 };
-#endif //PONG_STARTGAMEPACKET_H
+#endif //R_TYPE_STARTGAMEPACKET_H
