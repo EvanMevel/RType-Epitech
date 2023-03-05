@@ -25,10 +25,15 @@
 #include "Client/Textures/CreateScrollingTexture.h"
 #include "Engine/VelocitySystem.h"
 #include "Client/Textures/CreateHud.h"
+#include "TextComponent.h"
+#include "ScoreComponent.h"
 
 std::shared_ptr<Scene> gameScene(EnginePtr engine){
     auto sc = engine->createScene<Scene>();
     auto lib = engine->getModule<IGraphicLib>();
+
+    auto height = lib->getWindow().getHeight();
+    auto width = lib->getWindow().getWidth();
 
     auto background = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_1,-1);
     auto fourthground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_2,-2);
@@ -37,6 +42,19 @@ std::shared_ptr<Scene> gameScene(EnginePtr engine){
     auto firstground = createScrollingTextureComponent(lib, sc, Textures::BACKGROUND_5,-4);
 
     auto lifeHud = createHud(lib, sc,Textures::HEART, Textures::CAN_SHOOT);
+
+
+    auto score = sc->createEntity();
+    score->addComponent<PositionComponent>((width / 2) - 300,  height - 70);
+    auto scoreText = score->addComponent<TextComponent>("Score :",45);
+    scoreText->setColor(ColorCodes::COLOR_ORANGE);
+
+    auto scoreNumber = sc->createEntity();
+    scoreNumber->addComponent<PositionComponent>((width / 2) -100, height - 70);
+    scoreNumber->addComponent<ScoreComponent>();
+    auto scoreNumberText = scoreNumber->addComponent<TextComponent>("0",45);
+    scoreNumberText->setColor(ColorCodes::COLOR_ORANGE);
+
     sc->addSystem<VelocitySystem>();
     return sc;
 }

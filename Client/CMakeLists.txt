@@ -58,7 +58,8 @@ add_executable(r-type-client
 
         BossCreatorClient.cpp
 
-        )
+        Consumers/ScoreConsumer.cpp
+        ScoreComponent.cpp)
 
 
 target_link_libraries(r-type-client eng engine-raylib)
