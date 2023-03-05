@@ -34,4 +34,4 @@ public:
 };
 
 
-#endif //PONG_PACKETWINCONSUMER_H
+#endif //R_TYPE_PACKETWINCONSUMER_H
