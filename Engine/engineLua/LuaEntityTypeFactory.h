@@ -28,6 +28,9 @@
 #include "Engine/Entity.h"
 #include "LuaComponentFactory.h"
 
+/**
+ * @brief Factory that creates entities from LuaEntityType
+ */
 class LuaEntityTypeFactory {
 private:
     std::vector<std::shared_ptr<LuaEntityType>> _entityTypes;

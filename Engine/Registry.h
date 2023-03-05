@@ -26,6 +26,10 @@
 #include <unordered_map>
 #include <memory>
 
+/**
+ * @brief Class that stores values in a map with an enum/int as key
+ * @tparam Type Type of the values
+ */
 template<typename Type>
 class Registry {
 private:

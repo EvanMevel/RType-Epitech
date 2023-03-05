@@ -23,7 +23,9 @@
 #ifndef PONG_PLAYERKEYS_H
 #define PONG_PLAYERKEYS_H
 
-
+/**
+ * @brief Class that defines the keys of the players (player 1 and 2) and the space key to start the game
+ */
 class PlayerKeys {
 public:
     bool up1;

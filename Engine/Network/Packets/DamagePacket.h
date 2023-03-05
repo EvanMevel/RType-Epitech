@@ -27,6 +27,9 @@
 #include "IPacket.h"
 #include "Engine/Entity.h"
 
+/**
+ * @brief Packet that notifies the client that an entity has been damaged
+ */
 class DamagePacket : public IPacket {
 public:
     static const int ID = 14;

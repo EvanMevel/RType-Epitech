@@ -25,6 +25,9 @@
 
 #include "Engine/Graphic/IGraphicLib.h"
 
+/**
+ * @brief Enum that contains all the sounds of pong
+ */
 enum class Sounds {
     THUD = 0,
     FORTINITE = 1,

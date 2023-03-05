@@ -26,6 +26,9 @@
 
 #include "Engine/VelocitySystem.h"
 
+/**
+ * @brief System that applies velocity to entities and make the ball bounce on the walls
+ */
 class PongVelocitySystem : public VelocitySystem {
 public:
     void applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos,

@@ -26,6 +26,9 @@
 
 #include "IComponent.h"
 
+/**
+ * @brief Component that defines that an entity is inanimate and cannot be moved and is not alive
+ */
 class InanimateComponent : public IComponent {
 
 };

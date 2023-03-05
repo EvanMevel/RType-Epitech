@@ -29,7 +29,6 @@
 #include <cstddef>
 #include <string>
 #include <functional>
-#include "../IConsumer.h"
 #include "IWindow.h"
 #include "../SystemHolder.h"
 #include "KeyCodes.h"

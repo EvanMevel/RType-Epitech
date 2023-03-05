@@ -27,6 +27,9 @@
 #include <vector>
 #include "Engine/EngineTypes.h"
 
+/**
+ * @brief Class that represents a level object (enemy, collectable, obstacle)
+ */
 class LevelObject {
 private:
     std::string _type;
@@ -42,6 +45,9 @@ public:
     int getY() const;
 };
 
+/**
+ * @brief Class that represents a level
+ */
 class Level {
 private:
     std::vector<LevelObject> _objects;

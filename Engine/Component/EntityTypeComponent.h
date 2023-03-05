@@ -20,20 +20,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ICONSUMER_H
-#define B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ICONSUMER_H
+#ifndef R_TYPE_SERVER_ENTITYTYPECOMPONENT2_H
+#define R_TYPE_SERVER_ENTITYTYPECOMPONENT2_H
 
-class Engine;
+
+#include <string>
+#include "IComponent.h"
 
 /**
- * @brief Interface for the consumer
- * @tparam Type
+ * @brief Component that defines the type of an entity
  */
-template<typename Type>
-class IConsumer {
+class EntityTypeComponent : public IComponent {
+private:
+    std::string _entityType;
+
 public:
-    virtual void consume(Engine,Type) = 0;
+    EntityTypeComponent();
+
+    explicit EntityTypeComponent(const std::string &entityType);
+
+    const std::string &getEntityType() const;
+
+    void setEntityType(const std::string &entityType);
 };
 
 
-#endif //B_CPP_500_REN_5_2_RTYPE_AUDREY_AMAR_ICONSUMER_H
+#endif //R_TYPE_SERVER_ENTITYTYPECOMPONENT2_H

@@ -25,7 +25,7 @@
 #include "engineLua/LuaEntityTypeFactory.h"
 #include "PositionComponent.h"
 #include "TeamComponent.h"
-#include "EntityTypeComponent2.h"
+#include "EntityTypeComponent.h"
 #include "HealthComponent.h"
 #include "PhysicComponent.h"
 #include "CollectableComponent.h"
@@ -92,7 +92,7 @@ CollideResult Weapon::projectileHit(EnginePtr engine, std::shared_ptr<Entity> se
             }
         }
     } else {
-        auto otherType = other->getComponent<EntityTypeComponent2>();
+        auto otherType = other->getComponent<EntityTypeComponent>();
         if (otherType != nullptr && otherType->getEntityType().find("projectile") != std::string::npos) {
             engine->getScene()->removeEntity(other);
             return CollideResult::BOTH_REMOVED;

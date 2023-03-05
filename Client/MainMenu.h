@@ -27,7 +27,6 @@
 #include <iostream>
 #include "Engine/Graphic/Textures/FixTextureComponent.h"
 #include "AnimationComponent.h"
-#include "Engine/EntityType.h"
 #include "Client/Textures/CreateButton.h"
 #include "Client/Textures/CreateScrollingTexture.h"
 #include "Engine/SceneHolder.h"

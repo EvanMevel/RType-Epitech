@@ -29,7 +29,7 @@
 #include "Engine/Component/PlayerInfoComponent.h"
 #include "Engine/Network/Packets/PlayerInfoPacket.h"
 #include "Engine/ColliderHitboxSystem.h"
-#include "Engine/Component/EntityTypeComponent2.h"
+#include "Engine/Component/EntityTypeComponent.h"
 #include "Engine/Network/Packets/EntityInfoPacket.h"
 #include "Engine/engineLua/LuaLevelFactory.h"
 
@@ -38,7 +38,7 @@ HandshakeConsumer::HandshakeConsumer(EnginePtr e) : RTypePacketConsumer(e) {}
 static void sendEntitiesInfo(const std::shared_ptr<NetClient>& client, std::shared_ptr<Scene> scene) {
     std::function<void(std::shared_ptr<Entity>)> sendEntityInfo = [&client](std::shared_ptr<Entity> entity) {
         auto pos = entity->getComponent<PositionComponent>();
-        auto type = entity->getComponent<EntityTypeComponent2>();
+        auto type = entity->getComponent<EntityTypeComponent>();
         if (pos && type) {
             EntityInfoPacket packet(entity, type, pos);
             client->sendPacket(packet);

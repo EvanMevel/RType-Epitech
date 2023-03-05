@@ -25,7 +25,7 @@
 #include "Engine/Engine.h"
 #include "Hitbox.h"
 #include "ColliderComponent.h"
-#include "EntityTypeComponent2.h"
+#include "EntityTypeComponent.h"
 
 ColliderHitboxSystem::ColliderHitboxSystem() {
 }

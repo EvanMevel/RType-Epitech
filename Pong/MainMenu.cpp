@@ -25,7 +25,7 @@
 #include "Scenes.h"
 #include "Engine/Graphic/Textures/FixTextureComponent.h"
 #include "Engine/Component/PositionComponent.h"
-#include "Engine/Component/EntityTypeComponent2.h"
+#include "Engine/Component/EntityTypeComponent.h"
 #include "Engine/Component/HitboxComponent.h"
 #include "ButtonComponent.h"
 #include "Textures.h"
@@ -51,7 +51,7 @@ std::shared_ptr<Scene> mainMenu(EnginePtr engine)
 
     auto button = sc->createEntity();
 
-    button->addComponent<EntityTypeComponent2>("button");
+    button->addComponent<EntityTypeComponent>("button");
     button->addComponent<FixTextureComponent>()->setTextureId(Textures::PLAY_BUTTON);
 
     auto pos = button->addComponent<PositionComponent>((width / 2) - (200 / 2), (int) (height * 0.7) - (100 / 2));

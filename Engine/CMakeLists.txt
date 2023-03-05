@@ -54,15 +54,13 @@ add_library(eng
 
         
         Component/PhysicComponent.cpp
-        Component/EntityTypeComponent2.cpp
+        Component/EntityTypeComponent.cpp
         Component/ColliderComponent.cpp
         Component/PlayerInfoComponent.cpp
         Component/PositionComponent.cpp
-        Component/CooldownComponent.cpp
         Component/HealthComponent.cpp
         Component/HitboxComponent.cpp
         Component/TeamComponent.cpp
-        Component/ProjectileComponent.cpp
         Component/WeaponComponent.cpp
         Component/InanimateComponent.cpp
         Component/CollectableComponent.cpp
@@ -81,7 +79,6 @@ add_library(eng
         TimeUtil.cpp
         VelocitySystem.cpp
         TickUtil.cpp
-        EntityUtils.cpp
         ColliderHitboxSystem.cpp
         Hitbox.cpp
         Rectangle.cpp

@@ -29,12 +29,14 @@
 
 class IGraphicLib;
 
+/**
+ * @brief Class that loads lua files and data
+ */
 class LuaLoader {
 private:
     LuaWrapper _lua;
 
 public:
-
     LuaLoader();
 
     void loadFolder(const std::string &folderPath);

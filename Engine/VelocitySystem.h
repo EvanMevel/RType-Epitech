@@ -34,8 +34,8 @@
  * @brief System that updates the position of entities with a velocity component
  */
 class VelocitySystem : public ISystem {
-
 public:
+    VelocitySystem();
 
     void update(EnginePtr engine) override;
 

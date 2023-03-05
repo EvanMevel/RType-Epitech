@@ -25,7 +25,6 @@
 
 
 #include "Engine/Scene.h"
-#include "Engine/EntityType.h"
 #include "Engine/Entity.h"
 #include "Engine/Engine.h"
 

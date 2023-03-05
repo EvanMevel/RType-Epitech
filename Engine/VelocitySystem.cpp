@@ -20,13 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include <iostream>
 #include "VelocitySystem.h"
 #include "Engine/Engine.h"
 #include "InanimateComponent.h"
 #include "ColliderComponent.h"
 #include "Hitbox.h"
-#include "EntityTypeComponent2.h"
+#include "EntityTypeComponent.h"
+
+VelocitySystem::VelocitySystem() {
+
+}
 
 void VelocitySystem::applyVelocity(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<PositionComponent> pos,
                                    std::shared_ptr<PhysicComponent> physic,
@@ -58,7 +61,7 @@ void VelocitySystem::applyVelocity(EnginePtr engine, std::shared_ptr<Entity> ent
         }
     }
 
-    auto type = entity->getComponent<EntityTypeComponent2>();
+    auto type = entity->getComponent<EntityTypeComponent>();
 
     if (type != nullptr && type->getEntityType() == "player") {
         if (pos->x <= 0 || pos->y <= 0 || pos->y + hitboxComp->getHeight() >= 1000 ||

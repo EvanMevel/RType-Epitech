@@ -27,6 +27,10 @@
 #include <unordered_map>
 #include <memory>
 
+/**
+ * @brief Class that stores values in a map with a string as key
+ * @tparam Type Type of the values
+ */
 template<typename Type>
 class StringRegistry {
 private:

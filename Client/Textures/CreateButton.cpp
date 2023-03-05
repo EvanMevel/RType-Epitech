@@ -23,7 +23,7 @@
 #include "CreateButton.h"
 #include "Engine/Component/HitboxComponent.h"
 #include "Client/ButtonComponent.h"
-#include "Engine/Component/EntityTypeComponent2.h"
+#include "Engine/Component/EntityTypeComponent.h"
 #include "Engine/Component/PositionComponent.h"
 #include "Client/Textures/Textures.h"
 
@@ -32,7 +32,7 @@ std::shared_ptr<Entity> createButton(const std::shared_ptr<IGraphicLib> &lib, co
 {
     auto button = sc->createEntity();
 
-    button->addComponent<EntityTypeComponent2>("button");
+    button->addComponent<EntityTypeComponent>("button");
     button->addComponent<FixTextureComponent>()->setTextureId(texture);
 
     auto pos = button->addComponent<PositionComponent>(x, y);

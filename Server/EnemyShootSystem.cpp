@@ -22,7 +22,6 @@
 
 #include "EnemyShootSystem.h"
 #include "Engine/Engine.h"
-#include "Engine/Component/CooldownComponent.h"
 #include "Engine/Component/IAComponent.h"
 #include "Engine/Component/WeaponComponent.h"
 

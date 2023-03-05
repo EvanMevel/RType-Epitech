@@ -22,7 +22,7 @@
 
 #include "LuaEntityTypeFactory.h"
 #include "Engine/Component/HitboxComponent.h"
-#include "Engine/Component/EntityTypeComponent2.h"
+#include "Engine/Component/EntityTypeComponent.h"
 
 std::shared_ptr<LuaEntityType> LuaEntityTypeFactory::addEntityType(const LuaEntityType &entityType) {
     auto type = std::make_shared<LuaEntityType>(entityType);
@@ -33,7 +33,7 @@ std::shared_ptr<LuaEntityType> LuaEntityTypeFactory::addEntityType(const LuaEnti
 void LuaEntityTypeFactory::initEntity(std::shared_ptr<Entity> entity, const std::string &entityType) {
     for (auto &type : _entityTypes) {
         if (type->getId() == entityType) {
-            entity->addComponent<EntityTypeComponent2>(type->getId());
+            entity->addComponent<EntityTypeComponent>(type->getId());
 
             entity->addComponent<HitboxComponent>(type->getHitboxWidth(), type->getHitboxHeight());
 
