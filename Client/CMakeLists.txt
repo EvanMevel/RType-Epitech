@@ -37,6 +37,8 @@ add_executable(r-type-client
         Consumers/ProjectileHitConsumer.cpp
         Consumers/DamageConsumer.cpp
         Consumers/StartGameConsumer.cpp
+        Consumers/PacketWinConsumer.cpp
+        Consumers/PacketSwitchWeaponConsumer.cpp
 
         Sprites/SpriteComponent.cpp
         Sprites/DrawSpriteSystem.cpp
@@ -73,7 +75,8 @@ add_executable(r-type-client
         PlayGameSystem.cpp
 
         BossCreatorClient.cpp
-        Consumers/PacketWinConsumer.cpp Consumers/PacketWinConsumer.h Consumers/PacketSwitchWeaponConsumer.cpp Consumers/PacketSwitchWeaponConsumer.h)
+
+        )
 
 
 target_link_libraries(r-type-client eng raylib)
