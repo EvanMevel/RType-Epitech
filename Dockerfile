@@ -1,6 +1,8 @@
 # Utilisez une image existante comme base
 FROM ubuntu:latest
 
+ENV RTYPE_SERVER_IP=0.0.0.0
+
 # Installez les dépendances nécessaires pour votre projet
 RUN apt-get update && \
     apt-get install -y build-essential && \
@@ -30,7 +32,7 @@ RUN dos2unix ./build.sh
 RUN ./build.sh
 
 # Exposez le port que votre serveur utilise
-EXPOSE 8080
+EXPOSE 4242/udp
 
 # Lancez l'exécutable du serveur dans le conteneur Docker
 

@@ -92,6 +92,7 @@ void createScene(EnginePtr engine, std::shared_ptr<Level> level) {
     std::string serverIp = rtypeServerIp ? rtypeServerIp : "127.0.0.1";
     char *rtypeServerPort = std::getenv("RTYPE_SERVER_PORT");
     int serverport = rtypeServerPort ? std::stoi(rtypeServerPort) : 4242;
+    std::cout << "BINDING ON : " << serverIp << ":" << serverport << std::endl;
 
     RTypeServerPtr srv = engine->registerModule<RTypeServer>(engine, serverIp, serverport);
     auto sc = engine->createScene<PacketSendingScene>(srv);
