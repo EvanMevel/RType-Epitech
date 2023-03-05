@@ -29,6 +29,12 @@
 class LuaLevelFactory {
 private:
     std::vector<std::shared_ptr<Level>> _levels;
+    int selectedLevel;
+public:
+    void setSelectedLevel(int selectedLevel);
+
+public:
+    int getSelectedLevel() const;
 
 public:
     std::shared_ptr<Level> createLevel(const std::string &name);

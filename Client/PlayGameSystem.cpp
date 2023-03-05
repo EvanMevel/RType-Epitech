@@ -23,15 +23,18 @@
 #include "PlayGameSystem.h"
 #include "ClientNetServer.h"
 #include "Engine/Network/Packets/StartGamePacket.h"
+#include "Engine/engineLua/LuaLevelFactory.h"
 
 void PlayGameSystem::update(std::unique_ptr<Engine> &engine) {
     auto lib = engine->getModule<IGraphicLib>();
+    auto level = engine->getModule<LuaLevelFactory>();
+
     if (lib == nullptr)
         return;
     if(engine->getScene() == nullptr)
         return;
     if (lib->isKeyPressed(KeyCodes::KEY_SPACE) && !alreadySent) {
         alreadySent = true;
-        engine->getModule<ClientNetServer>()->sendPacket(StartGamePacket());
+        engine->getModule<ClientNetServer>()->sendPacket(StartGamePacket(level->getLevels()[level->getSelectedLevel()]->getName()));
     }
 }

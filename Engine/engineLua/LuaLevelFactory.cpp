@@ -38,6 +38,14 @@ const std::vector<std::shared_ptr<Level>> &LuaLevelFactory::getLevels() const {
     return _levels;
 }
 
+int LuaLevelFactory::getSelectedLevel() const {
+    return selectedLevel;
+}
+
+void LuaLevelFactory::setSelectedLevel(int selectedLevel) {
+    LuaLevelFactory::selectedLevel = selectedLevel;
+}
+
 [[maybe_unused]] int luaCreateLevel(lua_State *L) {
     int argc = lua_gettop(L);
     LuaLevelFactory *levelList = (LuaLevelFactory*) lua_touserdata(L, 1);
