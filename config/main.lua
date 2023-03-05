@@ -98,27 +98,27 @@ function loadWeapons(factory)
 end
 
 function loadLevels(factory)
-    local mediumLevel =  createLevel(factory, "Medium Level");
+    local mediumLevel =  createLevel(factory, "Medium Level", 4200);
     mediumLevel:addObject("enemy1", 0, 450);
-    mediumLevel:addObject("enemy1", 0, 550);
-    mediumLevel:addObject("enemy2", 550, 100);
+    mediumLevel:addObject("enemy1", 0, 650);
+    mediumLevel:addObject("enemy2", 750, 100);
     mediumLevel:addObject("obstacle1", 50, 100);
-    mediumLevel:addObject("enemy1", 350, 550);
-    mediumLevel:addObject("enemy1", 350, 150);
-    mediumLevel:addObject("enemy2", 400, 300);
-    mediumLevel:addObject("obstacle1", 850, 550);
-    mediumLevel:addObject("obstacle1", 850, 150);
+    mediumLevel:addObject("enemy1", 2050, 550);
+    mediumLevel:addObject("enemy1", 2050, 150);
+    mediumLevel:addObject("enemy2", 1800, 800);
+    mediumLevel:addObject("obstacle1", 1350, 550);
+    mediumLevel:addObject("obstacle1", 1350, 150);
 
-    local easyLevel = createLevel(factory, "Easy Level");
+    local easyLevel = createLevel(factory, "Easy Level",2220);
     easyLevel:addObject("enemy1", 0, 450);
     easyLevel:addObject("enemy1", 0, 550);
     easyLevel:addObject("enemy2", 250, 100);
 
-    local level = createLevel(factory, "Level 1");
-    level:addObject("enemy1", 0, 450);
-    level:addObject("enemy1", 0, 550);
-    level:addObject("enemy2", 20, 804);
-    level:addObject("obstacle1", 0, 900);
-    level:addObject("weapon1", 0, 620);
-    level:addObject("BOSS", 2200, 250);
+    local impossibleLevel = createLevel(factory, "Impossible Level");
+    impossibleLevel:addObject("enemy1", 0, 450);
+    impossibleLevel:addObject("enemy1", 0, 550);
+    impossibleLevel:addObject("enemy2", 20, 804);
+    impossibleLevel:addObject("obstacle1", 0, 900);
+    impossibleLevel:addObject("weapon1", 0, 620);
+    impossibleLevel:addObject("BOSS", 2200, 250);
 end
