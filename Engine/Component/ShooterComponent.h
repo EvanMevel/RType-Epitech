@@ -25,7 +25,7 @@
 
 
 #include "IComponent.h"
-#include "EngineTypes.h"
+#include "Engine/EngineTypes.h"
 
 class ShooterComponent: public IComponent {
 private:

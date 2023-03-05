@@ -23,7 +23,7 @@
 #include "ShooterComponent.h"
 
 EntityId ShooterComponent::getEntityId() const {
-    return entityId;
+     return entityId;
 }
 
 void ShooterComponent::setEntityId(EntityId entityId) {
