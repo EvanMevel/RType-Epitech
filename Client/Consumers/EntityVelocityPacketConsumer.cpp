@@ -36,4 +36,7 @@ void EntityVelocityPacketConsumer::consume(EntityVelocityPacket &packet, EngineP
 
     physics->velocity = packet.velocity;
     physics->acceleration = packet.acceleration;
+    physics->maxVelocity = packet.maxVelocity;
+    physics->accelerationSlow = packet.accelerationSlow;
+    physics->velocitySlow = packet.velocitySlow;
 }

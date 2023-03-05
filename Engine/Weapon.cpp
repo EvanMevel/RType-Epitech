@@ -37,12 +37,12 @@ Weapon::Weapon(const std::string &projectile, size_t cooldown, int velX, int vel
     _projectileHit = std::bind(&Weapon::projectileHit, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 }
 
-void Weapon::shootAtPos(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter, int x, int y){
+std::shared_ptr<Entity> Weapon::shootAtPos(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter, int x, int y){
     auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
     auto team = shooter->getComponent<TeamComponent>();
 
     if (!team) {
-        return;
+        return nullptr;
     }
     auto projectile = engine->getScene()->unsafeCreateEntity(engine, _projectile, x, y);
 
@@ -52,6 +52,7 @@ void Weapon::shootAtPos(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity>
 
     projectile->addComponent<TeamComponent>(team->getTeam());
 
+    return projectile;
 }
 
 void Weapon::shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter) {

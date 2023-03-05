@@ -36,6 +36,9 @@ public:
     Vector2i velocity;
     Vector2i acceleration;
     unsigned long long tick;
+    unsigned int maxVelocity;
+    unsigned int accelerationSlow;
+    unsigned int velocitySlow;
 public:
     static const int ID = 2;
 

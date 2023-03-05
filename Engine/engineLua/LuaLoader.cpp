@@ -98,10 +98,18 @@ void addComponentConstructors(std::shared_ptr<LuaEntityTypeFactory> luaEntityTyp
 
     luaEntityTypeFactory->getComponentFactory().addComponent("IAComponent", [](std::shared_ptr<Entity> entity, std::vector<std::any> args) {
         entity->addComponent<IAComponent>();
+        auto phys = entity->getOrCreate<PhysicComponent>();
+        phys->velocitySlow = 0;
+        phys->accelerationSlow = 0;
+        phys->velocity.x = -1;
     });
 
     luaEntityTypeFactory->getComponentFactory().addComponent("InanimateComponent", [](std::shared_ptr<Entity> entity, std::vector<std::any> args) {
         entity->addComponent<InanimateComponent>();
+        auto phys = entity->getOrCreate<PhysicComponent>();
+        phys->velocitySlow = 0;
+        phys->accelerationSlow = 0;
+        phys->velocity.x = -1;
     });
 
     luaEntityTypeFactory->getComponentFactory().addComponent("CollectableComponent", [](std::shared_ptr<Entity> entity, std::vector<std::any> args) {
