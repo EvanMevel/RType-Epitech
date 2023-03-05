@@ -59,6 +59,8 @@ class SynchronizedWeaponBossStage2 : public SynchronizedWeapon {
 private:
     size_t _howMany;
 public:
+    SynchronizedWeaponBossStage2(const std::string &projectile, size_t cooldown, int velX, int velY, size_t howMany);
+
     void shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter) override;
 
     CollideResult projectileHit(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> self,
@@ -66,8 +68,6 @@ public:
 
     void onDamage(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> cause, std::shared_ptr<Entity> victim,
                   int damage) override;
-
-    SynchronizedWeaponBossStage2(const std::string &projectile, size_t cooldown, size_t howMany);
 };
 
 #endif //R_TYPE_SERVER_BOSSSYSTEM_H

@@ -25,6 +25,7 @@
 #include "EntityTypeComponent2.h"
 #include "engineLua/LuaWeaponFactory.h"
 #include "WeaponComponent.h"
+#include "CollectableModule.h"
 
 CollideResult onCollisionCollectableComponent(EnginePtr engine, std::shared_ptr<Entity> self,
                                               std::shared_ptr<Entity> other) {
@@ -36,15 +37,14 @@ CollideResult onCollisionCollectableComponent(EnginePtr engine, std::shared_ptr<
     if (collectable == nullptr) {
         return CollideResult::NONE;
     }
-    if (collectable->getType() == "weapon") {
-        auto weaponComponent = other->getComponent<WeaponComponent>();
-        if (weaponComponent == nullptr) {
-            return CollideResult::NONE;
-        }
-        auto weaponFactory = engine->getModule<LuaWeaponFactoryBase>();
-        auto weapon = weaponFactory->getWeapon(collectable->getValue());
-        weaponComponent->setWeapon(weapon);
+    auto collectModule = engine->getModule<CollectableModule>();
+    if (collectModule == nullptr) {
+        return CollideResult::NONE;
     }
+    if (!collectModule->collect(engine, other, collectable)) {
+        return CollideResult::NONE;
+    }
+
     engine->getScene()->removeEntity(self);
     return CollideResult::SOURCE_REMOVED;
 }

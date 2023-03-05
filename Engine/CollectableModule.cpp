@@ -20,24 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYER_H
-#define R_TYPE_SERVER_PLAYER_H
+#include "CollectableModule.h"
+#include "Engine/Engine.h"
+#include "WeaponComponent.h"
+#include "engineLua/LuaWeaponFactory.h"
 
-#include "Engine/Entity.h"
+CollectableModule::CollectableModule() {}
 
-/**
- * @brief Describes a player and its inputs
- */
-class Player {
-public:
-    bool up = false;
-    bool down = false;
-    bool left = false;
-    bool right = false;
-    bool shoot = false;
-    std::shared_ptr<Entity> entity;
-    bool dead = false;
-};
-
-
-#endif //R_TYPE_SERVER_PLAYER_H
+bool CollectableModule::collect(EnginePtr engine, std::shared_ptr<Entity> entity,
+                                std::shared_ptr<CollectableComponent> collectable) {
+    if (collectable->getType() == "weapon") {
+        auto weaponComponent = entity->getComponent<WeaponComponent>();
+        if (weaponComponent == nullptr) {
+            return false;
+        }
+        auto weaponFactory = engine->getModule<LuaWeaponFactoryBase>();
+        auto weapon = weaponFactory->getWeapon(collectable->getValue());
+        weaponComponent->setWeapon(weapon);
+    }
+    return true;
+}

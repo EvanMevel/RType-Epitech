@@ -30,7 +30,10 @@
 #include "PhysicComponent.h"
 #include "CollectableComponent.h"
 
-Weapon::Weapon(const std::string &projectile, size_t cooldown) : _projectile(projectile), _cooldown(cooldown) {
+Weapon::Weapon(const std::string &projectile, size_t cooldown, int velX, int velY) : _projectile(projectile),
+                                                                                     _cooldown(cooldown), velX(velX),
+                                                                                     velY(velY) {
+
     _projectileHit = std::bind(&Weapon::projectileHit, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 }
 
@@ -43,7 +46,7 @@ void Weapon::shootAtPos(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity>
     }
     auto projectile = engine->getScene()->unsafeCreateEntity(engine, _projectile, x, y);
 
-    projectile->getComponent<PhysicComponent>()->velocity.x = team->getTeam() == 0 ? 10 : -10;
+    projectile->getComponent<PhysicComponent>()->velocity = Vector2i(velX, velY);
 
     projectile->addComponent<ColliderComponent>(_projectileHit);
 

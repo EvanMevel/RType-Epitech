@@ -20,24 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYER_H
-#define R_TYPE_SERVER_PLAYER_H
+#ifndef PONG_COLLECTABLEMODULE_H
+#define PONG_COLLECTABLEMODULE_H
 
-#include "Engine/Entity.h"
+#include "Engine/EngineTypes.h"
+#include "Engine/Component/CollectableComponent.h"
 
-/**
- * @brief Describes a player and its inputs
- */
-class Player {
+class CollectableModule {
+
 public:
-    bool up = false;
-    bool down = false;
-    bool left = false;
-    bool right = false;
-    bool shoot = false;
-    std::shared_ptr<Entity> entity;
-    bool dead = false;
+    CollectableModule();
+
+    virtual bool collect(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<CollectableComponent> collectable);
 };
 
 
-#endif //R_TYPE_SERVER_PLAYER_H
+#endif //PONG_COLLECTABLEMODULE_H

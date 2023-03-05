@@ -20,24 +20,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYER_H
-#define R_TYPE_SERVER_PLAYER_H
+#ifndef PONG_PACKETSWITCHWEAPON_H
+#define PONG_PACKETSWITCHWEAPON_H
 
-#include "Engine/Entity.h"
 
-/**
- * @brief Describes a player and its inputs
- */
-class Player {
+#include "IPacket.h"
+
+class PacketSwitchWeapon : public IPacket {
 public:
-    bool up = false;
-    bool down = false;
-    bool left = false;
-    bool right = false;
-    bool shoot = false;
-    std::shared_ptr<Entity> entity;
-    bool dead = false;
+    static const int ID = 21;
+
+private:
+    EntityId _id;
+    std::string _weaponName;
+
+public:
+    PacketSwitchWeapon();
+
+    PacketSwitchWeapon(EntityId id, const std::string &weaponName);
+
+    EntityId getId() const;
+
+    void setId(EntityId id);
+
+    const std::string &getWeaponName() const;
+
+    void setWeaponName(const std::string &weaponName);
+
+    void write(ByteArray &buffer) const override;
+
+    void read(ByteArray &buffer) override;
 };
 
 
-#endif //R_TYPE_SERVER_PLAYER_H
+#endif //PONG_PACKETSWITCHWEAPON_H
