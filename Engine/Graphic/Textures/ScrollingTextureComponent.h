@@ -33,7 +33,6 @@ class ScrollingTextureComponent : public FixTextureComponent{
 private:
     int scroll = 0;
     int scrollingSpeed = 0;
-    float scale = 1.0;
     int width = 0;
 public:
     int getScroll() const;
@@ -45,10 +44,6 @@ public:
     void setScrollingSpeed(int scrollingSpeed);
 
     void applySpeed();
-
-    float getScale() const;
-
-    void setScale(float scale);
 
     void setWidth(int width);
 };

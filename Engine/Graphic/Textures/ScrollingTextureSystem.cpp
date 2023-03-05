@@ -39,9 +39,9 @@ void drawScrollingTexture(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Enti
         // If the texture is going backward, we draw it AFTER the first one
         // If the texture is going forward, we draw it BEFORE the first one
         if (scrollingComponent->getScrollingSpeed() < 0) {
-            x += texture->getWidth();
+            x += (int) ((float) texture->getWidth() * scrollingComponent->getScale());
         } else {
-            x -= texture->getWidth();
+            x -= (int) ((float) texture->getWidth() * scrollingComponent->getScale());
         }
         lib->drawTextureEx(texture, x, posComponent->getY(),0.0,scrollingComponent->getScale(), ColorCodes::COLOR_WHITE);
     }
