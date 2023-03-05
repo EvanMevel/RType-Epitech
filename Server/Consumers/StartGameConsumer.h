@@ -31,7 +31,9 @@
 #include "Server/RTypeServer.h"
 #include "Engine/Network/Packets/StartGamePacket.h"
 
-
+/**
+ * @brief Listen to server StartGamePacket and start the game
+ */
 class StartGameConsumer: public RTypePacketConsumer<StartGamePacket> {
 public:
     static bool gameStarted;
