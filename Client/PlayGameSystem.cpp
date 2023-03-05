@@ -27,13 +27,12 @@
 
 void PlayGameSystem::update(std::unique_ptr<Engine> &engine) {
     auto lib = engine->getModule<IGraphicLib>();
-    auto level = engine->getModule<LuaLevelFactory>();
 
-    if (lib == nullptr)
+    if (alreadySent || lib == nullptr || engine->getScene() == nullptr) {
         return;
-    if(engine->getScene() == nullptr)
-        return;
-    if (lib->isKeyPressed(KeyCodes::KEY_SPACE) && !alreadySent) {
+    }
+    if (lib->isKeyPressed(KeyCodes::KEY_SPACE)) {
+        auto level = engine->getModule<LuaLevelFactory>();
         alreadySent = true;
         engine->getModule<ClientNetServer>()->sendPacket(StartGamePacket(level->getLevels()[level->getSelectedLevel()]->getName()));
     }

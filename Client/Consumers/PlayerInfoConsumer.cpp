@@ -34,6 +34,12 @@ PlayerInfoConsumer::PlayerInfoConsumer() = default;
 void PlayerInfoConsumer::consume(PlayerInfoPacket &packet, EnginePtr engine, RTypeServer server) {
     auto typeFactory = engine->getModule<LuaEntityTypeFactory>();
     auto lib = engine->getModule<IGraphicLib>();
+    auto playerModule = engine->getModule<Player>();
+    if (playerModule != nullptr) {
+        std::cout << ">> We are already player " << playerModule->entity->getId() << std::endl;
+        return;
+    }
+    playerModule = engine->registerModule<Player>();
 
     auto player = engine->getScene()->getOrCreateEntityById(packet.playerId);
     typeFactory->initEntity(player, "player");
@@ -47,11 +53,10 @@ void PlayerInfoConsumer::consume(PlayerInfoPacket &packet, EnginePtr engine, RTy
 
     std::cout << ">> We are player " << packet.playerId << " (" << packet.playerNumber << ")" << std::endl;
 
-    auto pl = engine->registerModule<Player>();
-    pl->entity = player;
+    playerModule->entity = player;
 
-    engine->getModule<IGraphicLib>()->addSystem<PlayerKeysSystem>(pl);
+    engine->getModule<IGraphicLib>()->addSystem<PlayerKeysSystem>(playerModule);
 
-    engine->getScene()->addSystem<PlayerMoveSystem>(pl);
-    engine->getScene()->addSystem<PlayerShootSystem>(pl);
+    engine->getScene()->addSystem<PlayerMoveSystem>(playerModule);
+    engine->getScene()->addSystem<PlayerShootSystem>(playerModule);
 }
