@@ -28,6 +28,8 @@
 ServerVelocitySystem::ServerVelocitySystem() {}
 
 void ServerVelocitySystem::entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity) {
+    if (updateCoolDown != 0)
+        return;
     auto ticker = engine->getModule<TickUtil>();
 
     EntityVelocityPacket packet(entity, ticker->getCurrentTick());
@@ -36,4 +38,9 @@ void ServerVelocitySystem::entityMoved(EnginePtr engine, std::shared_ptr<Entity>
 
 std::string ServerVelocitySystem::getName() {
     return "ServerVelocitySystem";
+}
+
+void ServerVelocitySystem::update(std::unique_ptr<Engine> &engine) {
+    updateCoolDown = (updateCoolDown + 1) % ENGINE_TPS;
+    VelocitySystem::update(engine);
 }

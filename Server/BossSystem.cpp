@@ -104,7 +104,8 @@ void BossSystem::update(std::unique_ptr<Engine> &engine) {
             currentStage = 1;
             weaponComponent->setWeapon(_weaponStage1);
         }
-    }myShoot(engine,weaponComponent);
+    }
+    myShoot(engine,weaponComponent);
 }
 
 void BossSystem::setEntity(const std::shared_ptr<Entity> &entity) {

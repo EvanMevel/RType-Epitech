@@ -38,6 +38,8 @@ public:
     virtual void onDamage(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> cause, std::shared_ptr<Entity> victim,
                   int damage) override;
 
+    std::shared_ptr<Entity> shootAtPos(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter, int x, int y) override;
+
 };
 
 

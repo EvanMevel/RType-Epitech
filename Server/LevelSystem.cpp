@@ -44,14 +44,4 @@ void LevelSystem::update(std::unique_ptr<Engine> &engine) {
         server->broadcast(PacketWin());
         return;
     }
-
-    std::function<void(std::shared_ptr<Entity>)> moveEntity = [](std::shared_ptr<Entity> ent) {
-        auto ia = ent->getComponent<IAComponent>();
-        auto inanim = ent->getComponent<InanimateComponent>();
-        auto phys = ent->getComponent<PhysicComponent>();
-        if ((ia || inanim) && phys) {
-            phys->velocity.x -= 1;
-        }
-    };
-    engine->getScene()->forEachEntity(moveEntity);
 }
