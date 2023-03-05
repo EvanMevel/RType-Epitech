@@ -142,7 +142,7 @@ void loadGraphsAndScenes(EnginePtr engine) {
     IWindow &window = lib->createWindow(1820, 1000, "R-type");
     window.setTargetFPS(60);
     lib->initAudio();
-    window.setFullScreen();
+    //window.setFullScreen();
     std::cout << "[Graphic] Window created" << std::endl;
     loadTextures(lib);
     std::cout << "[Graphic] Textures ready" << std::endl;
