@@ -27,4 +27,5 @@ void loadMusics(const std::shared_ptr<IGraphicLib> &lib){
     lib->registerMusic(Musics::MAIN_MENU_MUSIC,"menu r-type.mp3");
     lib->registerMusic(Musics::GAME_MUSIC,"r-type game.mp3");
     lib->registerMusic(Musics::BOSS_MUSIC, "boss rtype.mp3");
+    lib->registerMusic(Musics::END_MUSIC, "aplause.mp3");
 }

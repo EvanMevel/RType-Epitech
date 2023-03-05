@@ -4,4 +4,5 @@ function loadEasyLevel(factory)
     easyLevel:addObject("enemy1", 0, 450)
     easyLevel:addObject("enemy1", 0, 550)
     easyLevel:addObject("enemy2", 250, 100)
+    easyLevel:addObject("obstacle1", 250, 100)
 end

@@ -31,7 +31,8 @@
 enum class Musics {
     MAIN_MENU_MUSIC= 0,
     GAME_MUSIC = 1,
-    BOSS_MUSIC = 2
+    BOSS_MUSIC = 2,
+    END_MUSIC = 3
 };
 
 /**
