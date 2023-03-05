@@ -105,4 +105,6 @@ function loadLevels(factory)
     level:addObject("obstacle1", 0, 900);
     level:addObject("weapon1", 0, 620);
     level:addObject("BOSS", 2200, 250);
+
+    local level2 = createLevel(factory, "Level 2");
 end

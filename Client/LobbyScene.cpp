@@ -44,6 +44,9 @@ static void toPreviousLevel(EnginePtr engine,std::shared_ptr<Entity> entity)
     auto levelNameEntity = entity->getComponent<EntityLinkComponent>()->entity;
     if (levelNameEntity != nullptr) {
         int level = (levels->getSelectedLevel() - 1) % (int)levels->getLevels().size();
+        if (level < 0) {
+            level = (int) levels->getLevels().size() - 1;
+        }
         levels->setSelectedLevel(level);
         levelNameEntity->getComponent<TextComponent>()->setText(levels->getLevels()[levels->getSelectedLevel()]->getName());
     }
