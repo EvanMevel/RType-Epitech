@@ -26,16 +26,37 @@
 #include "Client/Textures/Textures.h"
 #include "Client/MainMenu.h"
 
-void PacketWinConsumer::consume(PacketWin &packet, EnginePtr engine, RTypeServer server) {
-    auto lib = engine->getModule<IGraphicLib>();
+static void spawnConfetti(int x, int y, std::shared_ptr<IAnimation> animation, std::shared_ptr<Scene> sc) {
+    auto confetti = sc->createEntity();
+
+    auto animationComponent2 = confetti->addComponent<AnimationComponent>();
+    animationComponent2->frameDelay = 2;
+    animationComponent2->setAnimation(animation);
+    confetti->addComponent<PositionComponent>(x, y);
+}
+
+void levelCompleted(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Scene> sc) {
     auto height = lib->getWindow().getHeight();
     auto width = lib->getWindow().getWidth();
-    auto sc = engine->getScene();
     auto title = sc->createEntity();
-    title->addComponent<PositionComponent>((width / 2) - 350, (height / 3) - (400 / 2));
-    auto titleText = title->addComponent<TextComponent>("Level Complete !", 200);
+
+    title->addComponent<PositionComponent>((width / 2) - 550, (height / 3) - (400 / 2));
+    auto titleText = title->addComponent<TextComponent>("Level Complete !", 140);
     titleText->setColor(ColorCodes::COLOR_ORANGE);
     createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.85) - (100 / 2),Textures::QUIT_BUTTON, quitGame);
+
+    auto animation = lib->createAnimation("confetti.gif");
+
+    spawnConfetti(150, 318, animation, sc);
+    spawnConfetti(854, 0, animation, sc);
+    spawnConfetti(1453, 175, animation, sc);
+}
+
+void PacketWinConsumer::consume(PacketWin &packet, EnginePtr engine, RTypeServer server) {
+    auto lib = engine->getModule<IGraphicLib>();
+    auto sc = engine->getScene();
+
+    lib->execOnLibThread(levelCompleted, lib, sc);
 }
 
 PacketWinConsumer::PacketWinConsumer() {}
