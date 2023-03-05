@@ -31,6 +31,7 @@
 #include "Engine/ColliderHitboxSystem.h"
 #include "Engine/Component/EntityTypeComponent2.h"
 #include "Engine/Network/Packets/EntityInfoPacket.h"
+#include "Engine/engineLua/LuaLevelFactory.h"
 
 HandshakeConsumer::HandshakeConsumer(EnginePtr e) : RTypePacketConsumer(e) {}
 
@@ -58,7 +59,8 @@ void HandshakeConsumer::consume(HandshakePacket &packet, std::shared_ptr<NetClie
     client->sendPacket(responsePacket);
 
     if (StartGameConsumer::gameStarted) {
-        StartGamePacket startGame;
+        auto levels = e->getModule<LuaLevelFactory>();
+        StartGamePacket startGame(levels->getLevels()[levels->getSelectedLevel()]->getName());
         server->broadcast(startGame);
 
         // Init player

@@ -29,6 +29,7 @@
 class PlayGameSystem: public ISystem {
 private:
     bool alreadySent = false;
+    unsigned long long currentScene = 0;
 public:
     void update(EnginePtr engine) override;
 };

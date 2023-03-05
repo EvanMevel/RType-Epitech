@@ -30,6 +30,12 @@ class StartGamePacket : public IPacket {
 public:
     static const int ID = 18;
 
+    std::string levelName;
+
+    StartGamePacket();
+
+    StartGamePacket(std::string levelName);
+
     void write(ByteArray &buffer) const override;
 
     void read(ByteArray &buffer) override;
