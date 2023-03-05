@@ -94,6 +94,7 @@ add_library(eng
         BossCreator.cpp
         CollectableModule.cpp
 
+        Network/Packets/ScorePacket.cpp
         )
 
 target_link_libraries(eng lua_static)
