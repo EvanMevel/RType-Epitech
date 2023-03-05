@@ -94,6 +94,22 @@ function loadWeapons(factory)
 end
 
 function loadLevels(factory)
+    local mediumLevel =  createLevel(factory, "Medium Level");
+    mediumLevel:addObject("enemy1", 0, 450);
+    mediumLevel:addObject("enemy1", 0, 550);
+    mediumLevel:addObject("enemy2", 550, 100);
+    mediumLevel:addObject("obstacle1", 50, 100);
+    mediumLevel:addObject("enemy1", 350, 550);
+    mediumLevel:addObject("enemy1", 350, 150);
+    mediumLevel:addObject("enemy2", 400, 300);
+    mediumLevel:addObject("obstacle1", 850, 550);
+    mediumLevel:addObject("obstacle1", 850, 150);
+
+    local easyLevel = createLevel(factory, "Easy Level");
+    easyLevel:addObject("enemy1", 0, 450);
+    easyLevel:addObject("enemy1", 0, 550);
+    easyLevel:addObject("enemy2", 250, 100);
+
     local level = createLevel(factory, "Level 1");
     level:addObject("enemy1", 0, 450);
     level:addObject("enemy1", 0, 550);
