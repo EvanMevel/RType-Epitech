@@ -32,9 +32,11 @@ private:
     std::string _projectile;
     std::size_t _cooldown;
     CollideFunction _projectileHit;
+    int velX;
+    int velY;
 
 public:
-    Weapon(const std::string &projectile, size_t cooldown);
+    Weapon(const std::string &projectile, size_t cooldown, int velX, int velY);
 
     void shootAtPos(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter, int x, int y);
 

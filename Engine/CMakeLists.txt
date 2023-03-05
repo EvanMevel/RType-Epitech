@@ -34,6 +34,8 @@ add_library(eng
         Network/Packets/ProjectileHitPacket.cpp
         Network/Packets/DamagePacket.cpp
         Network/Packets/StartGamePacket.cpp
+        Network/Packets/PacketWin.cpp
+        Network/Packets/PacketSwitchWeapon.cpp
 
         Graphic/IGraphicLib.cpp
         Graphic/SpriteProperty.cpp
@@ -79,6 +81,8 @@ add_library(eng
         Weapon.cpp
 
         BossCreator.cpp
-        Network/Packets/PacketWin.cpp Network/Packets/PacketWin.h)
+        CollectableModule.cpp
+
+        )
 
 target_link_libraries(eng lua_static)

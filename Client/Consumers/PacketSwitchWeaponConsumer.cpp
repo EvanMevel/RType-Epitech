@@ -20,24 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYER_H
-#define R_TYPE_SERVER_PLAYER_H
+#include "PacketSwitchWeaponConsumer.h"
+#include "Engine/Engine.h"
+#include "Client/Player/Player.h"
+#include "Engine/Component/WeaponComponent.h"
+#include "Engine/engineLua/LuaWeaponFactory.h"
 
-#include "Engine/Entity.h"
+void PacketSwitchWeaponConsumer::consume(PacketSwitchWeapon &packet, EnginePtr engine, RTypeServer server) {
+    auto player = engine->getModule<Player>();
+    if (!player || player->entity->getId() != packet.getId()) {
+        return;
+    }
+    auto weaponFactory = engine->getModule<LuaWeaponFactoryBase>();
+    auto weaponComponent = player->entity->getComponent<WeaponComponent>();
 
-/**
- * @brief Describes a player and its inputs
- */
-class Player {
-public:
-    bool up = false;
-    bool down = false;
-    bool left = false;
-    bool right = false;
-    bool shoot = false;
-    std::shared_ptr<Entity> entity;
-    bool dead = false;
-};
-
-
-#endif //R_TYPE_SERVER_PLAYER_H
+    if (!weaponComponent || !weaponFactory) {
+        return;
+    }
+    auto weapon = weaponFactory->getWeapon(packet.getWeaponName());
+    if (!weapon) {
+        return;
+    }
+    weaponComponent->setWeapon(weapon);
+    std::cout << "Weapon switched to " << packet.getWeaponName() << std::endl;
+}

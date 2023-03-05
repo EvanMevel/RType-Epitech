@@ -32,7 +32,10 @@
 
     std::size_t cooldown = lua_tointeger(L, 4);
 
-    factory->registerWeapon(name, proj, cooldown);
+    int velX = lua_tointeger(L, 5);
+    int velY = lua_tointeger(L, 6);
+
+    factory->registerWeapon(name, proj, cooldown, velX, velY);
 
     return 0;
 }

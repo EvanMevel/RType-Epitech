@@ -23,17 +23,23 @@
 #include "PlayerShootSystem.h"
 #include "Engine/Network/Packets/PlayerShootPacket.h"
 #include "Client/Sounds.h"
+#include "Engine/Component/WeaponComponent.h"
 
 PlayerShootSystem::PlayerShootSystem(const std::shared_ptr<Player> &player) : player(player) {
 
 }
 
 void PlayerShootSystem::update(EnginePtr engine) {
-    if (player->cooldown > 0) {
-        player->cooldown--;
+    auto weaponComponent = player->entity->getComponent<WeaponComponent>();
+
+    if (weaponComponent == nullptr) {
+        return;
     }
-    if (!player->dead && player->shoot && player->cooldown == 0) {
+    if (!player->shoot || player->dead) {
+        return;
+    }
+    if (weaponComponent->canShoot()) {
+        weaponComponent->setNextShot();
         engine->getModule<ClientNetServer>()->sendPacket(PlayerShootPacket(player->entity->getId()));
-        player->cooldown = ENGINE_TPS / 2;
     }
 }

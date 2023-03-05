@@ -20,24 +20,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYER_H
-#define R_TYPE_SERVER_PLAYER_H
+#include "PacketSwitchWeapon.h"
 
-#include "Engine/Entity.h"
+PacketSwitchWeapon::PacketSwitchWeapon(EntityId id, const std::string &weaponName) : _id(id), _weaponName(weaponName) {}
 
-/**
- * @brief Describes a player and its inputs
- */
-class Player {
-public:
-    bool up = false;
-    bool down = false;
-    bool left = false;
-    bool right = false;
-    bool shoot = false;
-    std::shared_ptr<Entity> entity;
-    bool dead = false;
-};
+EntityId PacketSwitchWeapon::getId() const {
+    return _id;
+}
 
+void PacketSwitchWeapon::setId(EntityId id) {
+    _id = id;
+}
 
-#endif //R_TYPE_SERVER_PLAYER_H
+const std::string &PacketSwitchWeapon::getWeaponName() const {
+    return _weaponName;
+}
+
+void PacketSwitchWeapon::setWeaponName(const std::string &weaponName) {
+    _weaponName = weaponName;
+}
+
+void PacketSwitchWeapon::write(ByteArray &buffer) const {
+    buffer << _id << _weaponName;
+}
+
+void PacketSwitchWeapon::read(ByteArray &buffer) {
+    buffer >> _id >> _weaponName;
+}
+
+PacketSwitchWeapon::PacketSwitchWeapon() : _id(0), _weaponName("") {
+
+}

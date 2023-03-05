@@ -20,24 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_PLAYER_H
-#define R_TYPE_SERVER_PLAYER_H
+#ifndef PONG_PACKETSWITCHWEAPONCONSUMER_H
+#define PONG_PACKETSWITCHWEAPONCONSUMER_H
 
-#include "Engine/Entity.h"
+#include "Engine/Network/Packets/PacketSwitchWeapon.h"
+#include "Client/ClientNetServer.h"
 
-/**
- * @brief Describes a player and its inputs
- */
-class Player {
+class PacketSwitchWeaponConsumer : public ClientPacketConsumer<PacketSwitchWeapon> {
 public:
-    bool up = false;
-    bool down = false;
-    bool left = false;
-    bool right = false;
-    bool shoot = false;
-    std::shared_ptr<Entity> entity;
-    bool dead = false;
+    void consume(PacketSwitchWeapon &packet, EnginePtr engine, RTypeServer server) override;
 };
 
 
-#endif //R_TYPE_SERVER_PLAYER_H
+#endif //PONG_PACKETSWITCHWEAPONCONSUMER_H

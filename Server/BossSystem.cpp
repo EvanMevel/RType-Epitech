@@ -100,10 +100,10 @@ void BossSystem::setEntity(const std::shared_ptr<Entity> &entity) {
 }
 
 BossSystem::BossSystem(){
-    _weaponStage1 = createWeapon<SynchronizedWeaponBossStage2>("projectile2",(size_t)(ENGINE_TPS),4);
-    _weaponStage2 = createWeapon<SynchronizedWeaponBossStage2>("projectile2",(size_t)(ENGINE_TPS/1.5),8);
-    _weaponStage3 = createWeapon<SynchronizedWeaponBossStage2>("projectile2",(size_t)(ENGINE_TPS/2),12);
-    _weaponStage4 = createWeapon<SynchronizedWeaponBossStage2>("projectile2",(size_t)(ENGINE_TPS/2.5),16);
+    _weaponStage1 = createWeapon<SynchronizedWeaponBossStage2>("projectile2", (size_t)(ENGINE_TPS), -10, 0, 4);
+    _weaponStage2 = createWeapon<SynchronizedWeaponBossStage2>("projectile2",(size_t)(ENGINE_TPS/1.5), -10, 0, 8);
+    _weaponStage3 = createWeapon<SynchronizedWeaponBossStage2>("projectile2",(size_t)(ENGINE_TPS/2), -10, 0 ,12);
+    _weaponStage4 = createWeapon<SynchronizedWeaponBossStage2>("projectile2",(size_t)(ENGINE_TPS/2.5), -10, 0 ,16);
 }
 
 void SynchronizedWeaponBossStage2::shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter) {
@@ -115,9 +115,12 @@ void SynchronizedWeaponBossStage2::shoot(std::unique_ptr<Engine> &engine, std::s
     }
 }
 
-SynchronizedWeaponBossStage2::SynchronizedWeaponBossStage2(const std::string &projectile, size_t cooldown, size_t howMany)
-        : SynchronizedWeapon(projectile, cooldown) {
-    _howMany = howMany;
+SynchronizedWeaponBossStage2::SynchronizedWeaponBossStage2(const std::string &projectile, size_t cooldown, int velX,
+                                                           int velY, size_t howMany) : SynchronizedWeapon(projectile,
+                                                                                                          cooldown,
+                                                                                                          velX, velY),
+                                                                                       _howMany(howMany) {
+
 }
 
 CollideResult SynchronizedWeaponBossStage2::projectileHit(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> self,

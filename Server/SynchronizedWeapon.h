@@ -28,7 +28,7 @@
 class SynchronizedWeapon : public Weapon {
 public:
 
-    SynchronizedWeapon(const std::string &projectile, size_t cooldown);
+    SynchronizedWeapon(const std::string &projectile, size_t cooldown, int velX, int velY);
 
     virtual void shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter) override;
 
