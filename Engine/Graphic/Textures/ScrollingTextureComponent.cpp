@@ -40,15 +40,7 @@ void ScrollingTextureComponent::setScrollingSpeed(int speed) {
 
 void ScrollingTextureComponent::applySpeed() {
     scroll += scrollingSpeed;
-    scroll %= width;
-}
-
-float ScrollingTextureComponent::getScale() const {
-    return scale;
-}
-
-void ScrollingTextureComponent::setScale(float sca) {
-    ScrollingTextureComponent::scale = sca;
+    scroll %= (int) ((float) width * scale);
 }
 
 void ScrollingTextureComponent::setWidth(int w) {
