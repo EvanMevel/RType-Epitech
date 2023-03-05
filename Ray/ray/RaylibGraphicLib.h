@@ -33,12 +33,13 @@
  */
 class RaylibGraphicLib : public IGraphicLib {
 private:
+    std::string basePath;
     std::unordered_map<ColorCodes, ray::Color> colors;
     RaylibWindow window;
     RaylibMouse mouse;
 
 public:
-    RaylibGraphicLib();
+    RaylibGraphicLib(std::string basePath);
 
     IWindow &createWindow(int width, int height, std::string title) override;
 

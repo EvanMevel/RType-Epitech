@@ -4,19 +4,7 @@ project(pong)
 add_executable(pong
         main.cpp
 
-        ray/RaylibGraphicLib.cpp 
-        ray/RaylibWindow.cpp 
-        ray/RaylibTexture.cpp
-        ray/RaylibAnimation.cpp
-        ray/RaylibMouse.cpp
-        ray/RaylibMusic.cpp
-        ray/RaylibSound.cpp
-
         ButtonComponent.cpp
-
-        DrawFixTextureSystem.cpp
-
-        FixTextureComponent.cpp
 
         GameScene.cpp
         MainMenu.cpp
@@ -42,7 +30,7 @@ add_executable(pong
         )
 
 
-target_link_libraries(pong eng raylib)
+target_link_libraries(pong engine-raylib)
 
 if(WIN32)
     target_link_libraries(pong ws2_32 -static)

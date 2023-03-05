@@ -26,6 +26,7 @@
 #include "Client/Player/Player.h"
 #include "Engine/Component/HealthComponent.h"
 #include "Engine/Component/PositionComponent.h"
+#include "Textures.h"
 
 void drawHearts(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entity, EnginePtr engine) {
     auto life = entity->getComponent<LifeComponent>();

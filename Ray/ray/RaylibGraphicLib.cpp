@@ -26,7 +26,7 @@
 #include "RaylibMusic.h"
 #include "RaylibSound.h"
 
-RaylibGraphicLib::RaylibGraphicLib() {
+RaylibGraphicLib::RaylibGraphicLib(std::string basePath) : basePath(basePath) {
     colors[ColorCodes::COLOR_WHITE] = ray::WHITE;
     colors[ColorCodes::COLOR_BLACK] = ray::BLACK;
     colors[ColorCodes::COLOR_RED] = ray::RED;
@@ -51,9 +51,7 @@ void RaylibGraphicLib::closeWindow() {
 }
 
 Texture RaylibGraphicLib::createTexture(const std::string &texturePath) {
-    char *rtypeAssetsPath = std::getenv("RTYPE_ASSETS_PATH");
-    std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "assets/";
-    return std::make_shared<RaylibTexture>(assetsPath + texturePath);
+    return std::make_shared<RaylibTexture>(basePath + texturePath);
 }
 
 void RaylibGraphicLib::drawText(std::string string, int x, int y, int size, ColorCodes color) {
@@ -91,9 +89,7 @@ void RaylibGraphicLib::drawSprite(std::shared_ptr<Sprite> sprite, int x, int y, 
 }
 
 std::shared_ptr<IAnimation> RaylibGraphicLib::createAnimation(const std::string &texturePath) {
-    char *rtypeAssetsPath = std::getenv("RTYPE_ASSETS_PATH");
-    std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "assets/";
-    return std::make_shared<RaylibAnimation>(assetsPath + texturePath);
+    return std::make_shared<RaylibAnimation>(basePath + texturePath);
 }
 
 void RaylibGraphicLib::drawAnimation(std::shared_ptr<IAnimation> animation, int x, int y, ColorCodes codes) {
@@ -114,9 +110,7 @@ void RaylibGraphicLib::initAudio() {
 }
 
 std::shared_ptr<IMusic> RaylibGraphicLib::createMusic(const std::string &musicPath) {
-    char *rtypeAssetsPath = std::getenv("RTYPE_ASSETS_PATH");
-    std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "assets/";
-    return std::make_shared<RaylibMusic>(assetsPath + musicPath);
+    return std::make_shared<RaylibMusic>(basePath + musicPath);
 }
 
 void RaylibGraphicLib::playMusic(std::shared_ptr<IMusic> music) {
@@ -125,9 +119,7 @@ void RaylibGraphicLib::playMusic(std::shared_ptr<IMusic> music) {
 }
 
 std::shared_ptr<ISound> RaylibGraphicLib::createSound(const std::string &soundPath) {
-    char *rtypeAssetsPath = std::getenv("RTYPE_ASSETS_PATH");
-    std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "assets/";
-    return std::make_shared<RaylibSound>(assetsPath + soundPath);
+    return std::make_shared<RaylibSound>(basePath + soundPath);
 }
 
 void RaylibGraphicLib::playSound(std::shared_ptr<ISound> sound) {

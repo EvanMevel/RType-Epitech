@@ -23,11 +23,12 @@
 #include "MainMenu.h"
 #include "Engine/SceneHolder.h"
 #include "Scenes.h"
-#include "Pong/FixTextureComponent.h"
+#include "Engine/Graphic/Textures/FixTextureComponent.h"
 #include "Engine/Component/PositionComponent.h"
 #include "Engine/Component/EntityTypeComponent2.h"
 #include "Engine/Component/HitboxComponent.h"
 #include "ButtonComponent.h"
+#include "Textures.h"
 
 static void playButtonClick(EnginePtr engine, std::shared_ptr<Entity> entity) {
     auto sceneHolder = engine->getModule<SceneHolder>();

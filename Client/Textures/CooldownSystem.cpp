@@ -25,6 +25,7 @@
 #include "Engine/Component/PositionComponent.h"
 #include "Client/Player/Player.h"
 #include "Engine/Component/WeaponComponent.h"
+#include "Textures.h"
 
 void drawCooldown(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Entity> entity, EnginePtr engine) {
     auto cooldown = entity->getComponent<HudCooldownComponent>();

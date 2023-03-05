@@ -23,7 +23,7 @@
 #ifndef R_TYPE_SERVER_LIFECOMPONENT_H
 #define R_TYPE_SERVER_LIFECOMPONENT_H
 
-#include "Client/Textures/FixTextureComponent.h"
+#include "Engine/Graphic/Textures/FixTextureComponent.h"
 #include <cstddef>
 
 class LifeComponent : public IComponent{

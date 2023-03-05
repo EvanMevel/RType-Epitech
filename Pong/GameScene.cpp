@@ -24,13 +24,14 @@
 #include "Engine/Engine.h"
 #include "PlayerMoveSystem.h"
 #include "PlayerComponent.h"
-#include "FixTextureComponent.h"
+#include "Engine/Graphic/Textures/FixTextureComponent.h"
 #include "Pong.h"
 #include "Engine/Component/HitboxComponent.h"
 #include "PongVelocitySystem.h"
 #include "BallComponent.h"
 #include "BallBounceSystem.h"
 #include "WinConditionSystem.h"
+#include "Textures.h"
 
 std::shared_ptr<Scene> gameScene(EnginePtr engine){
     auto sc = engine->createScene<Scene>();

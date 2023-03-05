@@ -22,13 +22,14 @@
 
 #include <iostream>
 #include "ClientNetServer.h"
-#include "Client/ray/RaylibGraphicLib.h"
+#include "Ray/ray/RaylibGraphicLib.h"
 #include "Client/Scenes.h"
 #include "Client/Textures/Textures.h"
-#include "Client/Textures/DrawFixTextureSystem.h"
-#include "Client/Textures/ScrollingTextureSystem.h"
+#include "Engine/Graphic/Textures/DrawFixTextureSystem.h"
+#include "Engine/Graphic/Textures/ScrollingTextureSystem.h"
+#include "Engine/Graphic/Sprites/DrawSpriteSystem.h"
+#include "Engine/Graphic/Textures/DrawTextureNameSystem.h"
 #include "Client/Sounds.h"
-#include "Client/Sprites/DrawSpriteSystem.h"
 #include "Client/Consumers/PlayerInfoConsumer.h"
 #include "Client/Consumers/EntityInfoConsumer.h"
 #include "Client/Consumers/EntityDestroyConsumer.h"
@@ -47,7 +48,6 @@
 #include "Client/Textures/LifeSystem.h"
 #include "Musics.h"
 #include "TextSystem.h"
-#include "Client/Textures/DrawTextureNameSystem.h"
 #include "PlayGameSystem.h"
 #include "Client/Consumers/StartGameConsumer.h"
 #include "Engine/BossCreator.h"
@@ -140,7 +140,9 @@ void loadGraphsAndScenes(EnginePtr engine) {
 
     std::cout << "[Graphic] Starting..." << std::endl;
 
-    std::shared_ptr<IGraphicLib> lib = engine->registerIModule<IGraphicLib, RaylibGraphicLib>();
+    char *rtypeAssetsPath = std::getenv("RTYPE_ASSETS_PATH");
+    std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "assets/";
+    std::shared_ptr<IGraphicLib> lib = engine->registerIModule<IGraphicLib, RaylibGraphicLib>(assetsPath);
 
     IWindow &window = lib->createWindow(1820, 1000, "R-type");
     window.setTargetFPS(60);

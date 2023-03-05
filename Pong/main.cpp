@@ -21,12 +21,12 @@
 // SOFTWARE.
 
 #include <iostream>
-#include "Pong/ray/RaylibGraphicLib.h"
+#include "Ray/ray/RaylibGraphicLib.h"
 #include "Pong/Scenes.h"
 #include "Pong/Textures.h"
 #include "Pong/Sounds.h"
 #include "Engine/TickUtil.h"
-#include "Pong/DrawFixTextureSystem.h"
+#include "Engine/Graphic/Textures/DrawFixTextureSystem.h"
 #include "Pong/MouseSystem.h"
 #include "PlayerKeys.h"
 #include "PlayerKeysSystem.h"
@@ -74,7 +74,9 @@ void graphicLoop(EnginePtr engine) {
 void loadGraphsAndScenes(EnginePtr engine) {
     std::cout << "[Graphic] Starting..." << std::endl;
 
-    std::shared_ptr<IGraphicLib> lib = engine->registerIModule<IGraphicLib, RaylibGraphicLib>();
+    char *rtypeAssetsPath = std::getenv("PONG_ASSETS_PATH");
+    std::string assetsPath = rtypeAssetsPath ? rtypeAssetsPath : "assets/";
+    std::shared_ptr<IGraphicLib> lib = engine->registerIModule<IGraphicLib, RaylibGraphicLib>(assetsPath);
 
     IWindow &window = lib->createWindow(PONG_WINDOW_WIDTH, PONG_WINDOW_HEIGHT, "pOnGE Remastered Definive edition GOTY version HD 2025 4K 60FPS");
     window.setTargetFPS(60);

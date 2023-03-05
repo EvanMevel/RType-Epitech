@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 #include "BossCreatorClient.h"
-#include "Client/Sprites/SpriteComponent.h"
+#include "Engine/Graphic/Sprites/SpriteComponent.h"
 #include "Musics.h"
 
 void BossCreatorClient::createBoss(EnginePtr engine, std::shared_ptr<Entity> entity) {

@@ -23,7 +23,7 @@
 #include "Engine/Graphic/IGraphicLib.h"
 #include "Engine/Scene.h"
 #include "Textures.h"
-#include "FixTextureComponent.h"
+#include "Engine/Graphic/Textures/FixTextureComponent.h"
 #include "Engine/Component/PositionComponent.h"
 
 #ifndef R_TYPE_CLIENT_CREATEFIXTEXTURE_H

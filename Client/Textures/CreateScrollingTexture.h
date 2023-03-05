@@ -26,8 +26,9 @@
 #include "Engine/Entity.h"
 #include "Engine/Graphic/IGraphicLib.h"
 #include "Engine/Scene.h"
-#include "Client/Textures/ScrollingTextureComponent.h"
+#include "Engine/Graphic/Textures/ScrollingTextureComponent.h"
 #include "Engine/Component/PositionComponent.h"
+#include "Textures.h"
 
 /**
  * @brief Create a scrolling texture component

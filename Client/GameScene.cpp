@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 #include "GameScene.h"
-#include "Client/Textures/ScrollingTextureComponent.h"
+#include "Engine/Graphic/Textures/ScrollingTextureComponent.h"
 #include "Client/Textures/CreateScrollingTexture.h"
 #include "Engine/VelocitySystem.h"
 #include "Client/Textures/CreateHud.h"

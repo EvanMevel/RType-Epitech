@@ -24,7 +24,7 @@
 #define R_TYPE_SERVER_COOLDOWNCOMPONENT_H
 
 
-#include "FixTextureComponent.h"
+#include "Engine/Graphic/Textures/FixTextureComponent.h"
 
 class HudCooldownComponent : public IComponent{
 };

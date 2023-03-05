@@ -14,6 +14,7 @@ include_directories(${raylib_INCLUDE_DIR})
 include_directories(.)
 
 add_subdirectory(Engine)
+add_subdirectory(Ray)
 add_subdirectory(Server)
 add_subdirectory(Client)
 add_subdirectory(Pong)

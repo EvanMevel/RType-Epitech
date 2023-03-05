@@ -42,6 +42,17 @@ add_library(eng
         Graphic/SpriteSheet.cpp
         Graphic/Sprite.cpp
 
+        Graphic/Sprites/DrawSpriteSystem.cpp
+        Graphic/Sprites/SpriteComponent.cpp
+
+        Graphic/Textures/DrawFixTextureSystem.cpp
+        Graphic/Textures/DrawTextureNameSystem.cpp
+        Graphic/Textures/FixTextureComponent.cpp
+        Graphic/Textures/ScrollingTextureComponent.cpp
+        Graphic/Textures/ScrollingTextureSystem.cpp
+        Graphic/Textures/TextureNameComponent.cpp
+
+        
         Component/PhysicComponent.cpp
         Component/EntityTypeComponent2.cpp
         Component/ColliderComponent.cpp
