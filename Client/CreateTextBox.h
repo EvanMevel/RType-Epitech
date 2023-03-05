@@ -29,6 +29,14 @@
 #include "Engine/Entity.h"
 #include "Engine/Scene.h"
 
+/**
+ * @brief Create a text box
+ * @param lib Graphic library
+ * @param sc Scene
+ * @param x X position
+ * @param y Y position
+ * @return The text box
+ */
 std::shared_ptr<Entity> createTextBox(const std::shared_ptr<IGraphicLib> &lib, const std::shared_ptr<Scene> &sc, int x, int y);
 
 
