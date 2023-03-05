@@ -30,6 +30,7 @@
 #include "PhysicComponent.h"
 #include "CollectableComponent.h"
 #include "ShooterComponent.h"
+#include "HitboxComponent.h"
 
 Weapon::Weapon(const std::string &projectile, size_t cooldown, int velX, int velY) : _projectile(projectile),
                                                                                      _cooldown(cooldown), velX(velX),
@@ -64,7 +65,12 @@ void Weapon::shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shoo
     if (!pos) {
         return;
     }
-    shootAtPos(engine, shooter, pos->getX(), pos->getY() + 20);
+    int addY = 20;
+    auto hitboxComponent = shooter->getComponent<HitboxComponent>();
+    if (hitboxComponent) {
+        addY = (int) hitboxComponent->getHeight() / 2;
+    }
+    shootAtPos(engine, shooter, pos->getX(), pos->getY() + addY);
 }
 
 void Weapon::onDamage(EnginePtr engine, std::shared_ptr<Entity> cause, std::shared_ptr<Entity> victim, int damage) {
