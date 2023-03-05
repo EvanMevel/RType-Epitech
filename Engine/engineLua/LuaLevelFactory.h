@@ -26,6 +26,9 @@
 #include "Engine/Level.h"
 #include "LuaWrapper.h"
 
+/**
+ * @brief Class that creates levels from lua
+ */
 class LuaLevelFactory {
 private:
     std::vector<std::shared_ptr<Level>> _levels;

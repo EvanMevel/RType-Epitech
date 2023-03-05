@@ -81,7 +81,7 @@ CollideResult mooveOther(EnginePtr engine, std::shared_ptr<Entity> self, std::sh
     if (other->hasComponent<InanimateComponent>()) {
         return CollideResult::NONE;
     }
-    auto type = other->getComponent<EntityTypeComponent2>();
+    auto type = other->getComponent<EntityTypeComponent>();
 
     if (type != nullptr && type->getEntityType() == "player") {
         other->getComponent<PhysicComponent>()->acceleration.x = -5;

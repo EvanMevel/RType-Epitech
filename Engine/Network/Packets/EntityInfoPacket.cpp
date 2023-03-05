@@ -21,17 +21,16 @@
 // SOFTWARE.
 
 #include "EntityInfoPacket.h"
-#include "Engine/EntityUtils.h"
 #include "Engine/Component/PlayerInfoComponent.h"
 #include "TeamComponent.h"
 
 EntityInfoPacket::EntityInfoPacket() : id(0), type("none"), x(0), y(0) {}
 
 EntityInfoPacket::EntityInfoPacket(EntityPtr entity) :
-    EntityInfoPacket(entity, entity->getComponent<EntityTypeComponent2>(), entity->getComponent<PositionComponent>()) {
+    EntityInfoPacket(entity, entity->getComponent<EntityTypeComponent>(), entity->getComponent<PositionComponent>()) {
 }
 
-EntityInfoPacket::EntityInfoPacket(EntityPtr entity, std::shared_ptr<EntityTypeComponent2> type,
+EntityInfoPacket::EntityInfoPacket(EntityPtr entity, std::shared_ptr<EntityTypeComponent> type,
                                    std::shared_ptr<PositionComponent> pos) {
     this->id = entity->getId();
     if (type) {

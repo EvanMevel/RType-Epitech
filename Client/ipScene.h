@@ -24,7 +24,6 @@
 #define R_TYPE_SERVER_IPSCENE_H
 
 #include "Engine/Scene.h"
-#include "Engine/EntityType.h"
 #include "Engine/Entity.h"
 #include "Engine/Engine.h"
 #include "Engine/Graphic/IGraphicLib.h"

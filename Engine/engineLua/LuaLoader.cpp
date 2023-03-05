@@ -27,7 +27,6 @@
 #include "Engine/Graphic/IGraphicLib.h"
 #include "Engine/Component/TeamComponent.h"
 #include "Engine/Component/HealthComponent.h"
-#include "Engine/Component/CooldownComponent.h"
 #include "PhysicComponent.h"
 #include "IAComponent.h"
 #include "LuaClass.h"
@@ -75,10 +74,6 @@ void addComponentConstructors(std::shared_ptr<LuaEntityTypeFactory> luaEntityTyp
     luaEntityTypeFactory->getComponentFactory().addComponent("HealthComponent", [](std::shared_ptr<Entity> entity, std::vector<std::any> args) {
         entity->addComponent<HealthComponent>((std::size_t) std::any_cast<int>(args[0]),
                                               (std::size_t) std::any_cast<int>(args[1]));
-    });
-
-    luaEntityTypeFactory->getComponentFactory().addComponent("CooldownComponent", [](std::shared_ptr<Entity> entity, std::vector<std::any> args) {
-        entity->addComponent<CooldownComponent>((std::size_t) std::any_cast<int>(args[0]));
     });
 
     luaEntityTypeFactory->getComponentFactory().addComponent("PhysicComponent", [](std::shared_ptr<Entity> entity, std::vector<std::any> args) {

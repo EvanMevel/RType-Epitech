@@ -20,8 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "CooldownComponent.h"
+#include "EntityTypeComponent.h"
 
-CooldownComponent::CooldownComponent() {}
+EntityTypeComponent::EntityTypeComponent() {}
 
-CooldownComponent::CooldownComponent(size_t cooldown) : cooldown(cooldown) {}
+EntityTypeComponent::EntityTypeComponent(const std::string &entityType) : _entityType(entityType) {}
+
+const std::string &EntityTypeComponent::getEntityType() const {
+    return _entityType;
+}
+
+void EntityTypeComponent::setEntityType(const std::string &entityType) {
+    _entityType = entityType;
+}

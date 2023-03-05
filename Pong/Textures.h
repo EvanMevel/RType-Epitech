@@ -26,6 +26,9 @@
 
 #include "Engine/Graphic/IGraphicLib.h"
 
+/**
+ * @brief Enum that contains all the textures of pong
+ */
 enum class Textures {
     TEXTURE_ERROR = -1,
     TITLE = 0,

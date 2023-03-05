@@ -25,6 +25,9 @@
 
 #include "IComponent.h"
 
+/**
+ * @brief Component that defines that an entity is an IA and is not controlled by anything
+ */
 class IAComponent : public IComponent {
 
 };

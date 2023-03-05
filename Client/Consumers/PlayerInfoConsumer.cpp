@@ -22,7 +22,6 @@
 
 #include <iostream>
 #include "PlayerInfoConsumer.h"
-#include "Engine/EntityUtils.h"
 #include "Client/Player/Player.h"
 #include "Client/Player/PlayerKeysSystem.h"
 #include "Client/Player/PlayerMoveSystem.h"

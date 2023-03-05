@@ -27,6 +27,9 @@
 #include "IComponent.h"
 #include "ColliderComponent.h"
 
+/**
+ * @brief Component that defines the collectable of an entity
+ */
 class CollectableComponent : public IComponent {
 private:
     std::string type;

@@ -40,6 +40,9 @@ extern "C" {
 
 class VoidType {};
 
+/*
+ * @brief Class that allows to call a Lua function
+ */
 template<class Ret, class ...Args>
 class LuaFunction {
 private:
@@ -93,6 +96,9 @@ public:
     }
 };
 
+/**
+ * @brief Class that allows to call a lua functions
+ */
 class LuaWrapper {
 private:
     lua_State* L;

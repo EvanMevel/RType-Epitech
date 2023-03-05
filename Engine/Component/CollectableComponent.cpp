@@ -22,14 +22,14 @@
 
 #include "CollectableComponent.h"
 #include "Engine.h"
-#include "EntityTypeComponent2.h"
+#include "EntityTypeComponent.h"
 #include "engineLua/LuaWeaponFactory.h"
 #include "WeaponComponent.h"
 #include "CollectableModule.h"
 
 CollideResult onCollisionCollectableComponent(EnginePtr engine, std::shared_ptr<Entity> self,
                                               std::shared_ptr<Entity> other) {
-    auto type = other->getComponent<EntityTypeComponent2>();
+    auto type = other->getComponent<EntityTypeComponent>();
     if (type == nullptr || type->getEntityType() != "player") {
         return CollideResult::NONE;
     }

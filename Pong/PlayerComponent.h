@@ -26,6 +26,9 @@
 
 #include "Engine/Component/IComponent.h"
 
+/**
+ * @brief Component that defines the player number
+ */
 class PlayerComponent : public IComponent {
 public:
     int number;

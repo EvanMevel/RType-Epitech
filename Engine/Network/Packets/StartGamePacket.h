@@ -26,6 +26,9 @@
 
 #include "IPacket.h"
 
+/**
+ * @brief Packet sent by the client to the server to initialize the game and level and by the server to the client to start the game
+ */
 class StartGamePacket : public IPacket {
 public:
     static const int ID = 18;

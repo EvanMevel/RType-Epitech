@@ -26,6 +26,9 @@
 
 #include "IPacket.h"
 
+/**
+ * @brief Packet sent by the server to the client to switch the weapon
+ */
 class PacketSwitchWeapon : public IPacket {
 public:
     static const int ID = 21;

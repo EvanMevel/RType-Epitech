@@ -23,7 +23,6 @@
 #ifndef R_TYPE_SERVER_PACKETCONSUMER_H
 #define R_TYPE_SERVER_PACKETCONSUMER_H
 
-#include "../../IConsumer.h"
 #include "ByteArray.h"
 #include "IPacketConsumer.h"
 

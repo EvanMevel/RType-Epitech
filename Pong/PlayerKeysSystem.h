@@ -26,6 +26,9 @@
 
 #include "Engine/ISystem.h"
 
+/**
+ * @brief System that updates the status of the keys of the players
+ */
 class PlayerKeysSystem : public ISystem {
 public:
     void update(std::unique_ptr<Engine> &engine) override;

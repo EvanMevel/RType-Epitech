@@ -27,6 +27,10 @@
 #include <unordered_map>
 #include <memory>
 
+/**
+ * @brief Registry that stores objects and assign them an id
+ * @tparam Type Type of the object to store
+ */
 template<typename Type>
 class CountRegistry {
 private:

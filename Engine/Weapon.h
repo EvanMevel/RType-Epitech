@@ -27,6 +27,9 @@
 #include "Engine/EngineTypes.h"
 #include "Engine/Component/ColliderComponent.h"
 
+/**
+ * @brief Class that defines a weapon to shoot with
+ */
 class Weapon {
 private:
     std::string _projectile;

@@ -26,6 +26,9 @@
 
 #include "Engine/ISystem.h"
 
+/**
+ * @brief System that moves the players
+ */
 class PlayerMoveSystem : public ISystem {
 public:
     void update(std::unique_ptr<Engine> &engine) override;

@@ -26,6 +26,9 @@
 
 #include "Engine/Component/IComponent.h"
 
+/**
+ * @brief Component that holds the ball's status
+ */
 class BallComponent : public IComponent {
 public:
     bool shoot = false;

@@ -28,6 +28,9 @@
 #include "LuaWrapper.h"
 #include <functional>
 
+/**
+ * @brief Factory that creates components from Lua
+ */
 class LuaComponentFactory {
 private:
     std::unordered_map<std::string, std::function<void(std::shared_ptr<Entity> entity, std::vector<std::any>)>> _componentFactory;

@@ -27,6 +27,9 @@
 #include "Engine/ISystem.h"
 #include "Engine/Entity.h"
 
+/**
+ * @brief System that checks if a player has won
+ */
 class WinConditionSystem : public ISystem {
 public:
     std::shared_ptr<Entity> ball;

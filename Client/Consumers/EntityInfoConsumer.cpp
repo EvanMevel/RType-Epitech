@@ -21,10 +21,8 @@
 // SOFTWARE.
 
 #include "EntityInfoConsumer.h"
-#include "Engine/EntityUtils.h"
 #include "Engine/Graphic/Textures/FixTextureComponent.h"
 #include "Engine/Graphic/Sprites/SpriteComponent.h"
-#include "Client/Sounds.h"
 #include "Engine/engineLua/LuaEntityTypeFactory.h"
 #include "Engine/Graphic/Textures/TextureNameComponent.h"
 #include "Client/BossCreatorClient.h"

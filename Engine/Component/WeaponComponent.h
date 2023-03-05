@@ -27,6 +27,9 @@
 #include "IComponent.h"
 #include "Engine/Weapon.h"
 
+/**
+ * @brief Component that defines holds a weapon
+ */
 class WeaponComponent : public IComponent {
 private:
     std::shared_ptr<Weapon> _weapon;

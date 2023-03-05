@@ -27,6 +27,9 @@
 #include "Engine/ISystem.h"
 #include "Engine/Entity.h"
 
+/**
+ * @brief System that makes the ball bounce on the players
+ */
 class BallBounceSystem : public ISystem {
 public:
     std::shared_ptr<Entity> ball;

@@ -10,9 +10,10 @@
 #include "Engine/Graphic/IGraphicLib.h"
 #include "Engine.h"
 
-class BossCreator{
-private:
-    int health;
+/**
+ * @brief BossCreator is an abstract class that will be used to create a boss
+ */
+class BossCreator {
 public:
     virtual void createBoss(EnginePtr engine, std::shared_ptr<Entity> entity);
 };

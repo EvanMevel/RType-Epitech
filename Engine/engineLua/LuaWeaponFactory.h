@@ -27,6 +27,9 @@
 #include "Engine/engineLua/LuaWrapper.h"
 
 
+/**
+ * @brief Class that allows to register a weapon in Lua
+ */
 class LuaWeaponFactoryBase {
 protected:
     std::unordered_map<std::string, std::shared_ptr<Weapon>> _weapons;
@@ -38,6 +41,10 @@ public:
     }
 };
 
+/**
+ * @brief Class that allows to register a weapon in Lua with the weapon implementation
+ * @tparam T Type of the weapon
+ */
 template <class T>
 class LuaWeaponFactory : public LuaWeaponFactoryBase {
 public:

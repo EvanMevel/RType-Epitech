@@ -25,6 +25,9 @@
 
 #include "LuaWrapper.h"
 
+/**
+ * @brief Class that represents an entity type in Lua
+ */
 class LuaEntityType {
 private:
     std::string _id;

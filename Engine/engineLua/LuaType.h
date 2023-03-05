@@ -25,6 +25,9 @@
 
 #include <string>
 
+/**
+ * @brief Class that allows to register a type in Lua
+ */
 class LuaType {
 private:
     std::string _name;

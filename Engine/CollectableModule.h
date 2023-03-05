@@ -26,8 +26,10 @@
 #include "Engine/EngineTypes.h"
 #include "Engine/Component/CollectableComponent.h"
 
+/**
+ * @brief Module that defines the behavior of a collectable entity
+ */
 class CollectableModule {
-
 public:
     CollectableModule();
 

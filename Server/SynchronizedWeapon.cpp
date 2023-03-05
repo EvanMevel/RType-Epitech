@@ -23,7 +23,7 @@
 #include "SynchronizedWeapon.h"
 #include "RTypeServer.h"
 #include "Engine/Network/Packets/ProjectileHitPacket.h"
-#include "Engine/Component/EntityTypeComponent2.h"
+#include "Engine/Component/EntityTypeComponent.h"
 #include "Engine/Network/Packets/DamagePacket.h"
 #include "Engine/Component/HealthComponent.h"
 #include "Engine/Component/ProjectileComponent.h"
@@ -84,7 +84,7 @@ CollideResult SynchronizedWeapon::projectileHit(std::unique_ptr<Engine> &engine,
 
 void SynchronizedWeapon::onDamage(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> cause,
                                   std::shared_ptr<Entity> victim, int damage) {
-    auto entityType = victim->getComponent<EntityTypeComponent2>();
+    auto entityType = victim->getComponent<EntityTypeComponent>();
 
     if (entityType != nullptr && entityType->getEntityType() == "player") {
         auto server = engine->getModule<RTypeServer>();

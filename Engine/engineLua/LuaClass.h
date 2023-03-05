@@ -26,6 +26,9 @@
 
 #include "LuaWrapper.h"
 
+/**
+ * @brief Class that allows to register a class in Lua
+ */
 class LuaClass {
 private:
     lua_State* L;

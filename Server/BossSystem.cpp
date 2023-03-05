@@ -27,7 +27,7 @@
 #include "Engine/TickUtil.h"
 #include "RTypeServer.h"
 #include "Engine/Component/PhysicComponent.h"
-#include "Engine/Component/EntityTypeComponent2.h"
+#include "Engine/Component/EntityTypeComponent.h"
 #include "Engine/Component/HitboxComponent.h"
 #include "Engine/Network/Packets/PacketWin.h"
 
@@ -45,7 +45,7 @@ void BossSystem::update(std::unique_ptr<Engine> &engine) {
     if (_entity == nullptr){
         std::function<void(std::shared_ptr<Entity>)> setter = std::bind(&BossSystem::setEntity, this, std::placeholders::_1);
         std::function<void(std::shared_ptr<Entity> entity, EnginePtr engine)> f = [setter](std::shared_ptr<Entity> entity, EnginePtr engine) {
-            auto type = entity->getComponent<EntityTypeComponent2>();
+            auto type = entity->getComponent<EntityTypeComponent>();
             if (type == nullptr || type->getEntityType().find("BOSS") == std::string::npos) {
                 return;
             }

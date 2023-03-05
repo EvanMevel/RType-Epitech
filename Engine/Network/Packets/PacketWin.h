@@ -26,6 +26,9 @@
 
 #include "IPacket.h"
 
+/**
+ * @brief Packet sent by the server to a client when the game is won
+ */
 class PacketWin : public IPacket {
 public:
     static const int ID = 20;
