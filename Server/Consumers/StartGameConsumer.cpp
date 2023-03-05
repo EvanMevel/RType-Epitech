@@ -55,7 +55,9 @@ static void sendEntitiesInfo(const std::shared_ptr<NetClient>& client, std::shar
 }
 
 void StartGameConsumer::consume(StartGamePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) {
-
+    if (StartGameConsumer::gameStarted) {
+        return;
+    }
     StartGameConsumer::gameStarted = true;
 
     // Create Scene
@@ -92,11 +94,13 @@ void StartGameConsumer::consume(StartGamePacket &packet, std::shared_ptr<NetClie
         auto player = engine->getScene()->createEntity();
         typeFactory->initEntity(player, "player");
         player->addComponent<PositionComponent>(100, 100);
+
         data->playerId = player->getId();
         auto playerList = engine->getModule<PlayerList>();
         int playerNumber = playerList->getAvailable();
-        player->addComponent<PlayerInfoComponent>(playerNumber);
         data->playerNumber = playerNumber;
+
+        player->addComponent<PlayerInfoComponent>(playerNumber);
 
         // Send player info to client then send all entities to client
         PlayerInfoPacket playerInfo(player);
