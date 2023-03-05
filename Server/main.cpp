@@ -84,15 +84,14 @@ void stopThread(EnginePtr engine) {
     running = false;
 }
 
-void createScene(EnginePtr engine, std::shared_ptr<Level> level) {
-    std::cout << "Playing level " << level->getName() << std::endl;
+void createScene(EnginePtr engine) {
     engine->registerModule<Levels>();
 
     char *rtypeServerIp = std::getenv("RTYPE_SERVER_IP");
     std::string serverIp = rtypeServerIp ? rtypeServerIp : "127.0.0.1";
     char *rtypeServerPort = std::getenv("RTYPE_SERVER_PORT");
     int serverport = rtypeServerPort ? std::stoi(rtypeServerPort) : 4242;
-    std::cout << "BINDING ON : " << serverIp << ":" << serverport << std::endl;
+    log() << "BINDING ON : " << serverIp << ":" << serverport << std::endl;
 
     RTypeServerPtr srv = engine->registerModule<RTypeServer>(engine, serverIp, serverport);
     auto sc = engine->createScene<PacketSendingScene>(srv);
@@ -115,7 +114,7 @@ int main()
     luaLoad->loadEntityTypes(typeFactory, weaponFactory);
     luaLoad->loadLevels(levelFactory);
 
-    createScene(engine, levelFactory->getLevels()[0]);
+    createScene(engine);
     std::thread t = std::thread(stopThread, std::ref(engine));
 
     runServer(engine);

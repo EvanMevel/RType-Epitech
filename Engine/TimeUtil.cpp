@@ -50,6 +50,6 @@ void preciseSleep(long long sleepMs) {
 std::ostream &log() {
     auto t = std::time(nullptr);
     auto tm = *std::localtime(&t);
-    std::cout << '[' << std::put_time(&tm, "%H-%M-%S") << "] ";
+    std::cout << '[' << std::put_time(&tm, "%H:%M %S") << "] ";
     return std::cout;
 }
