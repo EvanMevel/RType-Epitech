@@ -26,7 +26,7 @@
 
 #include "Engine/Engine.h"
 #include "Client/Textures/Textures.h"
-#include "Client/Textures/FixTextureComponent.h"
+#include "Engine/Graphic/Textures/FixTextureComponent.h"
 #include "Client/Textures/createFixTexture.h"
 #include "Engine/SceneHolder.h"
 #include "Scenes.h"

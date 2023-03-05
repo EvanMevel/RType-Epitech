@@ -22,14 +22,30 @@
 
 #include "FixTextureComponent.h"
 
-FixTextureComponent::FixTextureComponent() : textureId(Textures::TEXTURE_ERROR) {
+FixTextureComponent::FixTextureComponent() : textureId(-1) {
 
 }
 
-Textures FixTextureComponent::getTextureId() const {
+int FixTextureComponent::getTextureId() const {
     return textureId;
 }
 
-void FixTextureComponent::setTextureId(Textures id) {
+void FixTextureComponent::setTextureId(int id) {
     FixTextureComponent::textureId = id;
+}
+
+float FixTextureComponent::getRotation() const {
+    return rotation;
+}
+
+void FixTextureComponent::setRotation(float rotation) {
+    FixTextureComponent::rotation = rotation;
+}
+
+float FixTextureComponent::getScale() const {
+    return scale;
+}
+
+void FixTextureComponent::setScale(float scale) {
+    FixTextureComponent::scale = scale;
 }

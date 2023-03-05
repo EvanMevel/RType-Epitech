@@ -20,24 +20,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_RAYLIBMUSIC_H
-#define R_TYPE_SERVER_RAYLIBMUSIC_H
+#ifndef R_TYPE_SERVER_FIXTEXTURECOMPONENT_H
+#define R_TYPE_SERVER_FIXTEXTURECOMPONENT_H
 
-#include <string>
-#include "Engine/Graphic/IMusic.h"
-
-namespace ray {
-#include "raylib.h"
-}
+#include <memory>
+#include "Engine/Component/IComponent.h"
+#include "Engine/Graphic/ITexture.h"
 
 /**
- * @brief Raylib implementation of IMusic
+ * @brief Component that contains a texture
  */
-class RaylibMusic : public IMusic {
+class FixTextureComponent : public IComponent {
+protected:
+    int textureId;
+    float rotation = 0.0;
+    float scale = 1.0;
 public:
-    explicit RaylibMusic(const std::string &musicPath);
-    void updateMusic() override;
+    explicit FixTextureComponent();
+
+    template<class Type>
+    explicit FixTextureComponent(const Type &textureId) : textureId(static_cast<int>(textureId)) {}
+
+    ~FixTextureComponent() override = default;
+
+    int getTextureId() const;
+
+    void setTextureId(int textureId);
+
+    template<class Type>
+    void setTextureId(const Type &id) {
+        setTextureId(static_cast<int>(id));
+    }
+
+    float getRotation() const;
+
+    void setRotation(float rotation);
+
+    float getScale() const;
+
+    void setScale(float scale);
 };
 
 
-#endif //R_TYPE_SERVER_RAYLIBMUSIC_H
+#endif //R_TYPE_SERVER_FIXTEXTURECOMPONENT_H

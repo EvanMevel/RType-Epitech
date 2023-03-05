@@ -26,7 +26,8 @@
 #include <string>
 #include "Engine/Entity.h"
 #include "Engine/Engine.h"
-#include "Client/Textures/FixTextureComponent.h"
+#include "Engine/Graphic/Textures/FixTextureComponent.h"
+#include "Textures.h"
 
 
 /**

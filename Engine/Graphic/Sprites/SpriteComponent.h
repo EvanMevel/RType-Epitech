@@ -20,23 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_SERVER_RAYLIBSOUND_H
-#define R_TYPE_SERVER_RAYLIBSOUND_H
+#ifndef R_TYPE_SERVER_SPRITECOMPONENT_H
+#define R_TYPE_SERVER_SPRITECOMPONENT_H
 
-#include <string>
-#include "Engine/Graphic/ISound.h"
-
-namespace ray {
-#include "raylib.h"
-}
+#include "Engine/Component/IComponent.h"
+#include "Engine/Graphic/SpriteProperty.h"
 
 /**
- * @brief Raylib implementation of ISound
+ * @brief Component that contains a sprite
  */
-class RaylibSound : public ISound{
+class SpriteComponent : public IComponent {
+private:
+    int spriteId;
 public:
-    explicit RaylibSound(const std::string &soundPath);
+    SpriteComponent();
+
+    explicit SpriteComponent(int spriteId);
+
+    int getSpriteId() const;
+
+    void setSpriteId(int spriteId);
 };
 
 
-#endif //R_TYPE_SERVER_RAYLIBSOUND_H
+#endif //R_TYPE_SERVER_SPRITECOMPONENT_H

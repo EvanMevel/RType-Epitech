@@ -28,7 +28,7 @@
 #include "Engine/Engine.h"
 #include "Engine/Component/PositionComponent.h"
 #include "Engine/Component/EntityTypeComponent2.h"
-#include "Client/Textures/FixTextureComponent.h"
+#include "Engine/Graphic/Textures/FixTextureComponent.h"
 #include "Client/Textures/Textures.h"
 #include "Client/Textures/LifeComponent.h"
 

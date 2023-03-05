@@ -25,7 +25,7 @@
 
 
 #include <iostream>
-#include "Client/Textures/FixTextureComponent.h"
+#include "Engine/Graphic/Textures/FixTextureComponent.h"
 #include "AnimationComponent.h"
 #include "Engine/EntityType.h"
 #include "Client/Textures/CreateButton.h"

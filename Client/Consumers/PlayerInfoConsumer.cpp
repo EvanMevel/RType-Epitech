@@ -27,7 +27,7 @@
 #include "Client/Player/PlayerKeysSystem.h"
 #include "Client/Player/PlayerMoveSystem.h"
 #include "Client/Player/PlayerShootSystem.h"
-#include "Client/Sprites/SpriteComponent.h"
+#include "Engine/Graphic/Sprites/SpriteComponent.h"
 #include "Engine/engineLua/LuaEntityTypeFactory.h"
 
 PlayerInfoConsumer::PlayerInfoConsumer() = default;
