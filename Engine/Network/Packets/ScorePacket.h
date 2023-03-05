@@ -20,12 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-//
-// Created by gugue on 05/03/2023.
-//
-
-#ifndef PONG_SCOREPACKET_H
-#define PONG_SCOREPACKET_H
+#ifndef R_TYPE_SCOREPACKET_H
+#define R_TYPE_SCOREPACKET_H
 
 
 #include "IPacket.h"
@@ -55,4 +51,4 @@ public:
 };
 
 
-#endif //PONG_SCOREPACKET_H
+#endif //R_TYPE_SCOREPACKET_H
