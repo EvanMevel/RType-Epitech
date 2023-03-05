@@ -1,13 +1,30 @@
 #!/bin/bash
+
 ./build.sh
 
-if [ ! -d "/path/to/dir" ]
+if [ ! -d "releaseLinux" ]
 then
     mkdir releaseLinux
 fi
 
-zip -r releaseLinux/r-type-client.zip .\build\Client\r-type-client.exe .\Client\assets .\config
+mkdir client
+mkdir server
+mkdir pong
 
-zip -r releaseLinux/r-type-server.zip .\build\Server\r-type-server.exe .\config
+cp -R Client/assets client/
+cp build/Client/r-type-client client/
+cp -R config client/
 
-zip -r releaseLinux/pong.zip .\build\Pong\pong.exe .\Pong\assets
+cp build/Pong/pong pong/
+cp -R Pong/assets pong/
+
+cp build/Server/r-type-server server/
+cp -R config server/
+
+zip releaseLinux/r-type-client.zip -r client/
+
+zip releaseLinux/r-type-server.zip -r server/
+
+zip releaseLinux/pong.zip -r pong/
+
+rm -rf server/ pong/ client/
