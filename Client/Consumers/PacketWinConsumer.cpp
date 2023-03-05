@@ -25,6 +25,7 @@
 #include "Client/TextComponent.h"
 #include "Client/Textures/Textures.h"
 #include "Client/MainMenu.h"
+#include "Client/Musics.h"
 
 static void spawnConfetti(int x, int y, std::shared_ptr<IAnimation> animation, std::shared_ptr<Scene> sc) {
     auto confetti = sc->createEntity();
@@ -39,6 +40,8 @@ void levelCompleted(std::shared_ptr<IGraphicLib> lib, std::shared_ptr<Scene> sc)
     auto height = lib->getWindow().getHeight();
     auto width = lib->getWindow().getWidth();
     auto title = sc->createEntity();
+
+    playMusic(lib,Musics::END_MUSIC);
 
     title->addComponent<PositionComponent>((width / 2) - 550, (height / 3) - (400 / 2));
     auto titleText = title->addComponent<TextComponent>("Level Complete !", 140);
