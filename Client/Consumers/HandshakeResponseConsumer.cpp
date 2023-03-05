@@ -22,6 +22,8 @@
 
 #include "HandshakeResponseConsumer.h"
 #include "Engine/TickUtil.h"
+#include "Engine/SceneHolder.h"
+#include "Client/Scenes.h"
 
 static void closeWin(std::shared_ptr<IGraphicLib> lib) {
     if (lib->getWindow().shouldClose()) {
@@ -41,5 +43,11 @@ void HandshakeResponseConsumer::consume(HandshakeResponsePacket &packet, EngineP
 
         ticker->setCurrentTick(packet.getCurrentTick());
         ticker->setStarted(packet.getStartedTime());
+
+        server->setFoundServer(true);
+
+        auto sceneHolder = engine->getModule<SceneHolder>();
+        auto sc = sceneHolder->getValue(Scenes::LOBBY_MENU);
+        engine->setScene(sc);
     }
 }

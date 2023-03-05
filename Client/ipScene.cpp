@@ -48,15 +48,13 @@ static void ipSceneToMenu(EnginePtr engine, std::shared_ptr<Entity> entity) {
 }
 
 static void changeIpButtonClick(EnginePtr engine, std::shared_ptr<Entity> entity) {
-    auto sceneHolder = engine->getModule<SceneHolder>();
-    auto sc = sceneHolder->getValue(Scenes::LOBBY_MENU);
-    engine->setScene(sc);
-
     auto server = engine->getModule<ClientNetServer>();
     getTextboxStr(entity->getComponent<EntityLinkComponent>()->entity, server);
 
-    std::cout << "Sending handshake" << std::endl;
-    server->startListening();
+    std::cout << "Sending handshake..." << std::endl;
+    if (!server->isRunning()) {
+        server->startListening();
+    }
     server->sendPacket(HandshakePacket());
 }
 
