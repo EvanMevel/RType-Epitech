@@ -69,7 +69,7 @@ std::shared_ptr<Scene> optionScene(EnginePtr engine) {
     auto secondground = createFixTexture(sc,Textures::BACKGROUND_4,0,0,0.0,3);
 
     auto title = sc->createEntity();
-    title->addComponent<PositionComponent>((width / 2) - (800 / 2), (height / 3) - (400 / 2));
+    title->addComponent<PositionComponent>(200, (height / 3) - (400 / 2));
     auto titleText = title->addComponent<TextComponent>("Settings",75);
     titleText->setColor(ColorCodes::COLOR_ORANGE);
 
@@ -91,10 +91,25 @@ std::shared_ptr<Scene> optionScene(EnginePtr engine) {
     buttonVolumeDown->addComponent<EntityLinkComponent>(gameVolume);
 
     auto howToPlay = sc->createEntity();
-    howToPlay->addComponent<PositionComponent>((width / 2) - (400 / 2), (int) (height * 0.85) - (100 / 2));
+    howToPlay->addComponent<PositionComponent>(200, (int) (height - 550));
     auto howToPlayText = howToPlay->addComponent<TextComponent>("How to play :",65);
     howToPlayText->setColor(ColorCodes::COLOR_ORANGE);
 
-    createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.85) - (100 / 2),Textures::BACK_BUTTON, optionToMainMenu);
+    auto howToPlay1 = sc->createEntity();
+    howToPlay1->addComponent<PositionComponent>(200, (int) (height - 450));
+    auto howToPlayText1 = howToPlay1->addComponent<TextComponent>("->Use arrow keys to move, and press space to shoot",45);
+    howToPlayText1->setColor(ColorCodes::COLOR_ORANGE);
+
+    auto howToPlay2 = sc->createEntity();
+    howToPlay2->addComponent<PositionComponent>(200, (int) (height - 350));
+    auto howToPlayText2 = howToPlay2->addComponent<TextComponent>("->You can find some obstacles (asteroid) which you can't go through",45);
+    howToPlayText2->setColor(ColorCodes::COLOR_ORANGE);
+
+    auto howToPlay3 = sc->createEntity();
+    howToPlay3->addComponent<PositionComponent>(200, (int) (height - 250));
+    auto howToPlayText3 = howToPlay3->addComponent<TextComponent>("  and some boosts (weapon) that decrease your shot cooldown ",45);
+    howToPlayText3->setColor(ColorCodes::COLOR_ORANGE);
+
+    createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.88),Textures::BACK_BUTTON, optionToMainMenu);
     return sc;
 }
