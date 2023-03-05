@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef PONG_LOBBYSCENE_H
-#define PONG_LOBBYSCENE_H
+#ifndef R_TYPE_LOBBYSCENE_H
+#define R_TYPE_LOBBYSCENE_H
 
 
 #include "Engine/Scene.h"
@@ -39,4 +39,4 @@
 
 std::shared_ptr<Scene> lobbyScene(EnginePtr engine);
 
-#endif //PONG_LOBBYSCENE_H
+#endif //R_TYPE_LOBBYSCENE_H

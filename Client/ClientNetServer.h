@@ -30,12 +30,18 @@
  * @brief ClientNetServer is a NetworkRemoteServer that is used by the client to communicate with the server
  */
 class ClientNetServer : public NetworkRemoteServer<EnginePtr> {
+private:
+    bool foundServer = false;
 public:
     ClientNetServer(EnginePtr engine, const std::string &address, unsigned short port);
 
     ~ClientNetServer() override = default;
 
     void errorReceived(std::string address, int port, int err) override;
+
+    bool hasFoundServer() const;
+
+    void setFoundServer(bool foundServer);
 };
 
 using RTypeServer = std::shared_ptr<ClientNetServer>;
