@@ -43,7 +43,7 @@ static void toPreviousLevel(EnginePtr engine,std::shared_ptr<Entity> entity)
     auto levels = engine->getModule<LuaLevelFactory>();
     auto levelNameEntity = entity->getComponent<EntityLinkComponent>()->entity;
     if (levelNameEntity != nullptr) {
-        int level = (levels->getSelectedLevel() + 1) % (int)levels->getLevels().size();
+        int level = (levels->getSelectedLevel() - 1) % (int)levels->getLevels().size();
         levels->setSelectedLevel(level);
         levelNameEntity->getComponent<TextComponent>()->setText(levels->getLevels()[levels->getSelectedLevel()]->getName());
     }

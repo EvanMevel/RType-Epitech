@@ -22,8 +22,6 @@
 
 #include "StartGamePacket.h"
 
-#include <utility>
-
 StartGamePacket::StartGamePacket() : levelName(""){}
 
 StartGamePacket::StartGamePacket(std::string levelName) : levelName(std::move(levelName)){}
