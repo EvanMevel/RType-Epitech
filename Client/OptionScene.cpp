@@ -90,6 +90,11 @@ std::shared_ptr<Scene> optionScene(EnginePtr engine) {
     auto buttonVolumeDown = createButton(lib, sc,width - 680, height / 3,Textures::ARROW_LEFT, volumeDown);
     buttonVolumeDown->addComponent<EntityLinkComponent>(gameVolume);
 
+    auto howToPlay = sc->createEntity();
+    howToPlay->addComponent<PositionComponent>((width / 2) - (400 / 2), (int) (height * 0.85) - (100 / 2));
+    auto howToPlayText = howToPlay->addComponent<TextComponent>("How to play :",65);
+    howToPlayText->setColor(ColorCodes::COLOR_ORANGE);
+
     createButton(lib, sc,(width / 2) - (400 / 2), (int) (height * 0.85) - (100 / 2),Textures::BACK_BUTTON, optionToMainMenu);
     return sc;
 }
