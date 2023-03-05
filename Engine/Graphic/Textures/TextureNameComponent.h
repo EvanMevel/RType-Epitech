@@ -26,8 +26,10 @@
 #include <string>
 #include "Engine/Component/IComponent.h"
 
+/**
+ * @brief Component that reference a texture name
+ */
 class TextureNameComponent : public IComponent {
-
 private:
     std::string _textureName;
 

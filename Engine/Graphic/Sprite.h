@@ -26,6 +26,9 @@
 
 #include "SpriteProperty.h"
 
+/**
+ * @brief Class representing a sprite
+ */
 class Sprite {
 private:
     std::size_t currentFrame = 0;

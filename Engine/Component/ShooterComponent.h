@@ -27,6 +27,9 @@
 #include "IComponent.h"
 #include "Engine/EngineTypes.h"
 
+/**
+ * @brief Component that reference the entity that shot the projectile
+ */
 class ShooterComponent: public IComponent {
 private:
     EntityId entityId;

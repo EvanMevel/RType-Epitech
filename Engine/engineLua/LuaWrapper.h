@@ -38,6 +38,9 @@ extern "C" {
     #include "Engine/lua/lua-5.4.4/include/lauxlib.h"
 }
 
+/**
+ * @brief Class that represent the keywork void in Lua
+ */
 class VoidType {};
 
 /*

@@ -61,6 +61,9 @@ public:
     friend std::ostream &operator<<(std::ostream &os, const NetClient &client);
 };
 
+/**
+ * @brief PacketConsumer describes a consumer of packets used by the client
+ */
 template<class Packet, class Data>
 class PacketClientConsumer : public PacketConsumer<Packet, std::shared_ptr<NetClient>, Data> {
 
