@@ -207,6 +207,8 @@ void loadAll() {
     luaLoad->loadEntityTypes(typeFactory, weaponFactory);
     luaLoad->loadLevels(levelFactory);
 
+    levelFactory->createLevel("Endless");
+
     std::thread graphThread(startGraph, std::ref(engine));
 
     loadNetwork(engine);
