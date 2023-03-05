@@ -62,12 +62,24 @@ void BossSystem::update(std::unique_ptr<Engine> &engine) {
         server->broadcast(PacketWin());
         return;
     }
+    auto hitbox = _entity->getComponent<HitboxComponent>();
     auto maxHealth = healthComponent->getMaxHealth();
     auto weaponComponent = _entity->getComponent<WeaponComponent>();
-    _entity->getComponent<PositionComponent>()->setY(120);
     auto physicComponent = _entity->getComponent<PhysicComponent>();
     if(_entity->getComponent<PositionComponent>()->getX() > 1500){
         physicComponent->velocity.x = -2;
+    }
+    if (goUp){
+        physicComponent->velocity.y = -2;
+        if (_entity->getComponent<PositionComponent>()->getY() < 20){
+            goUp = false;
+        }
+    }
+    else{
+        physicComponent->velocity.y = 2;
+        if (_entity->getComponent<PositionComponent>()->getY() > 280){
+            goUp = true;
+        }
     }
     auto ticker = engine->getModule<TickUtil>();
     EntityVelocityPacket packet(_entity, ticker->getCurrentTick());
@@ -100,10 +112,10 @@ void BossSystem::setEntity(const std::shared_ptr<Entity> &entity) {
 }
 
 BossSystem::BossSystem(){
-    _weaponStage1 = createWeapon<SynchronizedWeaponBossStage2>("projectile2",(size_t)(ENGINE_TPS),4);
-    _weaponStage2 = createWeapon<SynchronizedWeaponBossStage2>("projectile2",(size_t)(ENGINE_TPS/1.5),8);
-    _weaponStage3 = createWeapon<SynchronizedWeaponBossStage2>("projectile2",(size_t)(ENGINE_TPS/2),12);
-    _weaponStage4 = createWeapon<SynchronizedWeaponBossStage2>("projectile2",(size_t)(ENGINE_TPS/2.5),16);
+    _weaponStage1 = createWeapon<SynchronizedWeaponBossStage2>("projectile2", (size_t)(ENGINE_TPS), -10, 0, 4);
+    _weaponStage2 = createWeapon<SynchronizedWeaponBossStage2>("projectile2",(size_t)(ENGINE_TPS/1.5), -10, 0, 8);
+    _weaponStage3 = createWeapon<SynchronizedWeaponBossStage2>("projectile2",(size_t)(ENGINE_TPS/2), -10, 0 ,12);
+    _weaponStage4 = createWeapon<SynchronizedWeaponBossStage2>("projectile2",(size_t)(ENGINE_TPS/2.5), -10, 0 ,16);
 }
 
 void SynchronizedWeaponBossStage2::shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter) {
@@ -115,9 +127,12 @@ void SynchronizedWeaponBossStage2::shoot(std::unique_ptr<Engine> &engine, std::s
     }
 }
 
-SynchronizedWeaponBossStage2::SynchronizedWeaponBossStage2(const std::string &projectile, size_t cooldown, size_t howMany)
-        : SynchronizedWeapon(projectile, cooldown) {
-    _howMany = howMany;
+SynchronizedWeaponBossStage2::SynchronizedWeaponBossStage2(const std::string &projectile, size_t cooldown, int velX,
+                                                           int velY, size_t howMany) : SynchronizedWeapon(projectile,
+                                                                                                          cooldown,
+                                                                                                          velX, velY),
+                                                                                       _howMany(howMany) {
+
 }
 
 CollideResult SynchronizedWeaponBossStage2::projectileHit(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> self,

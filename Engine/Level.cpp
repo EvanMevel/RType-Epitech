@@ -23,7 +23,7 @@
 #include "Level.h"
 #include "Engine.h"
 
-LevelObject::LevelObject(const std::string &type, int x, int y) : _type(type), _x(x), _y(y) {
+LevelObject::LevelObject(const std::string &type, int x, int y) : _type(type), _x(x), _y(y){
 
 }
 
@@ -39,7 +39,7 @@ int LevelObject::getY() const {
     return _y;
 }
 
-Level::Level(const std::string &name) : _name(name) {
+Level::Level(const std::string &name) : _name(name), _end(0) {
 
 }
 
@@ -48,7 +48,7 @@ void Level::spawn(std::unique_ptr<Engine> &engine, const LevelObject &obj) {
 }
 
 bool Level::update(int x, EnginePtr engine) {
-    if (x >= _end) {
+    if (_end != 0 && x >= _end) {
         return true;
     }
     auto it = _objects.begin();

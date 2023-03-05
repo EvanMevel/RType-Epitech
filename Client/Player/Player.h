@@ -37,7 +37,6 @@ public:
     bool shoot = false;
     std::shared_ptr<Entity> entity;
     bool dead = false;
-    size_t cooldown = 0;
 };
 
 

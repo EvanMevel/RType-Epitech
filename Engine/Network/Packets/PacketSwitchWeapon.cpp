@@ -20,32 +20,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_CLIENT_LUALEVELFACTORY_H
-#define R_TYPE_CLIENT_LUALEVELFACTORY_H
+#include "PacketSwitchWeapon.h"
 
-#include "Engine/Level.h"
-#include "LuaWrapper.h"
+PacketSwitchWeapon::PacketSwitchWeapon(EntityId id, const std::string &weaponName) : _id(id), _weaponName(weaponName) {}
 
-class LuaLevelFactory {
-private:
-    std::vector<std::shared_ptr<Level>> _levels;
-    int selectedLevel;
-public:
-    void setSelectedLevel(int selectedLevel);
+EntityId PacketSwitchWeapon::getId() const {
+    return _id;
+}
 
-public:
-    int getSelectedLevel() const;
+void PacketSwitchWeapon::setId(EntityId id) {
+    _id = id;
+}
 
-public:
-    std::shared_ptr<Level> createLevel(const std::string &name);
+const std::string &PacketSwitchWeapon::getWeaponName() const {
+    return _weaponName;
+}
 
-    std::shared_ptr<Level> createLevel(const std::string &name, std::size_t end);
+void PacketSwitchWeapon::setWeaponName(const std::string &weaponName) {
+    _weaponName = weaponName;
+}
 
-    const std::vector<std::shared_ptr<Level>> &getLevels() const;
-};
+void PacketSwitchWeapon::write(ByteArray &buffer) const {
+    buffer << _id << _weaponName;
+}
 
-[[maybe_unused]] int luaCreateLevel(lua_State *L);
+void PacketSwitchWeapon::read(ByteArray &buffer) {
+    buffer >> _id >> _weaponName;
+}
 
-[[maybe_unused]] int luaAddObjectToLevel(lua_State *L);
+PacketSwitchWeapon::PacketSwitchWeapon() : _id(0), _weaponName("") {
 
-#endif //R_TYPE_CLIENT_LUALEVELFACTORY_H
+}

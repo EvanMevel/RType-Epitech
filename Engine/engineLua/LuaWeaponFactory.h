@@ -31,7 +31,7 @@ class LuaWeaponFactoryBase {
 protected:
     std::unordered_map<std::string, std::shared_ptr<Weapon>> _weapons;
 public:
-    virtual void registerWeapon(const std::string &name, const std::string &proj, std::size_t cooldown) = 0;
+    virtual void registerWeapon(const std::string &name, const std::string &proj, std::size_t cooldown, int velX, int velY) = 0;
 
     std::shared_ptr<Weapon> getWeapon(const std::string &name) {
         return _weapons[name];
@@ -41,8 +41,8 @@ public:
 template <class T>
 class LuaWeaponFactory : public LuaWeaponFactoryBase {
 public:
-    void registerWeapon(const std::string &name, const std::string &proj, std::size_t cooldown) override {
-        _weapons[name] = std::make_shared<T>(proj, cooldown);
+    void registerWeapon(const std::string &name, const std::string &proj, std::size_t cooldown, int velX, int velY) override {
+        _weapons[name] = std::make_shared<T>(proj, cooldown, velX, velY);
     }
 
 };

@@ -20,32 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_CLIENT_LUALEVELFACTORY_H
-#define R_TYPE_CLIENT_LUALEVELFACTORY_H
+#ifndef PONG_COLLECTABLEMODULE_H
+#define PONG_COLLECTABLEMODULE_H
 
-#include "Engine/Level.h"
-#include "LuaWrapper.h"
+#include "Engine/EngineTypes.h"
+#include "Engine/Component/CollectableComponent.h"
 
-class LuaLevelFactory {
-private:
-    std::vector<std::shared_ptr<Level>> _levels;
-    int selectedLevel;
-public:
-    void setSelectedLevel(int selectedLevel);
+class CollectableModule {
 
 public:
-    int getSelectedLevel() const;
+    CollectableModule();
 
-public:
-    std::shared_ptr<Level> createLevel(const std::string &name);
-
-    std::shared_ptr<Level> createLevel(const std::string &name, std::size_t end);
-
-    const std::vector<std::shared_ptr<Level>> &getLevels() const;
+    virtual bool collect(EnginePtr engine, std::shared_ptr<Entity> entity, std::shared_ptr<CollectableComponent> collectable);
 };
 
-[[maybe_unused]] int luaCreateLevel(lua_State *L);
 
-[[maybe_unused]] int luaAddObjectToLevel(lua_State *L);
-
-#endif //R_TYPE_CLIENT_LUALEVELFACTORY_H
+#endif //PONG_COLLECTABLEMODULE_H

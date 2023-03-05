@@ -25,7 +25,10 @@ add_executable(r-type-server
         LevelSystem.cpp
         SynchronizedWeapon.cpp
         BossSystem.cpp
-        BossCreatorServer.cpp)
+        BossCreatorServer.cpp
+
+        ServerCollectableModule.cpp
+        )
 
 
 target_link_libraries(r-type-server eng)

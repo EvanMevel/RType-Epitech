@@ -20,32 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_CLIENT_LUALEVELFACTORY_H
-#define R_TYPE_CLIENT_LUALEVELFACTORY_H
+#include "PacketSwitchWeaponConsumer.h"
+#include "Engine/Engine.h"
+#include "Client/Player/Player.h"
+#include "Engine/Component/WeaponComponent.h"
+#include "Engine/engineLua/LuaWeaponFactory.h"
 
-#include "Engine/Level.h"
-#include "LuaWrapper.h"
+void PacketSwitchWeaponConsumer::consume(PacketSwitchWeapon &packet, EnginePtr engine, RTypeServer server) {
+    auto player = engine->getModule<Player>();
+    if (!player || player->entity->getId() != packet.getId()) {
+        return;
+    }
+    auto weaponFactory = engine->getModule<LuaWeaponFactoryBase>();
+    auto weaponComponent = player->entity->getComponent<WeaponComponent>();
 
-class LuaLevelFactory {
-private:
-    std::vector<std::shared_ptr<Level>> _levels;
-    int selectedLevel;
-public:
-    void setSelectedLevel(int selectedLevel);
-
-public:
-    int getSelectedLevel() const;
-
-public:
-    std::shared_ptr<Level> createLevel(const std::string &name);
-
-    std::shared_ptr<Level> createLevel(const std::string &name, std::size_t end);
-
-    const std::vector<std::shared_ptr<Level>> &getLevels() const;
-};
-
-[[maybe_unused]] int luaCreateLevel(lua_State *L);
-
-[[maybe_unused]] int luaAddObjectToLevel(lua_State *L);
-
-#endif //R_TYPE_CLIENT_LUALEVELFACTORY_H
+    if (!weaponComponent || !weaponFactory) {
+        return;
+    }
+    auto weapon = weaponFactory->getWeapon(packet.getWeaponName());
+    if (!weapon) {
+        return;
+    }
+    weaponComponent->setWeapon(weapon);
+    std::cout << "Weapon switched to " << packet.getWeaponName() << std::endl;
+}

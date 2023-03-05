@@ -20,32 +20,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_CLIENT_LUALEVELFACTORY_H
-#define R_TYPE_CLIENT_LUALEVELFACTORY_H
+#include "ServerCollectableModule.h"
+#include "Engine/Component/WeaponComponent.h"
+#include "Engine/engineLua/LuaWeaponFactory.h"
+#include "Engine/Engine.h"
+#include "RTypeServer.h"
+#include "Engine/Network/Packets/PacketSwitchWeapon.h"
 
-#include "Engine/Level.h"
-#include "LuaWrapper.h"
+bool ServerCollectableModule::collect(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> entity,
+                                      std::shared_ptr<CollectableComponent> collectable) {
+    if (collectable->getType() == "weapon") {
+        auto weaponComponent = entity->getComponent<WeaponComponent>();
+        if (weaponComponent == nullptr) {
+            return false;
+        }
+        auto weaponFactory = engine->getModule<LuaWeaponFactoryBase>();
+        auto weapon = weaponFactory->getWeapon(collectable->getValue());
+        weaponComponent->setWeapon(weapon);
 
-class LuaLevelFactory {
-private:
-    std::vector<std::shared_ptr<Level>> _levels;
-    int selectedLevel;
-public:
-    void setSelectedLevel(int selectedLevel);
+        auto server = engine->getModule<RTypeServer>();
+        server->broadcast(PacketSwitchWeapon(entity->getId(), collectable->getValue()));
+    }
 
-public:
-    int getSelectedLevel() const;
-
-public:
-    std::shared_ptr<Level> createLevel(const std::string &name);
-
-    std::shared_ptr<Level> createLevel(const std::string &name, std::size_t end);
-
-    const std::vector<std::shared_ptr<Level>> &getLevels() const;
-};
-
-[[maybe_unused]] int luaCreateLevel(lua_State *L);
-
-[[maybe_unused]] int luaAddObjectToLevel(lua_State *L);
-
-#endif //R_TYPE_CLIENT_LUALEVELFACTORY_H
+    return true;
+}

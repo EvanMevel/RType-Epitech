@@ -20,32 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef R_TYPE_CLIENT_LUALEVELFACTORY_H
-#define R_TYPE_CLIENT_LUALEVELFACTORY_H
+#include "CollectableModule.h"
+#include "Engine/Engine.h"
+#include "WeaponComponent.h"
+#include "engineLua/LuaWeaponFactory.h"
 
-#include "Engine/Level.h"
-#include "LuaWrapper.h"
+CollectableModule::CollectableModule() {}
 
-class LuaLevelFactory {
-private:
-    std::vector<std::shared_ptr<Level>> _levels;
-    int selectedLevel;
-public:
-    void setSelectedLevel(int selectedLevel);
-
-public:
-    int getSelectedLevel() const;
-
-public:
-    std::shared_ptr<Level> createLevel(const std::string &name);
-
-    std::shared_ptr<Level> createLevel(const std::string &name, std::size_t end);
-
-    const std::vector<std::shared_ptr<Level>> &getLevels() const;
-};
-
-[[maybe_unused]] int luaCreateLevel(lua_State *L);
-
-[[maybe_unused]] int luaAddObjectToLevel(lua_State *L);
-
-#endif //R_TYPE_CLIENT_LUALEVELFACTORY_H
+bool CollectableModule::collect(EnginePtr engine, std::shared_ptr<Entity> entity,
+                                std::shared_ptr<CollectableComponent> collectable) {
+    if (collectable->getType() == "weapon") {
+        auto weaponComponent = entity->getComponent<WeaponComponent>();
+        if (weaponComponent == nullptr) {
+            return false;
+        }
+        auto weaponFactory = engine->getModule<LuaWeaponFactoryBase>();
+        auto weapon = weaponFactory->getWeapon(collectable->getValue());
+        weaponComponent->setWeapon(weapon);
+    }
+    return true;
+}

@@ -22,10 +22,14 @@
 
 #include "StartGamePacket.h"
 
-void StartGamePacket::write(ByteArray &buffer) const {
+StartGamePacket::StartGamePacket() : levelName(""){}
 
+StartGamePacket::StartGamePacket(std::string levelName) : levelName(std::move(levelName)){}
+
+void StartGamePacket::write(ByteArray &buffer) const {
+    buffer << levelName;
 }
 
 void StartGamePacket::read(ByteArray &buffer) {
-
+    buffer >> levelName;
 }

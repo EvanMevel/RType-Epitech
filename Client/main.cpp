@@ -53,6 +53,7 @@
 #include "Engine/BossCreator.h"
 #include "BossCreatorClient.h"
 #include "Client/Consumers/PacketWinConsumer.h"
+#include "Client/Consumers/PacketSwitchWeaponConsumer.h"
 #include <mutex>
 #include <condition_variable>
 
@@ -96,6 +97,8 @@ void loadNetwork(EnginePtr engine) {
     server->addConsumer<StartGameConsumer>();
 
     server->addConsumer<PacketWinConsumer>();
+
+    server->addConsumer<PacketSwitchWeaponConsumer>();
 
     auto ticker = engine->registerModule<TickUtil>(ENGINE_TPS);
 

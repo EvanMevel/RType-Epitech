@@ -57,22 +57,30 @@ static void sendEntitiesInfo(const std::shared_ptr<NetClient>& client, std::shar
 void StartGameConsumer::consume(StartGamePacket &packet, std::shared_ptr<NetClient> client, std::shared_ptr<ClientData> data) {
 
     StartGameConsumer::gameStarted = true;
+
     // Create Scene
     auto server = e->getModule<RTypeServer>();
     auto sc = e->createScene<PacketSendingScene>(server);
-    auto level = e->getModule<LuaLevelFactory>()->getLevels()[0];
+    auto level = e->getModule<LuaLevelFactory>();
+
+    for (int i = 0; i < level->getLevels().size(); i++) {
+        if (level->getLevels()[i]->getName() == packet.levelName) {
+            level->setSelectedLevel(i);
+            break;
+        }
+    }
 
     sc->addSystem<ServerVelocitySystem>();
     sc->addSystem<ProjectileCleanupSystem>();
     sc->addSystem<EnemyShootSystem>();
     sc->addSystem<ColliderHitboxSystem>();
-    sc->addSystem<LevelSystem>(level);
+    sc->addSystem<LevelSystem>(level->getLevels()[level->getSelectedLevel()]);
     sc->addSystem<BossSystem>();
 
     e->setScene(sc);
 
     // Send Packet to all clients
-    StartGamePacket startGame;
+    StartGamePacket startGame(level->getLevels()[level->getSelectedLevel()]->getName());
     server->broadcast(startGame);
 
     // Send Entity info to all clients

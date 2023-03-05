@@ -27,7 +27,8 @@
 #include "Engine/Network/Packets/DamagePacket.h"
 
 
-SynchronizedWeapon::SynchronizedWeapon(const std::string &projectile, size_t cooldown) : Weapon(projectile, cooldown) {
+SynchronizedWeapon::SynchronizedWeapon(const std::string &projectile, size_t cooldown, int velX, int velY) : Weapon(
+        projectile, cooldown, velX, velY) {
 
 }
 
