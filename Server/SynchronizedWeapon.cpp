@@ -25,11 +25,23 @@
 #include "Engine/Network/Packets/ProjectileHitPacket.h"
 #include "Engine/Component/EntityTypeComponent2.h"
 #include "Engine/Network/Packets/DamagePacket.h"
+#include "Engine/TickUtil.h"
+#include "Engine/Network/Packets/EntityVelocityPacket.h"
 
 
 SynchronizedWeapon::SynchronizedWeapon(const std::string &projectile, size_t cooldown, int velX, int velY) : Weapon(
         projectile, cooldown, velX, velY) {
 
+}
+
+std::shared_ptr<Entity> SynchronizedWeapon::shootAtPos(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter, int x, int y) {
+    auto projectile = Weapon::shootAtPos(engine, shooter, x, y);
+
+    auto ticker = engine->getModule<TickUtil>();
+
+    EntityVelocityPacket packet(projectile, ticker->getCurrentTick());
+    engine->getModule<RTypeServer>()->broadcast(packet);
+    return projectile;
 }
 
 void SynchronizedWeapon::shoot(std::unique_ptr<Engine> &engine, std::shared_ptr<Entity> shooter) {

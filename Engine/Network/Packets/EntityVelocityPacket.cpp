@@ -26,7 +26,7 @@
 
 
 EntityVelocityPacket::EntityVelocityPacket() : entityId(0), pos(0, 0),
-    velocity(0, 0), acceleration(0, 0), tick(0) {
+    velocity(0, 0), acceleration(0, 0), tick(0), maxVelocity(0), accelerationSlow(0), velocitySlow(0) {
 }
 
 EntityVelocityPacket::EntityVelocityPacket(EntityPtr entity, unsigned long long int tick) {
@@ -39,15 +39,18 @@ EntityVelocityPacket::EntityVelocityPacket(EntityPtr entity, unsigned long long 
     if (physicsComponent) {
         this->velocity = physicsComponent->velocity.clone();
         this->acceleration = physicsComponent->acceleration.clone();
+        this->maxVelocity = physicsComponent->maxVelocity;
+        this->accelerationSlow = physicsComponent->accelerationSlow;
+        this->velocitySlow = physicsComponent->velocitySlow;
     }
     this->tick = tick;
 }
 
 void EntityVelocityPacket::write(ByteArray &buffer) const {
-    buffer << entityId << pos << velocity << acceleration << tick;
+    buffer << entityId << pos << velocity << acceleration << tick << maxVelocity << accelerationSlow << velocitySlow;
 }
 
 void EntityVelocityPacket::read(ByteArray &buffer) {
-    buffer >> entityId >> pos >> velocity >> acceleration >> tick;
+    buffer >> entityId >> pos >> velocity >> acceleration >> tick >> maxVelocity >> accelerationSlow >> velocitySlow;
 }
 

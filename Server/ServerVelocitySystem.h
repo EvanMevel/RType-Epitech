@@ -29,10 +29,16 @@
  * @brief ServerVelocitySystem
  */
 class ServerVelocitySystem : public VelocitySystem {
+
+private:
+    size_t updateCoolDown = 0;
+
 public:
     ServerVelocitySystem();
 
     void entityMoved(EnginePtr engine, std::shared_ptr<Entity> entity) override;
+
+    void update(std::unique_ptr<Engine> &engine) override;
 
     std::string getName() override;
 };
